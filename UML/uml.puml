@@ -1,0 +1,9 @@
+@startuml UML
+skinparam classAttributeIconSize 0
+
+class example {
+    + publicAttr: type
+    - privateFunc(): returnType
+}
+
+@enduml

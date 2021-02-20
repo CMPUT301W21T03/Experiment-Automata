@@ -1,9 +1,146 @@
 @startuml UML
 skinparam classAttributeIconSize 0
 
-class example {
-    + publicAttr: type
-    - privateFunc(): returnType
+' generic class for an experimenter
+class Experimenter {
+}
+
+' ??? (was this an abstract class for different experimenters? Experimenter is more concise name)
+class Person {
+}
+
+' ??? (should be attribute if status changes per experiment, stay as class if a profile is either owner or experimenter)
+class Owner {
+}
+
+' ??? (should be attribute if status changes per experiment, stay as class if a profile is either owner or experimenter)
+class CrowdExperimenter {
+}
+
+' what information does a subscription hold? an experiment & list of users subscribed? currently assumes all subscribers are experimenters of some kind
+class Subscription {
+    experiment: experimentId
+    subscribed: Collection<Experimenter>
+}
+
+class Question {
+    -question: String
+    -user: Experimenter
+    -reply: Collection<Replies>
+    +getQuestion(): String
+    +getThread(): Collection<String>
+}
+
+' assume that anyone who can reply to a question is a type of experimenter
+class Replies {
+    -reply: String
+    -user: Experimenter
+}
+
+' allows the experiment to enforce only one trial type
+enum ExperimentType {
+    Count
+    NaturalCount
+    Binomial
+    Measurement
+}
+
+' currently assumes Owner is specific class, not attribute
+abstract class Experiment {
+    -experimentId: Integer
+    -description: String
+    -minTrials: Integer
+    -owner: Owner
+    -experimentType: ExperimentType
+    -crowdExperimenters: Collection<CrowdExperimenter>
+}
+
+class CountExperiment extends Experiment {
+    -results: Collection<CountTrial>
+}
+
+class NaturalCountExperiment extends Experiment {
+    -resutls: Collection<NaturalCountTrial>
+}
+
+class BinomialExperiment extends Experiment {
+    -results: Collection<BinomialTrial>
+}
+
+class MeasurementExperiment extends Experiment {
+    -results: Collection<MeasurementTrial>
+}
+
+' each trial has a unique QRCode associated with it
+abstract class Trial {
+    -collector: CrowdExperimenter
+    -QRcode: QRCode
+    -location: Optional<Location>
+}
+
+class CountTrial extends Trial {
+    ' essentially just a trial but it's own class since other types of trial aren't a count trial
+}
+
+' no unsigned ints in java, not sure how to enforce natural numbers only
+class NaturalCountTrial extends Trial {
+    -result: Integer
+    +getResults(): Integer
+}
+
+' will likely specify true = pass, false = fail
+class BinomialTrial extends Trial {
+    -result: Boolean
+    +getResults(): Boolean
+}
+
+class MeasurementTrial extends Trial {
+    -result: Float
+    +getResults(): Float
+}
+
+class QRCodeGenerator {
+    -code: QRCode
+}
+
+class QRCodeReader {
+    ' implementation details unclear at the moment
+}
+
+class QRCode {
+    ' somehow represent this?
+}
+
+class Location {
+}
+
+class Histogram {
+}
+
+class Plot {
+
+}
+
+' I think we will likely make this abstract and have a summarizer object for every experiment type
+class StatSummary {
+    -Experiment: Experiment
+    +getMean(): Float
+    +getMedian(): Float
+    +getStdev(): Float
+    +getFirstQuartile(): (Float, Float)
+    +getSecondQuartile(): (Float, Float)
+    +getThirdQuartile(): (Float, Float)
+    +getFourthQuartile(): (Float, Float)
+}
+
+class ContactInformation {
+    -name: String
+    -email: Optional<String>
+    -phone: Optional<String>
+}
+
+class SearchController {
+    ' functionality here is searchbar functions required by Java so likely don't need to be specified in UML
 }
 
 @enduml

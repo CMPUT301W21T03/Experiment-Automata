@@ -2,7 +2,12 @@
 skinparam classAttributeIconSize 0
 
 ' generic class for an experimenter
+' note that experiments will likely be stored by user id instead of by all experiment info
 class Experimenter {
+    -userId: Integer
+    -info: ContactInformation
+    -ownedExperiments: Collection<Integer>
+    -participatingExperiments: Collection<Integer>
 }
 
 ' ??? (was this an abstract class for different experimenters? Experimenter is more concise name)
@@ -26,13 +31,13 @@ class Subscription {
 class Question {
     -question: String
     -user: Experimenter
-    -reply: Collection<Replies>
+    -reply: Collection<Reply>
     +getQuestion(): String
     +getThread(): Collection<String>
 }
 
 ' assume that anyone who can reply to a question is a type of experimenter
-class Replies {
+class Reply {
     -reply: String
     -user: Experimenter
 }
@@ -45,35 +50,54 @@ enum ExperimentType {
     Measurement
 }
 
-' currently assumes Owner is specific class, not attribute
+' right now will just look for owner based on their id
+' idea: make this 'experimentInfo' and give every type of experiment an experimentInfo instead
+' rational: for displaying info and searching we don't need the results, just the info
+' both are implemented so whichever we don't use can just be deleted
 abstract class Experiment {
     -experimentId: Integer
     -description: String
     -minTrials: Integer
-    -owner: Owner
-    -experimentType: ExperimentType
-    -crowdExperimenters: Collection<CrowdExperimenter>
+    ' this is the userId of the owner
+    -owner: Integer
+    -experimentType: Integer
+    -crowdExperimenters: Collection<Integer>
+}
+
+class ExperimentInfo {
+    -experimentId: Integer
+    -description: String
+    -minTrials: Integer
+    ' this is the userId of the owner
+    -owner: Integer
+    -experimentType: Integer
+    -crowdExperimenters: Collection<Integer>
 }
 
 class CountExperiment extends Experiment {
     -results: Collection<CountTrial>
+    -info: ExperimentInfo
 }
 
 class NaturalCountExperiment extends Experiment {
     -resutls: Collection<NaturalCountTrial>
+    -info: ExperimentInfo
 }
 
 class BinomialExperiment extends Experiment {
     -results: Collection<BinomialTrial>
+    -info: ExperimentInfo
 }
 
 class MeasurementExperiment extends Experiment {
     -results: Collection<MeasurementTrial>
+    -info: ExperimentInfo
 }
 
 ' each trial has a unique QRCode associated with it
 abstract class Trial {
-    -collector: CrowdExperimenter
+    ' just going to user experimenter ID here
+    -collector: Integer
     -QRcode: QRCode
     -location: Optional<Location>
 }
@@ -100,7 +124,7 @@ class MeasurementTrial extends Trial {
 }
 
 class QRCodeGenerator {
-    -code: QRCode
+    ' implementation details unclear at the moment
 }
 
 class QRCodeReader {
@@ -121,9 +145,9 @@ class Plot {
 
 }
 
-' I think we will likely make this abstract and have a summarizer object for every experiment type
-class StatSummary {
-    -Experiment: Experiment
+' Modification: this is an interface that can be used by every experiment since it will calculate each value different depending on experiment type
+' Note: ask if things like binomial trial should have these (median of pass/fail?)
+Interface StatSummary {
     +getMean(): Float
     +getMedian(): Float
     +getStdev(): Float
@@ -142,5 +166,40 @@ class ContactInformation {
 class SearchController {
     ' functionality here is searchbar functions required by Java so likely don't need to be specified in UML
 }
+
+Experimenter "1" *-- "1" ContactInformation
+Experimenter "1" *-- "0...*" Experiment
+
+Subscription "0...*" o-- "0...*" Experimenter
+Subscription "1" o-- "1" Experiment
+
+Question "0...*" o-- "1" Experimenter
+' Note: does each question get one reply? or does it turn into a thread?
+Question "1" *-- "0...*" Reply
+
+Reply "0...*" o-- "1" Experimenter
+
+' Question: do we draw both aggregations since they are different and both are true?
+Experiment "0...*" o-- "0...*" Experimenter
+
+CountExperiment "1" *-- "0...*" CountTrial
+CountExperiment "1" *-- "1" ExperimentInfo
+
+NaturalCountExperiment "1" *-- "0...*" NaturalCountTrial
+NaturalCountExperiment "1" *-- "1" ExperimentInfo
+
+BinomialExperiment "1" *-- "0...*" BinomialTrial
+BinomialExperiment "1" *-- "1" ExperimentInfo
+
+MeasurementExperiment "1" *-- "0...*" MeasurementTrial
+MeasurementExperiment "1" *-- "1" ExperimentInfo
+
+Trial "0...*" o-- "1" Experimenter
+Trial "1" *-- "1" QRCode
+Trial "1" *-- "1" Location
+
+QRCodeGenerator --- QRCode
+QRCodeReader --- QRCode
+
 
 @enduml

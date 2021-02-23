@@ -3,28 +3,30 @@ skinparam classAttributeIconSize 0
 
 ' generic class for an experimenter
 ' note that experiments will likely be stored by user id instead of by all experiment info
+' We could do hasing, but it's probably easier for now (for the UML sake) to represent this as a collection of experiments
 class Experimenter {
     -userId: Integer
     -info: ContactInformation
-    -ownedExperiments: Collection<Integer>
-    -participatingExperiments: Collection<Integer>
+    -controller: SearchController
+    -ownedExperiments: Collection<Experiment>
+    -participatingExperiments: Collection<Experiment>
+    -addGeoLocation(exp: Experiment): Location
+    -seeGeoLocation(experiments: Collection<Experiment>): Map
 }
 
-' ??? (was this an abstract class for different experimenters? Experimenter is more concise name)
-class Person {
+
+' ??? (should be attribute if status changes per experiment, stay as class if a profile is either owner or experimenter)
+class Owner extends Experimenter {
+  +isLocationRequired(exp: Experiment): Boolean
 }
 
 ' ??? (should be attribute if status changes per experiment, stay as class if a profile is either owner or experimenter)
-class Owner {
-}
-
-' ??? (should be attribute if status changes per experiment, stay as class if a profile is either owner or experimenter)
-class CrowdExperimenter {
+class CrowdExperimenter extends Experiment {
 }
 
 ' what information does a subscription hold? an experiment & list of users subscribed? currently assumes all subscribers are experimenters of some kind
 class Subscription {
-    experiment: experimentId
+    experiment: Experiment
     subscribed: Collection<Experimenter>
 }
 
@@ -54,44 +56,50 @@ enum ExperimentType {
 ' idea: make this 'experimentInfo' and give every type of experiment an experimentInfo instead
 ' rational: for displaying info and searching we don't need the results, just the info
 ' both are implemented so whichever we don't use can just be deleted
-abstract class Experiment {
+class Experiment {
     -experimentId: Integer
     -description: String
     -minTrials: Integer
     ' this is the userId of the owner
     -owner: Integer
-    -experimentType: Integer
+    -type: ExperimentType
     -crowdExperimenters: Collection<Integer>
+    +getExperimentId(id: int): Experiment
 }
 
-class ExperimentInfo {
-    -experimentId: Integer
-    -description: String
-    -minTrials: Integer
-    ' this is the userId of the owner
-    -owner: Integer
-    -experimentType: Integer
-    -crowdExperimenters: Collection<Integer>
-}
+
 
 class CountExperiment extends Experiment {
     -results: Collection<CountTrial>
-    -info: ExperimentInfo
+    +getExperimentId(id: int): Experiment
+    -recordResult(result: int)
+    generateHistogram(Collection<Trial>): Image
+    generatePlot(Collection<Trial>): Image
 }
 
 class NaturalCountExperiment extends Experiment {
-    -resutls: Collection<NaturalCountTrial>
-    -info: ExperimentInfo
+    -results: Collection<NaturalCountTrial>
+    +getExperimentId(id: int): Experiment
+    -recordResult(result: int)
+    generateHistogram(Collection<Trial>): Image
+    generatePlot(Collection<Trial>): Image
 }
 
 class BinomialExperiment extends Experiment {
     -results: Collection<BinomialTrial>
-    -info: ExperimentInfo
+    +getExperimentId(id: int): Experiment
+    -recordResult(result: boolean)
+    generateHistogram(Collection<Trial>): Image
+    generatePlot(Collection<Trial>): Image
 }
 
 class MeasurementExperiment extends Experiment {
     -results: Collection<MeasurementTrial>
-    -info: ExperimentInfo
+    +getExperimentId(id: int): Experiment
+    -recordResult(result: float)
+    -removeResult(index: int)
+    generateHistogram(Collection<Trial>): Image
+    generatePlot(Collection<Trial>): Image
 }
 
 ' each trial has a unique QRCode associated with it
@@ -125,29 +133,45 @@ class MeasurementTrial extends Trial {
 
 class QRCodeGenerator {
     ' implementation details unclear at the moment
+    getQRCode(): QRCode
 }
 
 class QRCodeReader {
     ' implementation details unclear at the moment
+    readQRCode(qr: QRCode)
 }
 
 class QRCode {
     ' somehow represent this?
+    code: int
+    isReadable: boolean
+    ' a lot of QR codes use a check digit to determine if they are valid or not
+    checkDigit(code): boolean
 }
 
 class Location {
+  -latitude: int
+  -longitude: int
 }
 
-class Histogram {
+class Map{
+ -Collection<Location>
+ generateMap(loc: Collection<Location): Image
 }
 
-class Plot {
+Map -- "1..*" Location
 
+interface "Histogram" as Histogram << Interface >> {
+  generateHistogram(Collection<Trial>): Image
+}
+
+interface "Plot" as Plot <<Interface>> {
+  generatePlot(Collection<Trial>): Image
 }
 
 ' Modification: this is an interface that can be used by every experiment since it will calculate each value different depending on experiment type
 ' Note: ask if things like binomial trial should have these (median of pass/fail?)
-Interface StatSummary {
+Interface "StatSummary" as StatSummary <<Interface>> {
     +getMean(): Float
     +getMedian(): Float
     +getStdev(): Float
@@ -165,6 +189,8 @@ class ContactInformation {
 
 class SearchController {
     ' functionality here is searchbar functions required by Java so likely don't need to be specified in UML
+    -keyword: String
+    -searchKeyWord(keyword: String): Experiment
 }
 
 Experimenter "1" *-- "1" ContactInformation
@@ -183,16 +209,13 @@ Reply "0...*" o-- "1" Experimenter
 Experiment "0...*" o-- "0...*" Experimenter
 
 CountExperiment "1" *-- "0...*" CountTrial
-CountExperiment "1" *-- "1" ExperimentInfo
+
 
 NaturalCountExperiment "1" *-- "0...*" NaturalCountTrial
-NaturalCountExperiment "1" *-- "1" ExperimentInfo
 
 BinomialExperiment "1" *-- "0...*" BinomialTrial
-BinomialExperiment "1" *-- "1" ExperimentInfo
 
 MeasurementExperiment "1" *-- "0...*" MeasurementTrial
-MeasurementExperiment "1" *-- "1" ExperimentInfo
 
 Trial "0...*" o-- "1" Experimenter
 Trial "1" *-- "1" QRCode
@@ -200,6 +223,26 @@ Trial "1" *-- "1" Location
 
 QRCodeGenerator --- QRCode
 QRCodeReader --- QRCode
+
+Experiment *-- "1" ExperimentType
+
+class MeasurementExperiment implements StatSummary
+class BinomialExperiment implements StatSummary
+class NaturalCountExperiment implements StatSummary
+class CountExperiment implements StatSummary
+
+class MeasurementExperiment implements Histogram
+class BinomialExperiment implements Histogram
+class NaturalCountExperiment implements Histogram
+class CountExperiment implements Histogram
+
+class MeasurementExperiment implements Plot
+class BinomialExperiment implements Plot
+class NaturalCountExperiment implements Plot
+class CountExperiment implements Plot
+
+
+Experimenter "0..*" -- "1" SearchController
 
 
 @enduml

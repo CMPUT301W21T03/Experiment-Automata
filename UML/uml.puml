@@ -61,38 +61,34 @@ abstract class Experiment implements Graph {
     -minTrials: Integer
     -isActve: Boolean
     -isPublished: Boolean
+    -experimentId: int
     ' this is the userId of the owner
     -ownerId: Integer
     -type: ExperimentType
     -crowdExperimenters: Collection<Integer>
-    +getExperimentId(id: int): Experiment
+    +getExperimentId(): Integer
 }
 
 
 
 class CountExperiment extends Experiment {
     -results: Collection<CountTrial>
-    +getExperimentId(id: int): Experiment
     +recordResult(result: int)
 }
 
 class NaturalCountExperiment extends Experiment {
     -results: Collection<NaturalCountTrial>
-    +getExperimentId(id: int): Experiment
     +recordResult(result: int)
 }
 
 class BinomialExperiment extends Experiment {
     -results: Collection<BinomialTrial>
-    +getExperimentId(id: int): Experiment
     +recordResult(result: boolean)
 }
 
 class MeasurementExperiment extends Experiment {
     -results: Collection<MeasurementTrial>
-    +getExperimentId(id: int): Experiment
     +recordResult(result: float)
-    +removeResult(index: int)
 }
 
 class StatSummary {
@@ -112,6 +108,7 @@ abstract class Trial {
     -collector: Integer
     -QRcode: QRCode
     -location: Optional<Location>
+    -date: Date
 }
 
 class CountTrial extends Trial {
@@ -158,12 +155,12 @@ class Location {
   -longitude: double
 }
 
-class Map{
+class GeographicalMap{
  -Collection<Location>
  +generateMap(loc: Collection<Location): Image
 }
 
-Map -- "1..*" Location
+GeographicalMap -- "1..*" Location
 
 
 interface "Graph" as Graph <<Interface>>> {
@@ -221,6 +218,8 @@ Experimenter "0..*" -- "1" SearchController
 
 QuestionController  o-- Question
 QuestionController o-- Reply
+
+StatSummary -- Experiment
 
 
 @enduml

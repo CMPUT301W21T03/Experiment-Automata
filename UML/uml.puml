@@ -10,38 +10,37 @@ class Experimenter {
     -controller: SearchController
     -ownedExperiments: Collection<Experiment>
     -participatingExperiments: Collection<Experiment>
-    -addGeoLocation(exp: Experiment): Location
-    -seeGeoLocation(experiments: Collection<Experiment>): Map
-}
-
-
-' ??? (should be attribute if status changes per experiment, stay as class if a profile is either owner or experimenter)
-class Owner extends Experimenter {
-  +isLocationRequired(exp: Experiment): Boolean
-}
-
-' ??? (should be attribute if status changes per experiment, stay as class if a profile is either owner or experimenter)
-class CrowdExperimenter extends Experiment {
+    +addGeoLocation(exp: Experiment): Location
+    +seeGeoLocation(experiments: Collection<Experiment>): Map
 }
 
 ' what information does a subscription hold? an experiment & list of users subscribed? currently assumes all subscribers are experimenters of some kind
 class Subscription {
-    experiment: Experiment
-    subscribed: Collection<Experimenter>
+    -experiment: Experiment
+    -subscribed: Collection<Experimenter>
+    +getSubscribers(): Collection<Experimenter>
 }
 
 class Question {
     -question: String
     -user: Experimenter
-    -reply: Collection<Reply>
+    -reply: Reply
     +getQuestion(): String
-    +getThread(): Collection<String>
+    +getQuestion(): Experimenter
+    +getReply(): Reply
 }
 
 ' assume that anyone who can reply to a question is a type of experimenter
 class Reply {
     -reply: String
     -user: Experimenter
+    +getReply(): String
+}
+
+' in charge of questions & their replies
+class QuestionController {
+    +createQuestion(currentExperiment: Experiment, question: String, creator: Experimenter): Question
+    +createReply(currentExperiment: Experiment, question: String, owner: Experimenter): Reply
 }
 
 ' allows the experiment to enforce only one trial type
@@ -56,12 +55,14 @@ enum ExperimentType {
 ' idea: make this 'experimentInfo' and give every type of experiment an experimentInfo instead
 ' rational: for displaying info and searching we don't need the results, just the info
 ' both are implemented so whichever we don't use can just be deleted
-class Experiment {
+abstract class Experiment implements Graph {
     -experimentId: Integer
     -description: String
     -minTrials: Integer
+    -isActve: Boolean
+    -isPublished: Boolean
     ' this is the userId of the owner
-    -owner: Integer
+    -ownerId: Integer
     -type: ExperimentType
     -crowdExperimenters: Collection<Integer>
     +getExperimentId(id: int): Experiment
@@ -72,34 +73,37 @@ class Experiment {
 class CountExperiment extends Experiment {
     -results: Collection<CountTrial>
     +getExperimentId(id: int): Experiment
-    -recordResult(result: int)
-    generateHistogram(Collection<Trial>): Image
-    generatePlot(Collection<Trial>): Image
+    +recordResult(result: int)
 }
 
 class NaturalCountExperiment extends Experiment {
     -results: Collection<NaturalCountTrial>
     +getExperimentId(id: int): Experiment
-    -recordResult(result: int)
-    generateHistogram(Collection<Trial>): Image
-    generatePlot(Collection<Trial>): Image
+    +recordResult(result: int)
 }
 
 class BinomialExperiment extends Experiment {
     -results: Collection<BinomialTrial>
     +getExperimentId(id: int): Experiment
-    -recordResult(result: boolean)
-    generateHistogram(Collection<Trial>): Image
-    generatePlot(Collection<Trial>): Image
+    +recordResult(result: boolean)
 }
 
 class MeasurementExperiment extends Experiment {
     -results: Collection<MeasurementTrial>
     +getExperimentId(id: int): Experiment
-    -recordResult(result: float)
-    -removeResult(index: int)
-    generateHistogram(Collection<Trial>): Image
-    generatePlot(Collection<Trial>): Image
+    +recordResult(result: float)
+    +removeResult(index: int)
+}
+
+class StatSummary {
+    +getMean(trials: Collection<Trial>): Float
+    +getMedian(trials: Collection<Trial>): Float
+    +getStdev(trials: Collection<Trial>): Float
+    +getFirstQuartile(trials: Collection<Trial>): (Float, Float)
+    +getSecondQuartile(trials: Collection<Trial>): (Float, Float)
+    +getThirdQuartile(trials: Collection<Trial>): (Float, Float)
+    +getFourthQuartile(trials: Collection<Trial>): (Float, Float)
+
 }
 
 ' each trial has a unique QRCode associated with it
@@ -133,52 +137,38 @@ class MeasurementTrial extends Trial {
 
 class QRCodeGenerator {
     ' implementation details unclear at the moment
-    getQRCode(): QRCode
+    +getQRCode(): QRCode
 }
 
 class QRCodeReader {
     ' implementation details unclear at the moment
-    readQRCode(qr: QRCode)
+    +readQRCode(qr: QRCode)
 }
 
 class QRCode {
     ' somehow represent this?
-    code: int
-    isReadable: boolean
+    -code: int
+    -isReadable: boolean
     ' a lot of QR codes use a check digit to determine if they are valid or not
-    checkDigit(code): boolean
+    +checkDigit(code): boolean
 }
 
 class Location {
-  -latitude: int
-  -longitude: int
+  -latitude: double
+  -longitude: double
 }
 
 class Map{
  -Collection<Location>
- generateMap(loc: Collection<Location): Image
+ +generateMap(loc: Collection<Location): Image
 }
 
 Map -- "1..*" Location
 
-interface "Histogram" as Histogram << Interface >> {
-  generateHistogram(Collection<Trial>): Image
-}
 
-interface "Plot" as Plot <<Interface>> {
-  generatePlot(Collection<Trial>): Image
-}
-
-' Modification: this is an interface that can be used by every experiment since it will calculate each value different depending on experiment type
-' Note: ask if things like binomial trial should have these (median of pass/fail?)
-Interface "StatSummary" as StatSummary <<Interface>> {
-    +getMean(): Float
-    +getMedian(): Float
-    +getStdev(): Float
-    +getFirstQuartile(): (Float, Float)
-    +getSecondQuartile(): (Float, Float)
-    +getThirdQuartile(): (Float, Float)
-    +getFourthQuartile(): (Float, Float)
+interface "Graph" as Graph <<Interface>>> {
+    +generateHistogram(Collection<Trial>): Image
+    +generatePlot(Collection<Trial>): Image
 }
 
 class ContactInformation {
@@ -190,7 +180,7 @@ class ContactInformation {
 class SearchController {
     ' functionality here is searchbar functions required by Java so likely don't need to be specified in UML
     -keyword: String
-    -searchKeyWord(keyword: String): Experiment
+    +searchKeyWord(keyword: String): Collection<Experiment>
 }
 
 Experimenter "1" *-- "1" ContactInformation
@@ -201,7 +191,7 @@ Subscription "1" o-- "1" Experiment
 
 Question "0...*" o-- "1" Experimenter
 ' Note: does each question get one reply? or does it turn into a thread?
-Question "1" *-- "0...*" Reply
+Question "1" *-- "0...1" Reply
 
 Reply "0...*" o-- "1" Experimenter
 
@@ -226,23 +216,11 @@ QRCodeReader --- QRCode
 
 Experiment *-- "1" ExperimentType
 
-class MeasurementExperiment implements StatSummary
-class BinomialExperiment implements StatSummary
-class NaturalCountExperiment implements StatSummary
-class CountExperiment implements StatSummary
-
-class MeasurementExperiment implements Histogram
-class BinomialExperiment implements Histogram
-class NaturalCountExperiment implements Histogram
-class CountExperiment implements Histogram
-
-class MeasurementExperiment implements Plot
-class BinomialExperiment implements Plot
-class NaturalCountExperiment implements Plot
-class CountExperiment implements Plot
-
 
 Experimenter "0..*" -- "1" SearchController
+
+QuestionController  o-- Question
+QuestionController o-- Reply
 
 
 @enduml

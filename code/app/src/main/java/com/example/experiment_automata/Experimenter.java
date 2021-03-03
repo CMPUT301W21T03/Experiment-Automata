@@ -12,9 +12,20 @@ public class Experimenter {
 
     /**
      * Creates the experimenter. Assigns a user id automatically.
+     * @param info
+     * the ContactInformation object containing the information for the experimenter
      */
     Experimenter(ContactInformation info) {
         userId = 1;
         this.info = info;
+    }
+
+    /**
+     * Creates the stub class experimenter
+     */
+    Experimenter() {
+        userId = 1;
+        this.info = new ContactInformation("Individual",
+                "example@ualberta.ca", "780-555-1234");
     }
 }

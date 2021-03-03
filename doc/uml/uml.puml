@@ -4,7 +4,7 @@ skinparam classAttributeIconSize 0
 ' generic class for an experimenter
 ' note that experiments will likely be stored by user id instead of by all experiment info
 ' We could do hasing, but it's probably easier for now (for the UML sake) to represent this as a collection of experiments
-class User {
+class Experimenter {
     -userId: Integer
     -info: ContactInformation
     -controller: SearchController
@@ -17,30 +17,30 @@ class User {
 ' what information does a subscription hold? an experiment & list of users subscribed? currently assumes all subscribers are experimenters of some kind
 class Subscription {
     -experiment: Experiment
-    -subscribed: Collection<User>
-    +getSubscribers(): Collection<User>
+    -subscribed: Collection<Experimenter>
+    +getSubscribers(): Collection<Experimenter>
 }
 
 class Question {
     -question: String
-    -user: User
+    -user: Experimenter
     -reply: Reply
     +getQuestion(): String
-    +getQuestion(): User
+    +getQuestion(): Experimenter
     +getReply(): Reply
 }
 
 ' assume that anyone who can reply to a question is a type of experimenter
 class Reply {
     -reply: String
-    -user: User
+    -user: Experimenter
     +getReply(): String
 }
 
 ' in charge of questions & their replies
 class QuestionController {
-    +createQuestion(currentExperiment: Experiment, question: String, creator: User): Question
-    +createReply(currentExperiment: Experiment, question: String, owner: User): Reply
+    +createQuestion(currentExperiment: Experiment, question: String, creator: Experimenter): Question
+    +createReply(currentExperiment: Experiment, question: String, owner: Experimenter): Reply
 }
 
 ' allows the experiment to enforce only one trial type
@@ -65,7 +65,7 @@ abstract class Experiment implements Graph {
     ' this is the userId of the owner
     -ownerId: Integer
     -type: ExperimentType
-    -crowdUsers: Collection<Integer>
+    -crowdExperimenters: Collection<Integer>
     +getExperimentId(): Integer
 }
 
@@ -180,20 +180,20 @@ class SearchController {
     +searchKeyWord(keyword: String): Collection<Experiment>
 }
 
-User "1" *-- "1" ContactInformation
-User "1" *-- "0...*" Experiment
+Experimenter "1" *-- "1" ContactInformation
+Experimenter "1" *-- "0...*" Experiment
 
-Subscription "0...*" o-- "0...*" User
+Subscription "0...*" o-- "0...*" Experimenter
 Subscription "1" o-- "1" Experiment
 
-Question "0...*" o-- "1" User
+Question "0...*" o-- "1" Experimenter
 ' Note: does each question get one reply? or does it turn into a thread?
 Question "1" *-- "0...1" Reply
 
-Reply "0...*" o-- "1" User
+Reply "0...*" o-- "1" Experimenter
 
 ' Question: do we draw both aggregations since they are different and both are true?
-Experiment "0...*" o-- "0...*" User
+Experiment "0...*" o-- "0...*" Experimenter
 
 CountExperiment "1" *-- "0...*" CountTrial
 
@@ -204,7 +204,7 @@ BinomialExperiment "1" *-- "0...*" BinomialTrial
 
 MeasurementExperiment "1" *-- "0...*" MeasurementTrial
 
-Trial "0...*" o-- "1" User
+Trial "0...*" o-- "1" Experimenter
 Trial "1" *-- "1" QRCode
 Trial "1" *-- "1" Location
 
@@ -214,7 +214,7 @@ QRCodeReader --- QRCode
 Experiment *-- "1" ExperimentType
 
 
-User "0..*" -- "1" SearchController
+Experimenter "0..*" -- "1" SearchController
 
 QuestionController  o-- Question
 QuestionController o-- Reply

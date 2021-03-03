@@ -1,9 +1,9 @@
 package com.example.experiment_automata;
 
 /**
- * This is the experimenter. Contains the information that represents a user.
+ * This is the user. Contains the information that represents a user.
  */
-public class Experimenter {
+public class User {
     private int userId;
     private ContactInformation info;
 //    private SearchController controller;
@@ -11,19 +11,19 @@ public class Experimenter {
 //    private Collection<Experiment> participatingExperiments;
 
     /**
-     * Creates the experimenter. Assigns a user id automatically.
+     * Creates the user. Assigns a user id automatically.
      * @param info
-     * the ContactInformation object containing the information for the experimenter
+     * the ContactInformation object containing the information for the user
      */
-    Experimenter(ContactInformation info) {
+    User(ContactInformation info) {
         userId = 1;
         this.info = info;
     }
 
     /**
-     * Creates the stub class experimenter
+     * Creates the stub user class
      */
-    Experimenter() {
+    User() {
         userId = 1;
         this.info = new ContactInformation("Individual",
                 "example@ualberta.ca", "780-555-1234");

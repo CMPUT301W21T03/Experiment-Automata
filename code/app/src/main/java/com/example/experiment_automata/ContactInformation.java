@@ -1,7 +1,7 @@
 package com.example.experiment_automata;
 
 /**
- * The contact information of an experimenter.
+ * The contact information of a user.
  */
 public class ContactInformation {
     private String name;

@@ -1,10 +1,13 @@
 package com.example.experiment_automata;
 
+import java.util.UUID;
+
 /**
  * This is the user. Contains the information that represents a user.
  */
 public class User {
-    private int userId;
+    private static String defaultUUIDString= "00000000-0000-0000-0000-000000000000";//move this to a constants class later
+    private UUID userId;//changed from int to UUID
     private ContactInformation info;
 //    private SearchController controller;
 //    private Collection<Experiment> ownedExperiments;
@@ -16,7 +19,7 @@ public class User {
      * the ContactInformation object containing the information for the user
      */
     User(ContactInformation info) {
-        userId = 1;
+        userId = UUID.randomUUID();//generates a random UUID
         this.info = info;
     }
 
@@ -24,7 +27,7 @@ public class User {
      * Creates the stub user class
      */
     User() {
-        userId = 1;
+        userId = UUID.fromString(defaultUUIDString);//hard code UUID for stub to defaultUUIDString
         this.info = new ContactInformation("Individual",
                 "example@ualberta.ca", "780-555-1234");
     }

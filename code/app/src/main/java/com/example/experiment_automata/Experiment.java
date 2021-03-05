@@ -11,7 +11,7 @@ public abstract class Experiment {
     private String description;
     private int minTrials;
     private UUID experimentId; // changed from UML to better match project
-    private UUID ownerId; // // changed from UML to better match project
+    private User owner;//changed from UUID to User class so that view experiment doesn't need to search for users by ID
     private boolean active; // changed form UML for style
     private boolean published; // changed from UML for style
     private ExperimentType type;

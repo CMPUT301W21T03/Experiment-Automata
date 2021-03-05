@@ -20,6 +20,11 @@ public abstract class Experiment {
         // someone will build experiment class
     }
 
+    public Experiment(String description)
+    {
+        this.description = description;
+    }
+
     public boolean compare(Experiment experiment) {
         return experimentId.equals(experiment.experimentId);
     }

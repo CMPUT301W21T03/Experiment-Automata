@@ -6,7 +6,7 @@ import java.util.UUID;
  * This is the user. Contains the information that represents a user.
  */
 public class User {
-    private static String defaultUUIDString= "00000000-0000-0000-0000-000000000000";//move this to a constants class later
+    private static String DEFAULT_UUID_STRING= "00000000-0000-0000-0000-000000000000";//move this to a constants class later
     private UUID userId;//changed from int to UUID
     private ContactInformation info;
 //    private SearchController controller;
@@ -27,7 +27,7 @@ public class User {
      * Creates the stub user class
      */
     User() {
-        userId = UUID.fromString(defaultUUIDString);//hard code UUID for stub to defaultUUIDString
+        userId = UUID.fromString(DEFAULT_UUID_STRING);//hard code UUID for stub to constant DEFAULT_UUID_STRING
         this.info = new ContactInformation("Individual",
                 "example@ualberta.ca", "780-555-1234");
     }

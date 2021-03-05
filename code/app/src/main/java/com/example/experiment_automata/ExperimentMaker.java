@@ -8,10 +8,10 @@ public class ExperimentMaker
     public Experiment madeExperiment(ExperimentType type, String description) throws IlleagalExperimentException {
         switch (type)
         {
-            case NatrualCount:
-                return new NatrualCountExperiment(description);
+            case NaturalCount:
+                return new NaturalCountExperiment(description);
             case Binomial:
-                return new BinnomialExperiment(description);
+                return new BinomialExperiment(description);
             case Count:
                 return new CountExperiment(description);
             case Measurement:

@@ -3,6 +3,9 @@ package com.example.experiment_automata;
 import java.util.Collection;
 import java.util.UUID;
 
+/**
+ * Class needed to maintain the type of experiments needed!
+ */
 public abstract class Experiment {
 
     private String description;

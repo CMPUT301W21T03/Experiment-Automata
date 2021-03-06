@@ -15,6 +15,8 @@ public abstract class Experiment implements Serializable {
     private UUID ownerId; // // changed from UML to better match project
     private boolean active; // changed from UML for style
     private boolean published; // changed from UML for style
+    private boolean requireLocation; // added to align with storyboard
+    private boolean acceptNewResults; // added to align with storyboard
     private ExperimentType type;
     private Collection<UUID> crowedExperimenter; // Experimenter id's
 

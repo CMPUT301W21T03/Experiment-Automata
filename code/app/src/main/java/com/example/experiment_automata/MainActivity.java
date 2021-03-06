@@ -15,9 +15,9 @@ public class MainActivity extends AppCompatActivity implements AddExperimentFrag
         setContentView(R.layout.activity_main);
 
         final FloatingActionButton addExperimentButton = findViewById(R.id.add_experiment_button);
-//        addExperimentButton.setOnClickListener((v) -> {
-//            new AddExperimentFragment().show(getSuppertFragmentManager(), "ADD_EXPERIMENT")
-//        });
+        addExperimentButton.setOnClickListener((v) -> {
+            new AddExperimentFragment().show(getSupportFragmentManager(), "ADD_EXPERIMENT");
+        });
     }
 
     @Override

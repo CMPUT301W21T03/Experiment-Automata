@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -66,6 +67,11 @@ public class AddExperimentFragment extends DialogFragment {
         requireLocation = view.findViewById(R.id.experiment_require_location_switch);
         acceptNewResults = view.findViewById(R.id.experiment_accept_new_results_switch);
 
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter
+                .createFromResource(getContext(), R.array.experiment_types, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        trialType.setAdapter(adapter);
+
         Bundle args = getArguments();
         if (args != null) {
             Experiment currentExperiment = (Experiment) args.getSerializable("EXPERIMENT");
@@ -83,7 +89,9 @@ public class AddExperimentFragment extends DialogFragment {
                         //https://stackoverflow.com/questions/4903515/how-do-i-return-an-int-from-edittext-android
                         int experimentTrials = Integer.parseInt(minTrials.getText().toString());
                         //ExperimentType experimentType
-
+                        boolean experimentLocation = requireLocation.isChecked();
+                        boolean experimentNewResults = acceptNewResults.isChecked();
+                        //listener.onOkPressed(new Experiment);
                     }
                 }).create();
     }

@@ -25,6 +25,9 @@ import android.widget.Switch;
  * Use the {@link AddExperimentFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+// Basic layout of this fragment inspired by lab work in CMPUT 301
+// Abdul Ali Bangash, "Lab 3", 2021-02-04, Public Domain,
+// https://eclass.srv.ualberta.ca/pluginfile.php/6713985/mod_resource/content/1/Lab%203%20instructions%20-%20CustomList.pdf
 public class AddExperimentFragment extends DialogFragment {
 
     // note: locale not currently added as I am not sure what input it has for Experiment
@@ -35,10 +38,17 @@ public class AddExperimentFragment extends DialogFragment {
     private Switch acceptNewResults;
     private OnFragmentInteractionListener listener;
 
+    /**
+     * This is an interface for any activity using this fragment
+     */
     public interface OnFragmentInteractionListener {
         void onOkPressed(Experiment newExperiment);
     }
 
+    /**
+     * This identifies the listener for the fragment when it attaches
+     * @param context
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -49,6 +59,13 @@ public class AddExperimentFragment extends DialogFragment {
         }
     }
 
+    /**
+     * This will create a new instance of this fragment with an experiment
+     * @param experiment
+     *   The experiment that will be edited
+     * @return
+     *   a fragment to edit an experiment's information
+     */
     public static AddExperimentFragment newInstance(Experiment experiment) {
         AddExperimentFragment fragment = new AddExperimentFragment();
         Bundle args = new Bundle();
@@ -57,6 +74,13 @@ public class AddExperimentFragment extends DialogFragment {
         return fragment;
     }
 
+    /**
+     * This gives instructions for when creating this dialog and prepares it's dismissal
+     * @param savedInstancesState
+     *   allows you to pass information in if editing an experiment with existing info
+     * @return
+     *   the dialog that will be created
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstancesState) {
@@ -68,6 +92,8 @@ public class AddExperimentFragment extends DialogFragment {
         requireLocation = view.findViewById(R.id.experiment_require_location_switch);
         acceptNewResults = view.findViewById(R.id.experiment_accept_new_results_switch);
 
+        // preparing the spinner done from android documentation, Nov 18, 2020. Apache 2.0
+        //https://developer.android.com/guide/topics/ui/controls/spinner#java
         ArrayAdapter<CharSequence> adapter = ArrayAdapter
                 .createFromResource(getContext(), R.array.experiment_types, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -88,6 +114,7 @@ public class AddExperimentFragment extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         // todo: allow factory to add these values when creating an experiment
                         String experimentDescription = description.getText().toString();
+                        // method of reading input as integer found on Stack Overflow from CommonsWare, Feb 4 2011
                         //https://stackoverflow.com/questions/4903515/how-do-i-return-an-int-from-edittext-android
                         String experimentTrialsString = minTrials.getText().toString();
                         int experimentTrials;

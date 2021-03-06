@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,13 +86,27 @@ public class AddExperimentFragment extends DialogFragment {
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        // todo: allow factory to add these values when creating an experiment
                         String experimentDescription = description.getText().toString();
                         //https://stackoverflow.com/questions/4903515/how-do-i-return-an-int-from-edittext-android
-                        int experimentTrials = Integer.parseInt(minTrials.getText().toString());
-                        //ExperimentType experimentType
+                        String experimentTrialsString = minTrials.getText().toString();
+                        int experimentTrials;
+                        if (experimentTrialsString != "") {
+                            experimentTrials = Integer.parseInt(experimentTrialsString);
+                        } else {
+                            experimentTrials = 0;
+                        }
+
+                        ExperimentType experimentType = ExperimentType.valueOf(trialType.getSelectedItem().toString());
                         boolean experimentLocation = requireLocation.isChecked();
                         boolean experimentNewResults = acceptNewResults.isChecked();
-                        //listener.onOkPressed(new Experiment);
+                        try {
+                            listener.onOkPressed(new ExperimentMaker().madeExperiment(experimentType, experimentDescription));
+                            Log.d("NEW_EXPERIMENT", experimentDescription);
+                            Log.d("EXPERIMENT_TYPE", experimentType.toString());
+                        } catch (IlleagalExperimentException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }).create();
     }

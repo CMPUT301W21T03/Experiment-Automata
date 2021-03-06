@@ -8,38 +8,43 @@
     android:paddingHorizontal="10dp">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="10dp"/>
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/create_experiment_description_editText"
-        android:hint="@string/description"/>
+        android:hint="@string/description"
+        android:paddingVertical="10dp"/>
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/experiment_min_trials_editText"
         android:hint="@string/minimum_number_of_trials"
-        android:inputType="number"/>
+        android:inputType="number"
+        android:paddingVertical="10dp"/>
 
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="2dp"
         android:id="@+id/experiment_type_spinner"
-        />
+        android:paddingVertical="10dp" />
 
     <Switch
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/experiment_require_location_switch"
-        android:text="@string/require_location"/>
+        android:text="@string/require_location"
+        android:paddingVertical="10dp"/>
 
     <Switch
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/experiment_accept_new_results_switch"
-        android:text="@string/accept_new_results"/>
+        android:text="@string/accept_new_results"
+        android:paddingVertical="5dp"/>
 </LinearLayout>

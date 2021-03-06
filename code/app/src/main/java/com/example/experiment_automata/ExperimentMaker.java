@@ -20,4 +20,19 @@ public class ExperimentMaker
                 throw new IlleagalExperimentException("Bad Experiment Type: " + type.toString());
         }
     }
+    public Experiment madeExperiment(ExperimentType type, String description, int minTrials, boolean requireLocation, boolean acceptNewResults) throws IlleagalExperimentException {
+        switch (type)
+        {
+            case NaturalCount:
+                return new NaturalCountExperiment(description, minTrials, requireLocation, acceptNewResults);
+            case Binomial:
+                return new BinomialExperiment(description, minTrials, requireLocation, acceptNewResults);
+            case Count:
+                return new CountExperiment(description, minTrials, requireLocation, acceptNewResults);
+            case Measurement:
+                return new MeasurementExperiment(description, minTrials, requireLocation, acceptNewResults);
+            default:
+                throw new IlleagalExperimentException("Bad Experiment Type: " + type.toString());
+        }
+    }
 }

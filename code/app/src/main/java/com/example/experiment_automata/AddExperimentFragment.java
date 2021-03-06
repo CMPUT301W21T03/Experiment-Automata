@@ -91,17 +91,18 @@ public class AddExperimentFragment extends DialogFragment {
                         //https://stackoverflow.com/questions/4903515/how-do-i-return-an-int-from-edittext-android
                         String experimentTrialsString = minTrials.getText().toString();
                         int experimentTrials;
-                        if (experimentTrialsString != "") {
-                            experimentTrials = Integer.parseInt(experimentTrialsString);
-                        } else {
+                        if (experimentTrialsString.isEmpty()) {
                             experimentTrials = 0;
+                        } else {
+                            experimentTrials = Integer.parseInt(experimentTrialsString);
                         }
 
                         ExperimentType experimentType = ExperimentType.valueOf(trialType.getSelectedItem().toString());
                         boolean experimentLocation = requireLocation.isChecked();
                         boolean experimentNewResults = acceptNewResults.isChecked();
                         try {
-                            listener.onOkPressed(new ExperimentMaker().madeExperiment(experimentType, experimentDescription));
+                            listener.onOkPressed(new ExperimentMaker().madeExperiment(experimentType, experimentDescription,
+                                    experimentTrials, experimentLocation, experimentNewResults));
                             Log.d("NEW_EXPERIMENT", experimentDescription);
                             Log.d("EXPERIMENT_TYPE", experimentType.toString());
                         } catch (IlleagalExperimentException e) {

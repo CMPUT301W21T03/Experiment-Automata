@@ -23,5 +23,6 @@ public class MainActivity extends AppCompatActivity implements AddExperimentFrag
     @Override
     public void onOkPressed(Experiment experiment) {
         Log.d("OK_PRESSED", "experiment created!");
+        
     }
 }

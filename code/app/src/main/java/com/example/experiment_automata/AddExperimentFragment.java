@@ -86,6 +86,7 @@ public class AddExperimentFragment extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstancesState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_add_experiment, null);
 
+        // link all of the variables with their objects in the UI
         description = view.findViewById(R.id.create_experiment_description_editText);
         minTrials = view.findViewById(R.id.experiment_min_trials_editText);
         trialType = view.findViewById(R.id.experiment_type_spinner);
@@ -93,18 +94,20 @@ public class AddExperimentFragment extends DialogFragment {
         acceptNewResults = view.findViewById(R.id.experiment_accept_new_results_switch);
 
         // preparing the spinner done from android documentation, Nov 18, 2020. Apache 2.0
-        //https://developer.android.com/guide/topics/ui/controls/spinner#java
+        // https://developer.android.com/guide/topics/ui/controls/spinner#java
         ArrayAdapter<CharSequence> adapter = ArrayAdapter
                 .createFromResource(getContext(), R.array.experiment_types, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         trialType.setAdapter(adapter);
 
+        // prepare the UI elements if experiment has existing information
         Bundle args = getArguments();
         if (args != null) {
             Experiment currentExperiment = (Experiment) args.getSerializable("EXPERIMENT");
             // todo: update the UI elements if editing an experiment
         }
 
+        // build the dialog and give instructions for its dismissal
         AlertDialog.Builder build = new AlertDialog.Builder(getContext());
         return build.setView(view)
                 .setTitle("Add Experiment")
@@ -112,11 +115,11 @@ public class AddExperimentFragment extends DialogFragment {
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // todo: allow factory to add these values when creating an experiment
                         String experimentDescription = description.getText().toString();
                         // method of reading input as integer found on Stack Overflow from CommonsWare, Feb 4 2011
                         //https://stackoverflow.com/questions/4903515/how-do-i-return-an-int-from-edittext-android
                         String experimentTrialsString = minTrials.getText().toString();
+                        // todo: this logic should be relocated in the future
                         int experimentTrials;
                         if (experimentTrialsString.isEmpty()) {
                             experimentTrials = 0;
@@ -128,10 +131,14 @@ public class AddExperimentFragment extends DialogFragment {
                         boolean experimentLocation = requireLocation.isChecked();
                         boolean experimentNewResults = acceptNewResults.isChecked();
                         try {
+                            // todo: determine if we need to do unit testing on this
                             listener.onOkPressed(new ExperimentMaker().madeExperiment(experimentType, experimentDescription,
                                     experimentTrials, experimentLocation, experimentNewResults));
+                            // debug statements since no unit testing, prints out all info used to create the experiment object
                             Log.d("NEW_EXPERIMENT", experimentDescription);
                             Log.d("EXPERIMENT_TYPE", experimentType.toString());
+                            Log.d("REMAINING INFO", "trials=" + experimentTrialsString + " location=" +
+                                    experimentLocation + " accept new=" + experimentNewResults);
                         } catch (IlleagalExperimentException e) {
                             e.printStackTrace();
                         }

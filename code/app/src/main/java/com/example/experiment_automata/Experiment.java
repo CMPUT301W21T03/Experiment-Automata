@@ -69,4 +69,21 @@ public abstract class Experiment implements Serializable {
 
     public abstract void stub();
 
+    /**
+     * Adds userID to the list so that each experiment knows which users can participate in them
+     * @param userId UserID to be added to the experiment
+     */
+    public void addUserId(UUID userId){
+        crowedExperimenter.add(userId);
+    }
+
+    /**
+     * Removes userID from the list so that the user can no longer participate in it
+     * @param userID UserID to be removed from the experiment
+     */
+
+    public void removeUserId(UUID userId){
+        crowedExperimenter.remove(userID);
+    }
+
 }

@@ -6,9 +6,26 @@ package com.example.experiment_automata;
 
 public class NaturalCountExperiment extends Experiment
 {
+    /**
+     * Default constructor for Natural Count Experiment with just a description
+     * @param description
+     *   the description for this experiment
+     */
     public NaturalCountExperiment(String description) {
         super(description);
     }
+
+    /**
+     * Default constructor for Natural Count Experiment from using the AddExperimentFragment
+     * @param description
+     *   the description for the experiment
+     * @param minTrials
+     *   the minimum number of trials for the experiment
+     * @param requireLocation
+     *   a boolean for if the trials need a location
+     * @param acceptNewResults
+     *   a boolean for if the experiment is accepting new results
+     */
     public NaturalCountExperiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults) {
         super(description, minTrials, requireLocation, acceptNewResults);
     }

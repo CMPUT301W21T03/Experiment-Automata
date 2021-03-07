@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -139,7 +138,7 @@ public class AddExperimentFragment extends DialogFragment {
                             Log.d("EXPERIMENT_TYPE", experimentType.toString());
                             Log.d("REMAINING INFO", "trials=" + experimentTrialsString + " location=" +
                                     experimentLocation + " accept new=" + experimentNewResults);
-                        } catch (IlleagalExperimentException e) {
+                        } catch (IllegalExperimentException e) {
                             e.printStackTrace();
                         }
                     }

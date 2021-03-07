@@ -26,12 +26,27 @@ public abstract class Experiment implements Serializable {
         // someone will build experiment class
     }
 
+    /**
+     * Default experiment constructor that only asks for a description
+     * @param description
+     *   the description of the experiment
+     */
     public Experiment(String description)
     {
         this.description = description;
     }
 
-    // constructor for fragment that creates an experiment
+    /**
+     * Experiment constructor to be used by ExperimentMaker when creating an experiment from the AddExperimentFragment
+     * @param description
+     *   the description of the experiment
+     * @param minTrials
+     *   the minimum number of trials for this experiment
+     * @param requireLocation
+     *   a boolean for whether or not the trials need a location
+     * @param acceptNewResults
+     *   a boolean for whether this trial should be accepting new requests or not
+     */
     public Experiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults) {
         this.description = description;
         this.minTrials = minTrials;
@@ -41,6 +56,13 @@ public abstract class Experiment implements Serializable {
         this.active = true;
     }
 
+    /**
+     * This method will check if an experiment has the same id as another
+     * @param experiment
+     *   The experiment you want to compare with
+     * @return
+     *   A boolean based on whether the ids are the same
+     */
     public boolean compare(Experiment experiment) {
         return experimentId.equals(experiment.experimentId);
     }

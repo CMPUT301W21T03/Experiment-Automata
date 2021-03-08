@@ -20,15 +20,15 @@ class SubscriptionTest {
     {
         try
         {
-            experiment = experimentMaker.madeExperiment(ExperimentType.Measurement, "test");
-            experiment2 = experimentMaker.madeExperiment(ExperimentType.Measurement, "test 2");
+            experiment = experimentMaker.makeExperiment(ExperimentType.Measurement, "test");
+            experiment2 = experimentMaker.makeExperiment(ExperimentType.Measurement, "test 2");
             Subscription subscription = new Subscription(user, experiment2);
             Collection<Experiment> answer = subscription.getSubscriptions();
             assertEquals(1, answer.size());
         }
         catch (Exception e)
         {
-            // TODO: Deal with exception in test
+            // TODO: Deal with exception in test better than this :(
             fail(e.getStackTrace().toString());
 
         }

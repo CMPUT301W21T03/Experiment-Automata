@@ -15,19 +15,24 @@ public class ExperimentMaker
      * @throws IllegalExperimentException
      *   will be thrown if ExperimentType is an illegal type
      */
-    public Experiment madeExperiment(ExperimentType type, String description) throws IllegalExperimentException {
-        switch (type)
+    public Experiment makeExperiment(ExperimentType type, String description) throws IllegalExperimentException {
+
+        try {
+            switch (type) {
+                case NaturalCount:
+                    return new NaturalCountExperiment(description);
+                case Binomial:
+                    return new BinomialExperiment(description);
+                case Count:
+                    return new CountExperiment(description);
+                case Measurement:
+                    return new MeasurementExperiment(description);
+                default:
+                    throw new IllegalExperimentException("Bad Experiment Type: " + type.toString());
+            }
+        }catch (Exception e)
         {
-            case NaturalCount:
-                return new NaturalCountExperiment(description);
-            case Binomial:
-                return new BinomialExperiment(description);
-            case Count:
-                return new CountExperiment(description);
-            case Measurement:
-                return new MeasurementExperiment(description);
-            default:
-                throw new IllegalExperimentException("Bad Experiment Type: " + type.toString());
+            throw new IllegalArgumentException();
         }
     }
 
@@ -48,19 +53,24 @@ public class ExperimentMaker
      * @throws IllegalExperimentException
      *   will be thrown if ExperimentType is an illegal type.
      */
-    public Experiment madeExperiment(ExperimentType type, String description, int minTrials, boolean requireLocation, boolean acceptNewResults) throws IllegalExperimentException {
-        switch (type)
+    public Experiment makeExperiment(ExperimentType type, String description, int minTrials, boolean requireLocation, boolean acceptNewResults) throws IllegalExperimentException {
+
+        try {
+            switch (type) {
+                case NaturalCount:
+                    return new NaturalCountExperiment(description, minTrials, requireLocation, acceptNewResults);
+                case Binomial:
+                    return new BinomialExperiment(description, minTrials, requireLocation, acceptNewResults);
+                case Count:
+                    return new CountExperiment(description, minTrials, requireLocation, acceptNewResults);
+                case Measurement:
+                    return new MeasurementExperiment(description, minTrials, requireLocation, acceptNewResults);
+                default:
+                    throw new IllegalExperimentException("Bad Experiment Type: " + type.toString());
+            }
+        }catch (Exception e)
         {
-            case NaturalCount:
-                return new NaturalCountExperiment(description, minTrials, requireLocation, acceptNewResults);
-            case Binomial:
-                return new BinomialExperiment(description, minTrials, requireLocation, acceptNewResults);
-            case Count:
-                return new CountExperiment(description, minTrials, requireLocation, acceptNewResults);
-            case Measurement:
-                return new MeasurementExperiment(description, minTrials, requireLocation, acceptNewResults);
-            default:
-                throw new IllegalExperimentException("Bad Experiment Type: " + type.toString());
+            throw new IllegalArgumentException();
         }
     }
 }

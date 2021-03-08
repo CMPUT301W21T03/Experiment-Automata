@@ -25,7 +25,7 @@
 
     <fragment
         android:id="@+id/nav_profile"
-        android:name="com.example.experiment_automata.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_published"
-        tools:layout="@layout/fragment_slideshow" />
+        android:name="com.example.experiment_automata.ui.profile.ProfileFragment"
+        android:label="@string/menu_profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>

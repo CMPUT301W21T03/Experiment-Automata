@@ -5,6 +5,8 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -41,7 +43,34 @@ public class User {
         userId = UUID.fromString(DEFAULT_UUID_STRING);//hard code UUID for stub to defaultUUIDString
         this.info = new ContactInformation("Individual",
                 "example@ualberta.ca", "780-555-1234");
-        updateFirestore();
+    }
+
+    /**
+     * Creates a user by querying the firestore.
+     * @param id
+     *  The id of the user to get the firestore document
+     */
+    private User(UUID id) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference documentReference = db.collection("users").document(id.toString());
+        DocumentSnapshot document = documentReference.get().getResult();
+        String name = document.get("name").toString();
+        String email = document.get("email").toString();
+        String phone = document.get("phone").toString();
+
+        this.userId = id;
+        this.info = new ContactInformation(name, email, phone);
+    }
+
+    /**
+     * This returns a User instance with the id specified.
+     * @param id
+     *  The id of an existing user on the firestore
+     * @return
+     *  The user instance with the information queried from the firestore
+     */
+    public static User getInstance(UUID id) {
+        return new User(id);
     }
 
     /**

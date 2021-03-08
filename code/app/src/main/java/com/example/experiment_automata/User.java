@@ -30,4 +30,9 @@ public class User {
         this.info = new ContactInformation("Individual",
                 "example@ualberta.ca", "780-555-1234");
     }
+
+    public UUID getUserId()
+    {
+        return this.userId;
+    }
 }

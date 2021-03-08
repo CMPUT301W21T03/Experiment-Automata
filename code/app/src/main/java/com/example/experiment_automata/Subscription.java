@@ -1,24 +1,27 @@
 package com.example.experiment_automata;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  * This is a subscription class that manages the relationship between users and the experiments
  *  they're subscribed to
  */
 public class Subscription{
     private User user;
-    private Collection<Experiment> subscriptions;
+    private ArrayList<Experiment> subscriptions;
 
     /**
      *
      * @param user User who is subscribed to several experiments
      * @param subscriptions If the user makes several experiment they're subscribed to that to begin with
      */
-    public Subscription(User user, Collection<Experiment> subscriptions) {
+    public Subscription(User user, ArrayList<Experiment> subscriptions) {
         this.user = user;
         this.subscriptions = subscriptions;
         for(Experiment exp: subscriptions){
             // Add this user ID to all the experiments they're subscribed to
-            exp.addUserId(this.user.userId);
+            exp.addUserId(user.getUserId());
         }
     }
 
@@ -28,11 +31,11 @@ public class Subscription{
      * @param exp The single experiment they're subscribed to
      */
     public Subscription(User user, Experiment exp){
-        this.user=user;
-        this.subscriptions=new Collection<Experiment>();
+        this.user = user;
+        this.subscriptions = new ArrayList<>();
         this.subscriptions.add(exp);
         // Add this userID to the list of userID's in the experiment
-        exp.addUserId(this.user.userId);
+        exp.addUserId(user.getUserId());
     }
 
     /**
@@ -41,7 +44,7 @@ public class Subscription{
      */
     public Subscription(User user){
         this.user=user;
-        this.subscriptions=new Collection<Experiment>();
+        this.subscriptions=new ArrayList<>();
     }
 
     /**
@@ -53,7 +56,7 @@ public class Subscription{
         this.subscriptions.add(experiment);
         // Work in the backwards direction to add the userID to the experiment
         // This way, each experiment will know which users can participate in it
-        experiment.addUserId(this.user.userId);
+        experiment.addUserId(user.getUserId());
     }
 
     /**
@@ -65,7 +68,7 @@ public class Subscription{
             // Removes experiment from list of user's experiments
             this.subscriptions.remove(experiment);
             // Removes userID from experiment's list
-            experiment.removeUserId(this.user.userId);
+            experiment.removeUserId(user.getUserId());
         }
         else{
             throw new IllegalArgumentException();

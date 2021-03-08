@@ -1,6 +1,7 @@
 package com.example.experiment_automata;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -18,7 +19,7 @@ public abstract class Experiment implements Serializable {
     private boolean requireLocation; // added to align with storyboard
     private boolean acceptNewResults; // added to align with storyboard
     private ExperimentType type; // todo: do we need type here if an experiment has a type?
-    private Collection<UUID> crowedExperimenter; // Experimenter id's
+    private ArrayList<UUID> crowedExperimenter; // Experimenter id's
 
 
     public Experiment() {
@@ -34,6 +35,8 @@ public abstract class Experiment implements Serializable {
     public Experiment(String description)
     {
         this.description = description;
+        this.crowedExperimenter = new ArrayList<>();
+
     }
 
     /**
@@ -54,6 +57,7 @@ public abstract class Experiment implements Serializable {
         this.acceptNewResults = acceptNewResults;
         this.published = false;
         this.active = true;
+        this.crowedExperimenter = new ArrayList<>();
     }
 
     /**
@@ -83,7 +87,7 @@ public abstract class Experiment implements Serializable {
      */
 
     public void removeUserId(UUID userId){
-        crowedExperimenter.remove(userID);
+        crowedExperimenter.remove(userId);
     }
 
 }

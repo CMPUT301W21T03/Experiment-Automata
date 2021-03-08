@@ -69,4 +69,9 @@ public class User {
                     }
                 });
     }
+
+    public UUID getUserId()
+    {
+        return this.userId;
+    }
 }

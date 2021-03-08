@@ -24,4 +24,5 @@
     <string name="menu_subscriptions">My Subscriptions</string>
     <string name="menu_published">Published Experiments</string>
     <string name="menu_profile">Profile</string>
+    <string name="search">Search</string>
 </resources>

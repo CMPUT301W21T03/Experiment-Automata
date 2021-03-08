@@ -1,6 +1,7 @@
 package com.example.experiment_automata;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 
@@ -16,7 +17,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-public class NavigationActivity extends AppCompatActivity {
+public class NavigationActivity extends AppCompatActivity implements AddExperimentFragment.OnFragmentInteractionListener {
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -26,12 +27,11 @@ public class NavigationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_navigation);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton addExperimentButton = findViewById(R.id.add_experiment_button);
+        addExperimentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                new AddExperimentFragment().show(getSupportFragmentManager(), "ADD_EXPERIMENT");
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -59,5 +59,11 @@ public class NavigationActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    @Override
+    public void onOkPressed(Experiment experiment) {
+        Log.d("OK_PRESSED", "experiment created!");
+
     }
 }

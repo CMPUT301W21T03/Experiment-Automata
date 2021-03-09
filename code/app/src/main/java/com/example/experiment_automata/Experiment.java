@@ -90,4 +90,27 @@ public abstract class Experiment implements Serializable {
         crowedExperimenter.remove(userId);
     }
 
+    /**
+     * Gets the description of an experiment
+     * @return String with the description of an experiment
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * Gets the owner of an experiment
+     * @return UUID with the owner of an experiment
+     */
+    public UUID getOwnerId() {
+        return ownerId;
+    }
+
+    /**
+     * Activity status of experiment
+     * @return Boolean with whether the experiment is active or not
+     */
+    public boolean isActive() {
+        return active;
+    }
 }

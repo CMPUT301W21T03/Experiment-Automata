@@ -26,9 +26,9 @@
 
     <fragment
         android:id="@+id/nav_subscriptions"
-        android:name="com.example.experiment_automata.ui.gallery.GalleryFragment"
+        android:name="com.example.experiment_automata.ui.home.HomeFragment"
         android:label="@string/menu_subscriptions"
-        tools:layout="@layout/fragment_gallery" >
+        tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_nav_subscriptions_to_nav_profile"
             app:destination="@id/nav_profile"
@@ -37,9 +37,9 @@
 
     <fragment
         android:id="@+id/nav_published"
-        android:name="com.example.experiment_automata.ui.slideshow.SlideshowFragment"
+        android:name="com.example.experiment_automata.ui.home.HomeFragment"
         android:label="@string/menu_published"
-        tools:layout="@layout/fragment_slideshow" >
+        tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_nav_published_to_nav_profile"
             app:destination="@id/nav_profile"

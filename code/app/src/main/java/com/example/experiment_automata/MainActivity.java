@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -25,8 +26,9 @@ public class MainActivity extends AppCompatActivity implements AddExperimentFrag
         experimentListAdapter = new ExperimentListAdapter(experimentManager);
 
         experimentList = findViewById(R.id.experiment_list_recycler_view);
-        experimentList.setLayoutManager(new LinearLayoutManager(this));
+        experimentList.setLayoutManager(new LinearLayoutManager((MainActivity)this));
         experimentList.setAdapter(experimentListAdapter);
+
 
         final FloatingActionButton addExperimentButton = findViewById(R.id.add_experiment_button);
         addExperimentButton.setOnClickListener((v) -> {
@@ -39,7 +41,6 @@ public class MainActivity extends AppCompatActivity implements AddExperimentFrag
         Log.d("OK_PRESSED", "experiment created!");
         int originalSize = experimentManager.getSize();
         experimentManager.add(experiment);
-        Log.d("EDD_F", "" + experimentManager.getSize());
         experimentListAdapter.notifyItemChanged(originalSize, experimentManager.getSize());
     }
 }

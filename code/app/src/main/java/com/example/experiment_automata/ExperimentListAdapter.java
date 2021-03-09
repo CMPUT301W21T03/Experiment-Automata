@@ -47,15 +47,18 @@ substantial portions of the Software.
  */
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ExperimentListAdapter extends RecyclerView.Adapter
@@ -88,7 +91,7 @@ public class ExperimentListAdapter extends RecyclerView.Adapter
     {
         context = parent.getContext();
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View currentExperimentView = layoutInflater.inflate(R.layout.experiment_list_view, parent, false);
+        View currentExperimentView = layoutInflater.inflate(R.layout.activity_current_experiment_view, parent, false);
         return new ViewHolder(currentExperimentView);
     }
 
@@ -96,13 +99,17 @@ public class ExperimentListAdapter extends RecyclerView.Adapter
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position)
     {
-
         Experiment experiment = experimentManager.get(position);
-        TextView textView = holder.itemView.findViewById(R.id.experiment_list_view_exp_name);
-        if(textView == null)
-            Log.d("EDD_F", "CHECK");
-        textView.setText(experiment.getDescription());
+        TextView description = holder.itemView.findViewById(R.id.experiment_view_description_text);
+        description.setText(experiment.getDescription());
 
+        ImageView editExperiment = holder.itemView.findViewById(R.id.current_experiment_edit_experiment);
+        editExperiment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AddExperimentFragment().show(((AppCompatActivity)context).getSupportFragmentManager(), "EXPERIMENT");
+            }
+        });
     }
 
     //(Modified to make work for my purpose)

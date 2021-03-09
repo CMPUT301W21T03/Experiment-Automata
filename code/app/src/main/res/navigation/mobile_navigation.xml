@@ -9,19 +9,42 @@
         android:id="@+id/nav_owned_experiments"
         android:name="com.example.experiment_automata.ui.home.HomeFragment"
         android:label="@string/menu_owned_experiments"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_nav_owned_experiments_to_nav_subscriptions"
+            app:destination="@id/nav_subscriptions"
+            app:enterAnim="@anim/fragment_fade_enter" />
+        <action
+            android:id="@+id/action_nav_owned_experiments_to_nav_published"
+            app:destination="@id/nav_published"
+            app:enterAnim="@anim/fragment_fade_enter" />
+        <action
+            android:id="@+id/action_nav_owned_experiments_to_nav_profile"
+            app:destination="@id/nav_profile"
+            app:enterAnim="@anim/fragment_fade_enter" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_subscriptions"
         android:name="com.example.experiment_automata.ui.gallery.GalleryFragment"
         android:label="@string/menu_subscriptions"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/fragment_gallery" >
+        <action
+            android:id="@+id/action_nav_subscriptions_to_nav_profile"
+            app:destination="@id/nav_profile"
+            app:enterAnim="@anim/fragment_fade_enter" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_published"
         android:name="com.example.experiment_automata.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_published"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_slideshow" >
+        <action
+            android:id="@+id/action_nav_published_to_nav_profile"
+            app:destination="@id/nav_profile"
+            app:enterAnim="@anim/fragment_fade_enter" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_profile"

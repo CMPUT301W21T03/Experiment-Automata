@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 /**
- * This class connects the experimentlayout XML file with the activity_subscription.xml file
+ * This class connects the experiment_layout XML file with the fragment_home.xml file
  */
 public class SubscriptionAdapter extends ArrayAdapter<Experiment> {
     // Syntax inspired by Abdul Ali Bangash, "Lab 3 Instructions - Custom List",
@@ -46,25 +46,25 @@ public class SubscriptionAdapter extends ArrayAdapter<Experiment> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         // Syntax below taken from Abdul Ali Bangash, "Lab 3 Instructions - Custom List",
         //  2021-02-04, Public Domain, https://eclass.srv.ualberta.ca/pluginfile.php/6713985/mod_resource/content/1/Lab%203%20instructions%20-%20CustomList.pdf
-        View view=convertView;
-        if(view==null){
-            view= LayoutInflater.from(context).inflate(R.layout.experimentlayout, parent, false);
+        View view = convertView;
+        if(view == null){
+            view = LayoutInflater.from(context).inflate(R.layout.experiment_layout, parent, false);
         }
         // The experiment we're going to set the XML file with
-        Experiment exp=experiment.get(position);
+        Experiment exp = experiment.get(position);
 
-        // Find the corresponding views from experimentlayout
-        TextView name=view.findViewById(R.id.experimentName);
-        TextView owner=view.findViewById(R.id.experimentOwner);
-        TextView active=view.findViewById(R.id.experimentActivity);
+        // Find the corresponding views from experiment_layout
+        TextView name = view.findViewById(R.id.experimentName);
+        TextView owner = view.findViewById(R.id.experimentOwner);
+        TextView active = view.findViewById(R.id.experimentActivity);
 
         // Set the name of the experiment accordingly
-        UUID oid=exp.getOwnerId();
-        name.setText(oid.toString());
+        UUID oid = exp.getOwnerId();
+        name.setText(exp.getDescription());
 
         // Set the activity properly
-        boolean isActive=exp.isActive();
-        if(isActive){
+        boolean isActive = exp.isActive();
+        if(isActive) {
             active.setText("Active");
         }
         else{

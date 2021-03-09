@@ -13,4 +13,6 @@
     <string name="description">Description</string>
     <string name="minimum_number_of_trials">Minimum Number of Trials</string>
     <string name="trial_type">Trial Type</string>
+    <string name="experiment_title">Title</string>
+    <string name="todo">TODO</string>
 </resources>

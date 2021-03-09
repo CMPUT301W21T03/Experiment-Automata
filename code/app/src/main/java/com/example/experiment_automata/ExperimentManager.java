@@ -19,12 +19,13 @@ public class ExperimentManager
         experimentsList = new ArrayList<>();
     }
 
+
     /**
      * Gives the maintained experimentManager back to the calling class
      * @return
      *      The maintained experiment class
      */
-    public static ExperimentManager getExpermentManager()
+    public static ExperimentManager getExperimentManager()
     {
         if (experimentManager == null)
             experimentManager = new ExperimentManager();
@@ -70,4 +71,16 @@ public class ExperimentManager
     {
         return experimentsList.size();
     }
+
+    /**
+     * get the experiment at that index
+     * @param index
+     * @return
+     *      the experiment at the given index
+     */
+    public Experiment get(int index)
+    {
+        return experimentsList.get(index);
+    }
+
 }

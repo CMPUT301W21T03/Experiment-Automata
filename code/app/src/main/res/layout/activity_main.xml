@@ -2,19 +2,26 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_activty_experiment_list_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity" >
+    tools:context=".MainActivity">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_experiment_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
         android:clickable="true"
         android:focusable="true"
-        android:layout_gravity="bottom|end"
         app:srcCompat="@android:drawable/ic_input_add"
-        android:layout_margin="16dp"/>
+        android:contentDescription="@string/todo" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/experiment_list_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="642dp" />
 
 </FrameLayout>

@@ -19,8 +19,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import java.util.UUID;
-
 public class NavigationActivity extends AppCompatActivity implements AddExperimentFragment.OnFragmentInteractionListener {
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -54,9 +52,6 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-        // TODO: remove before PR
-        Experiment test = new CountExperiment("test count", 0, true, true, loggedUser.getUserId());
-        experimentManager.add(test.getExperimentId(), test);
     }
 
     @Override
@@ -76,6 +71,7 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
     @Override
     public void onOkPressed(Experiment experiment) {
         experimentManager.add(experiment.getExperimentId(), experiment);
+        loggedUser.addExperiment(experiment.getExperimentId());
         if (currentScreen == Screen.ExperimentList) {
             ((HomeFragment) currentFragment).updateScreen();
         }

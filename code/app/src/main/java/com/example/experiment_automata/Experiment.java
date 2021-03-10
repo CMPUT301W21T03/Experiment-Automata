@@ -58,6 +58,7 @@ public abstract class Experiment implements Serializable {
         this.published = false;
         this.active = true;
         this.ownerId = ownerId;
+        this.published = true;
         this.experimentId = UUID.randomUUID();
         this.crowedExperimenter = new ArrayList<>();
     }
@@ -85,7 +86,7 @@ public abstract class Experiment implements Serializable {
 
     /**
      * Removes userID from the list so that the user can no longer participate in it
-     * @param userID UserID to be removed from the experiment
+     * @param userId UserID to be removed from the experiment
      */
 
     public void removeUserId(UUID userId){
@@ -123,4 +124,17 @@ public abstract class Experiment implements Serializable {
     public boolean isActive() {
         return active;
     }
+
+    /**
+     * Published status of the experiment
+     * @return Boolean whether the experiment is published or not
+     */
+    public boolean isPublished() { return published; }
+
+    /**
+     * Set published status of the experiment
+     * @param p
+     *  Boolean whether the experiment is published or not
+     */
+    public void setPublished(boolean p) { published = p; }
 }

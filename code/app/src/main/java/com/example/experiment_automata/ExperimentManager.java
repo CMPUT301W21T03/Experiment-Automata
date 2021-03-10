@@ -86,4 +86,15 @@ public class ExperimentManager
         }
         return experimentsList;
     }
+
+    public ArrayList<Experiment> queryPublishedExperiments() {
+        ArrayList experimentsList = new ArrayList<Experiment>();
+        for (Map.Entry<UUID, Experiment> entry : experiments.entrySet()) {
+            Experiment experiment = experiments.get(entry.getKey());
+            if (experiment.isPublished()) {
+                experimentsList.add(experiment);
+            }
+        }
+        return experimentsList;
+    }
 }

@@ -49,10 +49,19 @@ public class HomeFragment extends Fragment {
     public void populateList() {
         NavigationActivity parentActivity = ((NavigationActivity) getActivity());
         experimentsArrayList.clear();
+        Log.d("MODE", getArguments().getString("mode"));
         switch (getArguments().getString("mode")) {
             case "owned":
                 experimentsArrayList.addAll(parentActivity.experimentManager
-                        .getOwnedExperiments(parentActivity.loggedUser.getUserId()));
+                        .queryExperiments(parentActivity.loggedUser.getOwnedExperiments()));
+                break;
+            case "published":
+                experimentsArrayList.addAll(parentActivity.experimentManager
+                        .queryPublishedExperiments());
+                break;
+            case "subscribed":
+                experimentsArrayList.addAll(parentActivity.experimentManager
+                        .queryExperiments(parentActivity.loggedUser.getSubscriptions()));
                 break;
             default:
                 throw new IllegalArgumentException();

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_owned_experiments">
+
+    <fragment
+        android:id="@+id/nav_owned_experiments"
+        android:name="com.example.experiment_automata.ui.home.HomeFragment"
+        android:label="@string/menu_owned_experiments"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_nav_owned_experiments_to_nav_subscriptions"
+            app:destination="@id/nav_subscriptions"
+            app:enterAnim="@anim/fragment_fade_enter" />
+        <action
+            android:id="@+id/action_nav_owned_experiments_to_nav_published"
+            app:destination="@id/nav_published"
+            app:enterAnim="@anim/fragment_fade_enter" />
+        <action
+            android:id="@+id/action_nav_owned_experiments_to_nav_profile"
+            app:destination="@id/nav_profile"
+            app:enterAnim="@anim/fragment_fade_enter" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_subscriptions"
+        android:name="com.example.experiment_automata.ui.home.HomeFragment"
+        android:label="@string/menu_subscriptions"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_nav_subscriptions_to_nav_profile"
+            app:destination="@id/nav_profile"
+            app:enterAnim="@anim/fragment_fade_enter" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_published"
+        android:name="com.example.experiment_automata.ui.home.HomeFragment"
+        android:label="@string/menu_published"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_nav_published_to_nav_profile"
+            app:destination="@id/nav_profile"
+            app:enterAnim="@anim/fragment_fade_enter" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.example.experiment_automata.ui.profile.ProfileFragment"
+        android:label="@string/menu_profile"
+        tools:layout="@layout/fragment_profile" />
+</navigation>

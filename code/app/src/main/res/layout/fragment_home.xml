@@ -4,13 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SubscriptionActivity">
+    tools:context=".ui.home.HomeFragment">
 
     <ListView
         android:id="@+id/subscription_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
     </ListView>
-
 </FrameLayout>

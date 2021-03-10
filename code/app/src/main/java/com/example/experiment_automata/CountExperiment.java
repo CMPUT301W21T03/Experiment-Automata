@@ -1,6 +1,8 @@
 package com.example.experiment_automata;
 
 
+import java.util.UUID;
+
 /**
  * Holds the information needed to maintain a count experiment
  */
@@ -27,8 +29,8 @@ public class CountExperiment extends Experiment
      * @param acceptNewResults
      *   a boolean for if the experiment is accepting new results
      */
-    public CountExperiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults) {
-        super(description, minTrials, requireLocation, acceptNewResults);
+    public CountExperiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId) {
+        super(description, minTrials, requireLocation, acceptNewResults, ownerId);
     }
 
     @Override

@@ -50,13 +50,15 @@ public abstract class Experiment implements Serializable {
      * @param acceptNewResults
      *   a boolean for whether this trial should be accepting new requests or not
      */
-    public Experiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults) {
+    public Experiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId) {
         this.description = description;
         this.minTrials = minTrials;
         this.requireLocation = requireLocation;
         this.acceptNewResults = acceptNewResults;
         this.published = false;
         this.active = true;
+        this.ownerId = ownerId;
+        this.experimentId = UUID.randomUUID();
         this.crowedExperimenter = new ArrayList<>();
     }
 
@@ -104,6 +106,14 @@ public abstract class Experiment implements Serializable {
      */
     public UUID getOwnerId() {
         return ownerId;
+    }
+
+    /**
+     * Gets the id of the experiment
+     * @return UUID of the experiment
+     */
+    public UUID getExperimentId() {
+        return experimentId;
     }
 
     /**

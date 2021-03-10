@@ -30,7 +30,7 @@ public class User {
      * @param info
      * the ContactInformation object containing the information for the user
      */
-    User(ContactInformation info) {
+    public User(ContactInformation info) {
         userId = UUID.randomUUID();//generates a random UUID
         this.info = info;
         updateFirestore();
@@ -39,7 +39,7 @@ public class User {
     /**
      * Creates the stub user class
      */
-    User() {
+    public User() {
         userId = UUID.fromString(DEFAULT_UUID_STRING);//hard code UUID for stub to defaultUUIDString
         this.info = new ContactInformation("Individual",
                 "example@ualberta.ca", "780-555-1234");

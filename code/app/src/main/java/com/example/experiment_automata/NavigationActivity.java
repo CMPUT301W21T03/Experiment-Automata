@@ -17,9 +17,13 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.util.UUID;
+
 public class NavigationActivity extends AppCompatActivity implements AddExperimentFragment.OnFragmentInteractionListener {
 
     private AppBarConfiguration mAppBarConfiguration;
+    public final ExperimentManager experimentManager = new ExperimentManager();
+    public final User loggedUser = new User();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,8 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        Experiment test = new CountExperiment("test count", 0, true, true, loggedUser.getUserId());
+        experimentManager.add(test.getExperimentId(), test);
     }
 
     @Override
@@ -63,7 +69,6 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
 
     @Override
     public void onOkPressed(Experiment experiment) {
-        Log.d("OK_PRESSED", "experiment created!");
-
+        experimentManager.add(experiment.getExperimentId(), experiment);
     }
 }

@@ -1,5 +1,7 @@
 package com.example.experiment_automata;
 
+import java.util.UUID;
+
 /**
  * Holds the information needed to maintain a measurement experiment
  */
@@ -26,8 +28,8 @@ public class MeasurementExperiment extends Experiment
      * @param acceptNewResults
      *   a boolean for if the experiment is accepting new results
      */
-    public MeasurementExperiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults) {
-        super(description, minTrials, requireLocation, acceptNewResults);
+    public MeasurementExperiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId) {
+        super(description, minTrials, requireLocation, acceptNewResults, ownerId);
     }
 
     @Override

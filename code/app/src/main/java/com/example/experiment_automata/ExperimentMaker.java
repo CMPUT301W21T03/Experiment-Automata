@@ -1,5 +1,7 @@
 package com.example.experiment_automata;
 
+import java.util.UUID;
+
 public class ExperimentMaker
 {
     private String description; // Do we need this to have any attributes? can't we just create an experiment maker when needed?
@@ -53,18 +55,18 @@ public class ExperimentMaker
      * @throws IllegalExperimentException
      *   will be thrown if ExperimentType is an illegal type.
      */
-    public Experiment makeExperiment(ExperimentType type, String description, int minTrials, boolean requireLocation, boolean acceptNewResults) throws IllegalExperimentException {
+    public Experiment makeExperiment(ExperimentType type, String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId) throws IllegalExperimentException {
 
         try {
             switch (type) {
                 case NaturalCount:
-                    return new NaturalCountExperiment(description, minTrials, requireLocation, acceptNewResults);
+                    return new NaturalCountExperiment(description, minTrials, requireLocation, acceptNewResults, ownerId);
                 case Binomial:
-                    return new BinomialExperiment(description, minTrials, requireLocation, acceptNewResults);
+                    return new BinomialExperiment(description, minTrials, requireLocation, acceptNewResults, ownerId);
                 case Count:
-                    return new CountExperiment(description, minTrials, requireLocation, acceptNewResults);
+                    return new CountExperiment(description, minTrials, requireLocation, acceptNewResults, ownerId);
                 case Measurement:
-                    return new MeasurementExperiment(description, minTrials, requireLocation, acceptNewResults);
+                    return new MeasurementExperiment(description, minTrials, requireLocation, acceptNewResults, ownerId);
                 default:
                     throw new IllegalExperimentException("Bad Experiment Type: " + type.toString());
             }

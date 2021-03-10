@@ -64,7 +64,6 @@ public class ExperimentManager
         ArrayList experimentsList = new ArrayList<Experiment>();
         for (Map.Entry<UUID, Experiment> entry : experiments.entrySet()) {
             Experiment experiment = experiments.get(entry.getKey());
-            Log.v("OWNER", (experiment.getOwnerId() == null) + "");
             if (experiment.getOwnerId().equals(ownerId)) {
                 experimentsList.add(experiment);
             }

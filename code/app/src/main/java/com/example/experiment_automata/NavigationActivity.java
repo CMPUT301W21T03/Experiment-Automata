@@ -5,10 +5,12 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 
+import com.example.experiment_automata.ui.home.HomeFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -23,6 +25,9 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
 
     private AppBarConfiguration mAppBarConfiguration;
     public final ExperimentManager experimentManager = new ExperimentManager();
+
+    private Screen currentScreen;
+    private Fragment currentFragment;
     public final User loggedUser = new User();
 
     @Override
@@ -49,6 +54,7 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        // TODO: remove before PR
         Experiment test = new CountExperiment("test count", 0, true, true, loggedUser.getUserId());
         experimentManager.add(test.getExperimentId(), test);
     }
@@ -70,5 +76,16 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
     @Override
     public void onOkPressed(Experiment experiment) {
         experimentManager.add(experiment.getExperimentId(), experiment);
+        if (currentScreen == Screen.ExperimentList) {
+            ((HomeFragment) currentFragment).updateScreen();
+        }
+    }
+
+    public void setCurrentScreen(Screen currentScreen) {
+        this.currentScreen = currentScreen;
+    }
+
+    public void setCurrentFragment(Fragment currentFragment) {
+        this.currentFragment = currentFragment;
     }
 }

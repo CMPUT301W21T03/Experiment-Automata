@@ -18,7 +18,6 @@ public class ExperimentMaker
      *   will be thrown if ExperimentType is an illegal type
      */
     public Experiment makeExperiment(ExperimentType type, String description) throws IllegalExperimentException {
-
         try {
             switch (type) {
                 case NaturalCount:
@@ -32,8 +31,7 @@ public class ExperimentMaker
                 default:
                     throw new IllegalExperimentException("Bad Experiment Type: " + type.toString());
             }
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new IllegalArgumentException();
         }
     }
@@ -55,8 +53,9 @@ public class ExperimentMaker
      * @throws IllegalExperimentException
      *   will be thrown if ExperimentType is an illegal type.
      */
-    public Experiment makeExperiment(ExperimentType type, String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId) throws IllegalExperimentException {
-
+    public Experiment makeExperiment(ExperimentType type, String description, int minTrials,
+                                     boolean requireLocation, boolean acceptNewResults,
+                                     UUID ownerId) throws IllegalExperimentException {
         try {
             switch (type) {
                 case NaturalCount:
@@ -70,8 +69,7 @@ public class ExperimentMaker
                 default:
                     throw new IllegalExperimentException("Bad Experiment Type: " + type.toString());
             }
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             throw new IllegalArgumentException();
         }
     }

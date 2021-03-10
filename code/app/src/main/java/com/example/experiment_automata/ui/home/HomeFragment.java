@@ -7,10 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -18,14 +16,16 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.experiment_automata.Experiment;
 import com.example.experiment_automata.NavigationActivity;
 import com.example.experiment_automata.R;
-import com.example.experiment_automata.SubscriptionAdapter;
+import com.example.experiment_automata.Screen;
+import com.example.experiment_automata.ExperimentListAdapter;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
+    private ArrayList<Experiment> experimentsArrayList;
+    private ArrayAdapter<Experiment> experimentArrayAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -33,19 +33,37 @@ public class HomeFragment extends Fragment {
         homeViewModel =
                 new ViewModelProvider(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        ListView subscriptionList = (ListView) root.findViewById(R.id.subscription_list);
-        ArrayList<Experiment> experimentsArrayList;
-        // Populate experimentsArrayList
+        parentActivity.setCurrentScreen(Screen.ExperimentList);
+        parentActivity.setCurrentFragment(this);
+        ListView experimentList = (ListView) root.findViewById(R.id.experiment_list);
+        experimentsArrayList = new ArrayList<>();
+        populateList();
+        experimentArrayAdapter = new ExperimentListAdapter(getActivity(), experimentsArrayList);
+        experimentList.setAdapter(experimentArrayAdapter);
+        return root;
+    }
+
+    /**
+     * Populate the ArrayList with experiments
+     */
+    public void populateList() {
+        NavigationActivity parentActivity = ((NavigationActivity) getActivity());
+        experimentsArrayList.clear();
         switch (getArguments().getString("mode")) {
             case "owned":
-                experimentsArrayList = parentActivity.experimentManager
-                        .getOwnedExperiments(parentActivity.loggedUser.getUserId());
+                experimentsArrayList.addAll(parentActivity.experimentManager
+                        .getOwnedExperiments(parentActivity.loggedUser.getUserId()));
                 break;
             default:
                 throw new IllegalArgumentException();
         }
-        ArrayAdapter<Experiment> subscriptionArrayAdapter = new SubscriptionAdapter(getActivity(), experimentsArrayList);
-        subscriptionList.setAdapter(subscriptionArrayAdapter);
-        return root;
+    }
+
+    /**
+     * Update the list
+     */
+    public void updateScreen() {
+        populateList();
+        experimentArrayAdapter.notifyDataSetChanged();
     }
 }

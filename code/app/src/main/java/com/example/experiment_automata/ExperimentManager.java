@@ -3,6 +3,7 @@ package com.example.experiment_automata;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -67,6 +68,21 @@ public class ExperimentManager
             if (experiment.getOwnerId().equals(ownerId)) {
                 experimentsList.add(experiment);
             }
+        }
+        return experimentsList;
+    }
+
+    /**
+     * Get list of experiments that match the experiment IDs given
+     * @param experimentIds
+     *  The collection of experiment IDs to query with
+     * @return
+     *  A list of all the experiments that matched the query
+     */
+    public ArrayList<Experiment> queryExperiments(Collection<UUID> experimentIds) {
+        ArrayList experimentsList = new ArrayList<Experiment>();
+        for (UUID id : experimentIds) {
+            experimentsList.add(experiments.get(id));
         }
         return experimentsList;
     }

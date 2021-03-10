@@ -8,25 +8,23 @@
     android:paddingHorizontal="20dp">
 
     <EditText
+        android:id="@+id/create_experiment_description_editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/create_experiment_description_editText"
-        android:hint="@string/description"
         android:layout_marginVertical="10dp"
+        android:hint="@string/description"
         android:paddingVertical="10dp"
-        android:paddingLeft="10dp"
-        android:background="@color/lgray"/>
+        android:paddingLeft="10dp" />
 
     <EditText
+        android:id="@+id/experiment_min_trials_editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/experiment_min_trials_editText"
+        android:layout_marginVertical="10dp"
         android:hint="@string/minimum_number_of_trials"
         android:inputType="number"
-        android:layout_marginVertical="10dp"
         android:paddingVertical="10dp"
-        android:paddingLeft="10dp"
-        android:background="@color/lgray"/>
+        android:paddingLeft="10dp" />
 
     <TextView
         android:paddingTop="10dp"

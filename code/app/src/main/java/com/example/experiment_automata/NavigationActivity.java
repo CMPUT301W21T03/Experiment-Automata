@@ -5,10 +5,12 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 
+import com.example.experiment_automata.ui.home.HomeFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -20,6 +22,11 @@ import androidx.appcompat.widget.Toolbar;
 public class NavigationActivity extends AppCompatActivity implements AddExperimentFragment.OnFragmentInteractionListener {
 
     private AppBarConfiguration mAppBarConfiguration;
+    public final ExperimentManager experimentManager = new ExperimentManager();
+
+    private Screen currentScreen;
+    private Fragment currentFragment;
+    public final User loggedUser = new User();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +70,18 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
 
     @Override
     public void onOkPressed(Experiment experiment) {
-        Log.d("OK_PRESSED", "experiment created!");
+        experimentManager.add(experiment.getExperimentId(), experiment);
+        loggedUser.addExperiment(experiment.getExperimentId());
+        if (currentScreen == Screen.ExperimentList) {
+            ((HomeFragment) currentFragment).updateScreen();
+        }
+    }
 
+    public void setCurrentScreen(Screen currentScreen) {
+        this.currentScreen = currentScreen;
+    }
+
+    public void setCurrentFragment(Fragment currentFragment) {
+        this.currentFragment = currentFragment;
     }
 }

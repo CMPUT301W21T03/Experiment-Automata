@@ -36,13 +36,12 @@
     <!--Shadow on Spinner found on stackoverflow from user45678 on June 6, 2017-->
     <!--https://stackoverflow.com/questions/44387373/how-to-add-shadow-in-dropdown-spinner-in-android -->
     <Spinner
+        android:id="@+id/experiment_type_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="2dp"
-        android:id="@+id/experiment_type_spinner"
         android:paddingVertical="20dp"
-        android:paddingLeft="10dp"
-        android:popupBackground="@android:drawable/dialog_holo_light_frame"/>
+        android:paddingLeft="10dp" />
 
     <Switch
         android:layout_width="wrap_content"

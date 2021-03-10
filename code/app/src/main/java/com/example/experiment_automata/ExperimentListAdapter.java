@@ -1,6 +1,7 @@
 package com.example.experiment_automata;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,9 +67,11 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
         boolean isActive = exp.isActive();
         if(isActive) {
             active.setText("Active");
+            active.setTextColor(Color.GREEN);
         }
         else{
             active.setText("Inactive");
+            active.setTextColor(Color.RED);
         }
 
         return view;

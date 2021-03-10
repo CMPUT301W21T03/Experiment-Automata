@@ -56,9 +56,8 @@ public abstract class Experiment implements Serializable {
         this.requireLocation = requireLocation;
         this.acceptNewResults = acceptNewResults;
         this.published = false;
-        this.active = true;
+        this.active = acceptNewResults;
         this.ownerId = ownerId;
-        this.published = true;
         this.experimentId = UUID.randomUUID();
         this.crowedExperimenter = new ArrayList<>();
     }

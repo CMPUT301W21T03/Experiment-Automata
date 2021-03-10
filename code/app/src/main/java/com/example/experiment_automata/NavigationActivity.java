@@ -1,14 +1,20 @@
 package com.example.experiment_automata;
 
+import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
+import android.widget.SearchView;
 
+import com.example.experiment_automata.ui.home.HomeFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -20,6 +26,11 @@ import androidx.appcompat.widget.Toolbar;
 public class NavigationActivity extends AppCompatActivity implements AddExperimentFragment.OnFragmentInteractionListener {
 
     private AppBarConfiguration mAppBarConfiguration;
+    public final ExperimentManager experimentManager = new ExperimentManager();
+
+    private Screen currentScreen;
+    private Fragment currentFragment;
+    public final User loggedUser = new User();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +62,44 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.navigation, menu);
+
+        // https://developer.android.com/training/search/setup#create-sc
+        // Associate searchable
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView =
+                (SearchView) menu.findItem(R.id.app_bar_search).getActionView();
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
+        searchView.setQueryHint(getString(R.string.search_hint));
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            /**
+             * Called when the user submits the query.
+             * @param query the query text that is to be submitted
+             * @return true if the query has been handled by the listener, false to let the
+             * SearchView perform the default action.
+             */
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Bundle bundle = new Bundle();
+                bundle.putString("query", query);
+                navController.navigate(R.id.nav_search, bundle);
+                searchView.setQuery("", false);
+                return false;
+            }
+
+            /**
+             * Called when the query text is changed by the user.
+             * @param newText the new content of the query text field.
+             * @return false if the SearchView should perform the default action of showing any
+             * suggestions if available, true if the action was handled by the listener.
+             */
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
         return true;
     }
 
@@ -63,7 +112,18 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
 
     @Override
     public void onOkPressed(Experiment experiment) {
-        Log.d("OK_PRESSED", "experiment created!");
+        experimentManager.add(experiment.getExperimentId(), experiment);
+        loggedUser.addExperiment(experiment.getExperimentId());
+        if (currentScreen == Screen.ExperimentList) {
+            ((HomeFragment) currentFragment).updateScreen();
+        }
+    }
 
+    public void setCurrentScreen(Screen currentScreen) {
+        this.currentScreen = currentScreen;
+    }
+
+    public void setCurrentFragment(Fragment currentFragment) {
+        this.currentFragment = currentFragment;
     }
 }

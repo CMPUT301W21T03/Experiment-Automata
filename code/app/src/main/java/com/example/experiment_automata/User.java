@@ -9,6 +9,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -22,7 +24,8 @@ public class User {
     private UUID userId;//changed from int to UUID
     private ContactInformation info;
 //    private SearchController controller;
-//    private Collection<Experiment> ownedExperiments;
+    private Collection<UUID> ownedExperiments;
+    private Collection<UUID> subscribedExperiments;
 //    private Collection<Experiment> participatingExperiments;
 
     /**
@@ -30,7 +33,7 @@ public class User {
      * @param info
      * the ContactInformation object containing the information for the user
      */
-    User(ContactInformation info) {
+    public User(ContactInformation info) {
         userId = UUID.randomUUID();//generates a random UUID
         this.info = info;
         updateFirestore();
@@ -39,10 +42,12 @@ public class User {
     /**
      * Creates the stub user class
      */
-    User() {
+    public User() {
         userId = UUID.fromString(DEFAULT_UUID_STRING);//hard code UUID for stub to defaultUUIDString
         this.info = new ContactInformation("Individual",
                 "example@ualberta.ca", "780-555-1234");
+        this.ownedExperiments = new ArrayList<>();
+        this.subscribedExperiments = new ArrayList<>();
     }
 
     /**
@@ -60,6 +65,8 @@ public class User {
 
         this.userId = id;
         this.info = new ContactInformation(name, email, phone);
+        this.ownedExperiments = new ArrayList<>();
+        this.subscribedExperiments = new ArrayList<>();
     }
 
     /**
@@ -99,8 +106,33 @@ public class User {
                 });
     }
 
+    /**
+     * Get the user's id
+     * @return
+     *  The id
+     */
     public UUID getUserId()
     {
         return this.userId;
     }
+
+    /**
+     * Get a collection of all the owned experiment IDs.
+     * @return
+     *  The IDs of owned experiments
+     */
+    public Collection<UUID> getOwnedExperiments() { return ownedExperiments; }
+
+    /**
+     * Get a collection of the experiment IDs the user is subscribed to.
+     * @return
+     *  The IDs of experiments
+     */
+    public Collection<UUID> getSubscriptions() { return subscribedExperiments; }
+
+    /**
+     * Add the experiment reference to the owned experiments
+     * @param experimentId
+     */
+    public void addExperiment(UUID experimentId) { ownedExperiments.add(experimentId); }
 }

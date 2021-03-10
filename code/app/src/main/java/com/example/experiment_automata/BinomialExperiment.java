@@ -1,5 +1,7 @@
 package com.example.experiment_automata;
 
+import java.util.UUID;
+
 /**
  * Holds the main data needed for a binomial data
  */
@@ -25,8 +27,8 @@ public class BinomialExperiment extends Experiment
      * @param acceptNewResults
      *   a boolean for if the experiment is accepting new results
      */
-    public BinomialExperiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults) {
-        super(description, minTrials, requireLocation, acceptNewResults);
+    public BinomialExperiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId) {
+        super(description, minTrials, requireLocation, acceptNewResults, ownerId);
     }
 
     @Override

@@ -131,8 +131,9 @@ public class AddExperimentFragment extends DialogFragment {
                         boolean experimentNewResults = acceptNewResults.isChecked();
                         try {
                             // todo: determine if we need to do unit testing on this
+                            User user = ((NavigationActivity) getActivity()).loggedUser;
                             listener.onOkPressed(new ExperimentMaker().makeExperiment(experimentType, experimentDescription,
-                                    experimentTrials, experimentLocation, experimentNewResults));
+                                    experimentTrials, experimentLocation, experimentNewResults, user.getUserId()));
                             // debug statements since no unit testing, prints out all info used to create the experiment object
                             Log.d("NEW_EXPERIMENT", experimentDescription);
                             Log.d("EXPERIMENT_TYPE", experimentType.toString());

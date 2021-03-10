@@ -23,6 +23,8 @@
     <string name="menu_owned_experiments">My Experiments</string>
     <string name="menu_subscriptions">My Subscriptions</string>
     <string name="menu_published">Published Experiments</string>
+    <string name="menu_search">Search Results</string>
     <string name="menu_profile">Profile</string>
     <string name="search">Search</string>
+    <string name="search_hint">Search for Experiments</string>
 </resources>

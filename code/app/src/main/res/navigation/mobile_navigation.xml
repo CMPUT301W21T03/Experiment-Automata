@@ -22,6 +22,10 @@
             android:id="@+id/action_nav_owned_experiments_to_nav_profile"
             app:destination="@id/nav_profile"
             app:enterAnim="@anim/fragment_fade_enter" />
+        <argument
+            android:name="mode"
+            app:argType="string"
+            android:defaultValue="owned" />
     </fragment>
 
     <fragment
@@ -33,8 +37,29 @@
             android:id="@+id/action_nav_subscriptions_to_nav_profile"
             app:destination="@id/nav_profile"
             app:enterAnim="@anim/fragment_fade_enter" />
+        <argument
+            android:name="mode"
+            app:argType="string"
+            android:defaultValue="subscribed" />
     </fragment>
 
+    <fragment
+        android:id="@+id/nav_search"
+        android:name="com.example.experiment_automata.ui.home.HomeFragment"
+        android:label="@string/menu_subscriptions"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_nav_subscriptions_to_nav_profile"
+            app:destination="@id/nav_profile"
+            app:enterAnim="@anim/fragment_fade_enter" />
+        <argument
+            android:name="mode"
+            android:defaultValue="search"
+            app:argType="string" />
+        <argument
+            android:name="query"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/nav_published"
         android:name="com.example.experiment_automata.ui.home.HomeFragment"
@@ -44,6 +69,10 @@
             android:id="@+id/action_nav_published_to_nav_profile"
             app:destination="@id/nav_profile"
             app:enterAnim="@anim/fragment_fade_enter" />
+        <argument
+            android:name="mode"
+            app:argType="string"
+            android:defaultValue="published" />
     </fragment>
 
     <fragment

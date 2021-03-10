@@ -50,13 +50,15 @@ public abstract class Experiment implements Serializable {
      * @param acceptNewResults
      *   a boolean for whether this trial should be accepting new requests or not
      */
-    public Experiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults) {
+    public Experiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId) {
         this.description = description;
         this.minTrials = minTrials;
         this.requireLocation = requireLocation;
         this.acceptNewResults = acceptNewResults;
         this.published = false;
-        this.active = true;
+        this.active = acceptNewResults;
+        this.ownerId = ownerId;
+        this.experimentId = UUID.randomUUID();
         this.crowedExperimenter = new ArrayList<>();
     }
 
@@ -83,7 +85,7 @@ public abstract class Experiment implements Serializable {
 
     /**
      * Removes userID from the list so that the user can no longer participate in it
-     * @param userID UserID to be removed from the experiment
+     * @param userId UserID to be removed from the experiment
      */
 
     public void removeUserId(UUID userId){
@@ -107,10 +109,31 @@ public abstract class Experiment implements Serializable {
     }
 
     /**
+     * Gets the id of the experiment
+     * @return UUID of the experiment
+     */
+    public UUID getExperimentId() {
+        return experimentId;
+    }
+
+    /**
      * Activity status of experiment
      * @return Boolean with whether the experiment is active or not
      */
     public boolean isActive() {
         return active;
     }
+
+    /**
+     * Published status of the experiment
+     * @return Boolean whether the experiment is published or not
+     */
+    public boolean isPublished() { return published; }
+
+    /**
+     * Set published status of the experiment
+     * @param p
+     *  Boolean whether the experiment is published or not
+     */
+    public void setPublished(boolean p) { published = p; }
 }

@@ -53,4 +53,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'androidx.navigation:navigation-fragment:2.3.3'
     implementation 'androidx.navigation:navigation-ui:2.3.3'
+    //for zxing
+    implementation "com.google.zxing:core:3.4.1"
 }

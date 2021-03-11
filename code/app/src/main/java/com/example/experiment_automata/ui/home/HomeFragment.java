@@ -55,8 +55,8 @@ public class HomeFragment extends Fragment {
             String experimentID  = ((TextView)view.findViewById(R.id.experiment__id)).getText().toString();
             Bundle bundle = new Bundle();
             NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
-            bundle.putString(NavExperimentDetailsFragment.CURRENT_EXPERIMENT_ID, experimentID);
 
+            // String values
             bundle.putString(NavExperimentDetailsFragment.CURRENT_EXPERIMENT_ID, experimentID);
 
             //nav_experiment_details

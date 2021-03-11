@@ -125,6 +125,8 @@ public class AddExperimentFragment extends DialogFragment {
                             // method of reading input as integer found on Stack Overflow from CommonsWare, Feb 4 2011
                             //https://stackoverflow.com/questions/4903515/how-do-i-return-an-int-from-edittext-android
                             String experimentTrialsString = minTrials.getText().toString();
+                            boolean experimentLocation = requireLocation.isChecked();
+                            boolean experimentNewResults = acceptNewResults.isChecked();
                             // todo: this logic should be relocated in the future
                             int experimentTrials;
                             if (experimentTrialsString.isEmpty()) {
@@ -133,8 +135,6 @@ public class AddExperimentFragment extends DialogFragment {
                                 experimentTrials = Integer.parseInt(experimentTrialsString);
                             }
                             // Assuming you can't change the type of an experiment
-                            boolean experimentLocation = requireLocation.isChecked();
-                            boolean experimentNewResults = acceptNewResults.isChecked();
 
                             listener.onOKPressedEdit(experimentDescription, experimentTrials,
                                     experimentLocation, experimentNewResults, currentExperiment);

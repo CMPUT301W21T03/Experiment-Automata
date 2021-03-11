@@ -128,7 +128,7 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
         currentExperiment.setMinTrials(experimentTrials);
         currentExperiment.setRequireLocation(experimentLocation);
         currentExperiment.setAcceptNewResults(experimentNewResults);
-
+        ((HomeFragment) currentFragment).updateScreen();
     }
 
     public void setCurrentScreen(Screen currentScreen) {

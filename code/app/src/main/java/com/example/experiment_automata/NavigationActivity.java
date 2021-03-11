@@ -77,6 +77,17 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
         }
     }
 
+    @Override
+    public void onOKPressedEdit(String experimentDescription, int experimentTrials,
+                         boolean experimentLocation, boolean experimentNewResults,
+                         Experiment currentExperiment)
+    {
+        currentExperiment.setDescription(experimentDescription);
+        currentExperiment.setMinTrials(experimentTrials);
+        currentExperiment.setRequireLocation(experimentLocation);
+        currentExperiment.setAcceptNewResults(experimentNewResults);
+    }
+
     public void setCurrentScreen(Screen currentScreen) {
         this.currentScreen = currentScreen;
     }

@@ -65,7 +65,7 @@ public class NavExperimentDetailsFragment extends Fragment {
                              Bundle savedInstanceState)
     {
         View root = inflater.inflate(R.layout.fragment_nav_experiment_details, container, false);
-        Experiment current;
+        Experiment current = null;
         getArguments();
         descriptionView = root.findViewById(R.id.nav_experiment_details_description);
         typeView = root.findViewById(R.id.nav_experiment_details_experiment_type);
@@ -87,11 +87,17 @@ public class NavExperimentDetailsFragment extends Fragment {
                 Log.d(ERROR_LOG_VALUE, "-- DATA CORRUPT" + experimentStringId);
         }
 
+        Experiment finalCurrent = current;
         editImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // deletes the old on and replaces it with the edited
                 //new AddExperimentFragment().show((getActivity()).getSupportFragmentManager(), "ADD_EXPERIMENT");
+                Fragment editExperiment = new AddExperimentFragment();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(AddExperimentFragment.ADD_EXPERIMENT_CURRENT_VALUE, finalCurrent);
+                editExperiment.setArguments(bundle);
+                getActivity().getSupportFragmentManager().beginTransaction().add(editExperiment,"EDIT").commit();
             }
         });
 

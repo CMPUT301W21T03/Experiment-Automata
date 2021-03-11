@@ -19,6 +19,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
 
+import java.util.UUID;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link AddExperimentFragment#newInstance} factory method to
@@ -28,6 +30,8 @@ import android.widget.Switch;
 // Abdul Ali Bangash, "Lab 3", 2021-02-04, Public Domain,
 // https://eclass.srv.ualberta.ca/pluginfile.php/6713985/mod_resource/content/1/Lab%203%20instructions%20-%20CustomList.pdf
 public class AddExperimentFragment extends DialogFragment {
+
+    public static final String ADD_EXPERIMENT_CURRENT_VALUE = "ADD-FRAGMENT-CURRENT-EXPERIMENT";
 
     // note: locale not currently added as I am not sure what input it has for Experiment
     private EditText description;
@@ -42,6 +46,9 @@ public class AddExperimentFragment extends DialogFragment {
      */
     public interface OnFragmentInteractionListener {
         void onOkPressed(Experiment newExperiment);
+        void onOKPressedEdit(String experimentDescription, int experimentTrials,
+                             boolean experimentLocation, boolean experimentNewResults,
+                             Experiment currentExperiment);
     }
 
     /**
@@ -99,50 +106,78 @@ public class AddExperimentFragment extends DialogFragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         trialType.setAdapter(adapter);
 
+        AlertDialog.Builder build = new AlertDialog.Builder(getContext());
+
         // prepare the UI elements if experiment has existing information
         Bundle args = getArguments();
         if (args != null) {
-            Experiment currentExperiment = (Experiment) args.getSerializable("EXPERIMENT");
-            // todo: update the UI elements if editing an experiment
+            Experiment currentExperiment = (Experiment) args.getSerializable(ADD_EXPERIMENT_CURRENT_VALUE);
+
+            return build.setView(view).setTitle("Edit Experiment")
+                    .setNegativeButton("Cancel", null)
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which)
+                        {
+                            String experimentDescription = description.getText().toString();
+                            // method of reading input as integer found on Stack Overflow from CommonsWare, Feb 4 2011
+                            //https://stackoverflow.com/questions/4903515/how-do-i-return-an-int-from-edittext-android
+                            String experimentTrialsString = minTrials.getText().toString();
+                            // todo: this logic should be relocated in the future
+                            int experimentTrials;
+                            if (experimentTrialsString.isEmpty()) {
+                                experimentTrials = 0;
+                            } else {
+                                experimentTrials = Integer.parseInt(experimentTrialsString);
+                            }
+                            // Assuming you can't change the type of an experiment
+                            boolean experimentLocation = requireLocation.isChecked();
+                            boolean experimentNewResults = acceptNewResults.isChecked();
+
+                            listener.onOKPressedEdit(experimentDescription, experimentTrials,
+                                    experimentLocation, experimentNewResults, currentExperiment);
+                        }
+                    }).create();
         }
+        else {
+            // build the dialog and give instructions for its dismissal
 
-        // build the dialog and give instructions for its dismissal
-        AlertDialog.Builder build = new AlertDialog.Builder(getContext());
-        return build.setView(view)
-                .setTitle("Add Experiment")
-                .setNegativeButton("Cancel", null)
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String experimentDescription = description.getText().toString();
-                        // method of reading input as integer found on Stack Overflow from CommonsWare, Feb 4 2011
-                        //https://stackoverflow.com/questions/4903515/how-do-i-return-an-int-from-edittext-android
-                        String experimentTrialsString = minTrials.getText().toString();
-                        // todo: this logic should be relocated in the future
-                        int experimentTrials;
-                        if (experimentTrialsString.isEmpty()) {
-                            experimentTrials = 0;
-                        } else {
-                            experimentTrials = Integer.parseInt(experimentTrialsString);
-                        }
+            return build.setView(view)
+                    .setTitle("Add Experiment")
+                    .setNegativeButton("Cancel", null)
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String experimentDescription = description.getText().toString();
+                            // method of reading input as integer found on Stack Overflow from CommonsWare, Feb 4 2011
+                            //https://stackoverflow.com/questions/4903515/how-do-i-return-an-int-from-edittext-android
+                            String experimentTrialsString = minTrials.getText().toString();
+                            // todo: this logic should be relocated in the future
+                            int experimentTrials;
+                            if (experimentTrialsString.isEmpty()) {
+                                experimentTrials = 0;
+                            } else {
+                                experimentTrials = Integer.parseInt(experimentTrialsString);
+                            }
 
-                        ExperimentType experimentType = ExperimentType.valueOf(trialType.getSelectedItem().toString());
-                        boolean experimentLocation = requireLocation.isChecked();
-                        boolean experimentNewResults = acceptNewResults.isChecked();
-                        try {
-                            // todo: determine if we need to do unit testing on this
-                            User user = ((NavigationActivity) getActivity()).loggedUser;
-                            listener.onOkPressed(new ExperimentMaker().makeExperiment(experimentType, experimentDescription,
-                                    experimentTrials, experimentLocation, experimentNewResults, user.getUserId()));
-                            // debug statements since no unit testing, prints out all info used to create the experiment object
-                            Log.d("NEW_EXPERIMENT", experimentDescription);
-                            Log.d("EXPERIMENT_TYPE", experimentType.toString());
-                            Log.d("REMAINING INFO", "trials=" + experimentTrialsString + " location=" +
-                                    experimentLocation + " accept new=" + experimentNewResults);
-                        } catch (IllegalExperimentException e) {
-                            e.printStackTrace();
+                            ExperimentType experimentType = ExperimentType.valueOf(trialType.getSelectedItem().toString());
+                            boolean experimentLocation = requireLocation.isChecked();
+                            boolean experimentNewResults = acceptNewResults.isChecked();
+                            try {
+                                // todo: determine if we need to do unit testing on this
+                                User user = ((NavigationActivity) getActivity()).loggedUser;
+                                listener.onOkPressed(new ExperimentMaker().makeExperiment(experimentType, experimentDescription,
+                                        experimentTrials, experimentLocation, experimentNewResults, user.getUserId()));
+                                // debug statements since no unit testing, prints out all info used to create the experiment object
+                                Log.d("NEW_EXPERIMENT", experimentDescription);
+                                Log.d("EXPERIMENT_TYPE", experimentType.toString());
+                                Log.d("REMAINING INFO", "trials=" + experimentTrialsString + " location=" +
+                                        experimentLocation + " accept new=" + experimentNewResults);
+                            } catch (IllegalExperimentException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }
-                }).create();
+                    }).create();
+        }
     }
 }

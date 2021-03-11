@@ -138,6 +138,26 @@ public abstract class Experiment implements Serializable {
      */
     public void setPublished(boolean p) { published = p; }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setMinTrials(int minTrials) {
+        this.minTrials = minTrials;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public void setRequireLocation(boolean requireLocation) {
+        this.requireLocation = requireLocation;
+    }
+
+    public void setAcceptNewResults(boolean acceptNewResults) {
+        this.acceptNewResults = acceptNewResults;
+    }
+
     /**
      * get the current experiments set type
      * @return

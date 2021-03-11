@@ -40,6 +40,9 @@ public class HomeFragment extends Fragment {
         populateList();
         experimentArrayAdapter = new ExperimentListAdapter(getActivity(), experimentsArrayList);
         experimentList.setAdapter(experimentArrayAdapter);
+
+
+
         return root;
     }
 

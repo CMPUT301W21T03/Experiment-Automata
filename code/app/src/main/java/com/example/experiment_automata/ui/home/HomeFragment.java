@@ -38,6 +38,7 @@ public class HomeFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        Log.d("HomeFragment", "Entering home fragment: " + getArguments().getString("mode"));
         NavigationActivity parentActivity = ((NavigationActivity) getActivity());
         homeViewModel =
                 new ViewModelProvider(this).get(HomeViewModel.class);
@@ -87,6 +88,10 @@ public class HomeFragment extends Fragment {
             case "subscribed":
                 experimentsArrayList.addAll(parentActivity.experimentManager
                         .queryExperiments(parentActivity.loggedUser.getSubscriptions()));
+                break;
+            case "search":
+                experimentsArrayList.addAll(parentActivity.experimentManager
+                        .queryExperiments(getArguments().getString("query")));
                 break;
             default:
                 throw new IllegalArgumentException();

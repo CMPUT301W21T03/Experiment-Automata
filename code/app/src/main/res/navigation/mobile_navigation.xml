@@ -47,6 +47,23 @@
     </fragment>
 
     <fragment
+        android:id="@+id/nav_search"
+        android:name="com.example.experiment_automata.ui.home.HomeFragment"
+        android:label="@string/menu_subscriptions"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_nav_subscriptions_to_nav_profile"
+            app:destination="@id/nav_profile"
+            app:enterAnim="@anim/fragment_fade_enter" />
+        <argument
+            android:name="mode"
+            android:defaultValue="search"
+            app:argType="string" />
+        <argument
+            android:name="query"
+            app:argType="string" />
+    </fragment>
+    <fragment
         android:id="@+id/nav_published"
         android:name="com.example.experiment_automata.ui.home.HomeFragment"
         android:label="@string/menu_published"

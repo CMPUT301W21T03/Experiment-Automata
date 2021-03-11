@@ -112,5 +112,25 @@ public class ExperimentManager
         return experiments.get(experimentUUID);
     }
 
+    public ArrayList<Experiment> queryExperiments(String query) {
+        ArrayList experimentsList = new ArrayList<Experiment>();
+        for (Map.Entry<UUID, Experiment> entry : experiments.entrySet()) {
+            Experiment experiment = experiments.get(entry.getKey());
+            Log.d("SEARCHING", "Experiment:\t" + experiment.getDescription());
+            if (queryMatch(query, experiment.getDescription())) {
+                Log.d("QUERY", "Found Match");
+                experimentsList.add(experiment);
+            }
+        }
+        return experimentsList;
+    }
 
+    private boolean queryMatch(String query, String source) {
+        String[] queryTokens = query.toLowerCase().split("\\W");
+        for (int j = 0; j < queryTokens.length; j++) {
+            Log.d("SEARCHING", "query token:\t" + queryTokens[j]);
+            if (source.toLowerCase().indexOf(queryTokens[j]) >= 0) return true;
+        }
+        return false;
+    }
 }

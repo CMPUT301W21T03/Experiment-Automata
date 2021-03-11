@@ -85,4 +85,9 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
         this.currentFragment = currentFragment;
     }
 
+    public ExperimentManager getExperimentManager()
+    {
+        return experimentManager;
+    }
+
 }

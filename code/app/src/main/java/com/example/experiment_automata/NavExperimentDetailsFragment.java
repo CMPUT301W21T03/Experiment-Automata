@@ -18,17 +18,18 @@ import java.util.UUID;
  * Use the {@link NavExperimentDetailsFragment#newInstance} factory method to
  * create an instance of this fragment.
  *
- * change needs to happen here
- */
+ * */
 public class NavExperimentDetailsFragment extends Fragment {
 
+    private String ERROR_LOG_VALUE = "ERROR_LOG-EXPERIMENT-VIEW";
     public static final String CURRENT_EXPERIMENT_ID = "FRAGMENT_CURRENT_FRAGMENT-ID";
 
-    private TextView description;
-    private TextView type;
-    private ImageButton editExperimentButton;
-    //TODO: Add remaining buttons when they become needed
 
+    // TODO: Rename and change types of parameters
+    private String experimentStringId;
+    private String description;
+    private TextView descriptionView;
+    private TextView typeView;
 
     public NavExperimentDetailsFragment() {
         // Required empty public constructor
@@ -37,17 +38,25 @@ public class NavExperimentDetailsFragment extends Fragment {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     * @return A new instance of fragment nav_experiment_details.
+     *
+     * @param experimentStringId ID of the clicked experiment
+     * @return A new instance of fragment FullExperimentView.
      */
-    // TODO: Rename and change types and number of parameters
-    public static NavExperimentDetailsFragment newInstance() {
+
+    public static NavExperimentDetailsFragment newInstance(String experimentStringId) {
         NavExperimentDetailsFragment fragment = new NavExperimentDetailsFragment();
+        Bundle args = new Bundle();
+        args.putString(CURRENT_EXPERIMENT_ID, experimentStringId);
+        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            experimentStringId = getArguments().getString(CURRENT_EXPERIMENT_ID);
+        }
     }
 
     @Override
@@ -55,14 +64,25 @@ public class NavExperimentDetailsFragment extends Fragment {
                              Bundle savedInstanceState)
     {
         View root = inflater.inflate(R.layout.fragment_nav_experiment_details, container, false);
-
-        String experimentID = null;
-        if (savedInstanceState == null)
-            Log.d("TEST_F", "failed");
+        Experiment current;
+        getArguments();
+        descriptionView = root.findViewById(R.id.nav_experiment_details_description);
+        typeView = root.findViewById(R.id.nav_experiment_details_experiment_type);
+        if (experimentStringId == null)
+            Log.d(ERROR_LOG_VALUE, "Should never happen");
         else
-             experimentID = getArguments().getString(NavExperimentDetailsFragment.CURRENT_EXPERIMENT_ID);
+        {
+            current = (((NavigationActivity)getActivity()).getExperimentManager())
+                    .getAtUUIDDescription(UUID.fromString(experimentStringId));
 
-        Log.d("TEST_T", "x" + experimentID);
+            if(current != null)
+            {
+                descriptionView.setText(current.getDescription());
+                typeView.setText("" + current.getType());
+            }
+            Log.d("TEST_A", "" + experimentStringId);
+        }
+
 
         return root;
     }

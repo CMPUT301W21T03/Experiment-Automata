@@ -1,5 +1,6 @@
 package com.example.experiment_automata.ui.home;
 
+import android.app.Activity;
 import android.os.Binder;
 import android.os.Bundle;
 import android.util.Log;
@@ -49,18 +50,18 @@ public class HomeFragment extends Fragment {
         experimentArrayAdapter = new ExperimentListAdapter(getActivity(), experimentsArrayList);
         experimentList.setAdapter(experimentArrayAdapter);
 
+        Bundle bundle = new Bundle();
+        NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
 
         ((ListView) root.findViewById(R.id.experiment_list)).setOnItemClickListener((parent, view, position, id) -> {
 
             String experimentID  = ((TextView)view.findViewById(R.id.experiment__id)).getText().toString();
-            Bundle bundle = new Bundle();
-            NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
-
             // String values
             bundle.putString(NavExperimentDetailsFragment.CURRENT_EXPERIMENT_ID, experimentID);
 
             //nav_experiment_details
             navController.navigate(R.id.nav_experiment_details, bundle);
+
 
         });
 

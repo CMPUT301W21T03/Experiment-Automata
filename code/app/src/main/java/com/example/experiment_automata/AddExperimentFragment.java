@@ -112,6 +112,8 @@ public class AddExperimentFragment extends DialogFragment {
         Bundle args = getArguments();
         if (args != null) {
             Experiment currentExperiment = (Experiment) args.getSerializable(ADD_EXPERIMENT_CURRENT_VALUE);
+            (view.findViewById(R.id.add_experiment_fragment_trial_type_prompt)).setVisibility(View.GONE);
+            (view.findViewById(R.id.experiment_type_spinner)).setVisibility(View.GONE);
 
             return build.setView(view).setTitle("Edit Experiment")
                     .setNegativeButton("Cancel", null)

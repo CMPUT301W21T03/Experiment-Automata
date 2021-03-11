@@ -10,10 +10,14 @@ import android.view.ViewGroup;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link nav_experiment_details#newInstance} factory method to
+ * Use the {@link NavExperimentDetailsFragment#newInstance} factory method to
  * create an instance of this fragment.
+ *
+ * change needs to happen here
  */
-public class nav_experiment_details extends Fragment {
+public class NavExperimentDetailsFragment extends Fragment {
+
+    public static final String CURRENT_EXPERIMENT_ID = "FRAGMENT_CURRENT_FRAGMENT-ID";
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,7 +28,7 @@ public class nav_experiment_details extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public nav_experiment_details() {
+    public NavExperimentDetailsFragment() {
         // Required empty public constructor
     }
 
@@ -37,8 +41,8 @@ public class nav_experiment_details extends Fragment {
      * @return A new instance of fragment nav_experiment_details.
      */
     // TODO: Rename and change types and number of parameters
-    public static nav_experiment_details newInstance(String param1, String param2) {
-        nav_experiment_details fragment = new nav_experiment_details();
+    public static NavExperimentDetailsFragment newInstance(String param1, String param2) {
+        NavExperimentDetailsFragment fragment = new NavExperimentDetailsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

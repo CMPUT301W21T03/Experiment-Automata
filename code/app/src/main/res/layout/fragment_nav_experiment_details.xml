@@ -2,25 +2,28 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/test"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/test"
     tools:context=".NavExperimentDetailsFragment">
 
 
     <TextView
         android:id="@+id/nav_experiment_details_description"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:text="@string/description"
-        android:textColor="#000000"
+        android:textColor="?android:attr/textColorPrimary"
         android:textColorHighlight="#000000"
         android:textColorLink="#000000"
         android:textSize="24sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/nav_fragment_experiment_detail_view_qa_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,6 +35,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="9dp"
         android:text="TextView"
+        android:textColor="?android:attr/textColorSecondary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nav_experiment_details_description" />
 
@@ -42,41 +46,42 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:src="@android:drawable/ic_menu_edit"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_baseline_edit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/imageButton3"
+        android:id="@+id/nav_fragment_experiment_detail_view_map_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:src="@android:drawable/ic_menu_mapmode"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nav_fragment_experiment_detail_view_edit_button" />
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_baseline_map"
+        app:layout_constraintEnd_toStartOf="@+id/nav_fragment_experiment_detail_view_edit_button"
+        app:layout_constraintTop_toTopOf="@+id/nav_fragment_experiment_detail_view_edit_button" />
 
     <ImageButton
-        android:id="@+id/imageButton4"
+        android:id="@+id/nav_fragment_experiment_detail_view_qr_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="9dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:src="?attr/actionModeSelectAllDrawable"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton3" />
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_baseline_qr_code_scanner"
+        app:layout_constraintEnd_toStartOf="@+id/nav_fragment_experiment_detail_view_map_button"
+        app:layout_constraintTop_toTopOf="@+id/nav_fragment_experiment_detail_view_map_button" />
 
     <ImageButton
-        android:id="@+id/nav_experiment_details_comments"
+        android:id="@+id/nav_fragment_experiment_detail_view_qa_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:src="@android:drawable/ic_dialog_email"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton4" />
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_baseline_sms"
+        app:layout_constraintEnd_toStartOf="@+id/nav_fragment_experiment_detail_view_qr_button"
+        app:layout_constraintTop_toTopOf="@+id/nav_fragment_experiment_detail_view_qr_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

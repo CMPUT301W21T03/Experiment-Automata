@@ -25,6 +25,7 @@
     <string name="menu_published">Published Experiments</string>
     <string name="menu_search">Search Results</string>
     <string name="menu_profile">Profile</string>
+    <string name="menu_experiment_details">Experiment Details</string>
     <string name="search">Search</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

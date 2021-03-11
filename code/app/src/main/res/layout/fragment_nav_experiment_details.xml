@@ -36,7 +36,7 @@
         app:layout_constraintTop_toBottomOf="@+id/nav_experiment_details_description" />
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/nav_fragment_experiment_detail_view_edit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -55,7 +55,7 @@
         android:layout_marginRight="16dp"
         android:src="@android:drawable/ic_menu_mapmode"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton2" />
+        app:layout_constraintTop_toBottomOf="@+id/nav_fragment_experiment_detail_view_edit_button" />
 
     <ImageButton
         android:id="@+id/imageButton4"

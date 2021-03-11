@@ -30,6 +30,7 @@ public class NavExperimentDetailsFragment extends Fragment {
     private String description;
     private TextView descriptionView;
     private TextView typeView;
+    private ImageButton editImageButton;
 
     public NavExperimentDetailsFragment() {
         // Required empty public constructor
@@ -68,6 +69,8 @@ public class NavExperimentDetailsFragment extends Fragment {
         getArguments();
         descriptionView = root.findViewById(R.id.nav_experiment_details_description);
         typeView = root.findViewById(R.id.nav_experiment_details_experiment_type);
+        editImageButton = root.findViewById(R.id.nav_fragment_experiment_detail_view_edit_button);
+
         if (experimentStringId == null)
             Log.d(ERROR_LOG_VALUE, "Should never happen");
         else
@@ -80,8 +83,18 @@ public class NavExperimentDetailsFragment extends Fragment {
                 descriptionView.setText(current.getDescription());
                 typeView.setText("" + current.getType());
             }
-            Log.d("TEST_A", "" + experimentStringId);
+            else
+                Log.d(ERROR_LOG_VALUE, "-- DATA CORRUPT" + experimentStringId);
         }
+
+        editImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // deletes the old on and replaces it with the edited
+                //new AddExperimentFragment().show((getActivity()).getSupportFragmentManager(), "ADD_EXPERIMENT");
+            }
+        });
+
 
 
         return root;

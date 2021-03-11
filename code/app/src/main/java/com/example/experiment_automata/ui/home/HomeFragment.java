@@ -50,18 +50,18 @@ public class HomeFragment extends Fragment {
         experimentList.setAdapter(experimentArrayAdapter);
 
 
-        ((ListView) root.findViewById(R.id.experiment_list)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        ((ListView) root.findViewById(R.id.experiment_list)).setOnItemClickListener((parent, view, position, id) -> {
 
-                String experimentID  = ((TextView)view.findViewById(R.id.experiment__id)).getText().toString();
-                Bundle bundle = new Bundle();
-                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
-                bundle.putString(NavExperimentDetailsFragment.CURRENT_EXPERIMENT_ID, experimentID);
+            String experimentID  = ((TextView)view.findViewById(R.id.experiment__id)).getText().toString();
+            Bundle bundle = new Bundle();
+            NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+            bundle.putString(NavExperimentDetailsFragment.CURRENT_EXPERIMENT_ID, experimentID);
 
-                
+            bundle.putString(NavExperimentDetailsFragment.CURRENT_EXPERIMENT_ID, experimentID);
 
-            }
+            //nav_experiment_details
+            navController.navigate(R.id.nav_experiment_details);
+
         });
 
         return root;

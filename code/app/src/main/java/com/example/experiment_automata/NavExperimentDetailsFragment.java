@@ -52,12 +52,18 @@ public class NavExperimentDetailsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             Bundle savedInstanceState)
+    {
         View root = inflater.inflate(R.layout.fragment_nav_experiment_details, container, false);
 
-        String experimentID = savedInstanceState.getString(NavExperimentDetailsFragment.CURRENT_EXPERIMENT_ID);
+        String experimentID = null;
+        if (savedInstanceState == null)
+            Log.d("TEST_F", "failed");
+        else
+             experimentID = getArguments().getString(NavExperimentDetailsFragment.CURRENT_EXPERIMENT_ID);
 
-        Log.d("TEST_T", experimentID);
+        Log.d("TEST_T", "x" + experimentID);
+
         return root;
     }
 }

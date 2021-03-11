@@ -60,7 +60,7 @@ public class HomeFragment extends Fragment {
             bundle.putString(NavExperimentDetailsFragment.CURRENT_EXPERIMENT_ID, experimentID);
 
             //nav_experiment_details
-            navController.navigate(R.id.nav_experiment_details);
+            navController.navigate(R.id.nav_experiment_details, bundle);
 
         });
 

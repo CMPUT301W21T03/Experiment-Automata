@@ -1,13 +1,17 @@
 package com.example.experiment_automata;
 
+import com.example.experiment_automata.trials.MeasurementTrial;
+
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.UUID;
 
 /**
  * Holds the information needed to maintain a measurement experiment
  */
+public class MeasurementExperiment extends Experiment {
+    private Collection<MeasurementTrial> results;
 
-public class MeasurementExperiment extends Experiment
-{
     /**
      * Default constructor for Measurement Experiment with just a description
      * @param description
@@ -15,6 +19,7 @@ public class MeasurementExperiment extends Experiment
      */
     public MeasurementExperiment(String description) {
         super(description);
+        results = new ArrayList<>();
     }
 
     /**
@@ -30,10 +35,15 @@ public class MeasurementExperiment extends Experiment
      */
     public MeasurementExperiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId) {
         super(description, minTrials, requireLocation, acceptNewResults, ownerId, ExperimentType.Measurement);
+        results = new ArrayList<>();
     }
 
-    @Override
-    public void stub() {
-
+    /**
+     * Record a trial.
+     * @param trial
+     *  the trail to add
+     */
+    public void recordTrial(MeasurementTrial trial) {
+        results.add(trial);
     }
 }

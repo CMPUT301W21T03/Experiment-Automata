@@ -1,12 +1,17 @@
 package com.example.experiment_automata;
 
+import com.example.experiment_automata.trials.BinomialTrial;
+
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.UUID;
 
 /**
  * Holds the main data needed for a binomial data
  */
-public class BinomialExperiment extends Experiment
-{
+public class BinomialExperiment extends Experiment {
+    private Collection<BinomialTrial> results;
+
     /**
      * Default constructor for Binomial Experiment with just a description
      * @param description
@@ -14,6 +19,7 @@ public class BinomialExperiment extends Experiment
      */
     public BinomialExperiment(String description) {
         super(description);
+        results = new ArrayList<>();
     }
 
     /**
@@ -29,10 +35,15 @@ public class BinomialExperiment extends Experiment
      */
     public BinomialExperiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId) {
         super(description, minTrials, requireLocation, acceptNewResults, ownerId, ExperimentType.Binomial);
+        results = new ArrayList<>();
     }
 
-    @Override
-    public void stub() {
-
+    /**
+     * Record a trial.
+     * @param trial
+     *  the trail to add
+     */
+    public void recordTrial(BinomialTrial trial) {
+        results.add(trial);
     }
 }

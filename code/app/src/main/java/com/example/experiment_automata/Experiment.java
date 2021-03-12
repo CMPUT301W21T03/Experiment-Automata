@@ -73,8 +73,6 @@ public abstract class Experiment implements Serializable {
         return experimentId.equals(experiment.experimentId);
     }
 
-    public abstract void stub();
-
     /**
      * Adds userID to the list so that each experiment knows which users can participate in them
      * @param userId UserID to be added to the experiment

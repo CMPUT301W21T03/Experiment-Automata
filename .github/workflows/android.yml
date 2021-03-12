@@ -25,5 +25,5 @@ jobs:
       run: chmod +x gradlew
       working-directory: code
     - name: Test with Gradle
-      run: ./gradlew testDebugUnitTest
+      run: ./gradlew test
       working-directory: code

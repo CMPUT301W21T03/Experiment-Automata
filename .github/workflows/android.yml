@@ -17,7 +17,5 @@ jobs:
         java-version: 1.8
     - name: Grant execute permission for gradlew
       run: cd ./code && chmod +x gradlew
-    - name: Build with Gradle
-      run: cd ./code && ./gradlew build
-    - name: Test with Gradle
+    - name: Tasks with Gradle
       run: cd ./code && ./gradlew tasks

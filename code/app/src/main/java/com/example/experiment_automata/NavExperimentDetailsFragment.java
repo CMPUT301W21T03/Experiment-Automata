@@ -3,6 +3,8 @@ package com.example.experiment_automata;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -97,11 +99,8 @@ public class NavExperimentDetailsFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(AddExperimentFragment.ADD_EXPERIMENT_CURRENT_VALUE, finalCurrent);
                 editExperiment.setArguments(bundle);
-                getActivity().getSupportFragmentManager().beginTransaction().add(editExperiment,"EDIT").commit();
-                getActivity().getSupportFragmentManager().popBackStack();
-                //(gotten from https://stackoverflow.com/questions/20812922/how-to-close-the-current-fragment-by-using-button-like-the-back-button)
-                // COMMENTER: https://stackoverflow.com/users/2810515/wun
-                // EDITOR: https://stackoverflow.com/users/1179638/atul-bhardwaj
+                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                navController.navigate(R.id.nav_owned_experiments);
             }
         });
 

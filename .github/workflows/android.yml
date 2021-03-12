@@ -16,6 +16,8 @@ jobs:
       with:
         java-version: 1.8
     - name: Grant execute permission for gradlew
-      run: cd ./code && chmod +x gradlew
+      run: chmod +x gradlew
+      working-directory: code
     - name: Test with Gradle
-      run: cd ./code && ./gradlew test
+      run: ./gradlew test
+      working-directory: code

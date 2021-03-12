@@ -23,3 +23,5 @@ jobs:
       run: ls && chmod +x code/gradlew
     - name: Build with Gradle
       run: ./code/gradlew build
+    - name: Test with Gradle
+      run: ./code/gradlew test

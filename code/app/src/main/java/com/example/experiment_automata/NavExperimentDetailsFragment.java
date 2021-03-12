@@ -3,9 +3,6 @@ package com.example.experiment_automata;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -65,12 +62,14 @@ public class NavExperimentDetailsFragment extends Fragment {
         if (getArguments() != null) {
             experimentStringId = getArguments().getString(CURRENT_EXPERIMENT_ID);
         }
+        NavigationActivity parentActivity = (NavigationActivity) getActivity();
+        parentActivity.setCurrentFragment(this);
+        parentActivity.setCurrentScreen(Screen.ExperimentDetails);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
+                             Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_nav_experiment_details, container, false);
         getArguments();
         descriptionView = root.findViewById(R.id.nav_experiment_details_description);
@@ -79,10 +78,7 @@ public class NavExperimentDetailsFragment extends Fragment {
 
         fragment = this;
 
-        if (experimentStringId == null)
-            Log.d(ERROR_LOG_VALUE, "Should never happen");
-        else
-        {
+        if (experimentStringId != null) {
             update(experimentStringId);
         }
 
@@ -90,29 +86,26 @@ public class NavExperimentDetailsFragment extends Fragment {
             Fragment editExperiment = new AddExperimentFragment();
             Bundle bundle = new Bundle();
             bundle.putSerializable(AddExperimentFragment.ADD_EXPERIMENT_CURRENT_VALUE,
-                    (((NavigationActivity)getActivity())
+                    (((NavigationActivity) getActivity())
                     .getExperimentManager())
                     .getAtUUIDDescription(UUID.fromString(experimentStringId)));
 
             editExperiment.setArguments(bundle);
             getActivity().getSupportFragmentManager().beginTransaction().add(editExperiment,"EDIT").commit();
-            ((HomeFragment)((NavigationActivity) getActivity()).currentFragment).updateScreen();
-            
-            update(experimentStringId);
         });
-
-
-
-
 
         return root;
     }
 
-    private void update(String experimentStringId)
-    {
+    private void update(String experimentStringId) {
+        Log.d("UPDATE", "Screen info updated");
         Experiment current = (((NavigationActivity)getActivity()).getExperimentManager())
                 .getAtUUIDDescription(UUID.fromString(experimentStringId));
         descriptionView.setText(current.getDescription());
         typeView.setText("" + current.getType());
+    }
+
+    public void updateScreen() {
+        update(experimentStringId);
     }
 }

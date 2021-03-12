@@ -4,14 +4,12 @@ import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.widget.SearchView;
 
 import com.example.experiment_automata.ui.home.HomeFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.fragment.app.Fragment;
@@ -122,13 +120,12 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
     @Override
     public void onOKPressedEdit(String experimentDescription, int experimentTrials,
                          boolean experimentLocation, boolean experimentNewResults,
-                         Experiment currentExperiment)
-    {
+                         Experiment currentExperiment) {
         currentExperiment.setDescription(experimentDescription);
         currentExperiment.setMinTrials(experimentTrials);
         currentExperiment.setRequireLocation(experimentLocation);
         currentExperiment.setActive(experimentNewResults);
-        ((HomeFragment) currentFragment).updateScreen();
+        ((NavExperimentDetailsFragment) currentFragment).updateScreen();
     }
 
     public void setCurrentScreen(Screen currentScreen) {

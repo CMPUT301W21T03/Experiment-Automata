@@ -20,12 +20,6 @@ public abstract class Experiment implements Serializable {
     private ExperimentType type; // todo: do we need type here if an experiment has a type? (yes makes it easy)
     private ArrayList<UUID> crowedExperimenter; // Experimenter id's
 
-
-    public Experiment() {
-        // Stub should do nothing of yet
-        // someone will build experiment class
-    }
-
     /**
      * Default experiment constructor that only asks for a description
      * @param description

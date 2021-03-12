@@ -57,4 +57,44 @@ public class ExperimentTest {
         experiment.setActive(false);
         assertThrows(IllegalStateException.class, () -> experiment.recordTrial(new MeasurementTrial(userId, 42.0f)));
     }
+
+    @Test
+    public void minTrials() {
+        int trials = 10;
+        Experiment experiment = maker.makeExperiment(ExperimentType.Count,
+                "Experiment", trials, false, false, userId);
+        assertEquals(trials, experiment.getMinTrials());
+        trials++;
+        experiment.setMinTrials(trials);
+        assertEquals(trials, experiment.getMinTrials());
+    }
+
+    @Test
+    public void publishing() {
+        Experiment experiment = maker.makeExperiment(ExperimentType.Count,
+                "Experiment", 0, false, false, userId);
+        assertFalse(experiment.isPublished());
+        experiment.setPublished(true);
+        assertTrue(experiment.isPublished());
+    }
+
+    @Test
+    public void description() {
+        String description = "The cake is a lie";
+        Experiment experiment = maker.makeExperiment(ExperimentType.Count,
+                description, 0, false, false, userId);
+        assertEquals(description, experiment.getDescription());
+        description = "Return to monke";
+        experiment.setDescription(description);
+        assertEquals(description, experiment.getDescription());
+    }
+
+    @Test
+    public void requireLocation() {
+        Experiment experiment = maker.makeExperiment(ExperimentType.Count,
+                "Experiment", 0, false, false, userId);
+        assertFalse(experiment.isRequireLocation());
+        experiment.setRequireLocation(true);
+        assertTrue(experiment.isRequireLocation());
+    }
 }

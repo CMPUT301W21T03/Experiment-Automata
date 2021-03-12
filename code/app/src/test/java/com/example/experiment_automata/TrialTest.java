@@ -16,6 +16,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TrialTest {
     private UUID userId;
@@ -47,7 +48,7 @@ public class TrialTest {
         Location loc = new Location(LocationManager.NETWORK_PROVIDER);
         assertNotNull(new BinomialTrial(userId, loc, false));
         BinomialTrial trial = new BinomialTrial(userId, true);
-        assertEquals(true, trial.getResult());
+        assertTrue(trial.getResult());
     }
 
     @Test

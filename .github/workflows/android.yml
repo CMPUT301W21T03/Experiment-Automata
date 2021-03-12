@@ -20,6 +20,6 @@ jobs:
         cd ./code
         ls
     - name: Grant execute permission for gradlew
-      run: chmod +x code/gradlew
+      run: ls && chmod +x code/gradlew
     - name: Build with Gradle
       run: ./code/gradlew build

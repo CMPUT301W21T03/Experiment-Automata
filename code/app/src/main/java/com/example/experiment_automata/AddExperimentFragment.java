@@ -46,6 +46,9 @@ public class AddExperimentFragment extends DialogFragment {
      */
     public interface OnFragmentInteractionListener {
         void onOkPressed(Experiment newExperiment);
+        void onOKPressedEdit(String experimentDescription, int experimentTrials,
+                             boolean experimentLocation, boolean experimentNewResults,
+                             Experiment currentExperiment);
     }
 
     /**
@@ -132,11 +135,9 @@ public class AddExperimentFragment extends DialogFragment {
                                 experimentTrials = Integer.parseInt(experimentTrialsString);
                             }
                             // Assuming you can't change the type of an experiment
-                            currentExperiment.setDescription(experimentDescription);
-                            currentExperiment.setMinTrials(experimentTrials);
-                            currentExperiment.setRequireLocation(experimentLocation);
-                            currentExperiment.setAcceptNewResults(experimentNewResults);
-                            listener.onOkPressed(currentExperiment);
+
+                            listener.onOKPressedEdit(experimentDescription, experimentTrials,
+                                    experimentLocation, experimentNewResults, currentExperiment);
                         }
                     }).create();
         }

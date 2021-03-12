@@ -112,18 +112,23 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
 
     @Override
     public void onOkPressed(Experiment experiment) {
-
-        if (experimentManager.getAtUUIDDescription(experiment.getExperimentId()) == null) {
-            experimentManager.add(experiment.getExperimentId(), experiment);
-            loggedUser.addExperiment(experiment.getExperimentId());
-        }
-        else
-        {
-            experimentManager.putExperimentAt(experiment.getExperimentId(), experiment);
-        }
+        experimentManager.add(experiment.getExperimentId(), experiment);
+        loggedUser.addExperiment(experiment.getExperimentId());
         if (currentScreen == Screen.ExperimentList) {
             ((HomeFragment) currentFragment).updateScreen();
         }
+    }
+
+    @Override
+    public void onOKPressedEdit(String experimentDescription, int experimentTrials,
+                         boolean experimentLocation, boolean experimentNewResults,
+                         Experiment currentExperiment)
+    {
+        currentExperiment.setDescription(experimentDescription);
+        currentExperiment.setMinTrials(experimentTrials);
+        currentExperiment.setRequireLocation(experimentLocation);
+        currentExperiment.setAcceptNewResults(experimentNewResults);
+        ((HomeFragment) currentFragment).updateScreen();
     }
 
     public void setCurrentScreen(Screen currentScreen) {

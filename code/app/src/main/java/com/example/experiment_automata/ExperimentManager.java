@@ -133,9 +133,4 @@ public class ExperimentManager
         }
         return false;
     }
-
-    public void putExperimentAt(UUID location, Experiment experiment)
-    {
-        experiments.put(location, experiment);
-    }
 }

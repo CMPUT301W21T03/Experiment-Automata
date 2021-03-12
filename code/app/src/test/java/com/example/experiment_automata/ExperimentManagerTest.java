@@ -24,23 +24,19 @@ public class ExperimentManagerTest {
         experiments = new ArrayList<>();
         experimentReferences = new ArrayList<>();
         userId = UUID.randomUUID();
-        try {
-            Experiment e = experimentMaker.makeExperiment(ExperimentType.Binomial,
-                    "Test Experiment First", 0, false, true, userId);
-            UUID id = e.getExperimentId();
-            experimentReferences.add(id);
-            experiments.add(e);
-            experimentManager.add(id, e);
+        Experiment e = experimentMaker.makeExperiment(ExperimentType.Binomial,
+                "Test Experiment First", 0, false, true, userId);
+        UUID id = e.getExperimentId();
+        experimentReferences.add(id);
+        experiments.add(e);
+        experimentManager.add(id, e);
 
-            e = experimentMaker.makeExperiment(ExperimentType.Binomial,
-                    "Test Experiment Second", 0, true, false, UUID.randomUUID());
-            id = e.getExperimentId();
-            experimentReferences.add(e.getExperimentId());
-            experiments.add(e);
-            experimentManager.add(id, e);
-        } catch (IllegalExperimentException e) {
-            fail(e);
-        }
+        e = experimentMaker.makeExperiment(ExperimentType.Binomial,
+                "Test Experiment Second", 0, true, false, UUID.randomUUID());
+        id = e.getExperimentId();
+        experimentReferences.add(e.getExperimentId());
+        experiments.add(e);
+        experimentManager.add(id, e);
     }
 
     @Test

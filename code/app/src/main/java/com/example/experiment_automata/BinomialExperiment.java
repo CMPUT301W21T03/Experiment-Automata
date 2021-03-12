@@ -44,6 +44,10 @@ public class BinomialExperiment extends Experiment {
      *  the trail to add
      */
     public void recordTrial(BinomialTrial trial) {
-        results.add(trial);
+        if (active) {
+            results.add(trial);
+        } else {
+            throw new IllegalStateException("Experiment is not accepting new results.");
+        }
     }
 }

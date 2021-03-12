@@ -14,10 +14,9 @@ public abstract class Experiment implements Serializable {
     private int minTrials;
     private UUID experimentId; // changed from UML to better match project
     private UUID ownerId; // // changed from UML to better match project
-    private boolean active; // changed from UML for style
+    protected boolean active; // changed from UML for style
     private boolean published; // changed from UML for style
     private boolean requireLocation; // added to align with storyboard
-    boolean acceptNewResults; // Will need to be removed later
     private ExperimentType type; // todo: do we need type here if an experiment has a type? (yes makes it easy)
     private ArrayList<UUID> crowedExperimenter; // Experimenter id's
 
@@ -164,6 +163,7 @@ public abstract class Experiment implements Serializable {
     public int getMinTrials() {
         return minTrials;
     }
+
     public boolean isRequireLocation() {
         return requireLocation;
     }

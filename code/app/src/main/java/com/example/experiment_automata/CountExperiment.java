@@ -45,6 +45,10 @@ public class CountExperiment extends Experiment {
      *  the trail to add
      */
     public void recordTrial(CountTrial trial) {
-        results.add(trial);
+        if (active) {
+            results.add(trial);
+        } else {
+            throw new IllegalStateException("Experiment is not accepting new results.");
+        }
     }
 }

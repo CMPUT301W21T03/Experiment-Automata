@@ -7,14 +7,22 @@ import java.util.UUID;
 public class NaturalCountTrial extends Trial {
     private int result;
 
-    public NaturalCountTrial(UUID collector, int result) {
+    public NaturalCountTrial(UUID collector, int result) throws IllegalArgumentException {
         super(collector);
-        this.result = result;
+        if (result >= 0) {
+            this.result = result;
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
-    public NaturalCountTrial(UUID collector, Location location, int result) {
+    public NaturalCountTrial(UUID collector, Location location, int result) throws IllegalArgumentException {
         super(collector, location);
-        this.result = result;
+        if (result >= 0) {
+            this.result = result;
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     public int getResult() {

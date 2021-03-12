@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/test"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NavExperimentDetailsFragment">
+
+
+    <TextView
+        android:id="@+id/nav_experiment_details_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:text="@string/description"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textColorHighlight="#000000"
+        android:textColorLink="#000000"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/nav_fragment_experiment_detail_view_qa_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/nav_experiment_details_experiment_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="9dp"
+        android:text="TextView"
+        android:textColor="?android:attr/textColorSecondary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nav_experiment_details_description" />
+
+    <ImageButton
+        android:id="@+id/nav_fragment_experiment_detail_view_edit_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_baseline_edit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/nav_fragment_experiment_detail_view_map_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_baseline_map"
+        app:layout_constraintEnd_toStartOf="@+id/nav_fragment_experiment_detail_view_edit_button"
+        app:layout_constraintTop_toTopOf="@+id/nav_fragment_experiment_detail_view_edit_button" />
+
+    <ImageButton
+        android:id="@+id/nav_fragment_experiment_detail_view_qr_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_baseline_qr_code_scanner"
+        app:layout_constraintEnd_toStartOf="@+id/nav_fragment_experiment_detail_view_map_button"
+        app:layout_constraintTop_toTopOf="@+id/nav_fragment_experiment_detail_view_map_button" />
+
+    <ImageButton
+        android:id="@+id/nav_fragment_experiment_detail_view_qa_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_baseline_sms"
+        app:layout_constraintEnd_toStartOf="@+id/nav_fragment_experiment_detail_view_qr_button"
+        app:layout_constraintTop_toTopOf="@+id/nav_fragment_experiment_detail_view_qr_button" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

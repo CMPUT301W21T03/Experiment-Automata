@@ -58,6 +58,7 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
         TextView name = view.findViewById(R.id.experimentName);
         TextView owner = view.findViewById(R.id.experimentOwner);
         TextView active = view.findViewById(R.id.experimentActivity);
+        TextView experimentID = view.findViewById(R.id.experiment__id);
 
         // Set the name of the experiment accordingly
         UUID oid = exp.getOwnerId();
@@ -73,6 +74,9 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
             active.setText("Inactive");
             active.setTextColor(Color.RED);
         }
+
+        // Set the experiment id
+        experimentID.setText(exp.getExperimentId().toString());
 
         return view;
     }

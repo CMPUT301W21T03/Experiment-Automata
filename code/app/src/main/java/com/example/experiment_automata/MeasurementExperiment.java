@@ -29,7 +29,7 @@ public class MeasurementExperiment extends Experiment
      *   a boolean for if the experiment is accepting new results
      */
     public MeasurementExperiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId) {
-        super(description, minTrials, requireLocation, acceptNewResults, ownerId);
+        super(description, minTrials, requireLocation, acceptNewResults, ownerId, ExperimentType.Measurement);
     }
 
     @Override

@@ -28,11 +28,12 @@
         android:paddingLeft="10dp" />
 
     <TextView
-        android:paddingTop="10dp"
-        android:paddingLeft="10dp"
+        android:id="@+id/add_experiment_fragment_trial_type_prompt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Trial Type:"/>
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:text="Trial Type:" />
 
     <!--Shadow on Spinner found on stackoverflow from user45678 on June 6, 2017-->
     <!--https://stackoverflow.com/questions/44387373/how-to-add-shadow-in-dropdown-spinner-in-android -->

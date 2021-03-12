@@ -1,25 +1,34 @@
 package com.example.experiment_automata.ui.home;
 
+import android.app.Activity;
+import android.os.Binder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.example.experiment_automata.Experiment;
+import com.example.experiment_automata.NavExperimentDetailsFragment;
 import com.example.experiment_automata.NavigationActivity;
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.Screen;
 import com.example.experiment_automata.ExperimentListAdapter;
 
+
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class HomeFragment extends Fragment {
 
@@ -41,6 +50,22 @@ public class HomeFragment extends Fragment {
         populateList();
         experimentArrayAdapter = new ExperimentListAdapter(getActivity(), experimentsArrayList);
         experimentList.setAdapter(experimentArrayAdapter);
+
+        Bundle bundle = new Bundle();
+        NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+
+        ((ListView) root.findViewById(R.id.experiment_list)).setOnItemClickListener((parent, view, position, id) -> {
+
+            String experimentID  = ((TextView)view.findViewById(R.id.experiment__id)).getText().toString();
+            // String values
+            bundle.putString(NavExperimentDetailsFragment.CURRENT_EXPERIMENT_ID, experimentID);
+
+            //nav_experiment_details
+            navController.navigate(R.id.nav_experiment_details, bundle);
+
+
+        });
+
         return root;
     }
 

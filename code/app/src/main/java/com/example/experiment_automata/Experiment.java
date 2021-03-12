@@ -17,8 +17,8 @@ public abstract class Experiment implements Serializable {
     private boolean active; // changed from UML for style
     private boolean published; // changed from UML for style
     private boolean requireLocation; // added to align with storyboard
-    private boolean acceptNewResults; // added to align with storyboard
-    private ExperimentType type; // todo: do we need type here if an experiment has a type?
+    boolean acceptNewResults; // Will need to be removed later
+    private ExperimentType type; // todo: do we need type here if an experiment has a type? (yes makes it easy)
     private ArrayList<UUID> crowedExperimenter; // Experimenter id's
 
 
@@ -50,16 +50,16 @@ public abstract class Experiment implements Serializable {
      * @param acceptNewResults
      *   a boolean for whether this trial should be accepting new requests or not
      */
-    public Experiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId) {
+    public Experiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId, ExperimentType type) {
         this.description = description;
         this.minTrials = minTrials;
         this.requireLocation = requireLocation;
-        this.acceptNewResults = acceptNewResults;
         this.published = false;
         this.active = acceptNewResults;
         this.ownerId = ownerId;
         this.experimentId = UUID.randomUUID();
         this.crowedExperimenter = new ArrayList<>();
+        this.type = type;
     }
 
     /**
@@ -136,4 +136,38 @@ public abstract class Experiment implements Serializable {
      *  Boolean whether the experiment is published or not
      */
     public void setPublished(boolean p) { published = p; }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setMinTrials(int minTrials) {
+        this.minTrials = minTrials;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public void setRequireLocation(boolean requireLocation) {
+        this.requireLocation = requireLocation;
+    }
+
+    /**
+     * get the current experiments set type
+     * @return
+     *  current experiments type
+     */
+    public ExperimentType getType()
+    {
+        return type;
+    }
+
+    public int getMinTrials() {
+        return minTrials;
+    }
+    public boolean isRequireLocation() {
+        return requireLocation;
+    }
+
 }

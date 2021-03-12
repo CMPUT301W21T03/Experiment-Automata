@@ -4,14 +4,12 @@ import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.widget.SearchView;
 
 import com.example.experiment_automata.ui.home.HomeFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.fragment.app.Fragment;
@@ -29,7 +27,7 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
     public final ExperimentManager experimentManager = new ExperimentManager();
 
     private Screen currentScreen;
-    private Fragment currentFragment;
+    public Fragment currentFragment;
     public final User loggedUser = new User();
 
     @Override
@@ -119,6 +117,17 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
         }
     }
 
+    @Override
+    public void onOKPressedEdit(String experimentDescription, int experimentTrials,
+                         boolean experimentLocation, boolean experimentNewResults,
+                         Experiment currentExperiment) {
+        currentExperiment.setDescription(experimentDescription);
+        currentExperiment.setMinTrials(experimentTrials);
+        currentExperiment.setRequireLocation(experimentLocation);
+        currentExperiment.setActive(experimentNewResults);
+        ((NavExperimentDetailsFragment) currentFragment).updateScreen();
+    }
+
     public void setCurrentScreen(Screen currentScreen) {
         this.currentScreen = currentScreen;
     }
@@ -126,4 +135,10 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
     public void setCurrentFragment(Fragment currentFragment) {
         this.currentFragment = currentFragment;
     }
+
+    public ExperimentManager getExperimentManager()
+    {
+        return experimentManager;
+    }
+
 }

@@ -16,6 +16,7 @@ public class ExperimentManager
 {
     private static HashMap<UUID, Experiment> experiments;
 
+
     /**
      * Initializes the experiment manager.
      */
@@ -36,8 +37,9 @@ public class ExperimentManager
     public void add(UUID id, Experiment experiment) throws IllegalArgumentException {
         if(experiments.containsKey(id))
             throw new IllegalArgumentException();
-        else
+        else {
             experiments.put(id, experiment);
+        }
     }
 
     /**
@@ -96,6 +98,18 @@ public class ExperimentManager
             }
         }
         return experimentsList;
+    }
+
+    /**
+     * returns the experiments current UUID
+     *
+     * @param experimentUUID : the uuid of the experiment we want to get back
+     * @return
+     *  the experiment containing the given uuid
+     */
+    public Experiment getAtUUIDDescription(UUID experimentUUID)
+    {
+        return experiments.get(experimentUUID);
     }
 
     public ArrayList<Experiment> queryExperiments(String query) {

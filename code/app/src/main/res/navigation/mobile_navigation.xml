@@ -26,6 +26,9 @@
             android:name="mode"
             app:argType="string"
             android:defaultValue="owned" />
+        <action
+            android:id="@+id/action_nav_owned_experiments_to_nav_experiment_details"
+            app:destination="@id/nav_experiment_details" />
     </fragment>
 
     <fragment
@@ -80,4 +83,9 @@
         android:name="com.example.experiment_automata.ui.profile.ProfileFragment"
         android:label="@string/menu_profile"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/nav_experiment_details"
+        android:name="com.example.experiment_automata.NavExperimentDetailsFragment"
+        android:label="@string/menu_experiment_details"
+        tools:layout="@layout/fragment_nav_experiment_details" />
 </navigation>

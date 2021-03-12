@@ -1,7 +1,8 @@
 package com.example.experiment_automata;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.function.ThrowingRunnable;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -16,7 +17,7 @@ public class ExperimentManagerTest {
     ArrayList<UUID> experimentReferences;
     UUID userId;
 
-    @Before
+    @BeforeEach
     public void setup() {
         ExperimentMaker experimentMaker = new ExperimentMaker();
         experimentManager = new ExperimentManager();
@@ -49,9 +50,11 @@ public class ExperimentManagerTest {
         assertEquals(experiments.get(1),
                 experimentManager.queryExperiments(experimentReferences).get(1));
         assertEquals(2, experimentManager.getSize());
-        Experiment e = experiments.get(0);
-        assertThrows(IllegalArgumentException.class,
-                () -> experimentManager.add(e.getExperimentId(), e));
+        Experiment experiment = experiments.get(0);
+        try {
+            experimentManager.add(experiment.getExperimentId(), experiment);
+            fail("Duplicate Experiment ID was not detected as a duplicate");
+        } catch (IllegalArgumentException e) {}
     }
 
     @Test

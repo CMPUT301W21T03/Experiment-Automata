@@ -35,6 +35,6 @@ class SubscriptionTest {
         }
          */
         //TODO: Fix unit test
-        assert false;
+        assertEquals(1, 0);
     }
 }

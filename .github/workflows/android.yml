@@ -19,7 +19,7 @@ jobs:
       env:
         FIREBASE_SECRET: ${{ secrets.FIREBASE_SECRET }}
       run:
-        echo $FIREBASE_SECRET > app/google/google-services.json
+        echo $FIREBASE_SECRET > app/google-services.json
       working-directory: code
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew

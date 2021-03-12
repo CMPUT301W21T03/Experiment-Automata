@@ -17,7 +17,7 @@ public abstract class Experiment implements Serializable {
     private boolean active; // changed from UML for style
     private boolean published; // changed from UML for style
     private boolean requireLocation; // added to align with storyboard
-    private boolean acceptNewResults; // added to align with storyboard
+    boolean acceptNewResults; // Will need to be removed later
     private ExperimentType type; // todo: do we need type here if an experiment has a type? (yes makes it easy)
     private ArrayList<UUID> crowedExperimenter; // Experimenter id's
 
@@ -54,7 +54,6 @@ public abstract class Experiment implements Serializable {
         this.description = description;
         this.minTrials = minTrials;
         this.requireLocation = requireLocation;
-        this.acceptNewResults = acceptNewResults;
         this.published = false;
         this.active = acceptNewResults;
         this.ownerId = ownerId;
@@ -154,10 +153,6 @@ public abstract class Experiment implements Serializable {
         this.requireLocation = requireLocation;
     }
 
-    public void setAcceptNewResults(boolean acceptNewResults) {
-        this.acceptNewResults = acceptNewResults;
-    }
-
     /**
      * get the current experiments set type
      * @return
@@ -167,4 +162,12 @@ public abstract class Experiment implements Serializable {
     {
         return type;
     }
+
+    public int getMinTrials() {
+        return minTrials;
+    }
+    public boolean isRequireLocation() {
+        return requireLocation;
+    }
+
 }

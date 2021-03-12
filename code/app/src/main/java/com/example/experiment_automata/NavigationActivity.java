@@ -29,7 +29,7 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
     public final ExperimentManager experimentManager = new ExperimentManager();
 
     private Screen currentScreen;
-    private Fragment currentFragment;
+    public Fragment currentFragment;
     public final User loggedUser = new User();
 
     @Override

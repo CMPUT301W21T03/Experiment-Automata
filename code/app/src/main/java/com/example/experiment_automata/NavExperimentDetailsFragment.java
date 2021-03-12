@@ -3,6 +3,7 @@ package com.example.experiment_automata;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -12,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.example.experiment_automata.ui.home.HomeFragment;
 
 import java.util.UUID;
 
@@ -33,6 +36,8 @@ public class NavExperimentDetailsFragment extends Fragment {
     private TextView descriptionView;
     private TextView typeView;
     private ImageButton editImageButton;
+
+    private Fragment fragment;
 
     public NavExperimentDetailsFragment() {
         // Required empty public constructor
@@ -67,46 +72,47 @@ public class NavExperimentDetailsFragment extends Fragment {
                              Bundle savedInstanceState)
     {
         View root = inflater.inflate(R.layout.fragment_nav_experiment_details, container, false);
-        Experiment current = null;
         getArguments();
         descriptionView = root.findViewById(R.id.nav_experiment_details_description);
         typeView = root.findViewById(R.id.nav_experiment_details_experiment_type);
         editImageButton = root.findViewById(R.id.nav_fragment_experiment_detail_view_edit_button);
 
+        fragment = this;
+
         if (experimentStringId == null)
             Log.d(ERROR_LOG_VALUE, "Should never happen");
         else
         {
-            current = (((NavigationActivity)getActivity()).getExperimentManager())
-                    .getAtUUIDDescription(UUID.fromString(experimentStringId));
-
-            if(current != null)
-            {
-                descriptionView.setText(current.getDescription());
-                typeView.setText("" + current.getType());
-            }
-            else
-                Log.d(ERROR_LOG_VALUE, "-- DATA CORRUPT" + experimentStringId);
+            update(experimentStringId);
         }
 
-        Experiment finalCurrent = current;
-        editImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // deletes the old on and replaces it with the edited
-                //new AddExperimentFragment().show((getActivity()).getSupportFragmentManager(), "ADD_EXPERIMENT");
-                Fragment editExperiment = new AddExperimentFragment();
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(AddExperimentFragment.ADD_EXPERIMENT_CURRENT_VALUE, finalCurrent);
-                editExperiment.setArguments(bundle);
-                getActivity().getSupportFragmentManager().beginTransaction().add(editExperiment,"EDIT").commit();
-                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
-                navController.navigate(R.id.nav_owned_experiments);
-            }
+        editImageButton.setOnClickListener(v -> {
+            Fragment editExperiment = new AddExperimentFragment();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(AddExperimentFragment.ADD_EXPERIMENT_CURRENT_VALUE,
+                    (((NavigationActivity)getActivity())
+                    .getExperimentManager())
+                    .getAtUUIDDescription(UUID.fromString(experimentStringId)));
+
+            editExperiment.setArguments(bundle);
+            getActivity().getSupportFragmentManager().beginTransaction().add(editExperiment,"EDIT").commit();
+            ((HomeFragment)((NavigationActivity) getActivity()).currentFragment).updateScreen();
+            
+            update(experimentStringId);
         });
 
 
 
+
+
         return root;
+    }
+
+    private void update(String experimentStringId)
+    {
+        Experiment current = (((NavigationActivity)getActivity()).getExperimentManager())
+                .getAtUUIDDescription(UUID.fromString(experimentStringId));
+        descriptionView.setText(current.getDescription());
+        typeView.setText("" + current.getType());
     }
 }

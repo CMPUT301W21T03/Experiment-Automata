@@ -115,6 +115,11 @@ public class AddExperimentFragment extends DialogFragment {
             (view.findViewById(R.id.add_experiment_fragment_trial_type_prompt)).setVisibility(View.GONE);
             (view.findViewById(R.id.experiment_type_spinner)).setVisibility(View.GONE);
 
+            description.setText(currentExperiment.getDescription());
+            requireLocation.setChecked(currentExperiment.isRequireLocation());
+            acceptNewResults.setChecked(currentExperiment.isActive());
+            minTrials.setText("" + currentExperiment.getMinTrials());
+
             return build.setView(view).setTitle("Edit Experiment")
                     .setNegativeButton("Cancel", null)
                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {

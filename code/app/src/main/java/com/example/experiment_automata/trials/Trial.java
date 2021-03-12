@@ -1,4 +1,4 @@
-package com.example.experiment_automata;
+package com.example.experiment_automata.trials;
 
 import android.location.Location;
 

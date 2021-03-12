@@ -99,6 +99,7 @@ public class NavExperimentDetailsFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(AddExperimentFragment.ADD_EXPERIMENT_CURRENT_VALUE, finalCurrent);
                 editExperiment.setArguments(bundle);
+                getActivity().getSupportFragmentManager().beginTransaction().add(editExperiment,"EDIT").commit();
                 NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
                 navController.navigate(R.id.nav_owned_experiments);
             }

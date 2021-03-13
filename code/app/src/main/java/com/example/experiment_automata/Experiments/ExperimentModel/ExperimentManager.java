@@ -120,6 +120,13 @@ public class ExperimentManager
         return experiments.get(experimentUUID);
     }
 
+    /**
+     *  gives back a list of experiments that match a search term given by the
+     *  user.
+     * @param query
+     * @return
+     *  A list of experiments that match the given query.
+     */
     public ArrayList<Experiment> queryExperiments(String query) {
         ArrayList experimentsList = new ArrayList<Experiment>();
         for (Map.Entry<UUID, Experiment> entry : experiments.entrySet()) {

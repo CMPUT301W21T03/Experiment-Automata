@@ -1,7 +1,12 @@
 package com.example.experiment_automata.UserInformation;
 
 /**
- * The contact information of a user.
+ * Role/Pattern:
+ *     The contact information of a user.
+ *
+ *  Known Issue:
+ *
+ *      1. None
  */
 public class ContactInformation {
     private String name;

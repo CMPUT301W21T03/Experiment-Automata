@@ -26,6 +26,15 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+/**
+ * Role/Pattern:
+ *     The main launch activity where everything is being held and maintained. 
+ *
+ *  Known Issue:
+ *
+ *      1. None
+ */
+
 public class NavigationActivity extends AppCompatActivity implements AddExperimentFragment.OnFragmentInteractionListener {
 
     private AppBarConfiguration mAppBarConfiguration;

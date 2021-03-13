@@ -16,7 +16,12 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * This is the user. Contains the information that represents a user.
+ * Role/Pattern:
+ *     This is the user. Contains the information that represents a user.
+ *
+ *  Known Issue:
+ *
+ *      1. None
  */
 public class User {
     private static String DEFAULT_UUID_STRING = "00000000-0000-0000-0000-000000000000";//move this to a constants class later

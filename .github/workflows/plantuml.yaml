@@ -33,4 +33,5 @@ jobs:
            author_name: ${{ secrets.GH_NAME }}
            author_email: ${{ secrets.GH_EMAIL }}
            message: 'Update UML image'
+           push: true 
          

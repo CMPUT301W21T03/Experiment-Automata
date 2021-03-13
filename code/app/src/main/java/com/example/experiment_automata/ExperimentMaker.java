@@ -17,22 +17,18 @@ public class ExperimentMaker
      * @throws IllegalExperimentException
      *   will be thrown if ExperimentType is an illegal type
      */
-    public Experiment makeExperiment(ExperimentType type, String description) throws IllegalExperimentException {
-        try {
-            switch (type) {
-                case NaturalCount:
-                    return new NaturalCountExperiment(description);
-                case Binomial:
-                    return new BinomialExperiment(description);
-                case Count:
-                    return new CountExperiment(description);
-                case Measurement:
-                    return new MeasurementExperiment(description);
-                default:
-                    throw new IllegalExperimentException("Bad Experiment Type: " + type.toString());
-            }
-        } catch (Exception e) {
-            throw new IllegalArgumentException();
+    public Experiment makeExperiment(ExperimentType type, String description) {
+        switch (type) {
+            case NaturalCount:
+                return new NaturalCountExperiment(description);
+            case Binomial:
+                return new BinomialExperiment(description);
+            case Count:
+                return new CountExperiment(description);
+            case Measurement:
+                return new MeasurementExperiment(description);
+            default:
+                return null;
         }
     }
 
@@ -55,22 +51,18 @@ public class ExperimentMaker
      */
     public Experiment makeExperiment(ExperimentType type, String description, int minTrials,
                                      boolean requireLocation, boolean acceptNewResults,
-                                     UUID ownerId) throws IllegalExperimentException {
-        try {
-            switch (type) {
-                case NaturalCount:
-                    return new NaturalCountExperiment(description, minTrials, requireLocation, acceptNewResults, ownerId);
-                case Binomial:
-                    return new BinomialExperiment(description, minTrials, requireLocation, acceptNewResults, ownerId);
-                case Count:
-                    return new CountExperiment(description, minTrials, requireLocation, acceptNewResults, ownerId);
-                case Measurement:
-                    return new MeasurementExperiment(description, minTrials, requireLocation, acceptNewResults, ownerId);
-                default:
-                    throw new IllegalExperimentException("Bad Experiment Type: " + type.toString());
-            }
-        } catch (Exception e) {
-            throw new IllegalArgumentException();
+                                     UUID ownerId) {
+        switch (type) {
+            case NaturalCount:
+                return new NaturalCountExperiment(description, minTrials, requireLocation, acceptNewResults, ownerId);
+            case Binomial:
+                return new BinomialExperiment(description, minTrials, requireLocation, acceptNewResults, ownerId);
+            case Count:
+                return new CountExperiment(description, minTrials, requireLocation, acceptNewResults, ownerId);
+            case Measurement:
+                return new MeasurementExperiment(description, minTrials, requireLocation, acceptNewResults, ownerId);
+            default:
+                return null;
         }
     }
 }

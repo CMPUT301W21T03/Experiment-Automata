@@ -1,13 +1,17 @@
 package com.example.experiment_automata;
 
+import com.example.experiment_automata.trials.NaturalCountTrial;
+
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.UUID;
 
 /**
  * Holds the information needed to maintain a natural count experiment
  */
+public class NaturalCountExperiment extends Experiment {
+    private Collection<NaturalCountTrial> results;
 
-public class NaturalCountExperiment extends Experiment
-{
     /**
      * Default constructor for Natural Count Experiment with just a description
      * @param description
@@ -15,6 +19,7 @@ public class NaturalCountExperiment extends Experiment
      */
     public NaturalCountExperiment(String description) {
         super(description);
+        results = new ArrayList<>();
     }
 
     /**
@@ -30,10 +35,19 @@ public class NaturalCountExperiment extends Experiment
      */
     public NaturalCountExperiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId) {
         super(description, minTrials, requireLocation, acceptNewResults, ownerId, ExperimentType.NaturalCount);
+        results = new ArrayList<>();
     }
 
-    @Override
-    public void stub() {
-
+    /**
+     * Record a trial.
+     * @param trial
+     *  the trail to add
+     */
+    public void recordTrial(NaturalCountTrial trial) {
+        if (active) {
+            results.add(trial);
+        } else {
+            throw new IllegalStateException("Experiment is not accepting new results.");
+        }
     }
 }

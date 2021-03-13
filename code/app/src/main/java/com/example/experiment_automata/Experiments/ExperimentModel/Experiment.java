@@ -4,8 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.UUID;
 
+
 /**
- * Class needed to maintain the type of experiments needed!
+ * Role/Pattern:
+ *       Base experiment class: the building blocks of all experiment types
+ *
+ * Known Issue:
+ *
+ *      1. None
  */
 public abstract class Experiment implements Serializable {
 

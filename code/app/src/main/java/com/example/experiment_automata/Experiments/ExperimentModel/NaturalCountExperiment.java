@@ -7,7 +7,12 @@ import java.util.Collection;
 import java.util.UUID;
 
 /**
- * Holds the information needed to maintain a natural count experiment
+ * Role/Pattern:
+ *     Holds the information needed to maintain a natural count experiment
+ *
+ *  Known Issue:
+ *
+ *      1. None
  */
 public class NaturalCountExperiment extends Experiment {
     private Collection<NaturalCountTrial> results;

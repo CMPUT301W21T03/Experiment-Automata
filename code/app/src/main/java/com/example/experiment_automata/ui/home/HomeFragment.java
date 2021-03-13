@@ -25,6 +25,15 @@ import com.example.experiment_automata.ExperimentFragments.ExperimentListAdapter
 
 import java.util.ArrayList;
 
+/**
+ * Role/Pattern:
+ *     Provides the main view control for when the user first enters the home screen.
+ *
+ *  Known Issue:
+ *
+ *      1. None
+ */
+
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;

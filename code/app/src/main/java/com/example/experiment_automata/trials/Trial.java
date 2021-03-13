@@ -5,6 +5,15 @@ import android.location.Location;
 import java.util.Date;
 import java.util.UUID;
 
+
+/**
+ * Role/Pattern:
+ *     The main trial type class of which the different trials are parts of.
+ *
+ *  Known Issue:
+ *
+ *      1. None
+ */
 public abstract class Trial {
     private UUID collector;
     private Location location;

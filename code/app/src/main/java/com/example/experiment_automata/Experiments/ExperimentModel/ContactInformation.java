@@ -1,4 +1,4 @@
-package com.example.experiment_automata;
+package com.example.experiment_automata.Experiments.ExperimentModel;
 
 /**
  * The contact information of a user.
@@ -17,7 +17,7 @@ public class ContactInformation {
      * @param phone
      * The phone number of the contact
      */
-    ContactInformation(String name, String email, String phone) {
+    public ContactInformation(String name, String email, String phone) {
         this.name = name;
         this.email = email;
         this.phone = phone;

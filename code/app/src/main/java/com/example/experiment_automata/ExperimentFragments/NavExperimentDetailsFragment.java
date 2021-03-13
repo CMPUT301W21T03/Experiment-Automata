@@ -1,4 +1,4 @@
-package com.example.experiment_automata;
+package com.example.experiment_automata.ExperimentFragments;
 
 import android.os.Bundle;
 
@@ -11,7 +11,10 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.example.experiment_automata.ui.home.HomeFragment;
+import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
+import com.example.experiment_automata.NavigationActivity;
+import com.example.experiment_automata.R;
+import com.example.experiment_automata.ui.Screen;
 
 import java.util.UUID;
 

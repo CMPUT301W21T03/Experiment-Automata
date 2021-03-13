@@ -1,4 +1,7 @@
-package com.example.experiment_automata;
+package com.example.experiment_automata.ExperimentFragments;
+
+import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
+import com.example.experiment_automata.UserInformation.User;
 
 import java.util.ArrayList;
 import java.util.Collection;

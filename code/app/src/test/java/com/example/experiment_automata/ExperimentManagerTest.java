@@ -1,6 +1,10 @@
 package com.example.experiment_automata;
 
-import org.junit.function.ThrowingRunnable;
+import com.example.experiment_automata.ExperimentFragments.ExperimentManager;
+import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
+import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentMaker;
+import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentType;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 

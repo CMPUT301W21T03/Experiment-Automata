@@ -1,4 +1,4 @@
-package com.example.experiment_automata;
+package com.example.experiment_automata.ExperimentFragments;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -10,6 +10,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
+import com.example.experiment_automata.R;
 
 import java.util.ArrayList;
 import java.util.UUID;

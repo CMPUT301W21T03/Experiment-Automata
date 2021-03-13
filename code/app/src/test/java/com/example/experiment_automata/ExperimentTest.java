@@ -1,5 +1,12 @@
 package com.example.experiment_automata;
 
+import com.example.experiment_automata.Experiments.ExperimentModel.BinomialExperiment;
+import com.example.experiment_automata.Experiments.ExperimentModel.CountExperiment;
+import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
+import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentMaker;
+import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentType;
+import com.example.experiment_automata.Experiments.ExperimentModel.MeasurementExperiment;
+import com.example.experiment_automata.Experiments.ExperimentModel.NaturalCountExperiment;
 import com.example.experiment_automata.trials.BinomialTrial;
 import com.example.experiment_automata.trials.CountTrial;
 import com.example.experiment_automata.trials.MeasurementTrial;

@@ -1,11 +1,19 @@
 package com.example.experiment_automata;
 
+import com.example.experiment_automata.Experiments.ExperimentModel.BinomialExperiment;
+import com.example.experiment_automata.Experiments.ExperimentModel.CountExperiment;
+import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
+import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentMaker;
+import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentType;
+import com.example.experiment_automata.Experiments.ExperimentModel.MeasurementExperiment;
+import com.example.experiment_automata.Experiments.ExperimentModel.NaturalCountExperiment;
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ExperimentMakerTest {
-    private  ExperimentMaker maker = new ExperimentMaker();
+    private ExperimentMaker maker = new ExperimentMaker();
 
     @Test
     void makeErrorNullInput() {

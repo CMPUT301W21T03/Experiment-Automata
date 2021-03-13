@@ -221,5 +221,10 @@ QuestionController o-- Reply
 
 StatSummary -- Experiment
 
+QuestionController o-- Experiment
+
+StatSummary o-- Trial
+
+
 
 @enduml

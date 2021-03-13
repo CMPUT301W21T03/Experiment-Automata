@@ -2,7 +2,6 @@ package com.example.experiment_automata;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,15 +84,13 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
             publishedCheckbox.setChecked(false);
         }
 
+        // use a listener to update the published status of experiments
         publishedCheckbox.setOnClickListener(v -> {
             boolean checked = ((CheckBox) v).isChecked();
             if (checked) {
                 exp.setPublished(true);
-                Log.d("CheckBoxClick", exp.isPublished() + "");
-                Log.d("ExperimentID", exp.getExperimentId() + "");
             } else {
                 exp.setPublished(false);
-                Log.d("CheckBoxClick", exp.isPublished() + "");
             }
         });
 

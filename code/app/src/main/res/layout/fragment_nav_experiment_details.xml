@@ -18,6 +18,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:text="@string/description"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="?android:attr/textColorPrimary"
         android:textColorHighlight="#000000"
         android:textColorLink="#000000"
@@ -35,6 +36,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="9dp"
         android:text="TextView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="?android:attr/textColorSecondary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nav_experiment_details_description" />
@@ -83,5 +85,33 @@
         android:src="@drawable/ic_baseline_sms"
         app:layout_constraintEnd_toStartOf="@+id/nav_fragment_experiment_detail_view_qr_button"
         app:layout_constraintTop_toTopOf="@+id/nav_fragment_experiment_detail_view_qr_button" />
+
+    <fragment
+        android:id="@+id/stats_fragment"
+        android:name="com.example.experiment_automata.StatisticsFragment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nav_experiment_details_experiment_type" />
+
+    <fragment
+        android:id="@+id/histogram_fragment"
+        android:name="com.example.experiment_automata.HistogramFragment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stats_fragment" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

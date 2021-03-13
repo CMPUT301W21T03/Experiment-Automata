@@ -1,4 +1,4 @@
-package com.example.experiment_automata.ExperimentFragments;
+package com.example.experiment_automata.Experiments.ExperimentModel;
 
 import android.util.Log;
 

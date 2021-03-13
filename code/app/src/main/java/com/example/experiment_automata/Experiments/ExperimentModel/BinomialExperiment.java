@@ -6,8 +6,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
+
 /**
- * Holds the main data needed for a binomial data
+ * Role/Pattern:
+ *      Holds the main data needed for a binomial experiment
+ *
+ * Known Issue:
+ *
+ *      1. None
  */
 public class BinomialExperiment extends Experiment {
     private Collection<BinomialTrial> results;

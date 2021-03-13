@@ -4,6 +4,11 @@ import com.example.experiment_automata.CustomExceptions.IllegalExperimentExcepti
 
 import java.util.UUID;
 
+/**
+ * This class is meant to make an experiment of the type the user want to take away the
+ * the works needed by other classes. This is of course using the factory pattern
+ * for the given experiments.
+ */
 public class ExperimentMaker
 {
     private String description; // Do we need this to have any attributes? can't we just create an experiment maker when needed?

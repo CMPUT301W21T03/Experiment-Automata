@@ -18,7 +18,13 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 /**
- * This class connects the experiment_layout XML file with the fragment_home.xml file
+ * Role/Pattern:
+ *
+ *      This class connects the experiment_layout XML file with the fragment_home.xml file
+ *
+ * Known Issue:
+ *
+ *      1. None
  */
 public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
     // Syntax inspired by Abdul Ali Bangash, "Lab 3 Instructions - Custom List",

@@ -1,4 +1,4 @@
-package com.example.experiment_automata.Experiments.ExperimentModel;
+package com.example.experiment_automata.UserInformation;
 
 /**
  * The contact information of a user.

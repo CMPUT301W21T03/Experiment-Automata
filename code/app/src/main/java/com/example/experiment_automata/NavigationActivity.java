@@ -8,7 +8,7 @@ import android.view.Menu;
 import android.widget.SearchView;
 
 import com.example.experiment_automata.ExperimentFragments.AddExperimentFragment;
-import com.example.experiment_automata.ExperimentFragments.ExperimentManager;
+import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentManager;
 import com.example.experiment_automata.ExperimentFragments.NavExperimentDetailsFragment;
 import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
 import com.example.experiment_automata.UserInformation.User;

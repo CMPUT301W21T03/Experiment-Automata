@@ -5,7 +5,7 @@ skinparam classAttributeIconSize 0
 ' note that experiments will likely be stored by user id instead of by all experiment info
 ' We could do hasing, but it's probably easier for now (for the UML sake) to represent this as a collection of experiments
 class Experimenter {
-    -userId: Integer
+    -userId: UUID
     -info: ContactInformation
     -controller: SearchController
     -ownedExperiments: Collection<Experiment>
@@ -56,17 +56,17 @@ enum ExperimentType {
 ' rational: for displaying info and searching we don't need the results, just the info
 ' both are implemented so whichever we don't use can just be deleted
 abstract class Experiment implements Graph {
-    -experimentId: Integer
+    -experimentId: UUID
     -description: String
     -minTrials: Integer
     -isActve: Boolean
     -isPublished: Boolean
-    -experimentId: int
+    -experimentId: UUID
     ' this is the userId of the owner
-    -ownerId: Integer
+    -ownerId: UUID
     -type: ExperimentType
     -crowdExperimenters: Collection<Integer>
-    +getExperimentId(): Integer
+    +getExperimentId(): UUID
 }
 
 
@@ -105,7 +105,7 @@ class StatSummary {
 ' each trial has a unique QRCode associated with it
 abstract class Trial {
     ' just going to user experimenter ID here
-    -collector: Integer
+    -collector: UUID
     -QRcode: QRCode
     -location: Optional<Location>
     -date: Date
@@ -220,6 +220,11 @@ QuestionController  o-- Question
 QuestionController o-- Reply
 
 StatSummary -- Experiment
+
+QuestionController o-- Experiment
+
+StatSummary o-- Trial
+
 
 
 @enduml

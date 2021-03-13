@@ -11,8 +11,14 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * Class made to maintain experiments that the users will make
+ * Role/Pattern:
+ *      Class made to maintain experiments that the users will make.
+ *      This class is the main Model for keeping the experiments
+ *      in their place while taking the work away from other classes.
  *
+ *  Known Issue:
+ *
+ *      1. None
  */
 public class ExperimentManager
 {

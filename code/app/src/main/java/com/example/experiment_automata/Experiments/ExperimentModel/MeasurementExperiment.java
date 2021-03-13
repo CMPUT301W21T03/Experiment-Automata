@@ -7,7 +7,12 @@ import java.util.Collection;
 import java.util.UUID;
 
 /**
- * Holds the information needed to maintain a measurement experiment
+ * Role/Pattern:
+ *      Holds the information needed to maintain a measurement experiment
+ *
+ *  Known Issue:
+ *
+ *      1. None
  */
 public class MeasurementExperiment extends Experiment {
     private Collection<MeasurementTrial> results;

@@ -42,6 +42,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/experimentName" />
 
+    <!-- Checkbox background found on stackoverflow by Rudi Kershaw and Christian Rathod-->
+    <!--Feb 11 2014, public domain -->
+    <!-- https://stackoverflow.com/questions/14023886/android-button-selector -->
     <CheckBox
         android:id="@+id/checkBox"
         android:layout_width="wrap_content"
@@ -50,6 +53,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:button="@drawable/published_icon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

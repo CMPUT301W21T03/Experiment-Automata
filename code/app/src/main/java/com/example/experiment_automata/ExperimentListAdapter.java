@@ -2,10 +2,12 @@ package com.example.experiment_automata;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -58,6 +60,7 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
         TextView name = view.findViewById(R.id.experimentName);
         TextView owner = view.findViewById(R.id.experimentOwner);
         TextView active = view.findViewById(R.id.experimentActivity);
+        CheckBox publishedCheckbox = view.findViewById(R.id.publishedCheckbox);
 
         // Set the name of the experiment accordingly
         UUID oid = exp.getOwnerId();
@@ -73,6 +76,26 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
             active.setText("Inactive");
             active.setTextColor(Color.RED);
         }
+
+        // Set the published status properly
+        boolean isPublished = exp.isPublished();
+        if (isPublished) {
+            publishedCheckbox.setChecked(true);
+        } else {
+            publishedCheckbox.setChecked(false);
+        }
+
+        publishedCheckbox.setOnClickListener(v -> {
+            boolean checked = ((CheckBox) v).isChecked();
+            if (checked) {
+                exp.setPublished(true);
+                Log.d("CheckBoxClick", exp.isPublished() + "");
+                Log.d("ExperimentID", exp.getExperimentId() + "");
+            } else {
+                exp.setPublished(false);
+                Log.d("CheckBoxClick", exp.isPublished() + "");
+            }
+        });
 
         return view;
     }

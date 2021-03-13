@@ -46,7 +46,7 @@
     <!--Feb 11 2014, public domain -->
     <!-- https://stackoverflow.com/questions/14023886/android-button-selector -->
     <CheckBox
-        android:id="@+id/checkBox"
+        android:id="@+id/publishedCheckbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"

@@ -1,4 +1,4 @@
-package com.example.experiment_automata;
+package com.example.experiment_automata.Experiments.ExperimentModel;
 
 import com.example.experiment_automata.trials.BinomialTrial;
 

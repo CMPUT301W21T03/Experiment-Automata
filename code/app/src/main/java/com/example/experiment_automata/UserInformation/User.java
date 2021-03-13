@@ -1,8 +1,9 @@
-package com.example.experiment_automata;
+package com.example.experiment_automata.UserInformation;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.experiment_automata.Experiments.ExperimentModel.ContactInformation;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;

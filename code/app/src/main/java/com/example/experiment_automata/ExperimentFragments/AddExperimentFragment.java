@@ -1,4 +1,4 @@
-package com.example.experiment_automata;
+package com.example.experiment_automata.ExperimentFragments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -19,7 +19,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
 
-import java.util.UUID;
+import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
+import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentMaker;
+import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentType;
+import com.example.experiment_automata.NavigationActivity;
+import com.example.experiment_automata.R;
+import com.example.experiment_automata.UserInformation.User;
 
 /**
  * A simple {@link Fragment} subclass.

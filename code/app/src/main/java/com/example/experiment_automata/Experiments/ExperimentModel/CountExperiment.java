@@ -1,29 +1,30 @@
-package com.example.experiment_automata;
+package com.example.experiment_automata.Experiments.ExperimentModel;
 
-import com.example.experiment_automata.trials.MeasurementTrial;
+
+import com.example.experiment_automata.trials.CountTrial;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
 /**
- * Holds the information needed to maintain a measurement experiment
+ * Holds the information needed to maintain a count experiment
  */
-public class MeasurementExperiment extends Experiment {
-    private Collection<MeasurementTrial> results;
+public class CountExperiment extends Experiment {
+    private Collection<CountTrial> results;
 
     /**
-     * Default constructor for Measurement Experiment with just a description
+     * Default constructor for Count Experiment with just a description
      * @param description
      *   the description for this experiment
      */
-    public MeasurementExperiment(String description) {
+    public CountExperiment(String description) {
         super(description);
         results = new ArrayList<>();
     }
 
     /**
-     * Default constructor for Measurement Experiment from using the AddExperimentFragment
+     * Default constructor for Count Experiment from using the AddExperimentFragment
      * @param description
      *   the description for the experiment
      * @param minTrials
@@ -33,8 +34,8 @@ public class MeasurementExperiment extends Experiment {
      * @param acceptNewResults
      *   a boolean for if the experiment is accepting new results
      */
-    public MeasurementExperiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId) {
-        super(description, minTrials, requireLocation, acceptNewResults, ownerId, ExperimentType.Measurement);
+    public CountExperiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId) {
+        super(description, minTrials, requireLocation, acceptNewResults, ownerId, ExperimentType.Count);
         results = new ArrayList<>();
     }
 
@@ -43,7 +44,7 @@ public class MeasurementExperiment extends Experiment {
      * @param trial
      *  the trail to add
      */
-    public void recordTrial(MeasurementTrial trial) {
+    public void recordTrial(CountTrial trial) {
         if (active) {
             results.add(trial);
         } else {

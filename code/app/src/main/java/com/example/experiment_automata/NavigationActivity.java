@@ -1,6 +1,5 @@
 package com.example.experiment_automata;
 
-import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
@@ -8,6 +7,12 @@ import android.view.View;
 import android.view.Menu;
 import android.widget.SearchView;
 
+import com.example.experiment_automata.ExperimentFragments.AddExperimentFragment;
+import com.example.experiment_automata.ExperimentFragments.ExperimentManager;
+import com.example.experiment_automata.ExperimentFragments.NavExperimentDetailsFragment;
+import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
+import com.example.experiment_automata.UserInformation.User;
+import com.example.experiment_automata.ui.Screen;
 import com.example.experiment_automata.ui.home.HomeFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;

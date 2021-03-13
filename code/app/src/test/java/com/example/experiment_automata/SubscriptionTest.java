@@ -1,11 +1,9 @@
 package com.example.experiment_automata;
 
+import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
+import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentMaker;
+
 import org.junit.jupiter.api.Test;
-
-
-import java.util.Collection;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class SubscriptionTest {
 

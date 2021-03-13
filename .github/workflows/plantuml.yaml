@@ -30,7 +30,7 @@ jobs:
         uses: EndBug/add-and-commit@v7
         with: 
            add: 'doc/uml/uml.png'
-           author_name: ${{ GH_NAME }}
-           author_email: ${{ GH_EMAIL }}
+           author_name: ${{ secrets.GH_NAME }}
+           author_email: ${{ secrets.GH_EMAIL }}
            message: 'Update UML image'
          

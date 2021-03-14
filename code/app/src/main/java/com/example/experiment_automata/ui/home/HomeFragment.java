@@ -52,7 +52,8 @@ public class HomeFragment extends Fragment {
         ListView experimentList = (ListView) root.findViewById(R.id.experiment_list);
         experimentsArrayList = new ArrayList<>();
         populateList();
-        experimentArrayAdapter = new ExperimentListAdapter(getActivity(), experimentsArrayList);
+        experimentArrayAdapter = new ExperimentListAdapter(getActivity(),
+                experimentsArrayList, getArguments().getString("mode"));
         experimentList.setAdapter(experimentArrayAdapter);
 
         Bundle bundle = new Bundle();

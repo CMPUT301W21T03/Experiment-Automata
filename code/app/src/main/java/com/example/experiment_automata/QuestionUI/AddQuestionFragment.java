@@ -33,7 +33,7 @@ import com.example.experiment_automata.R;
 public class AddQuestionFragment extends DialogFragment
 {
     public static final String EXPERIMENT_ID = "ADD-QUESTION-EXPERIMENT-ID";
-    private static final String EXPERIMENT_QUESTION = "ADD-EXPERIMENT-QUESTION"; 
+    private static final String EXPERIMENT_QUESTION = "ADD-EXPERIMENT-QUESTION";
 
     private EditText questionInput;
     private String experimentId;
@@ -104,12 +104,7 @@ public class AddQuestionFragment extends DialogFragment
         }
         else
         {
-            return build.setView(view).setTitle("Add Question")
-                    .setNegativeButton("Cancel", null)
-                    .setPositiveButton("OK", (dialog, which) -> {
-                        String question = questionInput.getText().toString();
-                        listener.onOkPressed(question, exper);
-                    }).create();
+           return null; 
         }
     }
 }

@@ -18,14 +18,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginLeft="60dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/frag_add_edit_question_input_box_diolog"
-        app:layout_constraintStart_toEndOf="@+id/frag_add_edit_question_input_box_diolog"
-        app:srcCompat="@drawable/ic_baseline_visibility_24" />
+<!--    <ImageView-->
+<!--        android:id="@+id/imageView"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="60dp"-->
+<!--        android:layout_marginLeft="60dp"-->
+<!--        android:layout_marginBottom="8dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/frag_add_edit_question_input_box_diolog"-->
+<!--        app:layout_constraintStart_toEndOf="@+id/frag_add_edit_question_input_box_diolog"-->
+<!--        app:srcCompat="@drawable/ic_baseline_visibility_24" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

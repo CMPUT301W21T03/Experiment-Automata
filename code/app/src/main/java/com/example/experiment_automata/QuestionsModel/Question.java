@@ -18,15 +18,16 @@ import java.util.UUID;
 public class Question implements Serializable
 {
     private String question;
-    private User user;
-    private Reply reply;// Might just have one reply... Might need fixing
+    private UUID user; // this makes more sense to just store a user ID
+    private UUID  reply;// we will likely want the reply UUID since we have to query and see if a question has a reply
+    private UUID experimentId; // I think we need this so we know what to query with each experiment
     private UUID questionId;
 
-    public Question(String question, User user, Reply reply)
+    public Question(String question, UUID user, UUID experimentId)
     {
         this.question = question;
         this.user = user;
-        this.reply = reply;
+        this.experimentId = experimentId;
         this.questionId = UUID.randomUUID();
     }
 
@@ -34,23 +35,29 @@ public class Question implements Serializable
         return question;
     }
 
+    // can users edit a question?
     public void setQuestion(String question) {
         this.question = question;
     }
 
-    public User getUser() {
+    public UUID getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    // will we want to set a new userID for questions?
+    public void setUser(UUID user) {
         this.user = user;
     }
 
-    public Reply getReply() {
+    public UUID getExperimentId() {return experimentId;}
+
+    // todo: a question won't always have a reply so we have to account for that
+    public UUID getReply() {
         return reply;
     }
 
-    public void setReply(Reply reply) {
+    // todo: this should only set a reply if one does not currently exist, possibly return bool for pass/fail
+    public void setReply(UUID reply) {
         this.reply = reply;
     }
 

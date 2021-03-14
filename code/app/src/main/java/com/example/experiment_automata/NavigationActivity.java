@@ -37,7 +37,7 @@ import androidx.appcompat.widget.Toolbar;
  *      1. None
  */
 
-public class NavigationActivity extends AppCompatActivity implements AddExperimentFragment.OnFragmentInteractionListener {
+public class NavigationActivity extends AppCompatActivity implements AddExperimentFragment.OnFragmentInteractionListener, AddQuestionFragment.OnFragmentInteractionListener {
 
     private AppBarConfiguration mAppBarConfiguration;
     public final ExperimentManager experimentManager = new ExperimentManager();
@@ -158,4 +158,8 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
         return experimentManager;
     }
 
+    @Override
+    public void onOkPressedQuestion(String question, String experimentId) {
+        Log.d("Question", "Okay");
+    }
 }

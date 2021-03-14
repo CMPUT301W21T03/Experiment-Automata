@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.experiment_automata.ExperimentFragments.AddExperimentFragment;
+import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
 import com.example.experiment_automata.QuestionsModel.Question;
 import com.example.experiment_automata.R;
 
@@ -43,7 +44,7 @@ public class AddQuestionFragment extends DialogFragment
 
     public interface OnFragmentInteractionListener
     {
-        void onOkPressed(String question, String experimentId);
+        void onOkPressedQuestion(String question, String experimentId);
     }
 
     /**
@@ -64,6 +65,8 @@ public class AddQuestionFragment extends DialogFragment
         }
     }
 
+    // I think the only parameter we are really worried about is whether this dialog is for a question or reply
+    // All of the actual logic in creating the question should be handled somewhere else and we never edit questions
     /**
      * This will create a new instance of this fragment with an experiment
      * @param question
@@ -98,14 +101,14 @@ public class AddQuestionFragment extends DialogFragment
         Bundle args = getArguments();
         AlertDialog.Builder build = new AlertDialog.Builder(getContext());
 
-        if(args != null)
+        if (args != null)
         {
             // Some logic for when editing a question
             return null;
         }
         else
         {
-           return null; 
+           return null;
         }
     }
 }

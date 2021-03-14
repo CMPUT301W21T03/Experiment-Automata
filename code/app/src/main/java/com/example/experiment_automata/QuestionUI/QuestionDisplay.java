@@ -4,12 +4,15 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
+import com.example.experiment_automata.QuestionsModel.QuestionController;
 import com.example.experiment_automata.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,6 +27,8 @@ public class QuestionDisplay extends Fragment {
 
 
     private Experiment currentExperiment;
+    private QuestionController questionController;
+    private FloatingActionButton addQuestionButton;
 
     public QuestionDisplay() {
         // Required empty public constructor
@@ -58,9 +63,11 @@ public class QuestionDisplay extends Fragment {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_question_display, container, false);
 
+        //Getting rid of the floating button that adds experiments on every navigation
+        getActivity().findViewById(R.id.add_experiment_button).setVisibility(View.GONE);
 
 
 
-            return root;
+        return root;
     }
 }

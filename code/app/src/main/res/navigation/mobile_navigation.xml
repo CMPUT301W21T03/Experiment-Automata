@@ -95,6 +95,6 @@
     <fragment
         android:id="@+id/questionDisplay"
         android:name="com.example.experiment_automata.QuestionUI.QuestionDisplay"
-        android:label="fragment_question_display"
+        android:label="Current Questions"
         tools:layout="@layout/fragment_question_display" />
 </navigation>

@@ -13,7 +13,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.experiment_automata.R;
-import com.example.experiment_automata.ui.profile.ProfileViewModel;
 
 public class ProfileFragment extends Fragment {
 
@@ -24,11 +23,25 @@ public class ProfileFragment extends Fragment {
         profileViewModel =
                 new ViewModelProvider(this).get(ProfileViewModel.class);
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
-        final TextView textView = root.findViewById(R.id.text_profile);
-        profileViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        final TextView nameView = root.findViewById(R.id.profile_username);
+        final TextView emailView = root.findViewById(R.id.profile_email);
+        final TextView phoneView = root.findViewById(R.id.profile_phone);
+        profileViewModel.getName().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                textView.setText(s);
+                nameView.setText(s);
+            }
+        });
+        profileViewModel.getEmail().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                emailView.setText(s);
+            }
+        });
+        profileViewModel.getPhone().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                phoneView.setText(s);
             }
         });
         return root;

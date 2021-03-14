@@ -14,6 +14,7 @@ import com.example.experiment_automata.ExperimentFragments.NavExperimentDetailsF
 import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
 import com.example.experiment_automata.QuestionUI.AddQuestionFragment;
 import com.example.experiment_automata.QuestionsModel.Question;
+import com.example.experiment_automata.QuestionsModel.QuestionManager;
 import com.example.experiment_automata.UserInformation.User;
 import com.example.experiment_automata.ui.Screen;
 import com.example.experiment_automata.ui.home.HomeFragment;
@@ -42,10 +43,12 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
 
     private AppBarConfiguration mAppBarConfiguration;
     public final ExperimentManager experimentManager = new ExperimentManager();
+    public final QuestionManager questionManager = new QuestionManager();
 
     private Screen currentScreen;
     public Fragment currentFragment;
     public final User loggedUser = new User();
+    public Experiment currentExperiment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,5 +166,6 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
     @Override
     public void onOkPressedQuestion(String question) {
         Log.d("Question", question);
+//        Question newQuestion = new Question(question, loggedUser.getUserId(), )
     }
 }

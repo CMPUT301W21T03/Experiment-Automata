@@ -37,20 +37,20 @@ public class QuestionManager {
 
     /**
      * Adds the given question that the user class/caller gives to this class
-     * @param id
+     * @param experimentId
      *  id corresponding to the experiment
      * @param question
      *  question to add to the manager
      */
-    public void addQuestion(UUID id, Question question) {
+    public void addQuestion(UUID experimentId, Question question) {
         ArrayList<Question> returnQuestions;
-        if(questions.containsKey(id))
-            returnQuestions = questions.get(id);
+        if(questions.containsKey(experimentId))
+            returnQuestions = questions.get(experimentId);
         else {
             returnQuestions = new ArrayList<Question>();
         }
         returnQuestions.add(question);
-        questions.put(id, returnQuestions);
+        questions.put(experimentId, returnQuestions);
     }
 
     /**

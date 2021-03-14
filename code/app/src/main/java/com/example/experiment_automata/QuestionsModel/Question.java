@@ -2,13 +2,17 @@ package com.example.experiment_automata.QuestionsModel;
 
 import com.example.experiment_automata.UserInformation.User;
 
-import java.util.ArrayList;
 
 
 /**
- *  The goal of this class is to maintain and hold the question data.
+ * Role/Pattern:
+ *
+ *       The goal of this class is to maintain and hold the question data.
+ *
+ * Known Issue:
+ *
+ *      1. None
  */
-
 public class Question
 {
     private String question;

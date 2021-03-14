@@ -5,7 +5,13 @@ import com.example.experiment_automata.UserInformation.User;
 
 
 /**
- *  Make a question and reply so that other classes don't need to deal with the overhead
+ * Role/Pattern:
+ *
+ *        Make a question and reply so that other classes don't need to deal with the overhead
+ *
+ * Known Issue:
+ *
+ *      1. None
  */
 public class QuestionController
 {

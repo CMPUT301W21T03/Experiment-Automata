@@ -66,8 +66,18 @@ public class QuestionDisplay extends Fragment {
         //Getting rid of the floating button that adds experiments on every navigation
         getActivity().findViewById(R.id.add_experiment_button).setVisibility(View.GONE);
 
-
-
+        addQuestionButton = root.findViewById(R.id.frag_question_display_add_question_button);
+        addQuestionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("TEST_A", "TESTIGNN ME ");
+            }
+        });
         return root;
+    }
+
+    private void makeQuestion()
+    {
+
     }
 }

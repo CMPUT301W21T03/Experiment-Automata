@@ -22,4 +22,11 @@ public abstract class Trial {
         this.location = location;
         this.date = new Date();
     }
+
+    /**
+     * Returns the UUID of the Experimenter who made the trial
+     * @return
+     *  The UUID of an Experimenter
+     */
+    public UUID getCollector() { return collector; }
 }

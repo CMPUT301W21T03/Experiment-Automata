@@ -136,4 +136,11 @@ public class User {
      * @param experimentId
      */
     public void addExperiment(UUID experimentId) { ownedExperiments.add(experimentId); }
+
+    /**
+     * Returns the information of the user.
+     * @return
+     *  The contact information of the user
+     */
+    public ContactInformation getInfo() { return info; }
 }

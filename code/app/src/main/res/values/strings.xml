@@ -34,4 +34,6 @@
     <string name="median">Median</string>
     <string name="mean">Mean</string>
     <string name="stdev">Standard Deviation</string>
+    <string name="results">Results</string>
+    <string name="trails">Trials</string>
 </resources>

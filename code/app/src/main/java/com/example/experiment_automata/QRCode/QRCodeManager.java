@@ -2,7 +2,7 @@ package com.example.experiment_automata.QRCode;
 
 
 /**
- * Controls all interactions with QR codes and Bar codes
+ * Controls all custom interactions with QR codes and Bar codes
  * */
 public class QRCodeManager {
     //Header for custom QR codes

@@ -1,13 +1,42 @@
 package com.example.experiment_automata.QRCode;
 
 
+import android.graphics.Bitmap;
+
+import com.google.firestore.v1.Write;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatReader;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
+
 /**
  * Controls all custom interactions with QR codes and Bar codes
  * */
 public class QRCodeManager {
     //Header for custom QR codes
     private final String AUTOMATA_QR_HEADER = "ATMA";
+    private final int DEAFULT_QR_HEIGHT = 300;
+    private final int DEFAULT_QR_WIDTH = 300;
 
+    /**
+     * Encodes a string as a QRCode
+     * @param encodedContent
+     * string to be encoded
+     * @return
+     * returns a bitmap containing the QRCode
+     */
+    public Bitmap encodeStringToQR(String encodedContent) throws WriterException {
+        BitMatrix qrCode;
+        try{
+            qrCode = new QRCodeWriter().encode(encodedContent, BarcodeFormat.QR_CODE,DEFAULT_QR_WIDTH,DEAFULT_QR_HEIGHT);
+        }
+        catch (IllegalArgumentException illegalArgException) {
+            return null;
+        }
+        //convert BitMatrix to Bitmap
+
+    }
 
     /**
      * Unpacks a string from custom ExperimentAutomata QRCode content to string

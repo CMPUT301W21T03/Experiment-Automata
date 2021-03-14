@@ -2,6 +2,7 @@ package com.example.experiment_automata.QuestionsModel;
 
 import com.example.experiment_automata.UserInformation.User;
 
+import java.io.Serializable;
 
 
 /**
@@ -13,7 +14,7 @@ import com.example.experiment_automata.UserInformation.User;
  *
  *      1. None
  */
-public class Question
+public class Question implements Serializable
 {
     private String question;
     private User user;

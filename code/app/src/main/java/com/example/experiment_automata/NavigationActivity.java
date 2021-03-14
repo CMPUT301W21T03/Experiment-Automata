@@ -13,6 +13,7 @@ import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentMan
 import com.example.experiment_automata.ExperimentFragments.NavExperimentDetailsFragment;
 import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
 import com.example.experiment_automata.QuestionUI.AddQuestionFragment;
+import com.example.experiment_automata.QuestionsModel.Question;
 import com.example.experiment_automata.UserInformation.User;
 import com.example.experiment_automata.ui.Screen;
 import com.example.experiment_automata.ui.home.HomeFragment;
@@ -134,6 +135,7 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
     }
 
     @Override
+    // todo: this functionality should be moved into something else in the future
     public void onOKPressedEdit(String experimentDescription, int experimentTrials,
                          boolean experimentLocation, boolean experimentNewResults,
                          Experiment currentExperiment) {
@@ -159,7 +161,7 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
     }
 
     @Override
-    public void onOkPressedQuestion(String question, String experimentId) {
-        Log.d("Question", "Okay");
+    public void onOkPressedQuestion(String question) {
+        Log.d("Question", question);
     }
 }

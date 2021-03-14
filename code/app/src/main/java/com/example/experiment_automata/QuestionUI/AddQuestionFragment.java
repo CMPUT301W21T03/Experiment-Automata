@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -18,14 +19,18 @@ import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
 import com.example.experiment_automata.QuestionsModel.Question;
 import com.example.experiment_automata.R;
 
+import java.util.UUID;
+
 /**
  * Role/Pattern:
  *
- *       This class provides the framework needed to make and edit questions
+ *       This class provides a dialog that will return the string inputted for a question
  *
  * Known Issue:
  *
- *      1. None
+ *      1. currently is only designed to create questions
+ *      2. will need to add the ability to create replies
+ *      3. not sure if we need the ability to edit questions/replies
  */
 
 // Basic layout of this fragment inspired by lab work in CMPUT 301
@@ -33,8 +38,10 @@ import com.example.experiment_automata.R;
 // https://eclass.srv.ualberta.ca/pluginfile.php/6713985/mod_resource/content/1/Lab%203%20instructions%20-%20CustomList.pdf
 public class AddQuestionFragment extends DialogFragment
 {
-    public static final String EXPERIMENT_ID = "ADD-QUESTION-EXPERIMENT-ID";
-    private static final String EXPERIMENT_QUESTION = "ADD-EXPERIMENT-QUESTION";
+    // this will be a string passed in if editing a question
+    public static final String QUESTION = "QUESTION-STRING";
+    // this will determine if this dialog is for a question or reply
+    public static final String TYPE = "QUESTION-OR-REPLY";
 
     private EditText questionInput;
     private String experimentId;
@@ -44,7 +51,7 @@ public class AddQuestionFragment extends DialogFragment
 
     public interface OnFragmentInteractionListener
     {
-        void onOkPressedQuestion(String question, String experimentId);
+        void onOkPressedQuestion(String question);
     }
 
     /**
@@ -65,21 +72,25 @@ public class AddQuestionFragment extends DialogFragment
         }
     }
 
-    // I think the only parameter we are really worried about is whether this dialog is for a question or reply
-    // All of the actual logic in creating the question should be handled somewhere else and we never edit questions
     /**
      * This will create a new instance of this fragment with an experiment
      * @param question
      *   The question that will be edited
+     * @param type
+     *   A boolean for if it's a question (true) or reply (false) being created
      * @return
      *   a fragment to edit an questions's information
      */
-    public static AddQuestionFragment newInstance(String experimentId, String question)
+    public static AddQuestionFragment newInstance(String question, Boolean type)
     {
         AddQuestionFragment questionFragment = new AddQuestionFragment();
         Bundle args = new Bundle();
-        args.putSerializable(EXPERIMENT_ID, experimentId);
-        args.putSerializable(EXPERIMENT_QUESTION, question);
+        args.putString(QUESTION, question);
+        if (type) {
+            args.putString(TYPE, "Add Question");
+        } else {
+            args.putString(TYPE, "Add Reply");
+        }
         questionFragment.setArguments(args);
         return questionFragment;
     }
@@ -97,18 +108,31 @@ public class AddQuestionFragment extends DialogFragment
     {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_add_edit_question_diolog_op_up, null);
         questionInput = view.findViewById(R.id.frag_add_edit_question_input_box_diolog);
-
+        // for now, we assume this is just created to ask questions
+        questionInput.setHint("Question");
         Bundle args = getArguments();
         AlertDialog.Builder build = new AlertDialog.Builder(getContext());
 
-        if (args != null)
-        {
-            // Some logic for when editing a question
-            return null;
+        // this will determine if it is asking for a question or reply
+        String dialogType;
+        if (args != null) {
+            dialogType = args.getString(TYPE);
+            questionInput.setText(args.getString(QUESTION));
+        } else {
+            // assume if no bundle args that it's asking for a question
+            dialogType = "Add Question";
         }
-        else
-        {
-           return null;
-        }
+
+        return build.setView(view)
+                .setTitle(dialogType)
+                .setNegativeButton("Cancel", null)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String currentQuestion = questionInput.getText().toString();
+                        listener.onOkPressedQuestion(currentQuestion);
+                    }
+                }).create();
+
     }
 }

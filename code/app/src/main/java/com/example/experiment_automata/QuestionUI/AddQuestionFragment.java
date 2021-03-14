@@ -12,7 +12,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.experiment_automata.ExperimentFragments.AddExperimentFragment;
-import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
 import com.example.experiment_automata.QuestionsModel.Question;
 import com.example.experiment_automata.R;
 
@@ -87,7 +86,18 @@ public class AddQuestionFragment extends DialogFragment
     {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_add_edit_question_diolog_op_up, null);
 
-        //
+        questionInput = view.findViewById(R.id.frag_add_edit_question_input_box_diolog);
+
+        Bundle args = getArguments();
+
+        if(args == null)
+        {
+            // Something 
+        }
+        else
+        {
+            // Something
+        }
 
         return null;
     }

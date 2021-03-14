@@ -22,7 +22,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/frag_add_edit_question_input_box"
+        android:id="@+id/frag_add_edit_question_input_box_diolog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -39,7 +39,7 @@
         android:layout_marginStart="17dp"
         android:layout_marginLeft="17dp"
         android:layout_marginBottom="10dp"
-        app:layout_constraintBottom_toBottomOf="@+id/frag_add_edit_question_input_box"
-        app:layout_constraintStart_toEndOf="@+id/frag_add_edit_question_input_box"
+        app:layout_constraintBottom_toBottomOf="@+id/frag_add_edit_question_input_box_diolog"
+        app:layout_constraintStart_toEndOf="@+id/frag_add_edit_question_input_box_diolog"
         app:srcCompat="@drawable/ic_baseline_visibility_24" />
 </androidx.constraintlayout.widget.ConstraintLayout>

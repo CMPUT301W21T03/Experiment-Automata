@@ -1,14 +1,20 @@
 package com.example.experiment_automata.QuestionUI;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.experiment_automata.ExperimentFragments.AddExperimentFragment;
 import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
 import com.example.experiment_automata.QuestionsModel.Question;
+import com.example.experiment_automata.R;
 
 /**
  * Role/Pattern:
@@ -66,5 +72,23 @@ public class AddQuestionFragment extends DialogFragment
         args.putSerializable(QUESTION_KEY, question);
         questionFragment.setArguments(args);
         return questionFragment;
+    }
+
+    /**
+     * This gives instructions for creating a question
+     * @param savedInstancesState
+     *   allows you to pass information in if editing an experiment with existing info
+     * @return
+     *   the dialog that will be created
+     */
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstancesState)
+    {
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_add_edit_question_diolog_op_up, null);
+
+        //
+
+        return null;
     }
 }

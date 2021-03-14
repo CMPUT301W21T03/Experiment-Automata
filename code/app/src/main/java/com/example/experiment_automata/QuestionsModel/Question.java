@@ -3,6 +3,7 @@ package com.example.experiment_automata.QuestionsModel;
 import com.example.experiment_automata.UserInformation.User;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 
 /**
@@ -19,12 +20,14 @@ public class Question implements Serializable
     private String question;
     private User user;
     private Reply reply;// Might just have one reply... Might need fixing
+    private UUID questionId;
 
     public Question(String question, User user, Reply reply)
     {
         this.question = question;
         this.user = user;
         this.reply = reply;
+        this.questionId = UUID.randomUUID();
     }
 
     public String getQuestion() {
@@ -50,4 +53,10 @@ public class Question implements Serializable
     public void setReply(Reply reply) {
         this.reply = reply;
     }
+
+    public UUID getQuestionId()
+    {
+        return this.questionId;
+    }
+
 }

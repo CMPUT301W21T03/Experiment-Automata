@@ -21,11 +21,32 @@ public class QRCodeManager {
     private final int DEFAULT_QR_WIDTH = 300;
 
     /**
+     * Generates a QR code who's content is a uuid
+     * @param uuid
+     * uuid to be encoded
+     * @return
+     * returns a Bitmap containing the QRCode
+     */
+    public Bitmap createQRFromUUID(String uuid){
+        String qrContent;
+        Bitmap qrCode;
+        qrContent = packQRString(uuid);
+        try {
+            return encodeStringToQR(qrContent);
+        }
+        catch (WriterException wException){
+            //return special bitmap maybe?
+            wException.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
      * Encodes a string as a QRCode
      * @param encodedContent
      * string to be encoded
      * @return
-     * returns a bitmap containing the QRCode
+     * returns a Bitmap containing the QRCode
      */
     public Bitmap encodeStringToQR(String encodedContent) throws WriterException {
         BitMatrix qrCodeBitMatrix;

@@ -4,6 +4,11 @@ import com.example.experiment_automata.UserInformation.User;
 
 import java.util.ArrayList;
 
+
+/**
+ *  The goal of this class is to maintain and hold the question data.
+ */
+
 public class Question
 {
     private String question;

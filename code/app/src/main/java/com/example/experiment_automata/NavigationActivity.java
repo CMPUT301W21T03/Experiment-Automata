@@ -3,6 +3,7 @@ package com.example.experiment_automata;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.widget.SearchView;
@@ -11,6 +12,7 @@ import com.example.experiment_automata.ExperimentFragments.AddExperimentFragment
 import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentManager;
 import com.example.experiment_automata.ExperimentFragments.NavExperimentDetailsFragment;
 import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
+import com.example.experiment_automata.QuestionUI.AddQuestionFragment;
 import com.example.experiment_automata.UserInformation.User;
 import com.example.experiment_automata.ui.Screen;
 import com.example.experiment_automata.ui.home.HomeFragment;
@@ -141,6 +143,7 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
         currentExperiment.setActive(experimentNewResults);
         ((NavExperimentDetailsFragment) currentFragment).updateScreen();
     }
+
 
     public void setCurrentScreen(Screen currentScreen) {
         this.currentScreen = currentScreen;

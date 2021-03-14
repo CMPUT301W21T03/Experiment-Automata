@@ -73,8 +73,9 @@ public class QuestionDisplay extends Fragment {
         addQuestionButton = root.findViewById(R.id.frag_question_display_add_question_button);
         addQuestionButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Log.d("TEST_A", "TESTIGNN ME ");
+            public void onClick(View v)
+            {
+                getActivity().getSupportFragmentManager().beginTransaction().add(new AddQuestionFragment(), "ADD QUESTION").commit();
             }
         });
         return root;

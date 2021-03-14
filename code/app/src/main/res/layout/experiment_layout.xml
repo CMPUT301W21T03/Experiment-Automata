@@ -58,6 +58,9 @@
     <!-- Checkbox background found on stackoverflow by Rudi Kershaw and Christian Rathod-->
     <!--Feb 11 2014, public domain -->
     <!-- https://stackoverflow.com/questions/14023886/android-button-selector -->
+    <!-- fix for checkbox stopping description found on stack overflow by Shanilendra Madda-->
+    <!-- June 20, 2014, public domain -->
+    <!-- https://stackoverflow.com/questions/23752991/item-click-listener-of-listview-is-not-working-if-it-has-checkbox -->
     <CheckBox
         android:id="@+id/publishedCheckbox"
         android:layout_width="wrap_content"
@@ -68,6 +71,8 @@
         android:button="@drawable/published_icon"
         android:minWidth="0dp"
         android:minHeight="0dp"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/experimentName" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -101,20 +101,12 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
 
         // Set the published status properly
         boolean isPublished = exp.isPublished();
-        if (isPublished) {
-            publishedCheckbox.setChecked(true);
-        } else {
-            publishedCheckbox.setChecked(false);
-        }
+        publishedCheckbox.setChecked(isPublished);
 
         // Use a listener to update the published status of experiments
         publishedCheckbox.setOnClickListener(v -> {
             boolean checked = ((CheckBox) v).isChecked();
-            if (checked) {
-                exp.setPublished(true);
-            } else {
-                exp.setPublished(false);
-            }
+            exp.setPublished(checked);
         });
 
         // Set the experiment id

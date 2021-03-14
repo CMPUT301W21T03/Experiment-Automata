@@ -124,7 +124,7 @@ public class NavExperimentDetailsFragment extends Fragment {
 
         questionsButton.setOnClickListener(v -> {
 
-            launchQuestionView(); 
+            launchQuestionView();
         });
 
         return root;

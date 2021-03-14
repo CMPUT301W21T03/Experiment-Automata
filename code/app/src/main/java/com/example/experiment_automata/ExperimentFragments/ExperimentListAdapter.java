@@ -64,7 +64,7 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
         // Syntax below taken from Abdul Ali Bangash, "Lab 3 Instructions - Custom List",
         //  2021-02-04, Public Domain, https://eclass.srv.ualberta.ca/pluginfile.php/6713985/mod_resource/content/1/Lab%203%20instructions%20-%20CustomList.pdf
         View view = convertView;
-        if(view == null){
+        if (view == null) {
             view = LayoutInflater.from(context).inflate(R.layout.experiment_layout, parent, false);
         }
         // The experiment we're going to set the XML file with
@@ -83,20 +83,19 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
 
         // Set the activity properly
         boolean isActive = exp.isActive();
-        if(isActive) {
+        if (isActive) {
             active.setText("Active");
             active.setTextColor(Color.GREEN);
-        }
-        else{
+        } else {
             active.setText("Inactive");
             active.setTextColor(Color.RED);
         }
 
         // Ensure the checkbox is only visible in owned experiments screen
         if (mode.equals("owned")) {
-            publishedCheckbox.setVisibility(view.VISIBLE);
+            publishedCheckbox.setVisibility(View.VISIBLE);
         } else {
-            publishedCheckbox.setVisibility(view.GONE);
+            publishedCheckbox.setVisibility(View.GONE);
         }
 
         // Set the published status properly

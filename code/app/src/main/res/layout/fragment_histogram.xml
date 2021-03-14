@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.github.mikephil.charting.charts.BarChart
-        android:id='@+id/chart'
+        android:id='@+id/histogram_chart'
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

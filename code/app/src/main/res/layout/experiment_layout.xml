@@ -7,13 +7,16 @@
 
     <TextView
         android:id="@+id/experimentName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:text="Experiment Name"
         android:textSize="24sp"
+        app:layout_constraintEnd_toStartOf="@+id/publishedCheckbox"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -66,5 +69,5 @@
         android:minWidth="0dp"
         android:minHeight="0dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/experimentName" />
 </androidx.constraintlayout.widget.ConstraintLayout>

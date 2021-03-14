@@ -1,4 +1,4 @@
-package com.example.experiment_automata;
+package com.example.experiment_automata.QuestionUI;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.experiment_automata.R;
 import com.example.experiment_automata.dummy.DummyContent.DummyItem;
 
 import java.util.List;

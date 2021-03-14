@@ -94,7 +94,7 @@
     </fragment>
     <fragment
         android:id="@+id/questionsFragment"
-        android:name="com.example.experiment_automata.QuestionsFragment"
+        android:name="com.example.experiment_automata.QuestionUI.QuestionsFragment"
         android:label="fragment_questions_list"
         tools:layout="@layout/fragment_questions_list" />
 </navigation>

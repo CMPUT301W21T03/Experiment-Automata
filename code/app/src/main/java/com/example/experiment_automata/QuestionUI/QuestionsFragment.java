@@ -1,4 +1,4 @@
-package com.example.experiment_automata;
+package com.example.experiment_automata.QuestionUI;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.experiment_automata.R;
 import com.example.experiment_automata.dummy.DummyContent;
 
 /**

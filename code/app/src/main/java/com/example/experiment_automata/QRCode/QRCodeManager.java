@@ -1,7 +1,8 @@
 package com.example.experiment_automata.QRCode;
-
+//Bitmap conversion from ρяσѕρєя K,https://stackoverflow.com/questions/19337448/generate-qr-code-directly-into-imageview
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 
 import com.google.firestore.v1.Write;
 import com.google.zxing.BarcodeFormat;
@@ -27,14 +28,25 @@ public class QRCodeManager {
      * returns a bitmap containing the QRCode
      */
     public Bitmap encodeStringToQR(String encodedContent) throws WriterException {
-        BitMatrix qrCode;
+        BitMatrix qrCodeBitMatrix;
+        Bitmap qrCodeBitmap;
         try{
-            qrCode = new QRCodeWriter().encode(encodedContent, BarcodeFormat.QR_CODE,DEFAULT_QR_WIDTH,DEAFULT_QR_HEIGHT);
+            qrCodeBitMatrix = new QRCodeWriter().encode(encodedContent, BarcodeFormat.QR_CODE,DEFAULT_QR_WIDTH,DEAFULT_QR_HEIGHT);
         }
         catch (IllegalArgumentException illegalArgException) {
+            // Unsupported format, required for encode
             return null;
         }
         //convert BitMatrix to Bitmap
+        int width = qrCodeBitMatrix.getWidth();
+        int height = qrCodeBitMatrix.getHeight();
+        qrCodeBitmap = Bitmap.createBitmap(width,height, Bitmap.Config.RGB_565);
+        for (int x = 0; x < width; x++){
+            for (int y = 0; y < height; y++){
+                qrCodeBitmap.setPixel(x, y, qrCodeBitMatrix.get(x,y) ? Color.BLACK : Color.WHITE);
+            }
+        }
+        return qrCodeBitmap;
 
     }
 

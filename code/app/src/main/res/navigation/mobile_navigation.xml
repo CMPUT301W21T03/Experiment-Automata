@@ -87,5 +87,14 @@
         android:id="@+id/nav_experiment_details"
         android:name="com.example.experiment_automata.ExperimentFragments.NavExperimentDetailsFragment"
         android:label="@string/menu_experiment_details"
-        tools:layout="@layout/fragment_nav_experiment_details" />
+        tools:layout="@layout/fragment_nav_experiment_details" >
+        <action
+            android:id="@+id/action_nav_experiment_details_to_questionsFragment"
+            app:destination="@id/questionsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/questionsFragment"
+        android:name="com.example.experiment_automata.QuestionsFragment"
+        android:label="fragment_questions_list"
+        tools:layout="@layout/fragment_questions_list" />
 </navigation>

@@ -75,7 +75,8 @@ public class AddQuestionFragment extends DialogFragment
     {
         AddQuestionFragment questionFragment = new AddQuestionFragment();
         Bundle args = new Bundle();
-        args.putSerializable(QUESTION_KEY, question);
+        args.putSerializable(EXPERIMENT_ID, experimentId);
+        args.putSerializable(EXPERIMENT_QUESTION, question);
         questionFragment.setArguments(args);
         return questionFragment;
     }

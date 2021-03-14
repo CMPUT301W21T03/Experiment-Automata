@@ -12,8 +12,13 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
 /**
- * Controls all custom interactions with QR codes and Bar codes
- * */
+ * Role/Pattern:
+ *     Controls all custom interactions with QR codes and Bar codes
+ *
+ *  Known Issue:
+ *
+ *      1. None
+ */
 public class QRCodeManager {
     //Header for custom QR codes
     private final String AUTOMATA_QR_HEADER = "ATMA";

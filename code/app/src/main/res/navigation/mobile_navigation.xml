@@ -89,12 +89,12 @@
         android:label="@string/menu_experiment_details"
         tools:layout="@layout/fragment_nav_experiment_details" >
         <action
-            android:id="@+id/action_nav_experiment_details_to_questionsFragment"
-            app:destination="@id/questionsFragment" />
+            android:id="@+id/action_nav_experiment_details_to_questionDisplay"
+            app:destination="@id/questionDisplay" />
     </fragment>
     <fragment
-        android:id="@+id/questionsFragment"
-        android:name="com.example.experiment_automata.QuestionUI.QuestionsFragment"
-        android:label="fragment_questions_list"
-        tools:layout="@layout/fragment_questions_list" />
+        android:id="@+id/questionDisplay"
+        android:name="com.example.experiment_automata.QuestionUI.QuestionDisplay"
+        android:label="fragment_question_display"
+        tools:layout="@layout/fragment_question_display" />
 </navigation>

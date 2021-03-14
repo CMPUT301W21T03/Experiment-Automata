@@ -3,6 +3,9 @@ package com.example.experiment_automata.ExperimentFragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,8 +16,10 @@ import android.widget.TextView;
 
 import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
 import com.example.experiment_automata.NavigationActivity;
+import com.example.experiment_automata.QuestionUI.QuestionDisplay;
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.ui.Screen;
+import com.google.firebase.firestore.local.BundleCache;
 
 import java.util.UUID;
 
@@ -36,12 +41,11 @@ public class NavExperimentDetailsFragment extends Fragment {
 
     // TODO: Rename and change types of parameters
     private String experimentStringId;
-    private String description;
     private TextView descriptionView;
     private TextView typeView;
     private ImageButton editImageButton;
+    private ImageButton questionsButton;
 
-    private Fragment fragment;
 
     public NavExperimentDetailsFragment() {
         // Required empty public constructor
@@ -99,8 +103,8 @@ public class NavExperimentDetailsFragment extends Fragment {
         descriptionView = root.findViewById(R.id.nav_experiment_details_description);
         typeView = root.findViewById(R.id.nav_experiment_details_experiment_type);
         editImageButton = root.findViewById(R.id.nav_fragment_experiment_detail_view_edit_button);
+        questionsButton = root.findViewById(R.id.nav_fragment_experiment_detail_view_qa_button);
 
-        fragment = this;
 
         if (experimentStringId != null) {
             update(experimentStringId);
@@ -116,6 +120,11 @@ public class NavExperimentDetailsFragment extends Fragment {
 
             editExperiment.setArguments(bundle);
             getActivity().getSupportFragmentManager().beginTransaction().add(editExperiment,"EDIT").commit();
+        });
+
+        questionsButton.setOnClickListener(v -> {
+
+            launchQuestionView(); 
         });
 
         return root;
@@ -144,5 +153,20 @@ public class NavExperimentDetailsFragment extends Fragment {
      */
     public void updateScreen() {
         update(experimentStringId);
+    }
+
+
+    /**
+     * Set up and gets read to launch the questions display.
+     */
+    private void launchQuestionView()
+    {
+        Bundle questionBundle = new Bundle();
+        questionBundle.putSerializable(QuestionDisplay.QUESTION_EXPERIMENT
+                ,((NavigationActivity)getActivity())
+                .getExperimentManager()
+                .getAtUUIDDescription(UUID.fromString(experimentStringId)));
+        NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+        navController.navigate(R.id.questionDisplay, questionBundle);
     }
 }

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,16 +33,22 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
 
     private ArrayList<Experiment> experiment;
     private Context context;
+    private String mode;
 
     /**
      * Constructor takes in an array list of experiments and a context to set the attributes properly
      * @param context
+     *   the context needed to create experiment_layout if needed
      * @param experiments
+     *   all of the experiments to be shown
+     * @param mode
+     *   the mode to determine what should be shown on each item
      */
-    public ExperimentListAdapter(Context context, ArrayList<Experiment> experiments){
+    public ExperimentListAdapter(Context context, ArrayList<Experiment> experiments, String mode){
         super(context, 0, experiments);
         this.experiment=experiments;
         this.context=context;
+        this.mode = mode;
     }
 
     /**
@@ -68,6 +75,7 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
         TextView owner = view.findViewById(R.id.experimentOwner);
         TextView active = view.findViewById(R.id.experimentActivity);
         TextView experimentID = view.findViewById(R.id.experiment__id);
+        CheckBox publishedCheckbox = view.findViewById(R.id.publishedCheckbox);
 
         // Set the name of the experiment accordingly
         UUID oid = exp.getOwnerId();
@@ -83,6 +91,31 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
             active.setText("Inactive");
             active.setTextColor(Color.RED);
         }
+
+        // Ensure the checkbox is only visible in owned experiments screen
+        if (mode.equals("owned")) {
+            publishedCheckbox.setVisibility(view.VISIBLE);
+        } else {
+            publishedCheckbox.setVisibility(view.GONE);
+        }
+
+        // Set the published status properly
+        boolean isPublished = exp.isPublished();
+        if (isPublished) {
+            publishedCheckbox.setChecked(true);
+        } else {
+            publishedCheckbox.setChecked(false);
+        }
+
+        // Use a listener to update the published status of experiments
+        publishedCheckbox.setOnClickListener(v -> {
+            boolean checked = ((CheckBox) v).isChecked();
+            if (checked) {
+                exp.setPublished(true);
+            } else {
+                exp.setPublished(false);
+            }
+        });
 
         // Set the experiment id
         experimentID.setText(exp.getExperimentId().toString());

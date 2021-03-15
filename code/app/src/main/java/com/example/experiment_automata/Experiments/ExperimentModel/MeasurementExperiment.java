@@ -54,6 +54,35 @@ public class MeasurementExperiment extends Experiment {
         }
     }
 
+    public List<Entry> generateHistogram(Collection<Trial> trials) {
+        // Get range of values (min/max)
+        float min = Float.POSITIVE_INFINITY, max = Float.NEGATIVE_INFINITY;
+        for (Trial trial: trials) {
+            final MeasurementTrial measurementTrial = (MeasurementTrial) trial;
+            float value = measurementTrial.getResult();
+            if (value > max) max = value;
+            if (value < min) min = value;
+        }
+        float range = min + max;
+        // Get data range counts into bins
+        final int amountOfBins = 10;
+        int[] bins = new int[amountOfBins];
+        for (int i = 0; i < amountOfBins; i++) { bins[i] = 0; }
+        for (Trial trial: trials) {
+            final MeasurementTrial measurementTrial = (MeasurementTrial) trial;
+            float value = measurementTrial.getResult();
+            int bin = (int) ((value - min) / range * amountOfBins);
+            if (bin == amountOfBins) bin--;
+            bins[bin]++;
+        }
+        // Convert bins to entries
+        List<Entry> data = new ArrayList<>();
+        for (int i = 0; i < amountOfBins; i++) {
+            data.add(new Entry(i, bins[i]));
+        }
+        return data;
+    }
+
     public List<Entry> generatePlot(Collection<Trial> trials) {
         List<Entry> data = new ArrayList<>();
         for (Trial trial : trials ) {

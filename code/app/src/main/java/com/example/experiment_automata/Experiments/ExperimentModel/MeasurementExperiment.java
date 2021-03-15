@@ -1,9 +1,12 @@
 package com.example.experiment_automata.Experiments.ExperimentModel;
 
 import com.example.experiment_automata.trials.MeasurementTrial;
+import com.example.experiment_automata.trials.Trial;
+import com.github.mikephil.charting.data.Entry;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -49,5 +52,14 @@ public class MeasurementExperiment extends Experiment {
         } else {
             throw new IllegalStateException("Experiment is not accepting new results.");
         }
+    }
+
+    public List<Entry> generatePlot(Collection<Trial> trials) {
+        List<Entry> data = new ArrayList<>();
+        for (Trial trial : trials ) {
+            final MeasurementTrial measurementTrial = (MeasurementTrial) trial;
+            data.add(new Entry(measurementTrial.getDate().getTime(), measurementTrial.getResult()));
+        }
+        return data;
     }
 }

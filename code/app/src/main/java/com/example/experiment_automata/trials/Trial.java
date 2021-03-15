@@ -29,4 +29,11 @@ public abstract class Trial {
      *  The UUID of an Experimenter
      */
     public UUID getCollector() { return collector; }
+
+    /**
+     * Returns the date of the trial.
+     * @return
+     *  date of the trial
+     */
+    public Date getDate() { return date; }
 }

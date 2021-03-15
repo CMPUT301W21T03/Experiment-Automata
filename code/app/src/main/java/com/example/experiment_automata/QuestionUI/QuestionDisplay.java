@@ -28,6 +28,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class QuestionDisplay extends Fragment {
 
     public static final String QUESTION_EXPERIMENT = "QUESTION-UI-CURRENT-EXPERIMENT";
+    // this will be a string passed in if editing a question
+    public static final String QUESTION = "QUESTION-STRING";
+    // this will determine if this dialog is for a question or reply
+    public static final String TYPE = "QUESTION-OR-REPLY";
+    // this will be the ID of the experiment this belongs to
+    public static final String EXPERIMENT = "EXPERIMENT-ID";
 
 
     private Experiment currentExperiment;
@@ -75,7 +81,8 @@ public class QuestionDisplay extends Fragment {
             @Override
             public void onClick(View v)
             {
-                getActivity().getSupportFragmentManager().beginTransaction().add(new AddQuestionFragment(), "ADD QUESTION").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().add(new AddQuestionFragment()
+                        .newInstance("", true, currentExperiment.getExperimentId()), "ADD QUESTION").commit();
             }
         });
         return root;

@@ -30,6 +30,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.util.UUID;
+
 /**
  * Role/Pattern:
  *     The main launch activity where everything is being held and maintained. 
@@ -164,8 +166,10 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
     }
 
     @Override
-    public void onOkPressedQuestion(String question) {
-        Log.d("Question", question);
-//        Question newQuestion = new Question(question, loggedUser.getUserId(), )
+    public void onOkPressedQuestion(String question, UUID experimentId) {
+        Question newQuestion = new Question(question, loggedUser.getUserId(), experimentId);
+        questionManager.addQuestion(experimentId, newQuestion);
+        Log.d("Question", newQuestion.getQuestion());
+        Log.d("Question Experiment Id", experimentId.toString());
     }
 }

@@ -123,6 +123,7 @@ public class AddQuestionFragment extends DialogFragment
         String dialogType;
         // this is the experiment UUID that this question belongs to
         UUID ownerId = (UUID) args.getSerializable(OWNER);
+
         if (args != null) {
             dialogType = args.getString(TYPE);
             questionInput.setText(args.getString(QUESTION));
@@ -153,7 +154,7 @@ public class AddQuestionFragment extends DialogFragment
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             String currentReply = questionInput.getText().toString();
-                            listener.onOkPressedQuestion(currentReply, ownerId);
+                            listener.onOkPressedReply(currentReply, ownerId);
                         }
                     }).create();
         }

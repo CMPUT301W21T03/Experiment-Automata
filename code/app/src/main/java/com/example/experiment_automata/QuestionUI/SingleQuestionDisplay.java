@@ -2,6 +2,7 @@ package com.example.experiment_automata.QuestionUI;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.example.experiment_automata.NavigationActivity;
 import com.example.experiment_automata.QuestionsModel.Question;
@@ -44,6 +46,7 @@ public class SingleQuestionDisplay extends ArrayAdapter<Question>
     private ImageButton replyButton;
     private TextView replyView;
     private NavigationActivity mainActivity;
+    private Question currentQuestion;
 
 
     public SingleQuestionDisplay(Context context, ArrayList currentExperimentQuestions, Activity mainActivity)
@@ -58,7 +61,7 @@ public class SingleQuestionDisplay extends ArrayAdapter<Question>
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View root = convertView;
-
+        currentQuestion = currentExperimentQuestions.get(position);
         if(root == null)
         {
             root = LayoutInflater.from(context).inflate(R.layout.main_question_display, parent, false);
@@ -71,12 +74,11 @@ public class SingleQuestionDisplay extends ArrayAdapter<Question>
     }
 
 
-    private void setView(View root, int position)
+    private void setView(View root, int pos)
     {
-        Question currentQuestion = currentExperimentQuestions.get(position);
         replyButton = root.findViewById(R.id.main_question_display_reply_button);
         replyView = root.findViewById(R.id.main_question_display_reply);
-        replyButton.setOnClickListener(v -> dealingWithReply());
+        replyButton.setOnClickListener(v -> dealingWithReply(pos));
         ((TextView) (root.findViewById(R.id.main_question_display_question_view)))
                 .setText(currentQuestion.getQuestion());
 
@@ -96,8 +98,14 @@ public class SingleQuestionDisplay extends ArrayAdapter<Question>
 
     }
 
-    private void dealingWithReply()
+    private void dealingWithReply(int position)
     {
-        Log.d(CHECKING_REPLY_CLK, "Reply Button Pressed");
+        Fragment replyFragment = new AddQuestionFragment();
+        Bundle args = new Bundle();
+        args.putBoolean(AddQuestionFragment.TYPE, false);
+        args.putString(AddQuestionFragment.QUESTION, "");
+        args.putSerializable(AddQuestionFragment.OWNER, currentExperimentQuestions.get(position).getQuestionId());
+        replyFragment.setArguments(args);
+        mainActivity.getSupportFragmentManager().beginTransaction().add(replyFragment, "Reply").commit();
     }
 }

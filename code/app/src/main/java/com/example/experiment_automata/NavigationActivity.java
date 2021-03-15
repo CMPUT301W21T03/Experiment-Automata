@@ -197,5 +197,6 @@ public class NavigationActivity extends AppCompatActivity implements
     public void onOkPressedReply(String reply, UUID questionId) {
         Reply newReply = new Reply(reply, questionId);
         questionManager.addReply(questionId, newReply);
+        Log.d("Reply is ", reply);
     }
 }

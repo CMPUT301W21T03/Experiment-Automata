@@ -20,6 +20,7 @@ import com.example.experiment_automata.QuestionsModel.Reply;
 import com.example.experiment_automata.R;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * Role/Pattern:
@@ -67,31 +68,9 @@ public class SingleQuestionDisplay extends ArrayAdapter<Question>
         if(currentExperimentQuestions != null) {
 
             Question currentQuestion = currentExperimentQuestions.get(position);
-            repliesList = root.findViewById(R.id.main_question_display_question_replies);
-            ArrayList<Reply> questionReplies = new ArrayList<>();
-
-            try {
-                questionReplies.add(
-                        ((NavigationActivity) mainActivity)
-                                .questionManager
-                                .getQuestionReply(currentQuestion.getQuestionId()));
-            }catch (Exception e)
-            {
-                //TODO: find a better way to deal with this
-            }
-
-            singleReplyDisplayAdapter = new SingleReplyDisplay(context, questionReplies);
-            repliesList.setAdapter(singleReplyDisplayAdapter);
-
-
-
+            repliesList = root.findViewById(R.id.main_question_display_replies_list_view);
             replyButton = root.findViewById(R.id.main_question_display_reply_button);
-            replyButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dealingWithReply();
-                }
-            });
+            replyButton.setOnClickListener(v -> dealingWithReply());
             ((TextView) (root.findViewById(R.id.main_question_display_question_view))).setText(currentQuestion.getQuestion());
         }
         return root;

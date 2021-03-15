@@ -94,7 +94,7 @@ public class QuestionDisplay extends Fragment {
         }
         catch (Exception e)
         {
-
+            //TODO: find a better way to deal with this situation
         }
 
         questionDisplayAdapter = new SingleQuestionDisplay(getContext(), questionsList, getActivity());
@@ -130,13 +130,22 @@ public class QuestionDisplay extends Fragment {
      */
     public void updateQuestionsList()
     {
-        questionsList.clear();
-        questionsList.addAll(((NavigationActivity)getActivity())
-                .questionManager.getExperimentQuestions(currentExperiment
-                        .getExperimentId()));
-        if(questionDisplayAdapter != null) {
-            questionDisplayAdapter.notifyDataSetChanged();
+        try {
+            questionsList.clear();
+            questionsList.addAll(
+                    ((NavigationActivity)getActivity())
+                            .questionManager
+                            .getExperimentQuestions(currentExperiment
+                                    .getExperimentId()));
+            if(questionDisplayAdapter != null) {
+                questionDisplayAdapter.notifyDataSetChanged();
+            }
         }
+        catch (Exception e)
+        {
+            //TODO: deal with this at some point
+        }
+
     }
 
 }

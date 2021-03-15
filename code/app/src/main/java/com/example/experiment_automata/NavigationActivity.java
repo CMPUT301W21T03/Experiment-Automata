@@ -2,6 +2,7 @@ package com.example.experiment_automata;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +24,7 @@ import com.example.experiment_automata.ui.home.HomeFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -43,11 +45,13 @@ import java.util.UUID;
  *      1. None
  */
 
-public class NavigationActivity extends AppCompatActivity implements AddExperimentFragment.OnFragmentInteractionListener, AddQuestionFragment.OnFragmentInteractionListener {
+public class NavigationActivity extends AppCompatActivity implements
+        AddExperimentFragment.OnFragmentInteractionListener,
+        AddQuestionFragment.OnFragmentInteractionListener {
 
     private AppBarConfiguration mAppBarConfiguration;
     public final ExperimentManager experimentManager = new ExperimentManager();
-    public final QuestionManager questionManager = new QuestionManager();
+    public QuestionManager questionManager = QuestionManager.getInstence();
 
     private Screen currentScreen;
     public Fragment currentFragment;
@@ -177,6 +181,7 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
         return experimentManager;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onOkPressedQuestion(String question, UUID experimentId) {
         Question newQuestion = new Question(question, loggedUser.getUserId(), experimentId);
@@ -186,6 +191,7 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
 
         Log.d("Question", newQuestion.getQuestion());
         Log.d("Question Experiment Id", experimentId.toString());
+        Log.d("Size of Question List", "" + questionManager.getTotalQuestions(experimentId));
     }
 
     @Override

@@ -1,6 +1,10 @@
 package com.example.experiment_automata.QuestionsModel;
 
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
 
 import java.sql.Array;
@@ -21,19 +25,27 @@ import java.util.UUID;
  *      2. An owner technically should not be creating questions, but we need this to test for now
  */
 public class QuestionManager {
-    private static HashMap<UUID, ArrayList<Question>> questions;
-    private static HashMap<UUID, Reply> replies;
+    private static  HashMap<UUID, ArrayList<Question>> questions;
+    private static  HashMap<UUID, Reply> replies;
+    private static QuestionManager questionManager;
 
     /**
      * Initializes the question manager.
      */
-    public QuestionManager()
+    private QuestionManager()
     {
-        // the uuid used here should be an experiment's uuid
-        questions = new HashMap<UUID, ArrayList<Question>>();
-        // the uuid a reply uses here is the question's uuid
-        replies = new HashMap<UUID, Reply>();
+        questions = new HashMap<>();
+        replies = new HashMap<>();
     }
+
+    public static QuestionManager getInstence()
+    {
+        if (questionManager == null)
+            return new QuestionManager();
+        else
+            return questionManager;
+    }
+
 
     /**
      * Adds the given question that the user class/caller gives to this class
@@ -42,14 +54,13 @@ public class QuestionManager {
      * @param question
      *  question to add to the manager
      */
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void addQuestion(UUID experimentId, Question question) {
-        ArrayList<Question> returnQuestions;
-        if(questions.containsKey(experimentId))
-            returnQuestions = questions.get(experimentId);
-        else {
-            returnQuestions = new ArrayList<Question>();
-        }
+        ArrayList<Question> returnQuestions = new ArrayList<>();
         returnQuestions.add(question);
+        if(questions.containsKey(experimentId))
+            returnQuestions.addAll(questions.get(experimentId));
+
         questions.put(experimentId, returnQuestions);
     }
 

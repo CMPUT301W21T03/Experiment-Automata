@@ -124,11 +124,19 @@ public class QuestionDisplay extends Fragment {
                 .commit();
     }
 
+    /**
+     * resets the experiment so that it displays onto the screen.
+     * Source:
+     *  Author: https://stackoverflow.com/users/1366455/tolgap
+     *  Editor: None
+     *  Link: https://stackoverflow.com/questions/15422120/notifydatasetchange-not-working-from-custom-adapter
+     */
     public void updateQuestionsList()
     {
-        Log.d("TEST_A", "I'm running");
         questionsList.clear();
-        questionsList.addAll(((NavigationActivity)getActivity()).questionManager.getExperimentQuestions(currentExperiment.getExperimentId()));
+        questionsList.addAll(((NavigationActivity)getActivity())
+                .questionManager.getExperimentQuestions(currentExperiment
+                        .getExperimentId()));
         if(questionDisplayAdapter != null) {
             questionDisplayAdapter.notifyDataSetChanged();
         }

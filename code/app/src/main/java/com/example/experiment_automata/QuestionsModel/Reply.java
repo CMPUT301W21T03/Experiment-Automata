@@ -17,10 +17,10 @@ import java.util.UUID;
 public class Reply implements Serializable
 {
     private String reply;
-    private User experimenter;
+    private UUID experimenter;
     private UUID replyId;
 
-    public Reply(String reply, User experimenter)
+    public Reply(String reply, UUID experimenter)
     {
         this.reply = reply;
         this.experimenter = experimenter;

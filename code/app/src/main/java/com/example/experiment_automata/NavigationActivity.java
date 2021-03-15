@@ -16,6 +16,7 @@ import com.example.experiment_automata.QuestionUI.AddQuestionFragment;
 import com.example.experiment_automata.QuestionUI.QuestionDisplay;
 import com.example.experiment_automata.QuestionsModel.Question;
 import com.example.experiment_automata.QuestionsModel.QuestionManager;
+import com.example.experiment_automata.QuestionsModel.Reply;
 import com.example.experiment_automata.UserInformation.User;
 import com.example.experiment_automata.ui.Screen;
 import com.example.experiment_automata.ui.home.HomeFragment;
@@ -185,5 +186,11 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
 
         Log.d("Question", newQuestion.getQuestion());
         Log.d("Question Experiment Id", experimentId.toString());
+    }
+
+    @Override
+    public void onOkPressedReply(String reply, UUID questionId) {
+        Reply newReply = new Reply(reply, questionId);
+        questionManager.addReply(questionId, newReply);
     }
 }

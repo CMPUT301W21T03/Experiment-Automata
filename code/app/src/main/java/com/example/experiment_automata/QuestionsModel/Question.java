@@ -31,6 +31,14 @@ public class Question implements Serializable
         this.questionId = UUID.randomUUID();
     }
 
+    public Question(Question question) {
+        this.question = question.getQuestion();
+        this.user = question.getUser();
+        this.reply = question.getReply();
+        this.experimentId = question.getExperimentId();
+        this.questionId = question.getQuestionId();
+    }
+
     public String getQuestion() {
         return question;
     }

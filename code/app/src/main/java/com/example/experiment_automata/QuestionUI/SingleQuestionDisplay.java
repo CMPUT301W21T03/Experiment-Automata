@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
 import com.example.experiment_automata.NavigationActivity;
 import com.example.experiment_automata.QuestionsModel.Question;
 import com.example.experiment_automata.QuestionsModel.Reply;
@@ -44,6 +45,7 @@ public class SingleQuestionDisplay extends ArrayAdapter<Question>
     private ArrayList<Question> currentExperimentQuestions;
     private Context context;
     private ImageButton replyButton;
+    private TextView questionView;
     private TextView replyView;
     private NavigationActivity mainActivity;
     private Question currentQuestion;
@@ -66,6 +68,9 @@ public class SingleQuestionDisplay extends ArrayAdapter<Question>
         {
             root = LayoutInflater.from(context).inflate(R.layout.main_question_display, parent, false);
         }
+        questionView = root.findViewById(R.id.main_question_display_question_view);
+        replyButton = root.findViewById(R.id.main_question_display_reply_button);
+        replyView = root.findViewById(R.id.main_question_display_reply);
 
         if(currentExperimentQuestions != null) {
             setView(root, position);
@@ -76,36 +81,55 @@ public class SingleQuestionDisplay extends ArrayAdapter<Question>
 
     private void setView(View root, int pos)
     {
-        replyButton = root.findViewById(R.id.main_question_display_reply_button);
-        replyView = root.findViewById(R.id.main_question_display_reply);
-        replyButton.setOnClickListener(v -> dealingWithReply(pos));
+        // try and find a reply for the current question
+        Reply currentReply;
+        try {
+            currentReply = mainActivity.questionManager.getQuestionReply(currentQuestion.getQuestionId());
+            Log.d("replyID", currentQuestion.getQuestion() + " " + currentReply.getReplyId().toString());
+            replyButton.setVisibility(View.GONE);
+            replyView.setText(currentReply.getReply());
+        } catch (IllegalArgumentException e) {
+            replyButton.setOnClickListener(v -> dealingWithReply(pos));
+        }
         ((TextView) (root.findViewById(R.id.main_question_display_question_view)))
                 .setText(currentQuestion.getQuestion());
 
-        setReplyView(currentQuestion);
     }
 
-    private void setReplyView(Question currentQuestion)
-    {
+    /**
+     * Updates the views as they are needed so as not clutter the main function and
+     * to not violet DRY.
+     *
+     * @param questionId : The unique id that each question contains
+     */
+    private void update(UUID questionId) {
+        Log.d("UPDATE", "Screen info updated");
+        currentQuestion = mainActivity.questionManager.getQuestion(questionId);
+        questionView.setText(currentQuestion.getQuestion());
+        Reply currentReply;
         try {
-            Reply currentReply = mainActivity.questionManager.getQuestionReply(currentQuestion.getQuestionId());
+            currentReply = mainActivity.questionManager.getQuestionReply(currentQuestion.getQuestionId());
+            Log.d("replyID", currentQuestion.getQuestion() + " " + currentReply.getReplyId().toString());
+            replyButton.setVisibility(View.GONE);
             replyView.setText(currentReply.getReply());
-        }
-        catch (Exception e)
-        {
-            // TODO: deal with this in some fancy way
-        }
-
+        } catch (IllegalArgumentException e) {}
     }
+
+
+    /**
+     *
+     * Caller function that sets up the views when an update to the data happens.
+     *
+     */
+    public void updateScreen() {
+        update(currentQuestion.getQuestionId());
+    }
+
 
     private void dealingWithReply(int position)
     {
-        Fragment replyFragment = new AddQuestionFragment();
-        Bundle args = new Bundle();
-        args.putBoolean(AddQuestionFragment.TYPE, false);
-        args.putString(AddQuestionFragment.QUESTION, "");
-        args.putSerializable(AddQuestionFragment.OWNER, currentExperimentQuestions.get(position).getQuestionId());
-        replyFragment.setArguments(args);
+        Fragment replyFragment = AddQuestionFragment.newInstance("", false,
+                currentExperimentQuestions.get(position).getQuestionId());
         mainActivity.getSupportFragmentManager().beginTransaction().add(replyFragment, "Reply").commit();
     }
 }

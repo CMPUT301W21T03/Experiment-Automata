@@ -2,6 +2,7 @@ package com.example.experiment_automata.QuestionsModel;
 
 
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -26,6 +27,7 @@ import java.util.UUID;
  */
 public class QuestionManager {
     private static  HashMap<UUID, ArrayList<Question>> questions;
+    private static HashMap<UUID, Question> questionFromId;
     private static  HashMap<UUID, Reply> replies;
     private static QuestionManager questionManager;
 
@@ -36,6 +38,7 @@ public class QuestionManager {
     {
         questions = new HashMap<>();
         replies = new HashMap<>();
+        questionFromId = new HashMap<>();
     }
 
     public static QuestionManager getInstance()
@@ -61,6 +64,8 @@ public class QuestionManager {
             returnQuestions.addAll(questions.get(experimentId));
 
         questions.put(experimentId, returnQuestions);
+        Log.d("question", question.getQuestionId().toString());
+        questionFromId.put(question.getQuestionId(), question);
     }
 
     /**
@@ -79,6 +84,21 @@ public class QuestionManager {
         else {
             replies.put(id, reply);
         }
+    }
+
+    /**
+     * Gets a question from the database with it's UUID
+     * @param questionId
+     *   the ID of the question you want
+     * @return
+     *   the question you asked for
+     * @throws IllegalArgumentException
+     */
+    public Question getQuestion(UUID questionId) throws IllegalArgumentException {
+        if (!questionFromId.containsKey(questionId)) {
+            throw new IllegalArgumentException();
+        }
+        return questionFromId.get(questionId);
     }
 
     /**

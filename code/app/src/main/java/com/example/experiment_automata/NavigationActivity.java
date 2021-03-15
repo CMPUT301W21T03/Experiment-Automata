@@ -184,13 +184,15 @@ public class NavigationActivity extends AppCompatActivity implements
     @Override
     public void onOkPressedQuestion(String question, UUID experimentId) {
         Question newQuestion = new Question(question, loggedUser.getUserId(), experimentId);
+        Log.d("question id", newQuestion.getExperimentId().toString());
         questionManager.addQuestion(experimentId, newQuestion);
 
         ((QuestionDisplay)currentFragment).updateQuestionsList();
 
-        Log.d("Question", newQuestion.getQuestion());
-        Log.d("Question Experiment Id", experimentId.toString());
-        Log.d("Size of Question List", "" + questionManager.getTotalQuestions(experimentId));
+        Log.d("current screen", currentScreen + "");
+        if (currentScreen == Screen.Questions) {
+            ((HomeFragment) currentFragment).updateScreen();
+        }
     }
 
     @Override
@@ -198,5 +200,9 @@ public class NavigationActivity extends AppCompatActivity implements
         Reply newReply = new Reply(reply, questionId);
         questionManager.addReply(questionId, newReply);
         Log.d("Reply is ", reply);
+        Log.d("current screen", currentScreen + "");
+        if (currentScreen == Screen.Questions) {
+            ((HomeFragment) currentFragment).updateScreen();
+        }
     }
 }

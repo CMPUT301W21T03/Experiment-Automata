@@ -54,7 +54,8 @@ public class QuestionManager {
     }
 
     /**
-     * Adds the given reply that the user class/caller gives to this class
+     * Adds the given reply that the user class/caller gives to this class.
+     * Currently assumes one question will have at most 1 reply
      * @param id
      *  id corresponding to the question
      * @param reply

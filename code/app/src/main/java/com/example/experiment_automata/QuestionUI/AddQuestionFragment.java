@@ -25,6 +25,9 @@ import java.util.UUID;
  * Role/Pattern:
  *
  *       This class provides a dialog that will return the string inputted for a question
+ *       If you want to use a question, pass true into the type parameter
+ *       If you want to use a reply, pass false into the type parameter
+ *       You should pass an empty string as the first parameter unless editing a question/reply
  *
  * Known Issue:
  *
@@ -32,6 +35,11 @@ import java.util.UUID;
  *      2. will need to add the ability to create replies
  *      3. not sure if we need the ability to edit questions/replies
  */
+
+// note for developing:
+// If you want to use a question, pass true into the type parameter
+// If you want to use a reply, pass false into the type parameter
+// You should pass an empty string as the first parameter unless editing a question/reply
 
 // Basic layout of this fragment inspired by lab work in CMPUT 301
 // Abdul Ali Bangash, "Lab 3", 2021-02-04, Public Domain,
@@ -42,8 +50,8 @@ public class AddQuestionFragment extends DialogFragment
     public static final String QUESTION = "QUESTION-STRING";
     // this will determine if this dialog is for a question or reply
     public static final String TYPE = "QUESTION-OR-REPLY";
-    // this will be the ID of the experiment this belongs to
-    public static final String EXPERIMENT = "EXPERIMENT-ID";
+    // this will be the ID of the experiment or question this belongs to (depending on reply vs question)
+    public static final String OWNER = "OWNER-ID";
 
     private EditText questionInput;
     private String experimentId;
@@ -54,6 +62,7 @@ public class AddQuestionFragment extends DialogFragment
     public interface OnFragmentInteractionListener
     {
         void onOkPressedQuestion(String question, UUID Experiment);
+        void onOkPressedReply(String reply, UUID questionId);
     }
 
     /**
@@ -83,7 +92,7 @@ public class AddQuestionFragment extends DialogFragment
      * @return
      *   a fragment to edit an questions's information
      */
-    public static AddQuestionFragment newInstance(String question, Boolean type, UUID experimentId)
+    public static AddQuestionFragment newInstance(String question, Boolean type, UUID ownerId)
     {
         AddQuestionFragment questionFragment = new AddQuestionFragment();
         Bundle args = new Bundle();
@@ -93,7 +102,7 @@ public class AddQuestionFragment extends DialogFragment
         } else {
             args.putString(TYPE, "Add Reply");
         }
-        args.putSerializable(EXPERIMENT, experimentId);
+        args.putSerializable(OWNER, ownerId);
         questionFragment.setArguments(args);
         return questionFragment;
     }
@@ -119,7 +128,7 @@ public class AddQuestionFragment extends DialogFragment
         // this will determine if it is asking for a question or reply
         String dialogType;
         // this is the experiment UUID that this question belongs to
-        UUID experimentId = (UUID) args.getSerializable(EXPERIMENT);
+        UUID ownerId = (UUID) args.getSerializable(OWNER);
         if (args != null) {
             dialogType = args.getString(TYPE);
             questionInput.setText(args.getString(QUESTION));
@@ -127,17 +136,29 @@ public class AddQuestionFragment extends DialogFragment
             // assume if no bundle args that it's asking for a question
             dialogType = "Add Question";
         }
-
-        return build.setView(view)
-                .setTitle(dialogType)
-                .setNegativeButton("Cancel", null)
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String currentQuestion = questionInput.getText().toString();
-                        listener.onOkPressedQuestion(currentQuestion, experimentId);
-                    }
-                }).create();
+        if (dialogType == "Add Question") {
+            return build.setView(view)
+                    .setTitle(dialogType)
+                    .setNegativeButton("Cancel", null)
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String currentQuestion = questionInput.getText().toString();
+                            listener.onOkPressedQuestion(currentQuestion, ownerId);
+                        }
+                    }).create();
+        } else {
+            return build.setView(view)
+                    .setTitle(dialogType)
+                    .setNegativeButton("Cancel", null)
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String currentReply = questionInput.getText().toString();
+                            listener.onOkPressedQuestion(currentReply, ownerId);
+                        }
+                    }).create();
+        }
 
     }
 }

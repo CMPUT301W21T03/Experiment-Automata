@@ -110,9 +110,6 @@ public class QuestionDisplay extends Fragment {
             makeQuestion();
         });
 
-
-
-
         return root;
     }
 

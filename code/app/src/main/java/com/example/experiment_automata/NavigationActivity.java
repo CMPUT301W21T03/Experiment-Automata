@@ -51,7 +51,7 @@ public class NavigationActivity extends AppCompatActivity implements
 
     private AppBarConfiguration mAppBarConfiguration;
     public final ExperimentManager experimentManager = new ExperimentManager();
-    public QuestionManager questionManager = QuestionManager.getInstence();
+    public QuestionManager questionManager = QuestionManager.getInstance();
 
     private Screen currentScreen;
     public Fragment currentFragment;

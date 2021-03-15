@@ -38,7 +38,7 @@ public class QuestionManager {
         replies = new HashMap<>();
     }
 
-    public static QuestionManager getInstence()
+    public static QuestionManager getInstance()
     {
         if (questionManager == null)
             return new QuestionManager();
@@ -74,11 +74,11 @@ public class QuestionManager {
      *  the id is already associated to an experiment
      */
     public void addReply(UUID id, Reply reply) throws IllegalArgumentException {
-
         if(replies.containsKey(id))
             throw new IllegalArgumentException();
-
-        replies.put(id, reply);
+        else {
+            replies.put(id, reply);
+        }
     }
 
     /**
@@ -121,11 +121,10 @@ public class QuestionManager {
      * @return
      *  A reply if one exists
      */
-    public Reply getQuestionReply(UUID questionId) {
+    public Reply getQuestionReply(UUID questionId) throws IllegalArgumentException {
         if (!replies.containsKey(questionId)) {
             throw new IllegalArgumentException();
         }
-
         return replies.get(questionId);
     }
 

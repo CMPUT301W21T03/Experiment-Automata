@@ -57,19 +57,20 @@ public class SingleQuestionDisplay extends ArrayAdapter<Question>
             root = LayoutInflater.from(context).inflate(R.layout.main_question_display, parent, false);
         }
 
-        Question currentQuestion = currentExperimentQuestions.get(position);
+        if(currentExperimentQuestions != null) {
+            Question currentQuestion = currentExperimentQuestions.get(position);
 
-        replyButton = root.findViewById(R.id.main_question_display_reply_button);
+            replyButton = root.findViewById(R.id.main_question_display_reply_button);
 
-        replyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dealingWithReply();
-            }
-        });
+            replyButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dealingWithReply();
+                }
+            });
 
-        ((TextView)(root.findViewById(R.id.main_question_display_question_view))).setText(currentQuestion.getQuestion());
-
+            ((TextView) (root.findViewById(R.id.main_question_display_question_view))).setText(currentQuestion.getQuestion());
+        }
         return root;
     }
 

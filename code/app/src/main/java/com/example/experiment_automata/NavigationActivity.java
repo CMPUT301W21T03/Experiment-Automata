@@ -13,6 +13,7 @@ import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentMan
 import com.example.experiment_automata.ExperimentFragments.NavExperimentDetailsFragment;
 import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
 import com.example.experiment_automata.QuestionUI.AddQuestionFragment;
+import com.example.experiment_automata.QuestionUI.QuestionDisplay;
 import com.example.experiment_automata.QuestionsModel.Question;
 import com.example.experiment_automata.QuestionsModel.QuestionManager;
 import com.example.experiment_automata.UserInformation.User;
@@ -179,6 +180,9 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
     public void onOkPressedQuestion(String question, UUID experimentId) {
         Question newQuestion = new Question(question, loggedUser.getUserId(), experimentId);
         questionManager.addQuestion(experimentId, newQuestion);
+
+        ((QuestionDisplay)currentFragment).updateQuestionsList();
+
         Log.d("Question", newQuestion.getQuestion());
         Log.d("Question Experiment Id", experimentId.toString());
     }

@@ -13,6 +13,7 @@ import android.widget.ListView;
 
 import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
 import com.example.experiment_automata.NavigationActivity;
+import com.example.experiment_automata.QuestionsModel.Question;
 import com.example.experiment_automata.QuestionsModel.QuestionController;
 import com.example.experiment_automata.QuestionsModel.QuestionManager;
 import com.example.experiment_automata.R;
@@ -45,10 +46,8 @@ public class QuestionDisplay extends Fragment {
 
     private Experiment currentExperiment;
     private QuestionController questionController;
-    private FloatingActionButton addQuestionButton;
-    private ListView questionsDisplayList;
-    private ArrayAdapter questionDisplayAdapter;
-    private ArrayList questionsList;
+    private ArrayAdapter<Question> questionDisplayAdapter;
+    ArrayList<Question> questionsList = new ArrayList<>();
 
     public QuestionDisplay() {
         // Required empty public constructor
@@ -73,6 +72,7 @@ public class QuestionDisplay extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((NavigationActivity)getActivity()).setCurrentFragment(this);
         if (getArguments() != null) {
             currentExperiment = (Experiment) getArguments().getSerializable(QUESTION_EXPERIMENT);
         }
@@ -82,19 +82,35 @@ public class QuestionDisplay extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_question_display, container, false);
-        questionsDisplayList = root.findViewById(R.id.frag_questions_display_list_view);
+        ListView questionsDisplayList = root.findViewById(R.id.frag_questions_display_list_view);
         //Getting all the questions
-        QuestionManager questionManager = ((NavigationActivity)(getActivity())).questionManager;
+
+        ((NavigationActivity)getActivity()).setCurrentFragment(this);
+
+        try {
+            questionsList = ((NavigationActivity) (getActivity()))
+                    .questionManager
+                    .getExperimentQuestions(currentExperiment.getExperimentId());
+        }
+        catch (Exception e)
+        {
+
+        }
+
+        questionDisplayAdapter = new SingleQuestionDisplay(getContext(), questionsList);
+        questionsDisplayList.setAdapter(questionDisplayAdapter);
 
 
         //Getting rid of the floating button that adds experiments on every navigation
         getActivity().findViewById(R.id.add_experiment_button).setVisibility(View.GONE);
 
-        addQuestionButton = root.findViewById(R.id.frag_question_display_add_question_button);
+        FloatingActionButton addQuestionButton = root.findViewById(R.id.frag_question_display_add_question_button);
         addQuestionButton.setOnClickListener(v ->
         {
             makeQuestion();
         });
+
+
 
 
         return root;
@@ -107,4 +123,22 @@ public class QuestionDisplay extends Fragment {
                         .newInstance("", true, currentExperiment.getExperimentId()), "ADD QUESTION")
                 .commit();
     }
+
+    public void updateQuestionsList()
+    {
+        if(questionDisplayAdapter != null) {
+            questionDisplayAdapter.notifyDataSetInvalidated();
+            Log.d("LLL", "O ");
+        }
+    }
+
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        updateQuestionsList();
+        Log.d("ERROR CHECK 1", "ON R CALLED");
+    }
+
 }

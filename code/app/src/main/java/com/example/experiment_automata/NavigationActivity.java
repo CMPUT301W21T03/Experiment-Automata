@@ -181,7 +181,6 @@ public class NavigationActivity extends AppCompatActivity implements
         return experimentManager;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onOkPressedQuestion(String question, UUID experimentId) {
         Question newQuestion = new Question(question, loggedUser.getUserId(), experimentId);

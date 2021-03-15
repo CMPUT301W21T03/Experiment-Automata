@@ -54,7 +54,6 @@ public class QuestionManager {
      * @param question
      *  question to add to the manager
      */
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public void addQuestion(UUID experimentId, Question question) {
         ArrayList<Question> returnQuestions = new ArrayList<>();
         returnQuestions.add(question);

@@ -190,19 +190,21 @@ public class NavigationActivity extends AppCompatActivity implements
         ((QuestionDisplay)currentFragment).updateQuestionsList();
 
         Log.d("current screen", currentScreen + "");
-        if (currentScreen == Screen.Questions) {
-            ((HomeFragment) currentFragment).updateScreen();
-        }
+//        if (currentScreen == Screen.Questions) {
+//            ((QuestionDisplay) currentFragment).updateScreen();
+//        }
     }
 
     @Override
     public void onOkPressedReply(String reply, UUID questionId) {
         Reply newReply = new Reply(reply, questionId);
         questionManager.addReply(questionId, newReply);
+
+        ((QuestionDisplay)currentFragment).updateQuestionsList();
         Log.d("Reply is ", reply);
         Log.d("current screen", currentScreen + "");
-        if (currentScreen == Screen.Questions) {
-            ((HomeFragment) currentFragment).updateScreen();
-        }
+//        if (currentScreen == Screen.Questions) {
+//            ((QuestionDisplay) currentFragment).updateScreen();
+//        }
     }
 }

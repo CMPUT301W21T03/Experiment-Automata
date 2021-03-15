@@ -17,6 +17,7 @@ import com.example.experiment_automata.QuestionsModel.Question;
 import com.example.experiment_automata.QuestionsModel.QuestionController;
 import com.example.experiment_automata.QuestionsModel.QuestionManager;
 import com.example.experiment_automata.R;
+import com.example.experiment_automata.ui.Screen;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.protobuf.Internal;
 
@@ -79,6 +80,8 @@ public class QuestionDisplay extends Fragment {
         if (getArguments() != null) {
             currentExperiment = (Experiment) getArguments().getSerializable(QUESTION_EXPERIMENT);
         }
+        ((NavigationActivity) getActivity()).setCurrentFragment(this);
+        ((NavigationActivity) getActivity()).setCurrentScreen(Screen.Questions);
     }
 
     @Override
@@ -141,6 +144,7 @@ public class QuestionDisplay extends Fragment {
                             .getExperimentQuestions(currentExperiment
                                     .getExperimentId()));
             if(questionDisplayAdapter != null) {
+                Log.d("updateAdapter", "not null");
                 questionDisplayAdapter.notifyDataSetChanged();
             }
         }

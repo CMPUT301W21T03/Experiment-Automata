@@ -78,6 +78,11 @@ public class SingleQuestionDisplay extends ArrayAdapter<Question>
         return root;
     }
 
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+        update(currentQuestion.getQuestionId());
+    }
 
     private void setView(View root, int pos)
     {
@@ -89,6 +94,8 @@ public class SingleQuestionDisplay extends ArrayAdapter<Question>
             replyButton.setVisibility(View.GONE);
             replyView.setText(currentReply.getReply());
         } catch (IllegalArgumentException e) {
+            replyButton.setVisibility(View.VISIBLE);
+            replyView.setText("");
             replyButton.setOnClickListener(v -> dealingWithReply(pos));
         }
         ((TextView) (root.findViewById(R.id.main_question_display_question_view)))
@@ -113,16 +120,6 @@ public class SingleQuestionDisplay extends ArrayAdapter<Question>
             replyButton.setVisibility(View.GONE);
             replyView.setText(currentReply.getReply());
         } catch (IllegalArgumentException e) {}
-    }
-
-
-    /**
-     *
-     * Caller function that sets up the views when an update to the data happens.
-     *
-     */
-    public void updateScreen() {
-        update(currentQuestion.getQuestionId());
     }
 
 

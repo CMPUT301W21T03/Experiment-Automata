@@ -120,8 +120,6 @@ public class AddQuestionFragment extends DialogFragment
     {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_add_edit_question_diolog_op_up, null);
         questionInput = view.findViewById(R.id.frag_add_edit_question_input_box_diolog);
-        // for now, we assume this is just created to ask questions
-        questionInput.setHint("Question");
         Bundle args = getArguments();
         AlertDialog.Builder build = new AlertDialog.Builder(getContext());
 
@@ -136,7 +134,10 @@ public class AddQuestionFragment extends DialogFragment
             // assume if no bundle args that it's asking for a question
             dialogType = "Add Question";
         }
+
+        // update the hint text of the question input depending on what the dialogType is
         if (dialogType == "Add Question") {
+            questionInput.setHint("Question");
             return build.setView(view)
                     .setTitle(dialogType)
                     .setNegativeButton("Cancel", null)
@@ -148,6 +149,7 @@ public class AddQuestionFragment extends DialogFragment
                         }
                     }).create();
         } else {
+            questionInput.setHint("Reply");
             return build.setView(view)
                     .setTitle(dialogType)
                     .setNegativeButton("Cancel", null)
@@ -159,6 +161,5 @@ public class AddQuestionFragment extends DialogFragment
                         }
                     }).create();
         }
-
     }
 }

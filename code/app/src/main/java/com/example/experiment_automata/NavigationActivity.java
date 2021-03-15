@@ -190,9 +190,6 @@ public class NavigationActivity extends AppCompatActivity implements
         ((QuestionDisplay)currentFragment).updateQuestionsList();
 
         Log.d("current screen", currentScreen + "");
-//        if (currentScreen == Screen.Questions) {
-//            ((QuestionDisplay) currentFragment).updateScreen();
-//        }
     }
 
     @Override
@@ -203,8 +200,5 @@ public class NavigationActivity extends AppCompatActivity implements
         ((QuestionDisplay)currentFragment).updateQuestionsList();
         Log.d("Reply is ", reply);
         Log.d("current screen", currentScreen + "");
-//        if (currentScreen == Screen.Questions) {
-//            ((QuestionDisplay) currentFragment).updateScreen();
-//        }
     }
 }

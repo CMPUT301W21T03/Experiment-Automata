@@ -64,7 +64,6 @@ public class QuestionDisplay extends Fragment {
      * @param currentExperiment is the experiment that contains the needed questions
      * @return A new instance of fragment QuestionDisplay.
      */
-
     public static QuestionDisplay newInstance(Experiment currentExperiment) {
         QuestionDisplay fragment = new QuestionDisplay();
         Bundle args = new Bundle();
@@ -73,6 +72,10 @@ public class QuestionDisplay extends Fragment {
         return fragment;
     }
 
+    /**
+     * Retrieves the current experiment to query questions on creation
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,10 +83,18 @@ public class QuestionDisplay extends Fragment {
         if (getArguments() != null) {
             currentExperiment = (Experiment) getArguments().getSerializable(QUESTION_EXPERIMENT);
         }
-        ((NavigationActivity) getActivity()).setCurrentFragment(this);
-        ((NavigationActivity) getActivity()).setCurrentScreen(Screen.Questions);
     }
 
+    /**
+     * Creates the view for the fragment and connects the components
+     * @param inflater
+     *   Inflater used to create the root view
+     * @param container
+     *   Viewgroup containing any information that needs to be shared with the activity
+     * @param savedInstanceState
+     *   Bundle of parameters if needed
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -106,7 +117,6 @@ public class QuestionDisplay extends Fragment {
         questionDisplayAdapter = new SingleQuestionDisplay(getContext(), questionsList, getActivity());
         questionsDisplayList.setAdapter(questionDisplayAdapter);
 
-
         //Getting rid of the floating button that adds experiments on every navigation
         getActivity().findViewById(R.id.add_experiment_button).setVisibility(View.GONE);
 
@@ -119,6 +129,9 @@ public class QuestionDisplay extends Fragment {
         return root;
     }
 
+    /**
+     * Creates a dialog for question creation
+     */
     private void makeQuestion()
     {
         getActivity().getSupportFragmentManager().beginTransaction()
@@ -128,7 +141,7 @@ public class QuestionDisplay extends Fragment {
     }
 
     /**
-     * resets the experiment so that it displays onto the screen.
+     * Resets the experiment so that it displays onto the screen.
      * Source:
      *  Author: https://stackoverflow.com/users/1366455/tolgap
      *  Editor: None

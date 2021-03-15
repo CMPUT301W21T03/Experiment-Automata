@@ -50,7 +50,15 @@ public class SingleQuestionDisplay extends ArrayAdapter<Question>
     private NavigationActivity mainActivity;
     private Question currentQuestion;
 
-
+    /**
+     * Constructor takes in an array list of questions and a context to set the attributes properly
+     * @param context
+     *   Context needed to create the view if needed
+     * @param currentExperimentQuestions
+     *   All of the questions to be shown
+     * @param mainActivity
+     *   MainActivity to access the questionManager
+     */
     public SingleQuestionDisplay(Context context, ArrayList currentExperimentQuestions, Activity mainActivity)
     {
         super(context, 0, currentExperimentQuestions);
@@ -59,6 +67,17 @@ public class SingleQuestionDisplay extends ArrayAdapter<Question>
         this.mainActivity = (NavigationActivity) mainActivity;
     }
 
+    /**
+     * This method prepares the view with the proper XML file
+     * @param position
+     *   Index of the question
+     * @param convertView
+     *   XML we are trying to connect
+     * @param parent
+     *   Paretn view of the current file
+     * @return
+     *   View with all the attributes set properly
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -76,12 +95,6 @@ public class SingleQuestionDisplay extends ArrayAdapter<Question>
             setView(root, position);
         }
         return root;
-    }
-
-    @Override
-    public void notifyDataSetChanged() {
-        super.notifyDataSetChanged();
-        update(currentQuestion.getQuestionId());
     }
 
     private void setView(View root, int pos)

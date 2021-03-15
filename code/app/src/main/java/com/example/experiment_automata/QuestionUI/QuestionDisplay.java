@@ -126,19 +126,12 @@ public class QuestionDisplay extends Fragment {
 
     public void updateQuestionsList()
     {
+        Log.d("TEST_A", "I'm running");
+        questionsList.clear();
+        questionsList.addAll(((NavigationActivity)getActivity()).questionManager.getExperimentQuestions(currentExperiment.getExperimentId()));
         if(questionDisplayAdapter != null) {
-            questionDisplayAdapter.notifyDataSetInvalidated();
-            Log.d("LLL", "O ");
+            questionDisplayAdapter.notifyDataSetChanged();
         }
-    }
-
-
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-        updateQuestionsList();
-        Log.d("ERROR CHECK 1", "ON R CALLED");
     }
 
 }

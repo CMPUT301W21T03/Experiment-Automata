@@ -54,6 +54,13 @@ public class MeasurementExperiment extends Experiment {
         }
     }
 
+    /**
+     * Generate a list of entries needed to plot a histogram
+     * @param trials
+     *  trials to use for data
+     * @return
+     *  the list of entries that represent a histogram of trials.
+     */
     public List<Entry> generateHistogram(Collection<Trial> trials) {
         // Get range of values (min/max)
         float min = Float.POSITIVE_INFINITY, max = Float.NEGATIVE_INFINITY;
@@ -83,6 +90,13 @@ public class MeasurementExperiment extends Experiment {
         return data;
     }
 
+    /**
+     * Generate a list of entries needed to plot results of trials.
+     * @param trials
+     *  trials to use for data
+     * @return
+     *  the list of entries that represent a plot
+     */
     public List<Entry> generatePlot(Collection<Trial> trials) {
         List<Entry> data = new ArrayList<>();
         for (Trial trial : trials ) {

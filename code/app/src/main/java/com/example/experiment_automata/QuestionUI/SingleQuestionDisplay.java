@@ -44,7 +44,7 @@ public class SingleQuestionDisplay extends ArrayAdapter<Question>
     private ImageButton replyButton;
     private ListView repliesList;
     private ArrayAdapter singleReplyDisplayAdapter;
-    private Activity mainActivity;
+    private NavigationActivity mainActivity;
 
 
     public SingleQuestionDisplay(Context context, ArrayList currentExperimentQuestions, Activity mainActivity)
@@ -52,7 +52,7 @@ public class SingleQuestionDisplay extends ArrayAdapter<Question>
         super(context, 0, currentExperimentQuestions);
         this.context = context;
         this.currentExperimentQuestions = currentExperimentQuestions;
-        this.mainActivity = mainActivity;
+        this.mainActivity = (NavigationActivity) mainActivity;
     }
 
     @NonNull
@@ -69,9 +69,18 @@ public class SingleQuestionDisplay extends ArrayAdapter<Question>
 
             Question currentQuestion = currentExperimentQuestions.get(position);
             repliesList = root.findViewById(R.id.main_question_display_replies_list_view);
+            ArrayList<Reply> currentQuestionReplies = new ArrayList<>();
+            currentQuestionReplies.addAll(mainActivity.questionManager.getQuestionReply(currentQuestion.getQuestionId()));
+
+
+            SingleReplyDisplay singleReplyAdapter = new SingleReplyDisplay(getContext(), null);
+
+
+
             replyButton = root.findViewById(R.id.main_question_display_reply_button);
             replyButton.setOnClickListener(v -> dealingWithReply());
-            ((TextView) (root.findViewById(R.id.main_question_display_question_view))).setText(currentQuestion.getQuestion());
+            ((TextView) (root.findViewById(R.id.main_question_display_question_view)))
+                    .setText(currentQuestion.getQuestion());
         }
         return root;
     }

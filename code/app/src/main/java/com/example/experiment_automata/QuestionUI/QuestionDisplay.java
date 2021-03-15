@@ -97,7 +97,7 @@ public class QuestionDisplay extends Fragment {
 
         }
 
-        questionDisplayAdapter = new SingleQuestionDisplay(getContext(), questionsList);
+        questionDisplayAdapter = new SingleQuestionDisplay(getContext(), questionsList, getActivity());
         questionsDisplayList.setAdapter(questionDisplayAdapter);
 
 
@@ -116,7 +116,7 @@ public class QuestionDisplay extends Fragment {
     private void makeQuestion()
     {
         getActivity().getSupportFragmentManager().beginTransaction()
-                .add(new AddQuestionFragment()
+                .add(AddQuestionFragment
                         .newInstance("", true, currentExperiment.getExperimentId()), "ADD QUESTION")
                 .commit();
     }

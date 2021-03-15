@@ -171,6 +171,11 @@ public abstract class Experiment implements Serializable {
         return requireLocation;
     }
 
-
-
+    /**
+     * Makes a new uuid if the one generated is in use by the system.
+     */
+    public void makeNewUUID()
+    {
+        this.experimentId = UUID.randomUUID();
+    }
 }

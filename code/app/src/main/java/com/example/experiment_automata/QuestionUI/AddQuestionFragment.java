@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -14,12 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.example.experiment_automata.ExperimentFragments.AddExperimentFragment;
-import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
-import com.example.experiment_automata.QuestionsModel.Question;
 import com.example.experiment_automata.R;
-
-import java.util.UUID;
 
 /**
  * Role/Pattern:
@@ -42,6 +36,8 @@ public class AddQuestionFragment extends DialogFragment
     public static final String QUESTION = "QUESTION-STRING";
     // this will determine if this dialog is for a question or reply
     public static final String TYPE = "QUESTION-OR-REPLY";
+    // this will key value pair for the question and the experiment
+    public static final String EXPERIMENT_ID = "CURRENT_EXPERIMENTER_ID";
 
     private EditText questionInput;
     private String experimentId;
@@ -51,7 +47,7 @@ public class AddQuestionFragment extends DialogFragment
 
     public interface OnFragmentInteractionListener
     {
-        void onOkPressedQuestion(String question);
+        void onOkPressedQuestion(String experimentId, String question);
     }
 
     /**
@@ -81,7 +77,7 @@ public class AddQuestionFragment extends DialogFragment
      * @return
      *   a fragment to edit an questions's information
      */
-    public static AddQuestionFragment newInstance(String question, Boolean type)
+    public static AddQuestionFragment newInstance(String experimentId, String question, Boolean type)
     {
         AddQuestionFragment questionFragment = new AddQuestionFragment();
         Bundle args = new Bundle();
@@ -130,7 +126,7 @@ public class AddQuestionFragment extends DialogFragment
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String currentQuestion = questionInput.getText().toString();
-                        listener.onOkPressedQuestion(currentQuestion);
+                        listener.onOkPressedQuestion(experimentId, currentQuestion);
                     }
                 }).create();
 

@@ -130,7 +130,17 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
 
     @Override
     public void onOkPressed(Experiment experiment) {
-        experimentManager.add(experiment.getExperimentId(), experiment);
+
+        boolean added = false;
+        while (!added) {
+            try {
+                experimentManager.add(experiment.getExperimentId(), experiment);
+                added = true;
+            } catch (IllegalArgumentException badUUID) {
+                experiment.makeNewUUID();
+            }
+        }
+
         loggedUser.addExperiment(experiment.getExperimentId());
         if (currentScreen == Screen.ExperimentList) {
             ((HomeFragment) currentFragment).updateScreen();
@@ -164,7 +174,8 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
     }
 
     @Override
-    public void onOkPressedQuestion(String question) {
+    public void onOkPressedQuestion(String experimentId, String question)
+    {
         Log.d("Question", question);
 //        Question newQuestion = new Question(question, loggedUser.getUserId(), )
     }

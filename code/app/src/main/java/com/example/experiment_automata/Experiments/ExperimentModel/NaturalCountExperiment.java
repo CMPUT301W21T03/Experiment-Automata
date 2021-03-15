@@ -1,6 +1,5 @@
 package com.example.experiment_automata.Experiments.ExperimentModel;
 
-import com.example.experiment_automata.trials.MeasurementTrial;
 import com.example.experiment_automata.trials.NaturalCountTrial;
 import com.example.experiment_automata.trials.Trial;
 import com.github.mikephil.charting.data.Entry;

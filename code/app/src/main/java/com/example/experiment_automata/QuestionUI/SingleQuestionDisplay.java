@@ -97,6 +97,13 @@ public class SingleQuestionDisplay extends ArrayAdapter<Question>
         return root;
     }
 
+    /**
+     * Sets up the display
+     * @param root
+     *   the view created for the fragment
+     * @param pos
+     *   which position within the array adapter
+     */
     private void setView(View root, int pos)
     {
         // try and find a reply for the current question
@@ -135,7 +142,11 @@ public class SingleQuestionDisplay extends ArrayAdapter<Question>
         } catch (IllegalArgumentException e) {}
     }
 
-
+    /**
+     * Prepares the reply fragment when creating a reply
+     * @param position
+     *   Position of the question the reply is being made for
+     */
     private void dealingWithReply(int position)
     {
         Fragment replyFragment = AddQuestionFragment.newInstance("", false,

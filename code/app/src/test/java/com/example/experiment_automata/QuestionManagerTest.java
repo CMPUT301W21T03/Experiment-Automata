@@ -91,5 +91,15 @@ public class QuestionManagerTest {
         assertEquals(2, questionManager.getTotalQuestions(experimentId1));
         assertEquals(1, questionManager.getTotalQuestions(experimentId2));
     }
+
+    // work in progress, getting the NullPointerException
+    @Test
+    public void getExperimentQuestions() {
+        try {
+            questionManager.getExperimentQuestions(experimentId1);
+        } catch (IllegalArgumentException e) {}
+        questionManager.addQuestion(experimentId1, q1);
+        questionManager.getTotalQuestions(q1.getExperimentId());
+    }
     
 }

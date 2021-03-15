@@ -8,11 +8,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
+import com.example.experiment_automata.NavigationActivity;
 import com.example.experiment_automata.QuestionsModel.QuestionController;
+import com.example.experiment_automata.QuestionsModel.QuestionManager;
 import com.example.experiment_automata.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.protobuf.Internal;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,6 +46,9 @@ public class QuestionDisplay extends Fragment {
     private Experiment currentExperiment;
     private QuestionController questionController;
     private FloatingActionButton addQuestionButton;
+    private ListView questionsDisplayList;
+    private ArrayAdapter questionDisplayAdapter;
+    private ArrayList questionsList;
 
     public QuestionDisplay() {
         // Required empty public constructor
@@ -72,24 +82,29 @@ public class QuestionDisplay extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_question_display, container, false);
+        questionsDisplayList = root.findViewById(R.id.frag_questions_display_list_view);
+        //Getting all the questions
+        QuestionManager questionManager = ((NavigationActivity)(getActivity())).questionManager;
+
 
         //Getting rid of the floating button that adds experiments on every navigation
         getActivity().findViewById(R.id.add_experiment_button).setVisibility(View.GONE);
 
         addQuestionButton = root.findViewById(R.id.frag_question_display_add_question_button);
-        addQuestionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                getActivity().getSupportFragmentManager().beginTransaction().add(new AddQuestionFragment()
-                        .newInstance("", true, currentExperiment.getExperimentId()), "ADD QUESTION").commit();
-            }
+        addQuestionButton.setOnClickListener(v ->
+        {
+            makeQuestion();
         });
+
+
         return root;
     }
 
     private void makeQuestion()
     {
-
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .add(new AddQuestionFragment()
+                        .newInstance("", true, currentExperiment.getExperimentId()), "ADD QUESTION")
+                .commit();
     }
 }

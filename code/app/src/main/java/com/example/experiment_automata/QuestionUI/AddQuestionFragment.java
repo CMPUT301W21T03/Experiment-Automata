@@ -127,12 +127,9 @@ public class AddQuestionFragment extends DialogFragment
         return build.setView(view)
                 .setTitle(dialogType)
                 .setNegativeButton("Cancel", null)
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String currentQuestion = questionInput.getText().toString();
-                        listener.onOkPressedQuestion(currentQuestion, experimentId);
-                    }
+                .setPositiveButton("Ok", (dialog, which) -> {
+                    String currentQuestion = questionInput.getText().toString();
+                    listener.onOkPressedQuestion(currentQuestion, experimentId);
                 }).create();
 
     }

@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/main_question_display_question_display"
+        android:id="@+id/main_question_display_question_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
@@ -25,7 +25,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/main_question_display_question_display" />
+        app:layout_constraintTop_toBottomOf="@+id/main_question_display_question_view" />
 
     <ImageButton
         android:id="@+id/main_question_display_reply_button"

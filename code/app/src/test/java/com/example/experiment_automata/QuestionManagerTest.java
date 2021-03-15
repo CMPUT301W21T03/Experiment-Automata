@@ -75,6 +75,21 @@ public class QuestionManagerTest {
         assertEquals(1, questionManager.getQuestionReply(q1.getQuestionId()));
     }
 
-    @T
+    @Test
+    public void getTotalQuestions() {
+        try {
+            questionManager.getTotalQuestions(experimentId1);
+        } catch (IllegalArgumentException e) {}
+        questionManager.addQuestion(experimentId1, q1);
+        assertEquals(1, questionManager.getTotalQuestions(experimentId1));
+        questionManager.addQuestion(experimentId1, q2);
+        assertEquals(2, questionManager.getTotalQuestions(experimentId1));
+        try {
+            questionManager.getTotalQuestions(experimentId2);
+        } catch (IllegalArgumentException e) {}
+        questionManager.addQuestion(experimentId2, q3);
+        assertEquals(2, questionManager.getTotalQuestions(experimentId1));
+        assertEquals(1, questionManager.getTotalQuestions(experimentId2));
+    }
     
 }

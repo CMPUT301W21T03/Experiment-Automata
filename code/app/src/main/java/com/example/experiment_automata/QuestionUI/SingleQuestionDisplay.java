@@ -42,8 +42,7 @@ public class SingleQuestionDisplay extends ArrayAdapter<Question>
     private ArrayList<Question> currentExperimentQuestions;
     private Context context;
     private ImageButton replyButton;
-    private ListView repliesList;
-    private ArrayAdapter singleReplyDisplayAdapter;
+    private TextView replyView;
     private NavigationActivity mainActivity;
 
 
@@ -66,23 +65,35 @@ public class SingleQuestionDisplay extends ArrayAdapter<Question>
         }
 
         if(currentExperimentQuestions != null) {
-
-            Question currentQuestion = currentExperimentQuestions.get(position);
-            repliesList = root.findViewById(R.id.main_question_display_replies_list_view);
-            ArrayList<Reply> currentQuestionReplies = new ArrayList<>();
-            currentQuestionReplies.addAll(mainActivity.questionManager.getQuestionReply(currentQuestion.getQuestionId()));
-
-
-            SingleReplyDisplay singleReplyAdapter = new SingleReplyDisplay(getContext(), null);
-
-
-
-            replyButton = root.findViewById(R.id.main_question_display_reply_button);
-            replyButton.setOnClickListener(v -> dealingWithReply());
-            ((TextView) (root.findViewById(R.id.main_question_display_question_view)))
-                    .setText(currentQuestion.getQuestion());
+            setView(root, position);
         }
         return root;
+    }
+
+
+    private void setView(View root, int position)
+    {
+        Question currentQuestion = currentExperimentQuestions.get(position);
+        replyButton = root.findViewById(R.id.main_question_display_reply_button);
+        replyView = root.findViewById(R.id.main_question_display_reply);
+        replyButton.setOnClickListener(v -> dealingWithReply());
+        ((TextView) (root.findViewById(R.id.main_question_display_question_view)))
+                .setText(currentQuestion.getQuestion());
+
+        setReplyView(currentQuestion);
+    }
+
+    private void setReplyView(Question currentQuestion)
+    {
+        try {
+            Reply currentReply = mainActivity.questionManager.getQuestionReply(currentQuestion.getQuestionId());
+            replyView.setText(currentReply.getReply());
+        }
+        catch (Exception e)
+        {
+            // TODO: deal with this in some fancy way
+        }
+
     }
 
     private void dealingWithReply()

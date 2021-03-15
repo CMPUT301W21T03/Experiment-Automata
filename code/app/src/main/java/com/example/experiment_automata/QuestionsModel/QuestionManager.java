@@ -26,7 +26,7 @@ import java.util.UUID;
  */
 public class QuestionManager {
     private static  HashMap<UUID, ArrayList<Question>> questions;
-    private static  HashMap<UUID, ArrayList<Reply>> replies;
+    private static  HashMap<UUID, Reply> replies;
     private static QuestionManager questionManager;
 
     /**
@@ -74,12 +74,11 @@ public class QuestionManager {
      *  the id is already associated to an experiment
      */
     public void addReply(UUID id, Reply reply) throws IllegalArgumentException {
-        ArrayList<Reply> repliesList = new ArrayList<>();
-        repliesList.add(reply);
-        if(replies.containsKey(id))
-            repliesList.addAll(replies.get(id));
 
-        replies.put(id, repliesList); 
+        if(replies.containsKey(id))
+            throw new IllegalArgumentException();
+
+        replies.put(id, reply);
     }
 
     /**
@@ -122,7 +121,7 @@ public class QuestionManager {
      * @return
      *  A reply if one exists
      */
-    public ArrayList<Reply> getQuestionReply(UUID questionId) {
+    public Reply getQuestionReply(UUID questionId) {
         if (!replies.containsKey(questionId)) {
             throw new IllegalArgumentException();
         }

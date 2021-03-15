@@ -15,6 +15,8 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.experiment_automata.R;
 
+import java.util.UUID;
+
 /**
  * Role/Pattern:
  *
@@ -36,8 +38,8 @@ public class AddQuestionFragment extends DialogFragment
     public static final String QUESTION = "QUESTION-STRING";
     // this will determine if this dialog is for a question or reply
     public static final String TYPE = "QUESTION-OR-REPLY";
-    // this will key value pair for the question and the experiment
-    public static final String EXPERIMENT_ID = "CURRENT_EXPERIMENTER_ID";
+    // this will be the ID of the experiment this belongs to
+    public static final String EXPERIMENT = "EXPERIMENT-ID";
 
     private EditText questionInput;
     private String experimentId;
@@ -47,7 +49,7 @@ public class AddQuestionFragment extends DialogFragment
 
     public interface OnFragmentInteractionListener
     {
-        void onOkPressedQuestion(String experimentId, String question);
+        void onOkPressedQuestion(String question, UUID Experiment);
     }
 
     /**
@@ -77,7 +79,7 @@ public class AddQuestionFragment extends DialogFragment
      * @return
      *   a fragment to edit an questions's information
      */
-    public static AddQuestionFragment newInstance(String experimentId, String question, Boolean type)
+    public static AddQuestionFragment newInstance(String question, Boolean type, UUID experimentId)
     {
         AddQuestionFragment questionFragment = new AddQuestionFragment();
         Bundle args = new Bundle();
@@ -87,6 +89,7 @@ public class AddQuestionFragment extends DialogFragment
         } else {
             args.putString(TYPE, "Add Reply");
         }
+        args.putSerializable(EXPERIMENT, experimentId);
         questionFragment.setArguments(args);
         return questionFragment;
     }
@@ -111,6 +114,8 @@ public class AddQuestionFragment extends DialogFragment
 
         // this will determine if it is asking for a question or reply
         String dialogType;
+        // this is the experiment UUID that this question belongs to
+        UUID experimentId = (UUID) args.getSerializable(EXPERIMENT);
         if (args != null) {
             dialogType = args.getString(TYPE);
             questionInput.setText(args.getString(QUESTION));
@@ -126,7 +131,7 @@ public class AddQuestionFragment extends DialogFragment
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String currentQuestion = questionInput.getText().toString();
-                        listener.onOkPressedQuestion(experimentId, currentQuestion);
+                        listener.onOkPressedQuestion(currentQuestion, experimentId);
                     }
                 }).create();
 

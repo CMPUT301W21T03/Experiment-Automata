@@ -15,15 +15,20 @@ import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
 import com.example.experiment_automata.NavigationActivity;
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.ui.Screen;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.UUID;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link NavExperimentDetailsFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Role/Pattern:
+ *      This class deals with the whole view of the experiment that the user has made.
+ *      Giving the user the whole display and information needed to maintain experiments.
  *
- * */
+ * Known Issue:
+ *
+ *      1. None
+ */
+
 public class NavExperimentDetailsFragment extends Fragment {
 
     private String ERROR_LOG_VALUE = "ERROR_LOG-EXPERIMENT-VIEW";
@@ -48,7 +53,8 @@ public class NavExperimentDetailsFragment extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param experimentStringId ID of the clicked experiment
-     * @return A new instance of fragment FullExperimentView.
+     * @return
+     *  A new instance of fragment FullExperimentView.
      */
 
     public static NavExperimentDetailsFragment newInstance(String experimentStringId) {
@@ -59,6 +65,12 @@ public class NavExperimentDetailsFragment extends Fragment {
         return fragment;
     }
 
+
+    /**
+     *  Prebuilt that initializes the given parameters
+     *
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +82,16 @@ public class NavExperimentDetailsFragment extends Fragment {
         parentActivity.setCurrentScreen(Screen.ExperimentDetails);
     }
 
+
+    /**
+     *  Reads and sets up the view for the user to see the whole experiment
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     *  root
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -100,14 +122,41 @@ public class NavExperimentDetailsFragment extends Fragment {
         return root;
     }
 
+    /**
+     *
+     * Updates the views as they are needed so as not clutter the main function and
+     * to not violet DRY.
+     *
+     * @param experimentStringId : The unique id that each experiment contains
+     */
     private void update(String experimentStringId) {
         Log.d("UPDATE", "Screen info updated");
         Experiment current = (((NavigationActivity)getActivity()).getExperimentManager())
                 .getAtUUIDDescription(UUID.fromString(experimentStringId));
         descriptionView.setText(current.getDescription());
         typeView.setText("" + current.getType());
+
+        // Disable FAB if not accepting new trials
+        FloatingActionButton fab = getActivity().findViewById(R.id.add_experiment_button);
+        if (!current.isActive()) {
+            fab.setVisibility(View.GONE);
+        } else {
+            fab.setVisibility(View.VISIBLE);
+        }
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        FloatingActionButton fab = getActivity().findViewById(R.id.add_experiment_button);
+        fab.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     *
+     * Caller function that sets up the views when an update to the data happens.
+     *
+     */
     public void updateScreen() {
         update(experimentStringId);
     }

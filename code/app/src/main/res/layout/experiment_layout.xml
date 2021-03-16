@@ -7,13 +7,16 @@
 
     <TextView
         android:id="@+id/experimentName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:text="Experiment Name"
         android:textSize="24sp"
+        app:layout_constraintEnd_toStartOf="@+id/publishedCheckbox"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -51,4 +54,25 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:visibility="invisible"/>
+
+    <!-- Checkbox background found on stackoverflow by Rudi Kershaw and Christian Rathod-->
+    <!--Feb 11 2014, public domain -->
+    <!-- https://stackoverflow.com/questions/14023886/android-button-selector -->
+    <!-- fix for checkbox stopping description found on stack overflow by Shanilendra Madda-->
+    <!-- June 20, 2014, public domain -->
+    <!-- https://stackoverflow.com/questions/23752991/item-click-listener-of-listview-is-not-working-if-it-has-checkbox -->
+    <CheckBox
+        android:id="@+id/publishedCheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:button="@drawable/published_icon"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/experimentName" />
 </androidx.constraintlayout.widget.ConstraintLayout>

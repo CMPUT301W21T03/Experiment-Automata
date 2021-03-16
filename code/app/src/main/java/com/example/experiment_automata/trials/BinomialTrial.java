@@ -4,6 +4,14 @@ import android.location.Location;
 
 import java.util.UUID;
 
+/**
+ * Role/Pattern:
+ *     Holds the information needed to maintain and track a binomial trial
+ *
+ *  Known Issue:
+ *
+ *      1. None
+ */
 public class BinomialTrial extends Trial {
     private boolean result;
 
@@ -17,6 +25,11 @@ public class BinomialTrial extends Trial {
         this.result = result;
     }
 
+    /**
+     *  gets the result of the single binomial trial recorded.
+     * @return
+     *  The result of the trial
+     */
     public boolean getResult() {
         return result;
     }

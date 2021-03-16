@@ -114,10 +114,13 @@ public class NaturalCountExperiment extends Experiment {
      */
     public float getMean() {
         int sum = 0;
+        int numTrials = 0;
         for (NaturalCountTrial trial : results) {
             sum += trial.getResult();
+            numTrials += 1;
         }
-        return sum;
+        // Return sum of all the results divided by the number of trials
+        return (float) sum/numTrials;
     }
 
     /**

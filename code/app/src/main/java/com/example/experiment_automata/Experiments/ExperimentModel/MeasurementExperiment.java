@@ -105,4 +105,41 @@ public class MeasurementExperiment extends Experiment {
         }
         return data;
     }
+
+    /**
+     * Gets the mean value of the trials.
+     * @return
+     *  the mean
+     */
+    public float getMean() {
+        return 0;
+    }
+
+    /**
+     * Gets the median value of the trials.
+     * @return
+     *  the median
+     */
+    public float getMedian() {
+        return 0;
+    }
+
+    /**
+     * Gets the standard deviation of the trials.
+     * @return
+     *  the standard deviation
+     */
+    public float getStdev() {
+        return 0;
+    }
+
+    /**
+     * Gets the quartiles of the trials
+     * @return
+     *  the quartiles
+     */
+    public float[][] getQuartiles() {
+        float[][] quartiles = new float[4][2];
+        return quartiles;
+    }
 }

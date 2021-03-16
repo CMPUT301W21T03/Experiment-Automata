@@ -90,10 +90,91 @@ public class BinomialExperiment extends Experiment {
     public List<Entry> generatePlot(Collection<Trial> trials) {
         List<Entry> data = new ArrayList<>();
         for (Trial trial : trials ) {
-            final BinomialTrial naturalCountTrial = (BinomialTrial) trial;
-            data.add(new Entry(naturalCountTrial.getDate().getTime(),
-                    naturalCountTrial.getResult() ? 1 : 0));
+            final BinomialTrial binomialTrial = (BinomialTrial) trial;
+            data.add(new Entry(binomialTrial.getDate().getTime(),
+                    binomialTrial.getResult() ? 1 : 0));
         }
         return data;
+    }
+
+    /**
+     * Gets the mean value of the trials.
+     * @return
+     *  the mean
+     */
+    public float getMean() {
+        int totalTrials = 0;
+        int successfulTrials = 0;
+
+        for(Trial trial: results) {
+            totalTrials = totalTrials + 1;
+            final BinomialTrial binomialTrial = (BinomialTrial) trial;
+            if (binomialTrial.getResult()) {
+                successfulTrials = successfulTrials + 1;
+            }
+        }
+        float answer;
+        if(totalTrials>0) {
+            answer = ((float) successfulTrials) / (totalTrials);
+        }
+        else{
+            // No results
+            answer=0;
+        }
+        // Round to six decimal places (for now), we can change the precision later
+
+        System.out.println(Math.round(1000000*answer));
+        System.out.println((float) Math.round(1000000*answer)/1000000);
+        return ((float) Math.round(1000000*answer)/1000000);
+    }
+
+    /**
+     * Gets the median value of the trials.
+     * @return
+     *  the median
+     */
+    public float getMedian() {
+        // For a binomial experiment, the median is just the value that occurs the most
+        int successfulTrials = 0;
+        int failureTrials = 0;
+
+        for(BinomialTrial trial: results) {
+            if (trial.getResult()) {
+                successfulTrials = successfulTrials + 1;
+            }
+            else{
+                failureTrials = failureTrials + 1;
+            }
+        }
+        if(successfulTrials > failureTrials){
+            // More successes than failures
+            return 1;
+        }
+        else if(successfulTrials == failureTrials){
+            return (float) 0.5;
+        }
+        else{
+            // More failures than successes
+            return 0;
+        }
+    }
+
+    /**
+     * Gets the standard deviation of the trials.
+     * @return
+     *  the standard deviation
+     */
+    public float getStdev() {
+        return 0;
+    }
+
+    /**
+     * Gets the quartiles of the trials
+     * @return
+     *  the quartiles
+     */
+    public float[][] getQuartiles() {
+        float[][] quartiles = new float[4][2];
+        return quartiles;
     }
 }

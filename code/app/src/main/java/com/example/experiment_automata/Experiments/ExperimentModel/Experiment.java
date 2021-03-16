@@ -1,6 +1,7 @@
 package com.example.experiment_automata.Experiments.ExperimentModel;
 
 import com.example.experiment_automata.Graphable;
+import com.example.experiment_automata.StatSummary;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.UUID;
 /**
  * Class needed to maintain the type of experiments needed!
  */
-public abstract class Experiment implements Serializable, Graphable {
+public abstract class Experiment implements Serializable, StatSummary {
     private String description;
     private int minTrials;
     private UUID experimentId; // changed from UML to better match project

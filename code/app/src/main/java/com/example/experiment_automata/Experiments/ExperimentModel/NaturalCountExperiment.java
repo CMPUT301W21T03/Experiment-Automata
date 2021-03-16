@@ -6,6 +6,7 @@ import com.github.mikephil.charting.data.Entry;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -129,6 +130,7 @@ public class NaturalCountExperiment extends Experiment {
         for (NaturalCountTrial trial : results) {
             values.add(trial.getResult());
         }
+        Collections.sort(values);
         int size = values.size();
         if (size % 2 == 0) {
             final int val1, val2;

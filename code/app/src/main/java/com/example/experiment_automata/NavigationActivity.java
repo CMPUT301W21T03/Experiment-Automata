@@ -255,6 +255,7 @@ public class NavigationActivity extends AppCompatActivity implements
 
     public ExperimentManager getExperimentManager() {
         return experimentManager;
+    }
 
 
     @Override

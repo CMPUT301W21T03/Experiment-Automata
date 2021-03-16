@@ -99,6 +99,7 @@
         android:label="Current Questions"
         tools:layout="@layout/fragment_question_display" />
 
+        <action
             android:id="@+id/action_nav_experiment_details_to_addCountTrialFragment"
             app:destination="@id/nav_add_count_trial"
             app:enterAnim="@android:anim/slide_out_right"
@@ -118,7 +119,6 @@
             app:destination="@id/nav_add_measurement_trial"
             app:enterAnim="@android:anim/slide_out_right"
             app:exitAnim="@android:anim/slide_in_left" />
-    </fragment>
     <fragment
         android:id="@+id/nav_add_count_trial"
         android:name="com.example.experiment_automata.ui.AddTrial.AddCountTrialFragment"

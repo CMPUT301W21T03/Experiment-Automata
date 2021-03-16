@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,16 +33,22 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
 
     private ArrayList<Experiment> experiment;
     private Context context;
+    private String mode;
 
     /**
      * Constructor takes in an array list of experiments and a context to set the attributes properly
      * @param context
+     *   the context needed to create experiment_layout if needed
      * @param experiments
+     *   all of the experiments to be shown
+     * @param mode
+     *   the mode to determine what should be shown on each item
      */
-    public ExperimentListAdapter(Context context, ArrayList<Experiment> experiments){
+    public ExperimentListAdapter(Context context, ArrayList<Experiment> experiments, String mode){
         super(context, 0, experiments);
         this.experiment=experiments;
         this.context=context;
+        this.mode = mode;
     }
 
     /**
@@ -57,7 +64,7 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
         // Syntax below taken from Abdul Ali Bangash, "Lab 3 Instructions - Custom List",
         //  2021-02-04, Public Domain, https://eclass.srv.ualberta.ca/pluginfile.php/6713985/mod_resource/content/1/Lab%203%20instructions%20-%20CustomList.pdf
         View view = convertView;
-        if(view == null){
+        if (view == null) {
             view = LayoutInflater.from(context).inflate(R.layout.experiment_layout, parent, false);
         }
         // The experiment we're going to set the XML file with
@@ -68,6 +75,7 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
         TextView owner = view.findViewById(R.id.experimentOwner);
         TextView active = view.findViewById(R.id.experimentActivity);
         TextView experimentID = view.findViewById(R.id.experiment__id);
+        CheckBox publishedCheckbox = view.findViewById(R.id.publishedCheckbox);
 
         // Set the name of the experiment accordingly
         UUID oid = exp.getOwnerId();
@@ -75,14 +83,30 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
 
         // Set the activity properly
         boolean isActive = exp.isActive();
-        if(isActive) {
+        if (isActive) {
             active.setText("Active");
             active.setTextColor(Color.GREEN);
-        }
-        else{
+        } else {
             active.setText("Inactive");
             active.setTextColor(Color.RED);
         }
+
+        // Ensure the checkbox is only visible in owned experiments screen
+        if (mode.equals("owned")) {
+            publishedCheckbox.setVisibility(View.VISIBLE);
+        } else {
+            publishedCheckbox.setVisibility(View.GONE);
+        }
+
+        // Set the published status properly
+        boolean isPublished = exp.isPublished();
+        publishedCheckbox.setChecked(isPublished);
+
+        // Use a listener to update the published status of experiments
+        publishedCheckbox.setOnClickListener(v -> {
+            boolean checked = ((CheckBox) v).isChecked();
+            exp.setPublished(checked);
+        });
 
         // Set the experiment id
         experimentID.setText(exp.getExperimentId().toString());

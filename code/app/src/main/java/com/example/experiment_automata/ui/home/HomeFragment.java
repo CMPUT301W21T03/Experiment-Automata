@@ -24,6 +24,7 @@ import com.example.experiment_automata.ExperimentFragments.ExperimentListAdapter
 
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * Role/Pattern:
@@ -46,13 +47,17 @@ public class HomeFragment extends Fragment {
         NavigationActivity parentActivity = ((NavigationActivity) getActivity());
         homeViewModel =
                 new ViewModelProvider(this).get(HomeViewModel.class);
+
+        getActivity().findViewById(R.id.add_experiment_button).setVisibility(View.VISIBLE);
+
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         parentActivity.setCurrentScreen(Screen.ExperimentList);
         parentActivity.setCurrentFragment(this);
         ListView experimentList = (ListView) root.findViewById(R.id.experiment_list);
         experimentsArrayList = new ArrayList<>();
         populateList();
-        experimentArrayAdapter = new ExperimentListAdapter(getActivity(), experimentsArrayList);
+        experimentArrayAdapter = new ExperimentListAdapter(getActivity(),
+                experimentsArrayList, getArguments().getString("mode"));
         experimentList.setAdapter(experimentArrayAdapter);
 
         Bundle bundle = new Bundle();
@@ -64,9 +69,12 @@ public class HomeFragment extends Fragment {
             // String values
             bundle.putString(NavExperimentDetailsFragment.CURRENT_EXPERIMENT_ID, experimentID);
 
+            // set current experiment
+            Experiment experiment = parentActivity.experimentManager.query(UUID.fromString(experimentID));
+            parentActivity.experimentManager.setCurrentExperiment(experiment);
+
             //nav_experiment_details
             navController.navigate(R.id.nav_experiment_details, bundle);
-
 
         });
 

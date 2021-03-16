@@ -55,4 +55,5 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui:2.3.3'
     //for zxing
     implementation "com.google.zxing:core:3.4.1"
+    implementation 'com.journeyapps:zxing-android-embedded:4.1.0'
 }

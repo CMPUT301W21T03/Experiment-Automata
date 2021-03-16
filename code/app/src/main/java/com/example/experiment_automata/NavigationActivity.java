@@ -27,6 +27,7 @@ import com.example.experiment_automata.ui.Screen;
 import com.example.experiment_automata.ui.home.HomeFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -99,39 +100,45 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
                         break;
                     case Trial:
                         Experiment experiment = experimentManager.getCurrentExperiment();
-                        switch (experiment.getType()) {
-                            case Count:
-                                CountExperiment countExperiment = (CountExperiment) experiment;
-                                CountTrial countTrial = new CountTrial(loggedUser.getUserId());
-                                countExperiment.recordTrial(countTrial);
-                                break;
-                            case NaturalCount:
-                                NaturalCountExperiment naturalCountExperiment = (NaturalCountExperiment) experiment;
-                                // get value
-                                EditText naturalCountInput = (EditText) findViewById(R.id.add_natural_count_value);
-                                final int naturalCount = Integer.parseInt(naturalCountInput.getText().toString());
-                                NaturalCountTrial naturalCountTrial = new NaturalCountTrial(loggedUser.getUserId(), naturalCount);
-                                naturalCountExperiment.recordTrial(naturalCountTrial);
-                                break;
-                            case Binomial:
-                                BinomialExperiment binomialExperiment = (BinomialExperiment) experiment;
-                                // get value
-                                CheckBox passedInput = (CheckBox) findViewById(R.id.add_binomial_value);
-                                final boolean passed = passedInput.isChecked();
-                                BinomialTrial binomialTrial = new BinomialTrial(loggedUser.getUserId(), passed);
-                                binomialExperiment.recordTrial(binomialTrial);
-                                break;
-                            case Measurement:
-                                MeasurementExperiment measurementExperiment = (MeasurementExperiment) experiment;
-                                // get value
-                                EditText measurementInput = (EditText) findViewById(R.id.add_measurement_value);
-                                final float measurement = Float.parseFloat(measurementInput.getText().toString());
-                                MeasurementTrial measurementTrial = new MeasurementTrial(loggedUser.getUserId(), measurement);
-                                measurementExperiment.recordTrial(measurementTrial);
-                                break;
+                        Snackbar snackbar = Snackbar.make(view, "No value was given", Snackbar.LENGTH_SHORT);
+                        try {
+                            switch (experiment.getType()) {
+                                case Count:
+                                    CountExperiment countExperiment = (CountExperiment) experiment;
+                                    CountTrial countTrial = new CountTrial(loggedUser.getUserId());
+                                    countExperiment.recordTrial(countTrial);
+                                    break;
+                                case NaturalCount:
+                                    NaturalCountExperiment naturalCountExperiment = (NaturalCountExperiment) experiment;
+                                    // get value
+                                    EditText naturalCountInput = (EditText) findViewById(R.id.add_natural_count_value);
+                                    final int naturalCount = Integer.parseInt(naturalCountInput.getText().toString());
+                                    NaturalCountTrial naturalCountTrial = new NaturalCountTrial(loggedUser.getUserId(), naturalCount);
+                                    naturalCountExperiment.recordTrial(naturalCountTrial);
+                                    break;
+                                case Binomial:
+                                    BinomialExperiment binomialExperiment = (BinomialExperiment) experiment;
+                                    // get value
+                                    CheckBox passedInput = (CheckBox) findViewById(R.id.add_binomial_value);
+                                    final boolean passed = passedInput.isChecked();
+                                    BinomialTrial binomialTrial = new BinomialTrial(loggedUser.getUserId(), passed);
+                                    binomialExperiment.recordTrial(binomialTrial);
+                                    break;
+                                case Measurement:
+                                    MeasurementExperiment measurementExperiment = (MeasurementExperiment) experiment;
+                                    // get value
+                                    EditText measurementInput = (EditText) findViewById(R.id.add_measurement_value);
+                                    final float measurement = Float.parseFloat(measurementInput.getText().toString());
+                                    MeasurementTrial measurementTrial = new MeasurementTrial(loggedUser.getUserId(), measurement);
+                                    measurementExperiment.recordTrial(measurementTrial);
+                                    break;
+                            }
+                            currentScreen = Screen.ExperimentDetails;
+                            navController.navigateUp();
+                        } catch (NumberFormatException ignored) {
+                            // if no value was given
+                            snackbar.show();
                         }
-                        currentScreen = Screen.ExperimentDetails;
-                        navController.navigateUp();
                 }
             }
         });

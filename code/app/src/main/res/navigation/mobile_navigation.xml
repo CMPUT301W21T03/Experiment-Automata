@@ -90,16 +90,24 @@
         tools:layout="@layout/fragment_nav_experiment_details" >
         <action
             android:id="@+id/action_nav_experiment_details_to_addCountTrialFragment"
-            app:destination="@id/nav_add_count_trial" />
+            app:destination="@id/nav_add_count_trial"
+            app:enterAnim="@android:anim/slide_out_right"
+            app:exitAnim="@android:anim/slide_in_left" />
         <action
             android:id="@+id/action_nav_experiment_details_to_addNaturalCountTrialFragment"
-            app:destination="@id/nav_add_natural_count_trial" />
+            app:destination="@id/nav_add_natural_count_trial"
+            app:enterAnim="@android:anim/slide_out_right"
+            app:exitAnim="@android:anim/slide_in_left" />
         <action
             android:id="@+id/action_nav_experiment_details_to_addBinomialTrialFragment"
-            app:destination="@id/nav_add_binomial_trial" />
+            app:destination="@id/nav_add_binomial_trial"
+            app:enterAnim="@android:anim/slide_out_right"
+            app:exitAnim="@android:anim/slide_in_left" />
         <action
             android:id="@+id/action_nav_experiment_details_to_addMeasurementTrialFragment"
-            app:destination="@id/nav_add_measurement_trial" />
+            app:destination="@id/nav_add_measurement_trial"
+            app:enterAnim="@android:anim/slide_out_right"
+            app:exitAnim="@android:anim/slide_in_left" />
     </fragment>
     <fragment
         android:id="@+id/nav_add_count_trial"

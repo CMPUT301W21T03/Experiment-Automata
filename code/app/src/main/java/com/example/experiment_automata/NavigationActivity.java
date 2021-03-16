@@ -21,6 +21,7 @@ import com.example.experiment_automata.Experiments.ExperimentModel.NaturalCountE
 import com.example.experiment_automata.UserInformation.User;
 import com.example.experiment_automata.trials.BinomialTrial;
 import com.example.experiment_automata.trials.CountTrial;
+import com.example.experiment_automata.trials.MeasurementTrial;
 import com.example.experiment_automata.trials.NaturalCountTrial;
 import com.example.experiment_automata.ui.Screen;
 import com.example.experiment_automata.ui.home.HomeFragment;
@@ -90,6 +91,9 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
                             case Binomial:
                                 navController.navigate(R.id.nav_add_binomial_trial);
                                 break;
+                            case Measurement:
+                                navController.navigate(R.id.nav_add_measurement_trial);
+                                break;
                         }
                         currentScreen = Screen.Trial;
                         break;
@@ -116,6 +120,14 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
                                 final boolean passed = passedInput.isChecked();
                                 BinomialTrial binomialTrial = new BinomialTrial(loggedUser.getUserId(), passed);
                                 binomialExperiment.recordTrial(binomialTrial);
+                                break;
+                            case Measurement:
+                                MeasurementExperiment measurementExperiment = (MeasurementExperiment) experiment;
+                                // get value
+                                EditText measurementInput = (EditText) findViewById(R.id.add_measurement_value);
+                                final float measurement = Float.parseFloat(measurementInput.getText().toString());
+                                MeasurementTrial measurementTrial = new MeasurementTrial(loggedUser.getUserId(), measurement);
+                                measurementExperiment.recordTrial(measurementTrial);
                                 break;
                         }
                         currentScreen = Screen.ExperimentDetails;

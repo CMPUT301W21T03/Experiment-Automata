@@ -112,7 +112,11 @@ public class NaturalCountExperiment extends Experiment {
      *  the mean
      */
     public float getMean() {
-        return 0;
+        int sum = 0;
+        for (NaturalCountTrial trial : results) {
+            sum += trial.getResult();
+        }
+        return sum;
     }
 
     /**
@@ -121,7 +125,19 @@ public class NaturalCountExperiment extends Experiment {
      *  the median
      */
     public float getMedian() {
-        return 0;
+        ArrayList<Integer> values = new ArrayList<>();
+        for (NaturalCountTrial trial : results) {
+            values.add(trial.getResult());
+        }
+        int size = values.size();
+        if (size % 2 == 0) {
+            final int val1, val2;
+            val1 = values.get(size / 2);
+            val2 = values.get((size / 2) - 1);
+            return (val1 + val2) / 2f;
+        } else {
+            return values.get((size + 1) / 2);
+        }
     }
 
     /**
@@ -130,7 +146,11 @@ public class NaturalCountExperiment extends Experiment {
      *  the standard deviation
      */
     public float getStdev() {
-        return 0;
+        float sum = 0;
+        for (NaturalCountTrial trial : results) {
+            sum += Math.pow(trial.getResult() - getMean(), 2);
+        }
+        return (float) Math.sqrt(sum / results.size());
     }
 
     /**

@@ -112,9 +112,10 @@ public class SingleQuestionDisplay extends ArrayAdapter<Question>
             Log.d("replyID", currentQuestion.getQuestion() + " " + currentReply.getReplyId().toString());
             replyButton.setVisibility(View.GONE);
             replyView.setText(currentReply.getReply());
+            replyView.setVisibility(View.VISIBLE);
         } catch (IllegalArgumentException e) {
             replyButton.setVisibility(View.VISIBLE);
-            replyView.setText("");
+            replyView.setVisibility(View.GONE);
             replyButton.setOnClickListener(v -> dealingWithReply(pos));
         }
         ((TextView) (root.findViewById(R.id.main_question_display_question_view)))

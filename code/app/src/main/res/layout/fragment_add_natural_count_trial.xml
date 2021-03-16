@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.AddTrial.AddCountTrialFragment">
+    tools:context=".ui.AddTrial.AddNaturalCountTrialFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:id="@+id/count_trial_experiment_description"
+        android:id="@+id/natural_count_trial_experiment_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -21,5 +21,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/add_natural_count_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="@string/count"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="@+id/natural_count_trial_experiment_description"
+        app:layout_constraintTop_toBottomOf="@+id/natural_count_trial_experiment_description" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

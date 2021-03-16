@@ -28,4 +28,5 @@
     <string name="menu_experiment_details">Experiment Details</string>
     <string name="search">Search</string>
     <string name="search_hint">Search for Experiments</string>
+    <string name="count">Count</string>
 </resources>

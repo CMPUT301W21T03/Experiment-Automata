@@ -1,4 +1,4 @@
-package com.example.experiment_automata.ui;
+package com.example.experiment_automata.ui.AddTrial;
 
 import android.os.Bundle;
 
@@ -9,18 +9,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.experiment_automata.Experiments.ExperimentModel.CountExperiment;
+import com.example.experiment_automata.Experiments.ExperimentModel.NaturalCountExperiment;
 import com.example.experiment_automata.NavigationActivity;
 import com.example.experiment_automata.R;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link AddCountTrialFragment#newInstance} factory method to
+ * Use the {@link AddNaturalCountTrialFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddCountTrialFragment extends Fragment {
-    public AddCountTrialFragment() {
+public class AddNaturalCountTrialFragment extends Fragment {
+    public AddNaturalCountTrialFragment() {
         // Required empty public constructor
     }
 
@@ -33,10 +32,10 @@ public class AddCountTrialFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_add_count_trial, container, false);
-        TextView description = (TextView) root.findViewById(R.id.trial_experiment_description);
+        View root = inflater.inflate(R.layout.fragment_add_natural_count_trial, container, false);
+        TextView description = (TextView) root.findViewById(R.id.natural_count_trial_experiment_description);
         NavigationActivity parentActivity = ((NavigationActivity) getActivity());
-        CountExperiment experiment = (CountExperiment) parentActivity.experimentManager.getCurrentExperiment();
+        NaturalCountExperiment experiment = (NaturalCountExperiment) parentActivity.experimentManager.getCurrentExperiment();
         description.setText(experiment.getDescription());
         return root;
     }

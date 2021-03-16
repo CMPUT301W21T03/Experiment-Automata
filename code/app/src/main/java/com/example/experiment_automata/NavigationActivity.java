@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
+import android.widget.EditText;
 import android.widget.SearchView;
 
 import com.example.experiment_automata.ExperimentFragments.AddExperimentFragment;
@@ -18,6 +19,7 @@ import com.example.experiment_automata.Experiments.ExperimentModel.MeasurementEx
 import com.example.experiment_automata.Experiments.ExperimentModel.NaturalCountExperiment;
 import com.example.experiment_automata.UserInformation.User;
 import com.example.experiment_automata.trials.CountTrial;
+import com.example.experiment_automata.trials.NaturalCountTrial;
 import com.example.experiment_automata.ui.Screen;
 import com.example.experiment_automata.ui.home.HomeFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -80,17 +82,30 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
                             case Count:
                                 navController.navigate(R.id.nav_add_count_trial);
                                 break;
+                            case NaturalCount:
+                                navController.navigate(R.id.nav_add_natural_count_trial);
+                                break;
                         }
+                        currentScreen = Screen.Trial;
                         break;
                     case Trial:
                         Experiment experiment = experimentManager.getCurrentExperiment();
                         switch (experiment.getType()) {
                             case Count:
                                 CountExperiment countExperiment = (CountExperiment) experiment;
-                                CountTrial trial = new CountTrial(loggedUser.getUserId());
-                                countExperiment.recordTrial(trial);
+                                CountTrial countTrial = new CountTrial(loggedUser.getUserId());
+                                countExperiment.recordTrial(countTrial);
+                                break;
+                            case NaturalCount:
+                                NaturalCountExperiment naturalCountExperiment = (NaturalCountExperiment) experiment;
+                                // get value
+                                EditText naturalCountInput = (EditText) findViewById(R.id.add_natural_count_value);
+                                final int naturalCount = Integer.parseInt(naturalCountInput.getText().toString());
+                                NaturalCountTrial naturalCountTrial = new NaturalCountTrial(loggedUser.getUserId(), naturalCount);
+                                naturalCountExperiment.recordTrial(naturalCountTrial);
                                 break;
                         }
+                        navController.navigateUp();
                 }
             }
         });

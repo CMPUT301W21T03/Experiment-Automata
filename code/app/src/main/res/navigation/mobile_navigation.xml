@@ -91,10 +91,18 @@
         <action
             android:id="@+id/action_nav_experiment_details_to_addCountTrialFragment"
             app:destination="@id/nav_add_count_trial" />
+        <action
+            android:id="@+id/action_nav_experiment_details_to_addNaturalCountTrialFragment"
+            app:destination="@id/nav_add_natural_count_trial" />
     </fragment>
     <fragment
         android:id="@+id/nav_add_count_trial"
-        android:name="com.example.experiment_automata.ui.AddCountTrialFragment"
+        android:name="com.example.experiment_automata.ui.AddTrial.AddCountTrialFragment"
         android:label="Add Count Trial"
         tools:layout="@layout/fragment_add_count_trial" />
+    <fragment
+        android:id="@+id/nav_add_natural_count_trial"
+        android:name="com.example.experiment_automata.ui.AddTrial.AddNaturalCountTrialFragment"
+        android:label="Add Natural Count Trial"
+        tools:layout="@layout/fragment_add_natural_count_trial" />
 </navigation>

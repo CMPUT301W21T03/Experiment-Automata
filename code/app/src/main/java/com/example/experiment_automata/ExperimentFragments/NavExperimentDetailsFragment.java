@@ -20,6 +20,7 @@ import com.example.experiment_automata.QuestionUI.QuestionDisplay;
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.ui.Screen;
 import com.google.firebase.firestore.local.BundleCache;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.UUID;
 
@@ -142,8 +143,22 @@ public class NavExperimentDetailsFragment extends Fragment {
                 .getAtUUIDDescription(UUID.fromString(experimentStringId));
         descriptionView.setText(current.getDescription());
         typeView.setText("" + current.getType());
+
+        // Disable FAB if not accepting new trials
+        FloatingActionButton fab = getActivity().findViewById(R.id.add_experiment_button);
+        if (!current.isActive()) {
+            fab.setVisibility(View.GONE);
+        } else {
+            fab.setVisibility(View.VISIBLE);
+        }
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        FloatingActionButton fab = getActivity().findViewById(R.id.add_experiment_button);
+        fab.setVisibility(View.VISIBLE);
+    }
 
     /**
      *

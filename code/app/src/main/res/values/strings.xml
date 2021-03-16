@@ -35,4 +35,7 @@
     <!-- Strings to make a question fragment -->
     <string name="frag_add_edit_question_view_val">Add Question</string>
     <string name="frag_add_edit_question_input_hint_val">Question</string>
+    <string name="search_hint">Search for Experiments</string>
+    <string name="count">Count</string>
+    <string name="measurement">Measurement</string>
 </resources>

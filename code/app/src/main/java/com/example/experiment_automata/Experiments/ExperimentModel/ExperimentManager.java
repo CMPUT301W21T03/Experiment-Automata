@@ -23,6 +23,7 @@ import java.util.UUID;
 public class ExperimentManager
 {
     private static HashMap<UUID, Experiment> experiments;
+    private Experiment currentExperiment;
 
 
     /**
@@ -72,7 +73,7 @@ public class ExperimentManager
      *  A list of all the experiments owned by the user specified
      */
     public ArrayList<Experiment> getOwnedExperiments(UUID ownerId) {
-        ArrayList experimentsList = new ArrayList<Experiment>();
+        ArrayList<Experiment> experimentsList = new ArrayList<>();
         for (Map.Entry<UUID, Experiment> entry : experiments.entrySet()) {
             Experiment experiment = experiments.get(entry.getKey());
             if (experiment.getOwnerId().equals(ownerId)) {
@@ -90,7 +91,7 @@ public class ExperimentManager
      *  A list of all the experiments that matched the query
      */
     public ArrayList<Experiment> queryExperiments(Collection<UUID> experimentIds) {
-        ArrayList experimentsList = new ArrayList<Experiment>();
+        ArrayList<Experiment> experimentsList = new ArrayList<>();
         for (UUID id : experimentIds) {
             experimentsList.add(experiments.get(id));
         }
@@ -98,7 +99,7 @@ public class ExperimentManager
     }
 
     public ArrayList<Experiment> queryPublishedExperiments() {
-        ArrayList experimentsList = new ArrayList<Experiment>();
+        ArrayList<Experiment> experimentsList = new ArrayList<>();
         for (Map.Entry<UUID, Experiment> entry : experiments.entrySet()) {
             Experiment experiment = experiments.get(entry.getKey());
             if (experiment.isPublished()) {
@@ -128,7 +129,7 @@ public class ExperimentManager
      *  A list of experiments that match the given query.
      */
     public ArrayList<Experiment> queryExperiments(String query) {
-        ArrayList experimentsList = new ArrayList<Experiment>();
+        ArrayList<Experiment> experimentsList = new ArrayList<>();
         for (Map.Entry<UUID, Experiment> entry : experiments.entrySet()) {
             Experiment experiment = experiments.get(entry.getKey());
             Log.d("SEARCHING", "Experiment:\t" + experiment.getDescription());
@@ -140,12 +141,20 @@ public class ExperimentManager
         return experimentsList;
     }
 
+    public Experiment query(UUID experimentId) {
+        return experiments.get(experimentId);
+    }
+
     private boolean queryMatch(String query, String source) {
         String[] queryTokens = query.toLowerCase().split("\\W");
-        for (int j = 0; j < queryTokens.length; j++) {
-            Log.d("SEARCHING", "query token:\t" + queryTokens[j]);
-            if (source.toLowerCase().indexOf(queryTokens[j]) >= 0) return true;
+        for (String queryToken : queryTokens) {
+            Log.d("SEARCHING", "query token:\t" + queryToken);
+            if (source.toLowerCase().contains(queryToken)) return true;
         }
         return false;
     }
+
+    public Experiment getCurrentExperiment() { return currentExperiment; }
+
+    public void setCurrentExperiment(Experiment experiment) { currentExperiment = experiment; }
 }

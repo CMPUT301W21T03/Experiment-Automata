@@ -13,9 +13,11 @@ import com.example.experiment_automata.Experiments.ExperimentModel.CountExperime
 import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentManager;
 import com.example.experiment_automata.ExperimentFragments.NavExperimentDetailsFragment;
 import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
+import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentType;
 import com.example.experiment_automata.Experiments.ExperimentModel.MeasurementExperiment;
 import com.example.experiment_automata.Experiments.ExperimentModel.NaturalCountExperiment;
 import com.example.experiment_automata.UserInformation.User;
+import com.example.experiment_automata.trials.CountTrial;
 import com.example.experiment_automata.ui.Screen;
 import com.example.experiment_automata.ui.home.HomeFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -74,8 +76,21 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
                         new AddExperimentFragment().show(getSupportFragmentManager(), "ADD_EXPERIMENT");
                         break;
                     case ExperimentDetails:
-                        navigateToTrialAdder(navController, experimentManager.getCurrentExperiment());
+                        switch (experimentManager.getCurrentExperiment().getType()) {
+                            case Count:
+                                navController.navigate(R.id.nav_add_count_trial);
+                                break;
+                        }
                         break;
+                    case Trial:
+                        Experiment experiment = experimentManager.getCurrentExperiment();
+                        switch (experiment.getType()) {
+                            case Count:
+                                CountExperiment countExperiment = (CountExperiment) experiment;
+                                CountTrial trial = new CountTrial(loggedUser.getUserId());
+                                countExperiment.recordTrial(trial);
+                                break;
+                        }
                 }
             }
         });
@@ -163,17 +178,5 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
 
     public ExperimentManager getExperimentManager() {
         return experimentManager;
-    }
-
-    private void navigateToTrialAdder(NavController navController, Experiment experiment) {
-        if (experiment instanceof CountExperiment) {
-            //
-        } else if (experiment instanceof NaturalCountExperiment) {
-            //
-        } else if (experiment instanceof BinomialExperiment) {
-            //
-        } else if (experiment instanceof MeasurementExperiment) {
-            //
-        }
     }
 }

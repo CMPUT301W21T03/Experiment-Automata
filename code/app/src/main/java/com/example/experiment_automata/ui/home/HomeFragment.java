@@ -67,7 +67,8 @@ public class HomeFragment extends Fragment {
             bundle.putString(NavExperimentDetailsFragment.CURRENT_EXPERIMENT_ID, experimentID);
 
             // set current experiment
-            parentActivity.experimentManager.query(UUID.fromString(experimentID));
+            Experiment experiment = parentActivity.experimentManager.query(UUID.fromString(experimentID));
+            parentActivity.experimentManager.setCurrentExperiment(experiment);
 
             //nav_experiment_details
             navController.navigate(R.id.nav_experiment_details, bundle);

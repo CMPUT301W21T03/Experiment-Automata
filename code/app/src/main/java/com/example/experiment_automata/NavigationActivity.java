@@ -8,9 +8,13 @@ import android.view.Menu;
 import android.widget.SearchView;
 
 import com.example.experiment_automata.ExperimentFragments.AddExperimentFragment;
+import com.example.experiment_automata.Experiments.ExperimentModel.BinomialExperiment;
+import com.example.experiment_automata.Experiments.ExperimentModel.CountExperiment;
 import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentManager;
 import com.example.experiment_automata.ExperimentFragments.NavExperimentDetailsFragment;
 import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
+import com.example.experiment_automata.Experiments.ExperimentModel.MeasurementExperiment;
+import com.example.experiment_automata.Experiments.ExperimentModel.NaturalCountExperiment;
 import com.example.experiment_automata.UserInformation.User;
 import com.example.experiment_automata.ui.Screen;
 import com.example.experiment_automata.ui.home.HomeFragment;
@@ -50,13 +54,6 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
         setContentView(R.layout.activity_navigation);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton addExperimentButton = findViewById(R.id.add_experiment_button);
-        addExperimentButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new AddExperimentFragment().show(getSupportFragmentManager(), "ADD_EXPERIMENT");
-            }
-        });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -68,6 +65,20 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        FloatingActionButton addExperimentButton = findViewById(R.id.add_experiment_button);
+        addExperimentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (currentScreen) {
+                    case ExperimentList:
+                        new AddExperimentFragment().show(getSupportFragmentManager(), "ADD_EXPERIMENT");
+                        break;
+                    case ExperimentDetails:
+                        navigateToTrialAdder(navController, experimentManager.getCurrentExperiment());
+                        break;
+                }
+            }
+        });
     }
 
     @Override
@@ -150,9 +161,19 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
         this.currentFragment = currentFragment;
     }
 
-    public ExperimentManager getExperimentManager()
-    {
+    public ExperimentManager getExperimentManager() {
         return experimentManager;
     }
 
+    private void navigateToTrialAdder(NavController navController, Experiment experiment) {
+        if (experiment instanceof CountExperiment) {
+            //
+        } else if (experiment instanceof NaturalCountExperiment) {
+            //
+        } else if (experiment instanceof BinomialExperiment) {
+            //
+        } else if (experiment instanceof MeasurementExperiment) {
+            //
+        }
+    }
 }

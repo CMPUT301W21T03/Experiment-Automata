@@ -94,6 +94,9 @@
         <action
             android:id="@+id/action_nav_experiment_details_to_addNaturalCountTrialFragment"
             app:destination="@id/nav_add_natural_count_trial" />
+        <action
+            android:id="@+id/action_nav_experiment_details_to_addBinomialTrialFragment"
+            app:destination="@id/nav_add_binomial_trial" />
     </fragment>
     <fragment
         android:id="@+id/nav_add_count_trial"
@@ -105,4 +108,9 @@
         android:name="com.example.experiment_automata.ui.AddTrial.AddNaturalCountTrialFragment"
         android:label="Add Natural Count Trial"
         tools:layout="@layout/fragment_add_natural_count_trial" />
+    <fragment
+        android:id="@+id/nav_add_binomial_trial"
+        android:name="com.example.experiment_automata.ui.AddTrial.AddBinomialTrialFragment"
+        android:label="Add Binomial Trial"
+        tools:layout="@layout/fragment_add_binomial_trial" />
 </navigation>

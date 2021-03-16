@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.SearchView;
 
@@ -18,6 +19,7 @@ import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentTyp
 import com.example.experiment_automata.Experiments.ExperimentModel.MeasurementExperiment;
 import com.example.experiment_automata.Experiments.ExperimentModel.NaturalCountExperiment;
 import com.example.experiment_automata.UserInformation.User;
+import com.example.experiment_automata.trials.BinomialTrial;
 import com.example.experiment_automata.trials.CountTrial;
 import com.example.experiment_automata.trials.NaturalCountTrial;
 import com.example.experiment_automata.ui.Screen;
@@ -85,6 +87,9 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
                             case NaturalCount:
                                 navController.navigate(R.id.nav_add_natural_count_trial);
                                 break;
+                            case Binomial:
+                                navController.navigate(R.id.nav_add_binomial_trial);
+                                break;
                         }
                         currentScreen = Screen.Trial;
                         break;
@@ -104,7 +109,16 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
                                 NaturalCountTrial naturalCountTrial = new NaturalCountTrial(loggedUser.getUserId(), naturalCount);
                                 naturalCountExperiment.recordTrial(naturalCountTrial);
                                 break;
+                            case Binomial:
+                                BinomialExperiment binomialExperiment = (BinomialExperiment) experiment;
+                                // get value
+                                CheckBox passedInput = (CheckBox) findViewById(R.id.add_binomial_value);
+                                final boolean passed = passedInput.isChecked();
+                                BinomialTrial binomialTrial = new BinomialTrial(loggedUser.getUserId(), passed);
+                                binomialExperiment.recordTrial(binomialTrial);
+                                break;
                         }
+                        currentScreen = Screen.ExperimentDetails;
                         navController.navigateUp();
                 }
             }

@@ -39,7 +39,6 @@ public class NavExperimentDetailsFragment extends Fragment {
     public static final String CURRENT_EXPERIMENT_ID = "FRAGMENT_CURRENT_FRAGMENT-ID";
 
 
-    // TODO: Rename and change types of parameters
     private String experimentStringId;
     private TextView descriptionView;
     private TextView typeView;
@@ -104,7 +103,7 @@ public class NavExperimentDetailsFragment extends Fragment {
         typeView = root.findViewById(R.id.nav_experiment_details_experiment_type);
         editImageButton = root.findViewById(R.id.nav_fragment_experiment_detail_view_edit_button);
         questionsButton = root.findViewById(R.id.nav_fragment_experiment_detail_view_qa_button);
-
+        getActivity().findViewById(R.id.add_experiment_button).setVisibility(View.GONE);
 
         if (experimentStringId != null) {
             update(experimentStringId);

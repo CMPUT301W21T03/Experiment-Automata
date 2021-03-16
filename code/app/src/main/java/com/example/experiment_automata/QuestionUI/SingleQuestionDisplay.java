@@ -41,7 +41,6 @@ import java.util.UUID;
  */
 public class SingleQuestionDisplay extends ArrayAdapter<Question>
 {
-    public static final String CHECKING_REPLY_CLK = "TEST_REP_B";
     private ArrayList<Question> currentExperimentQuestions;
     private Context context;
     private ImageButton replyButton;

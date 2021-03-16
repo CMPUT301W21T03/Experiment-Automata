@@ -46,6 +46,9 @@ public class HomeFragment extends Fragment {
         NavigationActivity parentActivity = ((NavigationActivity) getActivity());
         homeViewModel =
                 new ViewModelProvider(this).get(HomeViewModel.class);
+
+        getActivity().findViewById(R.id.add_experiment_button).setVisibility(View.VISIBLE);
+
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         parentActivity.setCurrentScreen(Screen.ExperimentList);
         parentActivity.setCurrentFragment(this);

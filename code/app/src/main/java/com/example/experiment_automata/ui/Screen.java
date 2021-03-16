@@ -7,5 +7,6 @@ public enum Screen {
     Profile,
     ExperimentList,
     ExperimentDetails,
-    Questions
+    Questions,
+    Trial
 }

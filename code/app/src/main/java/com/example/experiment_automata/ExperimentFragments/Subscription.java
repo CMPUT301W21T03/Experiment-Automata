@@ -6,9 +6,17 @@ import com.example.experiment_automata.UserInformation.User;
 import java.util.ArrayList;
 import java.util.Collection;
 
+
 /**
- * This is a subscription class that manages the relationship between users and the experiments
- *  they're subscribed to
+ * Role/Pattern:
+ *
+ *      This is a subscription class that manages the relationship between users and the experiments
+ *      they're subscribed to
+ *
+ *
+ * Known Issue:
+ *
+ *      1. None
  */
 public class Subscription{
     private User user;

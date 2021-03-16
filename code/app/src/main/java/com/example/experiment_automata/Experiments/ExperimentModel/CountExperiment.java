@@ -12,7 +12,12 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Holds the information needed to maintain a count experiment
+ * Role/Pattern:
+ *      Holds the information needed to maintain a count experiment
+ *
+ * Known Issue:
+ *
+ *      1. None
  */
 public class CountExperiment extends Experiment {
     private Collection<CountTrial> results;

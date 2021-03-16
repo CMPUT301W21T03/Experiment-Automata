@@ -24,6 +24,16 @@ import com.example.experiment_automata.ExperimentFragments.ExperimentListAdapter
 
 
 import java.util.ArrayList;
+import java.util.UUID;
+
+/**
+ * Role/Pattern:
+ *     Provides the main view control for when the user first enters the home screen.
+ *
+ *  Known Issue:
+ *
+ *      1. None
+ */
 
 public class HomeFragment extends Fragment {
 
@@ -43,7 +53,8 @@ public class HomeFragment extends Fragment {
         ListView experimentList = (ListView) root.findViewById(R.id.experiment_list);
         experimentsArrayList = new ArrayList<>();
         populateList();
-        experimentArrayAdapter = new ExperimentListAdapter(getActivity(), experimentsArrayList);
+        experimentArrayAdapter = new ExperimentListAdapter(getActivity(),
+                experimentsArrayList, getArguments().getString("mode"));
         experimentList.setAdapter(experimentArrayAdapter);
 
         Bundle bundle = new Bundle();
@@ -55,9 +66,12 @@ public class HomeFragment extends Fragment {
             // String values
             bundle.putString(NavExperimentDetailsFragment.CURRENT_EXPERIMENT_ID, experimentID);
 
+            // set current experiment
+            Experiment experiment = parentActivity.experimentManager.query(UUID.fromString(experimentID));
+            parentActivity.experimentManager.setCurrentExperiment(experiment);
+
             //nav_experiment_details
             navController.navigate(R.id.nav_experiment_details, bundle);
-
 
         });
 

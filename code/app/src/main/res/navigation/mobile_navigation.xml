@@ -87,5 +87,46 @@
         android:id="@+id/nav_experiment_details"
         android:name="com.example.experiment_automata.ExperimentFragments.NavExperimentDetailsFragment"
         android:label="@string/menu_experiment_details"
-        tools:layout="@layout/fragment_nav_experiment_details" />
+        tools:layout="@layout/fragment_nav_experiment_details" >
+        <action
+            android:id="@+id/action_nav_experiment_details_to_addCountTrialFragment"
+            app:destination="@id/nav_add_count_trial"
+            app:enterAnim="@android:anim/slide_out_right"
+            app:exitAnim="@android:anim/slide_in_left" />
+        <action
+            android:id="@+id/action_nav_experiment_details_to_addNaturalCountTrialFragment"
+            app:destination="@id/nav_add_natural_count_trial"
+            app:enterAnim="@android:anim/slide_out_right"
+            app:exitAnim="@android:anim/slide_in_left" />
+        <action
+            android:id="@+id/action_nav_experiment_details_to_addBinomialTrialFragment"
+            app:destination="@id/nav_add_binomial_trial"
+            app:enterAnim="@android:anim/slide_out_right"
+            app:exitAnim="@android:anim/slide_in_left" />
+        <action
+            android:id="@+id/action_nav_experiment_details_to_addMeasurementTrialFragment"
+            app:destination="@id/nav_add_measurement_trial"
+            app:enterAnim="@android:anim/slide_out_right"
+            app:exitAnim="@android:anim/slide_in_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_add_count_trial"
+        android:name="com.example.experiment_automata.ui.AddTrial.AddCountTrialFragment"
+        android:label="Add Count Trial"
+        tools:layout="@layout/fragment_add_count_trial" />
+    <fragment
+        android:id="@+id/nav_add_natural_count_trial"
+        android:name="com.example.experiment_automata.ui.AddTrial.AddNaturalCountTrialFragment"
+        android:label="Add Natural Count Trial"
+        tools:layout="@layout/fragment_add_natural_count_trial" />
+    <fragment
+        android:id="@+id/nav_add_binomial_trial"
+        android:name="com.example.experiment_automata.ui.AddTrial.AddBinomialTrialFragment"
+        android:label="Add Binomial Trial"
+        tools:layout="@layout/fragment_add_binomial_trial" />
+    <fragment
+        android:id="@+id/nav_add_measurement_trial"
+        android:name="com.example.experiment_automata.ui.AddTrial.AddMeasurementTrialFragment"
+        android:label="Add Measurement Trail"
+        tools:layout="@layout/fragment_add_measurement_trial" />
 </navigation>

@@ -3,7 +3,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.experiment_automata.Experiments.ExperimentModel.ContactInformation;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
@@ -17,7 +16,12 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * This is the user. Contains the information that represents a user.
+ * Role/Pattern:
+ *     This is the user. Contains the information that represents a user.
+ *
+ *  Known Issue:
+ *
+ *      1. None
  */
 public class User {
     private static String DEFAULT_UUID_STRING = "00000000-0000-0000-0000-000000000000";//move this to a constants class later

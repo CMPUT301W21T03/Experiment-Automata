@@ -9,7 +9,16 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Role/Pattern:
+ *     Holds the information needed to maintain and track a count trial
+ *
+ *  Known Issue:
+ *
+ *      1. None
+ */
 public class CountTrial extends Trial {
+
     public CountTrial(UUID collector) {
         super(collector);
     }

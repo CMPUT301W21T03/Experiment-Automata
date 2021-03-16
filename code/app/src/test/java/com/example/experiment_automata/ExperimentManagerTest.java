@@ -1,6 +1,6 @@
 package com.example.experiment_automata;
 
-import com.example.experiment_automata.ExperimentFragments.ExperimentManager;
+import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentManager;
 import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
 import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentMaker;
 import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentType;

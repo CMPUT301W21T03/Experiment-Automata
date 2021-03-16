@@ -36,4 +36,6 @@
     <string name="stdev">Standard Deviation</string>
     <string name="results">Results</string>
     <string name="trails">Trials</string>
+    <string name="count">Count</string>
+    <string name="measurement">Measurement</string>
 </resources>

@@ -117,15 +117,11 @@ public class BinomialExperiment extends Experiment {
         if(totalTrials>0) {
             answer = ((float) successfulTrials) / (totalTrials);
         }
-        else{
+        else {
             // No results
-            answer=0;
+            answer = 0;
         }
-        // Round to six decimal places (for now), we can change the precision later
-
-        System.out.println(Math.round(1000000*answer));
-        System.out.println((float) Math.round(1000000*answer)/1000000);
-        return ((float) Math.round(1000000*answer)/1000000);
+        return answer;
     }
 
     /**

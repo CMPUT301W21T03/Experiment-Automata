@@ -37,6 +37,22 @@ public class BinomialExperimentStatTest {
         binomialExperiment = new BinomialExperiment("This is a test", 5, false, true, ownerId);
     }
 
+    /**
+     * Function to see if two floats are close in value
+     * @param first First float to compare to the second one
+     * @param second Second float to compare to the first one
+     * @return true if f and g are within a close margin of error and false otherwise
+     */
+    public boolean marginOfError(float first, float second){
+        if(Math.abs(first-second)<Math.pow(10,-6)){
+            // If the absolute value of the difference between first and second is within an error margin (10^(-6))
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
     @Test
     public void getMeanTest(){
         binomialExperiment.recordTrial(successTrial);
@@ -45,27 +61,26 @@ public class BinomialExperimentStatTest {
         assertEquals(binomialExperiment.getMean(), 0.5);
         binomialExperiment.recordTrial(successTrial);
         // Within a reasonable margin of error for this one with a non-terminating decimal expansion
-        assertEquals(binomialExperiment.getMean(), 0.666667);
+        assertTrue(marginOfError(binomialExperiment.getMean(), (float) 0.6666667));
 
         // 3/4 successes
         binomialExperiment.recordTrial(successTrial);
-        assertEquals(binomialExperiment.getMean(), 0.75);
+        assertTrue(marginOfError(binomialExperiment.getMean(), (float) 0.75));
 
         // 3/5 successes
         binomialExperiment.recordTrial(failureTrial);
-        assert(0.6-Math.pow(10, -6)<binomialExperiment.getMean() && binomialExperiment.getMean()<0.6+Math.pow(10,-6));
+        assertTrue(marginOfError(binomialExperiment.getMean(), (float) 0.6));
 
         // 3/6 successes
 
         binomialExperiment.recordTrial(failureTrial);
-        assertEquals(binomialExperiment.getMean(), 0.5);
+        assertTrue(marginOfError(binomialExperiment.getMean(), (float) 0.5));
 
         // 4/7 successes
 
         binomialExperiment.recordTrial(successTrial);
         // Within a reasonable margin of error
-        assert(0.5714285-Math.pow(10, -6)<binomialExperiment.getMean() && binomialExperiment.getMean()<0.5714285+Math.pow(10,-6));
-
+        assertTrue(marginOfError(binomialExperiment.getMean(), (float) 0.57142857));
     }
 
     @Test

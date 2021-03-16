@@ -156,6 +156,10 @@ public class NavigationActivity extends AppCompatActivity implements
                             // if no value was given
                             snackbar.show();
                         }
+                        break;
+                    case Questions:
+                        ((QuestionDisplay) currentFragment).makeQuestion();
+                        break;
                 }
             }
         });

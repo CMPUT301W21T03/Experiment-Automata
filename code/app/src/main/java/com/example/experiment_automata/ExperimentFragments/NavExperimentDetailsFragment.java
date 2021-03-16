@@ -80,9 +80,6 @@ public class NavExperimentDetailsFragment extends Fragment {
         if (getArguments() != null) {
             experimentStringId = getArguments().getString(CURRENT_EXPERIMENT_ID);
         }
-        NavigationActivity parentActivity = (NavigationActivity) getActivity();
-        parentActivity.setCurrentFragment(this);
-        parentActivity.setCurrentScreen(Screen.ExperimentDetails);
     }
 
 
@@ -99,7 +96,11 @@ public class NavExperimentDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_nav_experiment_details, container, false);
-        getArguments();
+
+        NavigationActivity parentActivity = (NavigationActivity) getActivity();
+        parentActivity.setCurrentFragment(this);
+        parentActivity.setCurrentScreen(Screen.ExperimentDetails);
+
         descriptionView = root.findViewById(R.id.nav_experiment_details_description);
         typeView = root.findViewById(R.id.nav_experiment_details_experiment_type);
         editImageButton = root.findViewById(R.id.nav_fragment_experiment_detail_view_edit_button);
@@ -123,7 +124,6 @@ public class NavExperimentDetailsFragment extends Fragment {
         });
 
         questionsButton.setOnClickListener(v -> {
-
             launchQuestionView();
         });
 
@@ -173,14 +173,15 @@ public class NavExperimentDetailsFragment extends Fragment {
     /**
      * Set up and gets read to launch the questions display.
      */
-    private void launchQuestionView()
-    {
+    private void launchQuestionView() {
+        NavigationActivity parentActivity = (NavigationActivity) getActivity();
         Bundle questionBundle = new Bundle();
-        questionBundle.putSerializable(QuestionDisplay.QUESTION_EXPERIMENT
-                ,((NavigationActivity)getActivity())
-                .getExperimentManager()
-                .getAtUUIDDescription(UUID.fromString(experimentStringId)));
+        questionBundle.putSerializable(QuestionDisplay.QUESTION_EXPERIMENT,
+                parentActivity.getExperimentManager()
+                    .getAtUUIDDescription(UUID.fromString(experimentStringId)));
         NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
         navController.navigate(R.id.questionDisplay, questionBundle);
+        parentActivity.setCurrentScreen(Screen.Questions);
+        parentActivity.setCurrentFragment(this);
     }
 }

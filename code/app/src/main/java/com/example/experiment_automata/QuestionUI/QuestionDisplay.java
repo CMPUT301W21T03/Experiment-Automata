@@ -120,20 +120,13 @@ public class QuestionDisplay extends Fragment {
         //Getting rid of the floating button that adds experiments on every navigation
         getActivity().findViewById(R.id.add_experiment_button).setVisibility(View.GONE);
 
-        FloatingActionButton addQuestionButton = root.findViewById(R.id.frag_question_display_add_question_button);
-        addQuestionButton.setOnClickListener(v ->
-        {
-            makeQuestion();
-        });
-
         return root;
     }
 
     /**
      * Creates a dialog for question creation
      */
-    private void makeQuestion()
-    {
+    public void makeQuestion() {
         getActivity().getSupportFragmentManager().beginTransaction()
                 .add(AddQuestionFragment
                         .newInstance("", true, currentExperiment.getExperimentId()), "ADD QUESTION")
@@ -147,12 +140,11 @@ public class QuestionDisplay extends Fragment {
      *  Editor: None
      *  Link: https://stackoverflow.com/questions/15422120/notifydatasetchange-not-working-from-custom-adapter
      */
-    public void updateQuestionsList()
-    {
+    public void updateQuestionsList() {
         try {
             questionsList.clear();
             questionsList.addAll(
-                    ((NavigationActivity)getActivity())
+                    ((NavigationActivity) getActivity())
                             .questionManager
                             .getExperimentQuestions(currentExperiment
                                     .getExperimentId()));
@@ -167,5 +159,4 @@ public class QuestionDisplay extends Fragment {
         }
 
     }
-
 }

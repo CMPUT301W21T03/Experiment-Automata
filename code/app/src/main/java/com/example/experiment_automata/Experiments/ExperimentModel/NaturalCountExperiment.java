@@ -146,7 +146,7 @@ public class NaturalCountExperiment extends Experiment {
             val2 = values.get((size / 2) - 1);
             return (val1 + val2) / 2f;
         } else {
-            return values.get((size + 1) / 2);
+            return values.get((size - 1) / 2);
         }
     }
 

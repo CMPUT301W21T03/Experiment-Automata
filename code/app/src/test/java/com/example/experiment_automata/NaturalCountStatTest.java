@@ -69,33 +69,55 @@ public class NaturalCountStatTest {
         assertTrue(marginOfError(natExperiment.getMean(), 3.6666667f));
     }
 
-    /*
+
     @Test
     public void getMedianTest(){
-        // No results recorded so far
-        assertEquals(binomialExperiment.getMedian(), 0.5);
+        natExperiment.recordTrial(new NaturalCountTrial(id, 2));
+        assertEquals(natExperiment.getMedian(), 2.0);
+        natExperiment.recordTrial(new NaturalCountTrial(id, 3));
+        assertEquals(natExperiment.getMedian(), 2.5);
 
-        // 1 success, 0 failures
-        binomialExperiment.recordTrial(successTrial);
+        natExperiment.recordTrial(new NaturalCountTrial(id, 4));
+        assertEquals(natExperiment.getMedian(), 3);
 
-        assertEquals(binomialExperiment.getMedian(), 1.0);
+        natExperiment.recordTrial(new NaturalCountTrial(id, 9));
+        assertEquals(natExperiment.getMedian(), 3.5);
 
-        // 1 success, 2 failures
-        binomialExperiment.recordTrial(failureTrial);
-        binomialExperiment.recordTrial(failureTrial);
+        natExperiment.recordTrial(new NaturalCountTrial(id, 3));
+        assertEquals(natExperiment.getMedian(),  3);
 
-        assertEquals(binomialExperiment.getMedian(), 0.0);
 
-        // 2 success, 2 failures
-        binomialExperiment.recordTrial(successTrial);
+        natExperiment.recordTrial(new NaturalCountTrial(id, 1));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 1));
+        // 1, 1, 2, 3, 3, 4, 9
+        assertEquals(natExperiment.getMedian(), 3);
 
-        assertEquals(binomialExperiment.getMedian(), 0.5);
+        //  1, 1, 1, 2, 3, 3, 4, 9
+        natExperiment.recordTrial(new NaturalCountTrial(id, 1));
+        assertEquals(natExperiment.getMedian(), 2.5);
+        // 1, 1, 1, 1, 2, 3, 3, 4, 9
+        natExperiment.recordTrial(new NaturalCountTrial(id, 1));
 
-        // 3 success, 2 failures
-        binomialExperiment.recordTrial(successTrial);
+        assertEquals(natExperiment.getMedian(), 2);
 
-        assertEquals(binomialExperiment.getMedian(), 1.0);
+
     }
 
-     */
+    @Test
+    public void getStdevTest(){
+        // Numbers for verification computed from https://www.calculator.net/standard-deviation-calculator.html
+        natExperiment.recordTrial(new NaturalCountTrial(id, 2));
+        assertEquals(natExperiment.getStdev(), 0);
+        natExperiment.recordTrial(new NaturalCountTrial(id, 3));
+        assertEquals(natExperiment.getStdev(), 0.5);
+
+        natExperiment.recordTrial(new NaturalCountTrial(id, 4));
+        assertTrue(marginOfError(natExperiment.getStdev(), 0.81649658092773f));
+
+        natExperiment.recordTrial(new NaturalCountTrial(id, 9));
+        assertTrue(marginOfError(natExperiment.getStdev(), 2.6925824035673f));
+
+        natExperiment.recordTrial(new NaturalCountTrial(id, 3));
+        assertTrue(marginOfError(natExperiment.getStdev(),  2.4819347291982f));
+    }
 }

@@ -109,4 +109,35 @@ public class BinomialExperimentStatTest {
 
         assertEquals(binomialExperiment.getMedian(), 1.0);
     }
+
+    @Test
+    public void getSDVTest(){
+        // Numbers for verification computed from https://www.calculator.net/standard-deviation-calculator.html
+        // 1 success, 0 failures
+        binomialExperiment.recordTrial(successTrial);
+
+        assertEquals(binomialExperiment.getStdev(), 0.0);
+
+        // 1 success, 1 failure
+
+        binomialExperiment.recordTrial(failureTrial);
+
+        assertEquals(binomialExperiment.getStdev(), 0.5);
+
+        // 1 success, 2 failures
+
+        binomialExperiment.recordTrial(failureTrial);
+
+        assertTrue(marginOfError(binomialExperiment.getStdev(), 0.47140452079103f));
+
+        binomialExperiment.recordTrial(successTrial);
+
+        assertEquals(binomialExperiment.getStdev(), 0.5);
+
+        // 2 success, 3 failures
+        binomialExperiment.recordTrial(failureTrial);
+
+        assertTrue(marginOfError(binomialExperiment.getStdev(), 0.48989794855664f));
+
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.experiment_automata.Experiments.ExperimentModel;
 
 import com.example.experiment_automata.trials.BinomialTrial;
+import com.example.experiment_automata.trials.NaturalCountTrial;
 import com.example.experiment_automata.trials.Trial;
 import com.github.mikephil.charting.data.Entry;
 
@@ -167,7 +168,18 @@ public class BinomialExperiment extends Experiment {
      *  the standard deviation
      */
     public float getStdev() {
-        return 0;
+        float sum = 0;
+        float result;
+        for (BinomialTrial trial : results) {
+            if(trial.getResult()){
+                result=1f;
+            }
+            else{
+                result=0f;
+            }
+            sum += Math.pow( result - getMean(), 2);
+        }
+        return (float) Math.sqrt(sum / results.size());
     }
 
     /**

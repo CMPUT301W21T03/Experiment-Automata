@@ -67,7 +67,7 @@ public class CountExperiment extends Experiment {
      *  the mean
      */
     public float getMean() {
-        return 0;
+        return 1;
     }
 
     /**
@@ -76,7 +76,7 @@ public class CountExperiment extends Experiment {
      *  the median
      */
     public float getMedian() {
-        return 0;
+        return 1;
     }
 
     /**

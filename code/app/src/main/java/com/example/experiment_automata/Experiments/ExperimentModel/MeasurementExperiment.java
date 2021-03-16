@@ -1,11 +1,13 @@
 package com.example.experiment_automata.Experiments.ExperimentModel;
 
 import com.example.experiment_automata.trials.MeasurementTrial;
+import com.example.experiment_automata.trials.NaturalCountTrial;
 import com.example.experiment_automata.trials.Trial;
 import com.github.mikephil.charting.data.Entry;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -117,7 +119,14 @@ public class MeasurementExperiment extends Experiment {
      *  the mean
      */
     public float getMean() {
-        return 0;
+        float sum = 0;
+        int numTrials = 0;
+        for (MeasurementTrial trial : results) {
+            sum += trial.getResult();
+            numTrials += 1;
+        }
+        // Return sum of all the results divided by the number of trials
+        return (float) sum/numTrials;
     }
 
     /**
@@ -126,7 +135,21 @@ public class MeasurementExperiment extends Experiment {
      *  the median
      */
     public float getMedian() {
-        return 0;
+        ArrayList<Float> values = new ArrayList<>();
+        for (MeasurementTrial trial : results) {
+            values.add(trial.getResult());
+        }
+        Collections.sort(values);
+        int size = values.size();
+        if (size % 2 == 0) {
+            final float val1, val2;
+            val1 = values.get(size / 2);
+            val2 = values.get((size / 2) - 1);
+            return (val1 + val2) / 2f;
+        } else {
+            return values.get((size - 1) / 2);
+        }
+
     }
 
     /**
@@ -135,7 +158,11 @@ public class MeasurementExperiment extends Experiment {
      *  the standard deviation
      */
     public float getStdev() {
-        return 0;
+        float sum = 0;
+        for (MeasurementTrial trial : results) {
+            sum += Math.pow(trial.getResult() - getMean(), 2);
+        }
+        return (float) Math.sqrt(sum / results.size());
     }
 
     /**

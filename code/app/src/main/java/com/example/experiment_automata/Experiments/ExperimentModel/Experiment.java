@@ -181,8 +181,8 @@ public abstract class Experiment implements Serializable, StatSummary {
     }
 
     /**
-     * isEmpty
-     * @return whether or not the number of trials in the experiment is empty
+     * Gets the size of the experiment
+     * @return size of the experiment
      */
-    public abstract boolean isEmpty();
+    public abstract Integer getSize();
 }

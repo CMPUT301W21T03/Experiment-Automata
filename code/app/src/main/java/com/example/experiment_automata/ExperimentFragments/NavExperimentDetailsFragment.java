@@ -47,6 +47,9 @@ public class NavExperimentDetailsFragment extends Fragment {
     private ImageButton questionsButton;
 
     private TextView textViewQuartiles;
+    private TextView textViewMean;
+    private TextView textViewMedian;
+    private TextView textViewStdev;
 
 
     public NavExperimentDetailsFragment() {
@@ -110,6 +113,9 @@ public class NavExperimentDetailsFragment extends Fragment {
         getActivity().findViewById(R.id.add_experiment_button).setVisibility(View.GONE);
 
         textViewQuartiles = root.findViewById(R.id.quartiles_value);
+        textViewMean = root.findViewById(R.id.mean_value);
+        textViewMedian = root.findViewById(R.id.median_value);
+        textViewStdev = root.findViewById(R.id.stdev_value);
 
         if (experimentStringId != null) {
             update(experimentStringId);
@@ -155,10 +161,24 @@ public class NavExperimentDetailsFragment extends Fragment {
             fab.setVisibility(View.VISIBLE);
         }
 
-        if(!current.isEmpty()){
+        if (current.getSize() >= 4) {
             float[] quartiles = current.getQuartiles();
             String quartileString = String.format("q1: %.4f, q3: %.4f", quartiles[0], quartiles[2]);
             textViewQuartiles.setText(quartileString);
+        }
+
+        if (current.getSize() >= 1) {
+            float mean = current.getMean();
+            float median = current.getMedian();
+            float stdev = current.getStdev();
+
+            String meanString = String.format("%.4f", mean);
+            String medianString = String.format("%.4f", median);
+            String stdevString = String.format("%.4f", stdev);
+
+            textViewMean.setText(meanString);
+            textViewMedian.setText(medianString);
+            textViewStdev.setText(stdevString);
         }
 
 

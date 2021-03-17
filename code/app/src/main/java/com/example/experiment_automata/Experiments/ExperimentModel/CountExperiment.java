@@ -100,10 +100,10 @@ public class CountExperiment extends Experiment {
     }
 
     /**
-     * isEmpty
-     * @return whether or not the number of trials in the experiment is empty
+     * Gets the size of the experiment
+     * @return size of the experiment
      */
-    public boolean isEmpty(){
-        return results.size() == 0;
+    public Integer getSize(){
+        return results.size();
     }
 }

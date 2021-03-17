@@ -17,7 +17,7 @@ import java.util.UUID;
  *
  *      1. None
  */
-public abstract class Experiment implements Serializable, StatSummary {
+public abstract class Experiment implements Serializable, StatSummary, Graphable {
     private String description;
     private int minTrials;
     private UUID experimentId; // changed from UML to better match project

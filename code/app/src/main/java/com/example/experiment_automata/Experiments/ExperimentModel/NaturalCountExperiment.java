@@ -3,6 +3,7 @@ package com.example.experiment_automata.Experiments.ExperimentModel;
 import com.example.experiment_automata.trials.MeasurementTrial;
 import com.example.experiment_automata.trials.NaturalCountTrial;
 import com.example.experiment_automata.trials.Trial;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 
 import java.util.ArrayList;
@@ -63,17 +64,14 @@ public class NaturalCountExperiment extends Experiment {
 
     /**
      * Generate a list of entries needed to plot a histogram
-     * @param trials
-     *  trials to use for data
      * @return
      *  the list of entries that represent a histogram of trials.
      */
-    public List<Entry> generateHistogram(Collection<Trial> trials) {
+    public List<BarEntry> generateHistogram() {
         // Get range of values (min/max)
-        int min = Integer.MAX_VALUE, max = Integer.MIN_VALUE;
-        for (Trial trial: trials) {
-            final NaturalCountTrial naturalCountTrial = (NaturalCountTrial) trial;
-            int value = naturalCountTrial.getResult();
+        int min = Integer.MAX_VALUE, max = 0;
+        for (NaturalCountTrial trial : results) {
+            int value = trial.getResult();
             if (value > max) max = value;
             if (value < min) min = value;
         }
@@ -82,33 +80,35 @@ public class NaturalCountExperiment extends Experiment {
         final int amountOfBins = 10;
         int[] bins = new int[amountOfBins];
         for (int i = 0; i < amountOfBins; i++) { bins[i] = 0; }
-        for (Trial trial: trials) {
-            final NaturalCountTrial naturalCountTrial = (NaturalCountTrial) trial;
-            float value = naturalCountTrial.getResult();
+        for (NaturalCountTrial trial : results) {
+            float value = trial.getResult();
             int bin = (int) ((value - min) / range * amountOfBins);
             if (bin == amountOfBins) bin--;
             bins[bin]++;
         }
         // Convert bins to entries
-        List<Entry> data = new ArrayList<>();
+        List<BarEntry> data = new ArrayList<>();
         for (int i = 0; i < amountOfBins; i++) {
-            data.add(new Entry(i, bins[i]));
+            data.add(new BarEntry((i / (float) amountOfBins) * range + min, bins[i]));
         }
         return data;
     }
 
     /**
      * Generate a list of entries needed to plot results of trials.
-     * @param trials
-     *  trials to use for data
      * @return
      *  the list of entries that represent a plot
      */
-    public List<Entry> generatePlot(Collection<Trial> trials) {
+    public List<Entry> generatePlot() {
         List<Entry> data = new ArrayList<>();
-        for (Trial trial : trials ) {
-            final NaturalCountTrial naturalCountTrial = (NaturalCountTrial) trial;
-            data.add(new Entry(naturalCountTrial.getDate().getTime(), naturalCountTrial.getResult()));
+        boolean first = true;
+        long offset = 0;
+        for (NaturalCountTrial trial : results ) {
+            if (first) {
+                first = false;
+                offset = trial.getDate().getTime();
+            }
+            data.add(new Entry(trial.getDate().getTime() - offset, trial.getResult()));
         }
         return data;
     }

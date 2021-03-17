@@ -14,11 +14,22 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.LineChart;
+
 import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
 import com.example.experiment_automata.NavigationActivity;
 import com.example.experiment_automata.QuestionUI.QuestionDisplay;
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.ui.Screen;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.LargeValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.firebase.firestore.local.BundleCache;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -50,6 +61,8 @@ public class NavExperimentDetailsFragment extends Fragment {
     private TextView textViewMean;
     private TextView textViewMedian;
     private TextView textViewStdev;
+    private BarChart histogram;
+    private LineChart resultsPlot;
 
 
     public NavExperimentDetailsFragment() {
@@ -117,6 +130,9 @@ public class NavExperimentDetailsFragment extends Fragment {
         textViewMedian = root.findViewById(R.id.median_value);
         textViewStdev = root.findViewById(R.id.stdev_value);
 
+        histogram = root.findViewById(R.id.histogram_chart);
+        resultsPlot = root.findViewById(R.id.results_chart);
+
         if (experimentStringId != null) {
             update(experimentStringId);
         }
@@ -179,6 +195,35 @@ public class NavExperimentDetailsFragment extends Fragment {
             textViewMean.setText(meanString);
             textViewMedian.setText(medianString);
             textViewStdev.setText(stdevString);
+
+            // Charts
+            BarDataSet histogramData = new BarDataSet(current.generateHistogram(), "");
+            histogramData.setColors(R.color.purple_500);
+            histogram.setData(new BarData(histogramData));
+            histogram.getLegend().setEnabled(false);
+            histogram.setDrawGridBackground(false);
+            histogram.getXAxis().setDrawGridLines(false);
+            histogram.getXAxis().setValueFormatter(new LargeValueFormatter());
+            histogram.getAxisLeft().setEnabled(false);
+            histogram.getAxisLeft().setAxisMinimum(0f);
+            histogram.getAxisRight().setEnabled(false);
+            histogram.setTouchEnabled(false);
+            histogram.getDescription().setEnabled(false);
+
+            LineDataSet resultsData = new LineDataSet(current.generatePlot(), "");
+            resultsData.setColor(R.color.purple_500);
+            resultsData.setFillAlpha(255);
+            resultsData.setLineWidth(2f);
+            resultsData.setDrawCircles(false);
+            resultsData.setDrawValues(false);
+            resultsData.setCircleColor(R.color.purple_500);
+            resultsData.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+            resultsPlot.setData(new LineData(resultsData));
+            resultsPlot.getLegend().setEnabled(false);
+            resultsPlot.getXAxis().setEnabled(false);
+            histogram.getXAxis().setValueFormatter(new LargeValueFormatter());
+            resultsPlot.setTouchEnabled(false);
+            resultsPlot.getDescription().setEnabled(false);
         }
 
 

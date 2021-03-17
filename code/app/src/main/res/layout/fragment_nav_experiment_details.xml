@@ -86,60 +86,47 @@
         app:layout_constraintEnd_toStartOf="@+id/nav_fragment_experiment_detail_view_qr_button"
         app:layout_constraintTop_toTopOf="@+id/nav_fragment_experiment_detail_view_qr_button" />
 
-    <fragment
-        android:id="@+id/stats_fragment"
-        android:name="com.example.experiment_automata.ExperimentFragments.StatisticsFragment"
+    <ScrollView
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nav_experiment_details_experiment_type" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/nav_fragment_experiment_detail_view_edit_button"
+        app:layout_constraintStart_toStartOf="@+id/nav_experiment_details_experiment_type"
+        app:layout_constraintTop_toBottomOf="@+id/nav_experiment_details_experiment_type">
 
-    <fragment
-        android:id="@+id/histogram_fragment"
-        android:name="com.example.experiment_automata.ExperimentFragments.HistogramFragment"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/stats_fragment" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <fragment
-        android:id="@+id/results_fragment"
-        android:name="com.example.experiment_automata.ExperimentFragments.ResultsFragment"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/histogram_fragment" />
+            <fragment
+                android:id="@+id/stats_fragment"
+                android:name="com.example.experiment_automata.ExperimentFragments.StatisticsFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-    <fragment
-        android:id="@+id/fragment"
-        android:name="com.example.experiment_automata.ExperimentFragments.TrialsFragment"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/results_fragment" />
+            <fragment
+                android:id="@+id/histogram_fragment"
+                android:name="com.example.experiment_automata.ExperimentFragments.HistogramFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp" />
+
+            <fragment
+                android:id="@+id/results_fragment"
+                android:name="com.example.experiment_automata.ExperimentFragments.ResultsFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp" />
+
+            <fragment
+                android:id="@+id/fragment"
+                android:name="com.example.experiment_automata.ExperimentFragments.TrialsFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp" />
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

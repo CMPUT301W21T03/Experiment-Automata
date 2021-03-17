@@ -3,6 +3,7 @@ package com.example.experiment_automata.Experiments.ExperimentModel;
 import com.example.experiment_automata.trials.BinomialTrial;
 import com.example.experiment_automata.trials.NaturalCountTrial;
 import com.example.experiment_automata.trials.Trial;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 
 import java.util.ArrayList;
@@ -64,43 +65,42 @@ public class BinomialExperiment extends Experiment {
 
     /**
      * Generate a list of entries needed to plot a histogram
-     * @param trials
-     *  trials to use for data
      * @return
      *  the list of entries that represent a histogram of trials.
      */
-    public List<Entry> generateHistogram(Collection<Trial> trials) {
+    public List<BarEntry> generateHistogram() {
         // Get data range counts into bins
         final int amountOfBins = 2;
         int[] bins = new int[amountOfBins];
         for (int i = 0; i < amountOfBins; i++) { bins[i] = 0; }
-        for (Trial trial: trials) {
-            final BinomialTrial naturalCountTrial = (BinomialTrial) trial;
-            boolean value = naturalCountTrial.getResult();
+        for (BinomialTrial trial: results) {
+            boolean value = trial.getResult();
             int bin = value ? 1 : 0;
             bins[bin]++;
         }
         // Convert bins to entries
-        List<Entry> data = new ArrayList<>();
+        List<BarEntry> data = new ArrayList<>();
         for (int i = 0; i < amountOfBins; i++) {
-            data.add(new Entry(i, bins[i]));
+            data.add(new BarEntry(i, bins[i]));
         }
         return data;
     }
 
     /**
      * Generate a list of entries needed to plot results of trials.
-     * @param trials
-     *  trials to use for data
      * @return
      *  the list of entries that represent a plot
      */
-    public List<Entry> generatePlot(Collection<Trial> trials) {
+    public List<Entry> generatePlot() {
         List<Entry> data = new ArrayList<>();
-        for (Trial trial : trials ) {
-            final BinomialTrial binomialTrial = (BinomialTrial) trial;
-            data.add(new Entry(binomialTrial.getDate().getTime(),
-                    binomialTrial.getResult() ? 1 : 0));
+        boolean first = true;
+        long offset = 0;
+        for (BinomialTrial trial : results ) {
+            if (first) {
+                first = false;
+                offset = trial.getDate().getTime();
+            }
+            data.add(new Entry(trial.getDate().getTime() - offset, trial.getResult() ? 1 : 0));
         }
         return data;
     }

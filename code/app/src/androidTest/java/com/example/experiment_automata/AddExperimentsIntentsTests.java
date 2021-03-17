@@ -1,5 +1,13 @@
 package com.example.experiment_automata;
 
+
+/**
+ * Test class the deals with us.01.01.01
+ *
+ * Known Issues:
+ *  1. Since we have not added the ability to add coordinates that is not tested
+ */
+
 import android.app.Instrumentation;
 import android.view.View;
 import android.widget.EditText;
@@ -30,9 +38,6 @@ public class AddExperimentsIntentsTests
     private View acceptNewResults;
 
 
-
-
-
     @Rule
     public ActivityTestRule<NavigationActivity> rule =
             new ActivityTestRule<>(NavigationActivity.class, true, true);
@@ -54,7 +59,8 @@ public class AddExperimentsIntentsTests
      *(As an owner, I want to publish an experiment with a description, a region, and a minimum number of trials)
      *
      * Since they're 4 different types of experiments
-     * let's make 1 through the GUI and the rest as automated.
+     * let's make 1 through the GUI and the rest as automated unit tests since it's the same
+     * idea except here we're testing the GUI.
      *
      * (This test is following the golden path)
      */
@@ -95,7 +101,7 @@ public class AddExperimentsIntentsTests
 
     /**
      * Here we're testing if change our minds and decide not to make an experiment.
-     *
+     *(Testing what happens if we cancel after we make an experiment )
      */
     @Test
     public void testMakeExperimentCancel()
@@ -131,5 +137,41 @@ public class AddExperimentsIntentsTests
                 solo.searchText("GUI Test Experiment"));
     }
 
+    /**
+     * Here we're trying to see if the user can enter an empty experiment into the their
+     * published views.
+     */
+    @Test
+    public void makeEmptyExperiment()
+    {
+        assertNotEquals("Can't find + button", null, addExperimentButton);
 
+        //Click from the home screen the + button to make an experiment
+        solo.clickOnView(addExperimentButton);
+        solo.waitForDialogToOpen();
+        descriptionEdit = solo.getView(R.id.create_experiment_description_editText);
+        assertNotEquals("Can't find description box", null, descriptionEdit);
+
+        //We need to fill the form to add the experiment
+        //Writing description
+        solo.clickOnView(descriptionEdit);
+        solo.enterText((EditText) descriptionEdit, "");
+        //Writing min num trials
+
+        countTrialsEdit = solo.getView(R.id.experiment_min_trials_editText);
+        assertNotEquals("Can't find description box", null, countTrialsEdit);
+        solo.clickOnView(countTrialsEdit);
+        solo.enterText((EditText) countTrialsEdit, "");
+
+        //Setting the boxes
+        location = solo.getView(R.id.experiment_require_location_switch);
+        acceptNewResults = solo.getView(R.id.experiment_accept_new_results_switch);
+        solo.clickOnView(location);
+        solo.clickOnView(acceptNewResults);
+        solo.clickOnText("Ok");
+
+        assertEquals("An empty experiment was made and displayed in the published view",
+                false,
+                solo.searchText("Experiment Owner"));
+    }
 }

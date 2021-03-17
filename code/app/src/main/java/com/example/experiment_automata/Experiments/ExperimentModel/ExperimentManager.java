@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -28,6 +29,8 @@ public class ExperimentManager
 {
     private static HashMap<UUID, Experiment> experiments;
     private Experiment currentExperiment;
+    private FirebaseFirestore db;
+    private final CollectionReference expCollectionReference;
 
 
     /**
@@ -36,6 +39,8 @@ public class ExperimentManager
     public ExperimentManager()
     {
         experiments = new HashMap<UUID, Experiment>();
+        db = FirebaseFirestore.getInstance();
+        expCollectionReference =  db.collection("experiments");
     }
 
     /**
@@ -155,8 +160,8 @@ public class ExperimentManager
     public Experiment getExperimentFromFirestore(UUID experimentID) {
         ExperimentMaker maker = new ExperimentMaker();
         Experiment experiment;
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference experimentDocRef = db.collection("experiments").document(experimentID.toString());
+        //FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference experimentDocRef = expCollectionReference.document(experimentID.toString());
         DocumentSnapshot experimentDocSnapshot = experimentDocRef.get().getResult();//Task --> DocumentSnapshot
         DocumentReference ownerDocument = (DocumentReference)experimentDocSnapshot.get("owner");
         UUID ownerID = UUID.fromString(ownerDocument.getId());//is the returned string the path or just the ID?
@@ -181,7 +186,7 @@ public class ExperimentManager
      * Post all experiments contained in current ExperimentManager to firestore
      */
     public void postAllToFirestore(){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        //FirebaseFirestore db = FirebaseFirestore.getInstance();
         experiments.forEach((key,experiment) -> {
             postExperimentToFirestore(experiment);
         });
@@ -194,7 +199,7 @@ public class ExperimentManager
      */
     public void postExperimentToFirestore(Experiment experiment){
         //add key field?
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        //FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String,Object> experimentData = new HashMap<>();
         String experimentUUIDString = experiment.getExperimentId().toString();
         DocumentReference owner = db.collection("users").document("/users" + experiment.getOwnerId().toString());
@@ -206,7 +211,7 @@ public class ExperimentManager
         experimentData.put("owner",owner);
         experimentData.put("type",experiment.getType().name());//enum to string
 
-        db.collection("experiments").document(experimentUUIDString)
+        expCollectionReference.document(experimentUUIDString)
                 .set(experimentData)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

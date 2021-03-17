@@ -225,9 +225,16 @@ public class MeasurementExperiment extends Experiment {
 
             quartiles[2]=getMedianList(valuesLarge);
         }
-        else{
-            quartiles[0]=0f;
-            quartiles[2]=0f;
+        else if(results.size() == 3){
+            ArrayList<Float> values = new ArrayList<>();
+            for (MeasurementTrial trial : results) {
+                values.add(trial.getResult());
+            }
+            Collections.sort(values);
+
+            quartiles[0] = values.get(0);
+            quartiles[1] = values.get(1);
+            quartiles[2] = values.get(2);
         }
 
         return quartiles;

@@ -186,4 +186,43 @@ public class BinomialExperimentStatTest {
         assertEquals(quartiles[2], 0.5);
 
     }
+
+    @Test
+    public void getQuartilesTest3(){
+        // True values computed from https://www.calculatorsoup.com/calculators/statistics/quartile-calculator.php
+
+        binomialExperiment.recordTrial(failureTrial);
+
+        binomialExperiment.recordTrial(failureTrial);
+
+        binomialExperiment.recordTrial(successTrial);
+
+        binomialExperiment.recordTrial(failureTrial);
+
+
+        float[] quartiles = binomialExperiment.getQuartiles();
+        assertEquals(quartiles[0], 0) ;
+        assertEquals(quartiles[1], 0);
+        assertEquals(quartiles[2], 0.5);
+
+    }
+
+    @Test
+    public void getQuartilesTest4(){
+        // True values computed from https://www.calculatorsoup.com/calculators/statistics/quartile-calculator.php
+
+        binomialExperiment.recordTrial(failureTrial);
+
+        binomialExperiment.recordTrial(failureTrial);
+
+        binomialExperiment.recordTrial(successTrial);
+
+
+
+        float[] quartiles = binomialExperiment.getQuartiles();
+        assertEquals(quartiles[0], 0) ;
+        assertEquals(quartiles[1], 0);
+        assertEquals(quartiles[2], 1);
+
+    }
 }

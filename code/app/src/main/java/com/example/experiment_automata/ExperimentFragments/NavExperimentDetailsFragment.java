@@ -161,7 +161,7 @@ public class NavExperimentDetailsFragment extends Fragment {
             fab.setVisibility(View.VISIBLE);
         }
 
-        if (current.getSize() >= 4) {
+        if (current.getSize() >= 3) {
             float[] quartiles = current.getQuartiles();
             String quartileString = String.format("q1: %.4f, q3: %.4f", quartiles[0], quartiles[2]);
             textViewQuartiles.setText(quartileString);

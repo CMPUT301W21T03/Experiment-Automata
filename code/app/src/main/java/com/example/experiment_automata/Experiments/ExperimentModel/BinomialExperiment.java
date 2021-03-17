@@ -254,11 +254,25 @@ public class BinomialExperiment extends Experiment {
 
             quartiles[2]=getMedianList(valuesLarge);
         }
-        else{
-            quartiles[0]=0f;
-            quartiles[2]=0f;
-        }
 
+        else if(results.size() == 3){
+            // Sort all the values in results
+            ArrayList<Integer> values = new ArrayList<>();
+            for (BinomialTrial trial : results) {
+                if(trial.getResult()){
+                    // Add 1 for a positive result and 0 otherwise
+                    values.add(1);
+                }
+                else{
+                    values.add(0);
+                }
+            }
+            Collections.sort(values);
+            // Set the three numbers to the three values
+            quartiles[0] = values.get(0);
+            quartiles[1] = values.get(1);
+            quartiles[2] = values.get(2);
+        }
         return quartiles;
 
     }

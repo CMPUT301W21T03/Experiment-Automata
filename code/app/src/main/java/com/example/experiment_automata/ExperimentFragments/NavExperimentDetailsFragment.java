@@ -46,6 +46,8 @@ public class NavExperimentDetailsFragment extends Fragment {
     private ImageButton editImageButton;
     private ImageButton questionsButton;
 
+    private TextView textViewQuartiles;
+
 
     public NavExperimentDetailsFragment() {
         // Required empty public constructor
@@ -127,6 +129,7 @@ public class NavExperimentDetailsFragment extends Fragment {
             launchQuestionView();
         });
 
+        textViewQuartiles = root.findViewById(R.id.quartiles_value);
         return root;
     }
 
@@ -151,6 +154,12 @@ public class NavExperimentDetailsFragment extends Fragment {
         } else {
             fab.setVisibility(View.VISIBLE);
         }
+
+        float[] quartiles = current.getQuartiles();
+        String quartileString = String.format("q1: %.4f, q3: %.4f", quartiles[0], quartiles[2]);
+        textViewQuartiles.setText(quartileString);
+
+
     }
 
     @Override

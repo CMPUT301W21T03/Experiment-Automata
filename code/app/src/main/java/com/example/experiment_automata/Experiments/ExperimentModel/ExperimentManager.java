@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -147,14 +149,34 @@ public class ExperimentManager
      * Get a specific Experiment from firestore
      * @param experimentID
      * The UUID of the requested experiment
+     * @return
+     * Returns the reqested Experiment object, returns null if requested experiment not found in firestore
      */
-    public void getExperimentFromFirestore(UUID experimentID){
+    public Experiment getExperimentFromFirestore(UUID experimentID) {
+        ExperimentMaker maker = new ExperimentMaker();
+        Experiment experiment;
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        
+        DocumentReference experimentDocRef = db.collection("experiments").document(experimentID.toString());
+        DocumentSnapshot experimentDocSnapshot = experimentDocRef.get().getResult();//Task --> DocumentSnapshot
+
+        if (experimentDocSnapshot.exists()){
+            experiment = maker.makeExperiment(
+                    ExperimentType.Binomial,//temp; Type storage not implemented
+                    (String) experimentDocSnapshot.get("description"),
+                    (int) experimentDocSnapshot.get("min-trials"),
+                    (boolean) experimentDocSnapshot.get("location-required"),
+                    (boolean) experimentDocSnapshot.get("accepting-new-results"),
+                    UUID.fromString("00000000-0000-0000-0000-000000000000")//temp; UUID from documentReference not implemented
+            );
+            return experiment;
+        }
+        else{
+            return null;
+        }
     }
 
     /**
-     * Push all experiments to firestore
+     * Post all experiments to firestore
      */
     public void postAllToFirestore(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -164,7 +186,7 @@ public class ExperimentManager
     }
 
     /**
-     * Push given experiment to firestore
+     * Post given experiment to firestore
      * @param experiment
      * experiment to post
      */
@@ -173,13 +195,14 @@ public class ExperimentManager
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String,Object> experimentData = new HashMap<>();
         String experimentUUIDString = experiment.getExperimentId().toString();
-        String experimentOwnerString = experiment.getOwnerId().toString();//not sure if needed in DB
+        DocumentReference owner = db.collection("users").document("/users" + experiment.getOwnerId().toString());
 
         experimentData.put("accepting-new-results",experiment.isActive());
         experimentData.put("description",experiment.getDescription());
         experimentData.put("location-required",experiment.isRequireLocation());
         experimentData.put("min-trials",experiment.getMinTrials());
-        //experimentData.put("owner",experiment.getOwnerId());
+        experimentData.put("owner",owner);
+        //experimentData.put("type",experiment.getType());
 
         db.collection("experiments").document(experimentUUIDString)
                 .set(experimentData)
@@ -196,8 +219,6 @@ public class ExperimentManager
                     }
                 });
     }
-
-
 
     public Experiment query(UUID experimentId) {
         return experiments.get(experimentId);

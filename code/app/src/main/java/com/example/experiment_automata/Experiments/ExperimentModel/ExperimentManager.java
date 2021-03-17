@@ -1,5 +1,9 @@
 package com.example.experiment_automata.Experiments.ExperimentModel;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -156,8 +160,30 @@ public class ExperimentManager
     public void postExperimentToFirestore(Experiment experiment){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String,Object> experimentData = new HashMap<>();
+        String experimentUUIDString = experiment.getExperimentId().toString();
+        String experimentOwnerString = experiment.getOwnerId().toString();//not sure if needed in DB
+
+
+        experimentData.put("accepting-new-results",experiment.isActive());
         experimentData.put("description",experiment.getDescription());
         experimentData.put("location-required",experiment.isRequireLocation());
+        experimentData.put("min-trials",experiment.getMinTrials());
+        //experimentData.put("owner",experiment.getOwnerId());
+
+        db.collection("experiments").document(experimentUUIDString)
+                .set(experimentData)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
     }
 
 

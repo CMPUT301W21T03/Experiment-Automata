@@ -149,8 +149,9 @@ public class ExperimentManager
      */
     public void postAllToFirestore(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-
+        experiments.forEach((key,experiment) -> {
+            postExperimentToFirestore(experiment);
+        });
     }
 
     /**
@@ -159,6 +160,7 @@ public class ExperimentManager
      * experiment to post
      */
     public void postExperimentToFirestore(Experiment experiment){
+        //add key field?
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String,Object> experimentData = new HashMap<>();
         String experimentUUIDString = experiment.getExperimentId().toString();

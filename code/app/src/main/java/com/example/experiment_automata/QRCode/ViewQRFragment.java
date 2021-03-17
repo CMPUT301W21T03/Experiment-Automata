@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +27,7 @@ import com.example.experiment_automata.R;
 public class ViewQRFragment extends DialogFragment {
 
     private ImageView qrImageView;
+    private TextView qrValue;
     private Button backButton;
     private String experimentUUIDString;
     private QRCodeManager qrManager;
@@ -38,13 +40,15 @@ public class ViewQRFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_display_qr,container, false);
         backButton = view.findViewById(R.id.qr_code_back_button);
         qrImageView = view.findViewById(R.id.qr_code_imageView);
+        qrValue = view.findViewById(R.id.qr_value_textView);
         qrManager = new QRCodeManager();
 
         Bundle bundle = getArguments();
         experimentUUIDString = bundle.getString("UUID");
+        String description = bundle.getString("DESCRIPTION");
         qrCode = qrManager.createQRFromUUID(experimentUUIDString);
-        qrImageView.setImageBitmap(qrCode);
-
+        qrImageView.setImageBitmap(qrCode);//qr_value_textView
+        qrValue.setText(description);
 
         return view;
     }

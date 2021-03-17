@@ -151,9 +151,13 @@ public class NavExperimentDetailsFragment extends Fragment {
         });
 
         qrButton.setOnClickListener(v -> {
+            Experiment current = (((NavigationActivity)getActivity()).getExperimentManager())
+                    .getAtUUIDDescription(UUID.fromString(experimentStringId));
+
             Fragment viewQRFragment = new ViewQRFragment();
             Bundle bundle = new Bundle();
             bundle.putString("UUID",CURRENT_EXPERIMENT_ID);
+            bundle.putString("DESCRIPTION",current.getDescription());
             viewQRFragment.setArguments(bundle);
             //getActivity().getSupportFragmentManager().beginTransaction().show(viewQRFragment);
             getActivity().getSupportFragmentManager().beginTransaction().add(viewQRFragment,"QR").commit();

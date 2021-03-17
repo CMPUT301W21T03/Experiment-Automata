@@ -155,8 +155,8 @@ public class NavExperimentDetailsFragment extends Fragment {
             Bundle bundle = new Bundle();
             bundle.putString("UUID",CURRENT_EXPERIMENT_ID);
             viewQRFragment.setArguments(bundle);
-            getActivity().getSupportFragmentManager().beginTransaction().show(viewQRFragment);
-
+            //getActivity().getSupportFragmentManager().beginTransaction().show(viewQRFragment);
+            getActivity().getSupportFragmentManager().beginTransaction().add(viewQRFragment,"QR").commit();
         });
         return root;
     }

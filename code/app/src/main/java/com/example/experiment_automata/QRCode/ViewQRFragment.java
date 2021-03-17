@@ -42,8 +42,8 @@ public class ViewQRFragment extends DialogFragment {
 
         Bundle bundle = getArguments();
         experimentUUIDString = bundle.getString("UUID");
-
         qrCode = qrManager.createQRFromUUID(experimentUUIDString);
+        qrImageView.setImageBitmap(qrCode);
 
 
         return view;

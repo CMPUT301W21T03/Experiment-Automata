@@ -1,13 +1,18 @@
 package com.example.experiment_automata.Experiments.ExperimentModel;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,6 +46,16 @@ public class ExperimentManager
         experiments = new HashMap<UUID, Experiment>();
         db = FirebaseFirestore.getInstance();
         expCollectionReference =  db.collection("experiments");
+
+        //experiments automatic realtime updates from databases taken from lab 5
+        expCollectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot snapshots, @Nullable FirebaseFirestoreException error) {
+                for (QueryDocumentSnapshot doc : snapshots){
+
+                }
+            }
+        });
     }
 
     /**

@@ -14,11 +14,16 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.LineChart;
+
 import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
 import com.example.experiment_automata.NavigationActivity;
 import com.example.experiment_automata.QuestionUI.QuestionDisplay;
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.ui.Screen;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
 import com.google.firebase.firestore.local.BundleCache;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -50,6 +55,7 @@ public class NavExperimentDetailsFragment extends Fragment {
     private TextView textViewMean;
     private TextView textViewMedian;
     private TextView textViewStdev;
+    private BarChart histogram;
 
 
     public NavExperimentDetailsFragment() {
@@ -117,6 +123,8 @@ public class NavExperimentDetailsFragment extends Fragment {
         textViewMedian = root.findViewById(R.id.median_value);
         textViewStdev = root.findViewById(R.id.stdev_value);
 
+        histogram = root.findViewById(R.id.histogram_chart);
+
         if (experimentStringId != null) {
             update(experimentStringId);
         }
@@ -179,6 +187,9 @@ public class NavExperimentDetailsFragment extends Fragment {
             textViewMean.setText(meanString);
             textViewMedian.setText(medianString);
             textViewStdev.setText(stdevString);
+
+            BarDataSet histogramData = new BarDataSet(current.generateHistogram(), "Histogram");
+            histogram.setData(new BarData(histogramData));
         }
 
 

@@ -4,7 +4,10 @@ package com.example.experiment_automata.Experiments.ExperimentModel;
 import android.os.DropBoxManager;
 
 import com.example.experiment_automata.trials.CountTrial;
+import com.example.experiment_automata.trials.NaturalCountTrial;
 import com.example.experiment_automata.trials.Trial;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -59,6 +62,31 @@ public class CountExperiment extends Experiment {
         } else {
             throw new IllegalStateException("Experiment is not accepting new results.");
         }
+    }
+
+    /**
+     * Generate a list of entries needed to plot a histogram
+     * @return
+     *  the list of entries that represent a histogram of trials.
+     */
+    public List<BarEntry> generateHistogram() {
+        List<BarEntry> data = new ArrayList<>();
+        data.add(new BarEntry(0, results.size()));
+        return data;
+    }
+
+    /**
+     * Generate a list of entries needed to plot results of trials.
+     * @return
+     *  the list of entries that represent a plot
+     */
+    public List<Entry> generatePlot() {
+        List<Entry> data = new ArrayList<>();
+        int i = 0;
+        for (CountTrial trial : results ) {
+            data.add(new Entry(trial.getDate().getTime(), ++i));
+        }
+        return data;
     }
 
     /**

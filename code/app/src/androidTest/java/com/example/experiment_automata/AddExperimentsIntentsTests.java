@@ -92,4 +92,44 @@ public class AddExperimentsIntentsTests
                 solo.searchText("GUI Test Experiment"));
 
     }
+
+    /**
+     * Here we're testing if change our minds and decide not to make an experiment.
+     *
+     */
+    @Test
+    public void testMakeExperimentCancel()
+    {
+        assertNotEquals("Can't find + button", null, addExperimentButton);
+
+        //Click from the home screen the + button to make an experiment
+        solo.clickOnView(addExperimentButton);
+        solo.waitForDialogToOpen();
+        descriptionEdit = solo.getView(R.id.create_experiment_description_editText);
+        assertNotEquals("Can't find description box", null, descriptionEdit);
+
+        //We need to fill the form to add the experiment
+        //Writing description
+        solo.clickOnView(descriptionEdit);
+        solo.enterText((EditText) descriptionEdit, "GUI Test Experiment");
+        //Writing min num trials
+
+        countTrialsEdit = solo.getView(R.id.experiment_min_trials_editText);
+        assertNotEquals("Can't find description box", null, countTrialsEdit);
+        solo.clickOnView(countTrialsEdit);
+        solo.enterText((EditText) countTrialsEdit, "3");
+
+        //Setting the boxes
+        location = solo.getView(R.id.experiment_require_location_switch);
+        acceptNewResults = solo.getView(R.id.experiment_accept_new_results_switch);
+        solo.clickOnView(location);
+        solo.clickOnView(acceptNewResults);
+        solo.clickOnText("Cancel");
+
+        assertEquals("Failed to find experiment text please sure cancel logic works",
+                false,
+                solo.searchText("GUI Test Experiment"));
+    }
+
+
 }

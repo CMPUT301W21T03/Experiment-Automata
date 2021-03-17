@@ -82,9 +82,11 @@ public class CountExperiment extends Experiment {
      */
     public List<Entry> generatePlot() {
         List<Entry> data = new ArrayList<>();
+        long offset = 0;
         int i = 0;
         for (CountTrial trial : results ) {
-            data.add(new Entry(trial.getDate().getTime(), ++i));
+            if (i == 0) offset = trial.getDate().getTime();
+            data.add(new Entry(trial.getDate().getTime() - offset, ++i));
         }
         return data;
     }

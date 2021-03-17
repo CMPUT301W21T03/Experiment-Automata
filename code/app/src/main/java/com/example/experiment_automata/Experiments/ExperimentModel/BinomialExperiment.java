@@ -93,8 +93,14 @@ public class BinomialExperiment extends Experiment {
      */
     public List<Entry> generatePlot() {
         List<Entry> data = new ArrayList<>();
+        boolean first = true;
+        long offset = 0;
         for (BinomialTrial trial : results ) {
-            data.add(new Entry(trial.getDate().getTime(), trial.getResult() ? 1 : 0));
+            if (first) {
+                first = false;
+                offset = trial.getDate().getTime();
+            }
+            data.add(new Entry(trial.getDate().getTime() - offset, trial.getResult() ? 1 : 0));
         }
         return data;
     }

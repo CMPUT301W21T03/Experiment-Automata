@@ -89,7 +89,7 @@ public class MeasurementExperiment extends Experiment {
         // Convert bins to entries
         List<BarEntry> data = new ArrayList<>();
         for (int i = 0; i < amountOfBins; i++) {
-            data.add(new BarEntry(i, bins[i]));
+            data.add(new BarEntry((i / (float) amountOfBins) * range + min, bins[i]));
         }
         return data;
     }
@@ -101,8 +101,14 @@ public class MeasurementExperiment extends Experiment {
      */
     public List<Entry> generatePlot() {
         List<Entry> data = new ArrayList<>();
+        boolean first = true;
+        long offset = 0;
         for (MeasurementTrial trial : results ) {
-            data.add(new Entry(trial.getDate().getTime(), trial.getResult()));
+            if (first) {
+                first = false;
+                offset = trial.getDate().getTime();
+            }
+            data.add(new Entry(trial.getDate().getTime() - offset, trial.getResult()));
         }
         return data;
     }

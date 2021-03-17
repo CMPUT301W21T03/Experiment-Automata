@@ -179,4 +179,10 @@ public abstract class Experiment implements Serializable, StatSummary {
     {
         this.experimentId = UUID.randomUUID();
     }
+
+    /**
+     * isEmpty
+     * @return whether or not the number of trials in the experiment is empty
+     */
+    public abstract boolean isEmpty();
 }

@@ -43,4 +43,6 @@
     <string name="frag_add_edit_question_input_hint_val">Question</string>
     <string name="count">Count</string>
     <string name="measurement">Measurement</string>
+
+    <string name="no_trials">No Trials</string>
 </resources>

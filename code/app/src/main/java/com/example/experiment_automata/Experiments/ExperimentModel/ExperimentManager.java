@@ -143,6 +143,15 @@ public class ExperimentManager
         return experimentsList;
     }
 
+    /**
+     * Get a specific Experiment from firestore
+     * @param experimentID
+     * The UUID of the requested experiment
+     */
+    public void getExperimentFromFirestore(UUID experimentID){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        
+    }
 
     /**
      * Push all experiments to firestore
@@ -165,7 +174,6 @@ public class ExperimentManager
         Map<String,Object> experimentData = new HashMap<>();
         String experimentUUIDString = experiment.getExperimentId().toString();
         String experimentOwnerString = experiment.getOwnerId().toString();//not sure if needed in DB
-
 
         experimentData.put("accepting-new-results",experiment.isActive());
         experimentData.put("description",experiment.getDescription());

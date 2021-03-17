@@ -1,12 +1,6 @@
 package com.example.experiment_automata.ExperimentFragments;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.NavigationUI;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,23 +8,23 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.LineChart;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
 import com.example.experiment_automata.NavigationActivity;
+import com.example.experiment_automata.QRCode.ViewQRFragment;
 import com.example.experiment_automata.QuestionUI.QuestionDisplay;
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.ui.Screen;
-import com.github.mikephil.charting.components.Description;
-import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.LargeValueFormatter;
-import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.google.firebase.firestore.local.BundleCache;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.UUID;
@@ -56,6 +50,7 @@ public class NavExperimentDetailsFragment extends Fragment {
     private TextView typeView;
     private ImageButton editImageButton;
     private ImageButton questionsButton;
+    private ImageButton qrButton;
 
     private TextView textViewQuartiles;
     private TextView textViewMean;
@@ -123,6 +118,8 @@ public class NavExperimentDetailsFragment extends Fragment {
         typeView = root.findViewById(R.id.nav_experiment_details_experiment_type);
         editImageButton = root.findViewById(R.id.nav_fragment_experiment_detail_view_edit_button);
         questionsButton = root.findViewById(R.id.nav_fragment_experiment_detail_view_qa_button);
+        qrButton = root.findViewById(R.id.nav_fragment_experiment_detail_view_qr_button);
+
         getActivity().findViewById(R.id.add_experiment_button).setVisibility(View.GONE);
 
         textViewQuartiles = root.findViewById(R.id.quartiles_value);
@@ -151,6 +148,15 @@ public class NavExperimentDetailsFragment extends Fragment {
 
         questionsButton.setOnClickListener(v -> {
             launchQuestionView();
+        });
+
+        qrButton.setOnClickListener(v -> {
+            Fragment viewQRFragment = new ViewQRFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("UUID",CURRENT_EXPERIMENT_ID);
+            viewQRFragment.setArguments(bundle);
+            getActivity().getSupportFragmentManager().beginTransaction().show(viewQRFragment);
+
         });
         return root;
     }

@@ -1,6 +1,6 @@
 package com.example.experiment_automata.QRCode;
 
-import android.app.Dialog;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +27,9 @@ public class ViewQRFragment extends DialogFragment {
 
     private ImageView qrImageView;
     private Button backButton;
+    private String experimentUUIDString;
+    private QRCodeManager qrManager;
+    private Bitmap qrCode;
 
 
     @Nullable
@@ -35,6 +38,14 @@ public class ViewQRFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_display_qr,container, false);
         backButton = view.findViewById(R.id.qr_code_back_button);
         qrImageView = view.findViewById(R.id.qr_code_imageView);
+        qrManager = new QRCodeManager();
+
+        Bundle bundle = getArguments();
+        experimentUUIDString = bundle.getString("UUID");
+
+        qrCode = qrManager.createQRFromUUID(experimentUUIDString);
+
+
         return view;
     }
 }

@@ -49,6 +49,12 @@ public class ViewQRFragment extends DialogFragment {
         qrCode = qrManager.createQRFromUUID(experimentUUIDString);
         qrImageView.setImageBitmap(qrCode);//qr_value_textView
         qrValue.setText(description);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
 
         return view;
     }

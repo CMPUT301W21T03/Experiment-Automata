@@ -24,6 +24,8 @@ import com.example.experiment_automata.R;
 import com.example.experiment_automata.ui.Screen;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.google.firebase.firestore.local.BundleCache;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -56,6 +58,7 @@ public class NavExperimentDetailsFragment extends Fragment {
     private TextView textViewMedian;
     private TextView textViewStdev;
     private BarChart histogram;
+    private LineChart resultsPlot;
 
 
     public NavExperimentDetailsFragment() {
@@ -124,6 +127,7 @@ public class NavExperimentDetailsFragment extends Fragment {
         textViewStdev = root.findViewById(R.id.stdev_value);
 
         histogram = root.findViewById(R.id.histogram_chart);
+        resultsPlot = root.findViewById(R.id.results_chart);
 
         if (experimentStringId != null) {
             update(experimentStringId);
@@ -190,6 +194,9 @@ public class NavExperimentDetailsFragment extends Fragment {
 
             BarDataSet histogramData = new BarDataSet(current.generateHistogram(), "Histogram");
             histogram.setData(new BarData(histogramData));
+
+            LineDataSet resultsData = new LineDataSet(current.generatePlot(), "Results over time");
+            resultsPlot.setData(new LineData(resultsData));
         }
 
 

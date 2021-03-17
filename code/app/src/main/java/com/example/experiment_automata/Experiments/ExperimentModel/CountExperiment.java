@@ -1,10 +1,14 @@
 package com.example.experiment_automata.Experiments.ExperimentModel;
 
 
+import android.os.DropBoxManager;
+
 import com.example.experiment_automata.trials.CountTrial;
+import com.example.experiment_automata.trials.Trial;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -55,5 +59,43 @@ public class CountExperiment extends Experiment {
         } else {
             throw new IllegalStateException("Experiment is not accepting new results.");
         }
+    }
+
+    /**
+     * Gets the mean value of the trials.
+     * @return
+     *  the mean
+     */
+    public float getMean() {
+        return 1;
+    }
+
+    /**
+     * Gets the median value of the trials.
+     * @return
+     *  the median
+     */
+    public float getMedian() {
+        return 1;
+    }
+
+    /**
+     * Gets the standard deviation of the trials.
+     * @return
+     *  the standard deviation
+     */
+    public float getStdev() {
+        return 0;
+    }
+
+    /**
+     * Gets the quartiles of the trials
+     * @return
+     *  the quartiles
+     */
+    public float[] getQuartiles() {
+        float[] quartiles = new float[3];
+        quartiles[1]=getMedian();
+        return quartiles;
     }
 }

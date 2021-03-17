@@ -1,5 +1,7 @@
 package com.example.experiment_automata.Experiments.ExperimentModel;
 
+import com.example.experiment_automata.Graphable;
+import com.example.experiment_automata.StatSummary;
 import com.example.experiment_automata.QuestionsModel.Question;
 
 import java.io.Serializable;
@@ -15,8 +17,7 @@ import java.util.UUID;
  *
  *      1. None
  */
-public abstract class Experiment implements Serializable {
-
+public abstract class Experiment implements Serializable, StatSummary {
     private String description;
     private int minTrials;
     private UUID experimentId; // changed from UML to better match project

@@ -1,8 +1,6 @@
 package com.example.experiment_automata.Experiments.ExperimentModel;
 
-import android.util.Log;
-
-import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -140,6 +138,17 @@ public class ExperimentManager
         }
         return experimentsList;
     }
+
+
+    /**
+     * Push all experiments to firestore
+     */
+    public void postAllToFirestore(){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        
+    }
+
+
 
     public Experiment query(UUID experimentId) {
         return experiments.get(experimentId);

@@ -169,7 +169,7 @@ public class AddExperimentFragment extends DialogFragment {
                             // method of reading input as integer found on Stack Overflow from CommonsWare, Feb 4 2011
                             //https://stackoverflow.com/questions/4903515/how-do-i-return-an-int-from-edittext-android
                             String experimentTrialsString = minTrials.getText().toString();
-                            // todo: this logic should be relocated in the future
+                            // todo: this should be reformatted like edit question where it passes back all the inputs and something else creates the question
                             int experimentTrials;
                             if (experimentTrialsString.isEmpty()) {
                                 experimentTrials = 0;

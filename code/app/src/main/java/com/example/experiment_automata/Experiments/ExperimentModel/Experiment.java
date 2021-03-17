@@ -2,6 +2,7 @@ package com.example.experiment_automata.Experiments.ExperimentModel;
 
 import com.example.experiment_automata.Graphable;
 import com.example.experiment_automata.StatSummary;
+import com.example.experiment_automata.QuestionsModel.Question;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public abstract class Experiment implements Serializable, StatSummary {
     private boolean requireLocation; // added to align with storyboard
     private ExperimentType type; // todo: do we need type here if an experiment has a type? (yes makes it easy)
     private ArrayList<UUID> crowedExperimenter; // Experimenter id's
+    private ArrayList<Question> questions;
 
     /**
      * Default experiment constructor that only asks for a description
@@ -60,6 +62,7 @@ public abstract class Experiment implements Serializable, StatSummary {
         this.experimentId = UUID.randomUUID();
         this.crowedExperimenter = new ArrayList<>();
         this.type = type;
+        this.questions = new ArrayList<>();
     }
 
     /**
@@ -169,4 +172,11 @@ public abstract class Experiment implements Serializable, StatSummary {
         return requireLocation;
     }
 
+    /**
+     * Makes a new uuid if the one generated is in use by the system.
+     */
+    public void makeNewUUID()
+    {
+        this.experimentId = UUID.randomUUID();
+    }
 }

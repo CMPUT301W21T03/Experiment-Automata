@@ -93,8 +93,9 @@ public class CountExperiment extends Experiment {
      * @return
      *  the quartiles
      */
-    public float[][] getQuartiles() {
-        float[][] quartiles = new float[4][2];
+    public float[] getQuartiles() {
+        float[] quartiles = new float[3];
+        quartiles[1]=getMedian();
         return quartiles;
     }
 }

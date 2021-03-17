@@ -153,6 +153,25 @@ public class MeasurementExperiment extends Experiment {
     }
 
     /**
+     * Computes the median of any arraylist of floats (useful in quartiles function)
+     * @param values An arraylist of floats
+     * @return the median of the floats
+     */
+    public float getMedianList(ArrayList<Float> values) {
+        // Implementation exactly the same as getMedian above
+        Collections.sort(values);
+        int size = values.size();
+        if (size % 2 == 0) {
+            final float val1, val2;
+            val1 = values.get(size / 2);
+            val2 = values.get((size / 2) - 1);
+            return (val1 + val2) / 2f;
+        } else {
+            return values.get((size - 1) / 2);
+        }
+    }
+
+    /**
      * Gets the standard deviation of the trials.
      * @return
      *  the standard deviation
@@ -170,8 +189,48 @@ public class MeasurementExperiment extends Experiment {
      * @return
      *  the quartiles
      */
-    public float[][] getQuartiles() {
-        float[][] quartiles = new float[4][2];
+    public float[] getQuartiles() {
+        float[] quartiles = new float[3];
+        quartiles[1]=getMedian();
+        // Can only compute other quartiles if there's at least 4 data points
+        if(results.size() >= 4){
+            // Sort all the values in results
+            ArrayList<Float> values = new ArrayList<>();
+            for (MeasurementTrial trial : results) {
+                values.add(trial.getResult());
+            }
+            Collections.sort(values);
+            int highPoint;
+            // If we have an array of size 5, then we want to find the median of (0 to 1) and (3 to 4)
+            // If we have an array of size 4, then we want to find the median of (0 to 1) and (2 to 3)
+            int lowPoint = results.size()/2-1;
+            if(results.size()%2 == 0 ){
+                highPoint = lowPoint+1;
+            }
+            else{
+                highPoint = lowPoint+2;
+            }
+
+            ArrayList<Float> valuesSmall = new ArrayList<>();
+            ArrayList<Float> valuesLarge = new ArrayList<>();
+            for(int i = 0; i <= lowPoint; i++){
+                valuesSmall.add(values.get(i));
+            }
+
+            for(int i=highPoint; i<values.size(); i++){
+                valuesLarge.add(values.get(i));
+            }
+
+            quartiles[0]=getMedianList(valuesSmall);
+
+            quartiles[2]=getMedianList(valuesLarge);
+        }
+        else{
+            quartiles[0]=0f;
+            quartiles[2]=0f;
+        }
+
         return quartiles;
+
     }
 }

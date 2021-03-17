@@ -111,4 +111,49 @@ public class MeasurementStatTest {
         mesExperiment.recordTrial(new MeasurementTrial(id, 16.1234f));
         assertTrue(marginOfError(mesExperiment.getStdev(), 5.3385523261357f));
     }
+
+    @Test
+    public void getQuartilesTest1(){
+        // True values computed from https://www.calculatorsoup.com/calculators/statistics/quartile-calculator.php
+        mesExperiment.recordTrial(new MeasurementTrial(id, 2.4f));
+
+        mesExperiment.recordTrial(new MeasurementTrial(id, 3.1f));
+
+        mesExperiment.recordTrial(new MeasurementTrial(id, 4.61f));
+
+        mesExperiment.recordTrial(new MeasurementTrial(id, 9f));
+
+        mesExperiment.recordTrial(new MeasurementTrial(id, 14.12f));
+
+        mesExperiment.recordTrial(new MeasurementTrial(id, 16.1234f));
+
+        float[] quartiles = mesExperiment.getQuartiles();
+
+        assertTrue(marginOfError(quartiles[0], 3.1f));
+        assertTrue(marginOfError(quartiles[1], 6.805f));
+        assertTrue(marginOfError(quartiles[2], 14.12f));
+
+
+    }
+
+    @Test
+    public void getQuartilesTest2(){
+        // True values computed from https://www.calculatorsoup.com/calculators/statistics/quartile-calculator.php
+
+        mesExperiment.recordTrial(new MeasurementTrial(id, 4.1f));
+
+        mesExperiment.recordTrial(new MeasurementTrial(id, 6.9f));
+
+        mesExperiment.recordTrial(new MeasurementTrial(id, 8.0f));
+
+        mesExperiment.recordTrial(new MeasurementTrial(id, 25.6f));
+
+        mesExperiment.recordTrial(new MeasurementTrial(id, 420f));
+
+        float[] quartiles = mesExperiment.getQuartiles();
+        assertEquals(quartiles[0], 5.5);
+        assertEquals(quartiles[1], 8.0);
+        assertTrue(marginOfError(quartiles[2], 222.8f));
+
+    }
 }

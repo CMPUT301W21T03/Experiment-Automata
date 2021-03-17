@@ -9,7 +9,6 @@ import com.example.experiment_automata.Experiments.ExperimentModel.MeasurementEx
 import com.example.experiment_automata.Experiments.ExperimentModel.NaturalCountExperiment;
 import com.example.experiment_automata.trials.BinomialTrial;
 import com.example.experiment_automata.trials.CountTrial;
-import com.example.experiment_automata.trials.MeasurementTrial;
 import com.example.experiment_automata.trials.NaturalCountTrial;
 
 import org.junit.Before;
@@ -138,6 +137,53 @@ public class BinomialExperimentStatTest {
         binomialExperiment.recordTrial(failureTrial);
 
         assertTrue(marginOfError(binomialExperiment.getStdev(), 0.48989794855664f));
+
+    }
+
+    @Test
+    public void getQuartilesTest1(){
+        // True values computed from https://www.calculatorsoup.com/calculators/statistics/quartile-calculator.php
+        binomialExperiment.recordTrial(successTrial);
+
+        binomialExperiment.recordTrial(failureTrial);
+
+        binomialExperiment.recordTrial(successTrial);
+
+        binomialExperiment.recordTrial(failureTrial);
+
+        binomialExperiment.recordTrial(successTrial);
+
+        binomialExperiment.recordTrial(successTrial);
+
+        // Data is: 0, 0, 1, 1, 1, 1
+
+        float[] quartiles = binomialExperiment.getQuartiles();
+
+        assertEquals(quartiles[0], 0);
+        assertEquals(quartiles[1], 1);
+        assertEquals(quartiles[2], 1);
+
+
+    }
+
+    @Test
+    public void getQuartilesTest2(){
+        // True values computed from https://www.calculatorsoup.com/calculators/statistics/quartile-calculator.php
+
+        binomialExperiment.recordTrial(failureTrial);
+
+        binomialExperiment.recordTrial(failureTrial);
+
+        binomialExperiment.recordTrial(successTrial);
+
+        binomialExperiment.recordTrial(failureTrial);
+
+        binomialExperiment.recordTrial(failureTrial);
+
+        float[] quartiles = binomialExperiment.getQuartiles();
+        assertEquals(quartiles[0], 0) ;
+        assertEquals(quartiles[1], 0);
+        assertEquals(quartiles[2], 0.5);
 
     }
 }

@@ -32,5 +32,5 @@ public interface StatSummary {
      * @return
      *  the quartiles
      */
-    public float[][] getQuartiles();
+    public float[] getQuartiles();
 }

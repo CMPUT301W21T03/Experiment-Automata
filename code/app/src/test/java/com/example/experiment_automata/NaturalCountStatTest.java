@@ -9,8 +9,8 @@ import com.example.experiment_automata.Experiments.ExperimentModel.MeasurementEx
 import com.example.experiment_automata.Experiments.ExperimentModel.NaturalCountExperiment;
 import com.example.experiment_automata.trials.BinomialTrial;
 import com.example.experiment_automata.trials.CountTrial;
-import com.example.experiment_automata.trials.MeasurementTrial;
 import com.example.experiment_automata.trials.NaturalCountTrial;
+
 
 import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
@@ -119,5 +119,51 @@ public class NaturalCountStatTest {
 
         natExperiment.recordTrial(new NaturalCountTrial(id, 3));
         assertTrue(marginOfError(natExperiment.getStdev(),  2.4819347291982f));
+    }
+
+    @Test
+    public void getQuartilesTest1(){
+        // True values computed from https://www.calculatorsoup.com/calculators/statistics/quartile-calculator.php
+        natExperiment.recordTrial(new NaturalCountTrial(id, 2));
+
+        natExperiment.recordTrial(new NaturalCountTrial(id, 3));
+
+
+        natExperiment.recordTrial(new NaturalCountTrial(id, 4));
+
+        natExperiment.recordTrial(new NaturalCountTrial(id, 9));
+
+        natExperiment.recordTrial(new NaturalCountTrial(id, 3));
+
+        float[] quartiles = natExperiment.getQuartiles();
+
+        assertTrue(marginOfError(quartiles[0], 2.5f));
+        assertTrue(marginOfError(quartiles[1], 3.0f));
+        assertTrue(marginOfError(quartiles[2], 6.5f));
+
+
+    }
+
+    @Test
+    public void getQuartilesTest2(){
+        // True values computed from https://www.calculatorsoup.com/calculators/statistics/quartile-calculator.php
+
+        natExperiment.recordTrial(new NaturalCountTrial(id, 3));
+
+        natExperiment.recordTrial(new NaturalCountTrial(id, 7));
+
+        natExperiment.recordTrial(new NaturalCountTrial(id, 11));
+
+        natExperiment.recordTrial(new NaturalCountTrial(id, 16));
+
+        natExperiment.recordTrial(new NaturalCountTrial(id, 19));
+
+        natExperiment.recordTrial(new NaturalCountTrial(id, 22));
+
+        float[] quartiles = natExperiment.getQuartiles();
+        assertEquals(quartiles[0], 7);
+        assertTrue(marginOfError(quartiles[1], 13.5f));
+        assertEquals(quartiles[2], 19);
+
     }
 }

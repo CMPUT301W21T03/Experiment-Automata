@@ -1,10 +1,17 @@
 package com.example.experiment_automata.Experiments.ExperimentModel;
 
 
+import android.os.DropBoxManager;
+
 import com.example.experiment_automata.trials.CountTrial;
+import com.example.experiment_automata.trials.NaturalCountTrial;
+import com.example.experiment_automata.trials.Trial;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -55,5 +62,78 @@ public class CountExperiment extends Experiment {
         } else {
             throw new IllegalStateException("Experiment is not accepting new results.");
         }
+    }
+
+    /**
+     * Generate a list of entries needed to plot a histogram
+     * @return
+     *  the list of entries that represent a histogram of trials.
+     */
+    public List<BarEntry> generateHistogram() {
+        List<BarEntry> data = new ArrayList<>();
+        data.add(new BarEntry(0, results.size()));
+        return data;
+    }
+
+    /**
+     * Generate a list of entries needed to plot results of trials.
+     * @return
+     *  the list of entries that represent a plot
+     */
+    public List<Entry> generatePlot() {
+        List<Entry> data = new ArrayList<>();
+        long offset = 0;
+        int i = 0;
+        for (CountTrial trial : results ) {
+            if (i == 0) offset = trial.getDate().getTime();
+            data.add(new Entry(trial.getDate().getTime() - offset, ++i));
+        }
+        return data;
+    }
+
+    /**
+     * Gets the mean value of the trials.
+     * @return
+     *  the mean
+     */
+    public float getMean() {
+        return 1;
+    }
+
+    /**
+     * Gets the median value of the trials.
+     * @return
+     *  the median
+     */
+    public float getMedian() {
+        return 1;
+    }
+
+    /**
+     * Gets the standard deviation of the trials.
+     * @return
+     *  the standard deviation
+     */
+    public float getStdev() {
+        return 0;
+    }
+
+    /**
+     * Gets the quartiles of the trials
+     * @return
+     *  the quartiles
+     */
+    public float[] getQuartiles() {
+        float[] quartiles = new float[3];
+        quartiles[1]=getMedian();
+        return quartiles;
+    }
+
+    /**
+     * Gets the size of the experiment
+     * @return size of the experiment
+     */
+    public Integer getSize(){
+        return results.size();
     }
 }

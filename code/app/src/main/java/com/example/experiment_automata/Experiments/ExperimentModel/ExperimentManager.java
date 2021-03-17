@@ -1,9 +1,5 @@
 package com.example.experiment_automata.Experiments.ExperimentModel;
 
-import android.util.Log;
-
-import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -132,9 +128,9 @@ public class ExperimentManager
         ArrayList<Experiment> experimentsList = new ArrayList<>();
         for (Map.Entry<UUID, Experiment> entry : experiments.entrySet()) {
             Experiment experiment = experiments.get(entry.getKey());
-            Log.d("SEARCHING", "Experiment:\t" + experiment.getDescription());
+            //Log.d("SEARCHING", "Experiment:\t" + experiment.getDescription());
             if (queryMatch(query, experiment.getDescription())) {
-                Log.d("QUERY", "Found Match");
+                //Log.d("QUERY", "Found Match");
                 experimentsList.add(experiment);
             }
         }
@@ -147,9 +143,9 @@ public class ExperimentManager
 
     private boolean queryMatch(String query, String source) {
         String[] queryTokens = query.toLowerCase().split("\\W");
-        for (String queryToken : queryTokens) {
-            Log.d("SEARCHING", "query token:\t" + queryToken);
-            if (source.toLowerCase().contains(queryToken)) return true;
+        for (int j = 0; j < queryTokens.length; j++) {
+//            Log.d("SEARCHING", "query token:\t" + queryTokens[j]);
+            if (source.toLowerCase().indexOf(queryTokens[j]) >= 0) return true;
         }
         return false;
     }

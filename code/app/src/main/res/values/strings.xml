@@ -29,6 +29,14 @@
     <string name="search">Search</string>
 
     <string name="search_hint">Search for Experiments</string>
+    <string name="histogram_subtitle">Histogram</string>
+    <string name="statistics_subtitle">Statistics</string>
+    <string name="quartiles">Quartiles</string>
+    <string name="median">Median</string>
+    <string name="mean">Mean</string>
+    <string name="stdev">Standard Deviation</string>
+    <string name="results">Results</string>
+    <string name="trails">Trials</string>
 
     <string name="qr_code">QR Code</string>
     <string name="value">Value</string>
@@ -40,5 +48,6 @@
     <string name="frag_add_edit_question_input_hint_val">Question</string>
     <string name="count">Count</string>
     <string name="measurement">Measurement</string>
+    <string name="no_trials">Not Enough Trials</string>
 
 </resources>

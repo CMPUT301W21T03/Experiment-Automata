@@ -158,6 +158,8 @@ public class ExperimentManager
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference experimentDocRef = db.collection("experiments").document(experimentID.toString());
         DocumentSnapshot experimentDocSnapshot = experimentDocRef.get().getResult();//Task --> DocumentSnapshot
+        DocumentReference ownerDocument = (DocumentReference)experimentDocSnapshot.get("owner");
+        UUID ownerID = UUID.fromString(ownerDocument.getId());//is the returned string the path or just the ID?
 
         if (experimentDocSnapshot.exists()){
             experiment = maker.makeExperiment(
@@ -166,7 +168,7 @@ public class ExperimentManager
                     (int) experimentDocSnapshot.get("min-trials"),
                     (boolean) experimentDocSnapshot.get("location-required"),
                     (boolean) experimentDocSnapshot.get("accepting-new-results"),
-                    UUID.fromString("00000000-0000-0000-0000-000000000000")//temp; UUID from documentReference not implemented
+                    ownerID//is this value path to document or the ID?
             );
             return experiment;
         }
@@ -176,7 +178,7 @@ public class ExperimentManager
     }
 
     /**
-     * Post all experiments to firestore
+     * Post all experiments contained in current ExperimentManager to firestore
      */
     public void postAllToFirestore(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();

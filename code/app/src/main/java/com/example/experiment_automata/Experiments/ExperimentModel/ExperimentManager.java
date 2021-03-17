@@ -145,7 +145,19 @@ public class ExperimentManager
      */
     public void postAllToFirestore(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        
+
+    }
+
+    /**
+     * Push all given experiment to firestore
+     * @param experiment
+     * experiment to post
+     */
+    public void postExperimentToFirestore(Experiment experiment){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String,Object> experimentData = new HashMap<>();
+        experimentData.put("description",experiment.getDescription());
+        experimentData.put("location-required",experiment.isRequireLocation());
     }
 
 

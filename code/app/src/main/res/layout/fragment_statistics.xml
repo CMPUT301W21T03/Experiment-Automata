@@ -40,7 +40,7 @@
                 android:id="@+id/quartiles_value"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="q1: x, q3: y"
+                android:text="@string/no_trials"
                 android:textColor="?android:attr/textColorPrimary" />
         </TableRow>
 
@@ -58,7 +58,7 @@
                 android:id="@+id/median_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="xxx.xxx"
+                android:text="@string/no_trials"
                 android:textColor="?android:attr/textColorPrimary" />
         </TableRow>
 
@@ -76,7 +76,7 @@
                 android:id="@+id/mean_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="xxx.xxx"
+                android:text="@string/no_trials"
                 android:textColor="?android:attr/textColorPrimary" />
         </TableRow>
 
@@ -94,7 +94,7 @@
                 android:id="@+id/stdev_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="xxx.xxx"
+                android:text="@string/no_trials"
                 android:textColor="?android:attr/textColorPrimary" />
         </TableRow>
     </TableLayout>

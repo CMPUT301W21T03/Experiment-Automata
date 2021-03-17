@@ -98,4 +98,12 @@ public class CountExperiment extends Experiment {
         quartiles[1]=getMedian();
         return quartiles;
     }
+
+    /**
+     * Gets the size of the experiment
+     * @return size of the experiment
+     */
+    public Integer getSize(){
+        return results.size();
+    }
 }

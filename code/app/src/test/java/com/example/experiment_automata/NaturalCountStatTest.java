@@ -166,4 +166,40 @@ public class NaturalCountStatTest {
         assertEquals(quartiles[2], 19);
 
     }
+
+    @Test
+    public void getQuartilesTest3(){
+        // True values computed from https://www.calculatorsoup.com/calculators/statistics/quartile-calculator.php
+
+        natExperiment.recordTrial(new NaturalCountTrial(id, 3));
+
+        natExperiment.recordTrial(new NaturalCountTrial(id, 7));
+
+        natExperiment.recordTrial(new NaturalCountTrial(id, 11));
+
+        natExperiment.recordTrial(new NaturalCountTrial(id, 16));
+
+        float[] quartiles = natExperiment.getQuartiles();
+        assertEquals(quartiles[0], 5);
+        assertTrue(marginOfError(quartiles[1], 9f));
+        assertTrue(marginOfError(quartiles[2], 13.5f));
+
+    }
+
+    @Test
+    public void getQuartilesTest4(){
+        // True values computed from https://www.calculatorsoup.com/calculators/statistics/quartile-calculator.php
+
+        natExperiment.recordTrial(new NaturalCountTrial(id, 3));
+
+        natExperiment.recordTrial(new NaturalCountTrial(id, 7));
+
+        natExperiment.recordTrial(new NaturalCountTrial(id, 11));
+
+        float[] quartiles = natExperiment.getQuartiles();
+        assertEquals(quartiles[0], 3);
+        assertEquals(quartiles[1], 7);
+        assertEquals(quartiles[2], 11);
+
+    }
 }

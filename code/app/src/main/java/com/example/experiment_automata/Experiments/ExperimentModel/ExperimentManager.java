@@ -150,10 +150,11 @@ public class ExperimentManager
     public void postAllToFirestore(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+
     }
 
     /**
-     * Push all given experiment to firestore
+     * Push given experiment to firestore
      * @param experiment
      * experiment to post
      */

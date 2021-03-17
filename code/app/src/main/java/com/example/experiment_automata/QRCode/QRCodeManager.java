@@ -4,9 +4,7 @@ package com.example.experiment_automata.QRCode;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
-import com.google.firestore.v1.Write;
 import com.google.zxing.BarcodeFormat;
-import com.google.zxing.MultiFormatReader;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
@@ -22,8 +20,8 @@ import com.google.zxing.qrcode.QRCodeWriter;
 public class QRCodeManager {
     //Header for custom QR codes
     private final String AUTOMATA_QR_HEADER = "ATMA";
-    private final int DEAFULT_QR_HEIGHT = 300;
-    private final int DEFAULT_QR_WIDTH = 300;
+    private final int DEAFULT_QR_HEIGHT = 600;
+    private final int DEFAULT_QR_WIDTH = 600;
 
     /**
      * Generates a QR code who's content is a uuid

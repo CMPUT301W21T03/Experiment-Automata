@@ -37,7 +37,7 @@ public class ViewQRFragment extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_display_qr,container, false);
+        View view = inflater.inflate(R.layout.fragment_display_qr,container, true);
         backButton = view.findViewById(R.id.qr_code_back_button);
         qrImageView = view.findViewById(R.id.qr_code_imageView);
         qrValue = view.findViewById(R.id.qr_value_textView);

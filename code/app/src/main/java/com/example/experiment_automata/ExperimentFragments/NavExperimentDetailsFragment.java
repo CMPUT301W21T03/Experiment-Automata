@@ -109,6 +109,8 @@ public class NavExperimentDetailsFragment extends Fragment {
         questionsButton = root.findViewById(R.id.nav_fragment_experiment_detail_view_qa_button);
         getActivity().findViewById(R.id.add_experiment_button).setVisibility(View.GONE);
 
+        textViewQuartiles = root.findViewById(R.id.quartiles_value);
+
         if (experimentStringId != null) {
             update(experimentStringId);
         }
@@ -128,8 +130,6 @@ public class NavExperimentDetailsFragment extends Fragment {
         questionsButton.setOnClickListener(v -> {
             launchQuestionView();
         });
-
-        textViewQuartiles = root.findViewById(R.id.quartiles_value);
         return root;
     }
 

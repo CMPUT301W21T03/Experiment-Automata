@@ -161,7 +161,7 @@ public class ExperimentManager
 
         if (experimentDocSnapshot.exists()){
             experiment = maker.makeExperiment(
-                    ExperimentType.Binomial,//temp; Type storage not implemented
+                    ExperimentType.valueOf((String) experimentDocSnapshot.get("type")),//String to ExperimentType
                     (String) experimentDocSnapshot.get("description"),
                     (int) experimentDocSnapshot.get("min-trials"),
                     (boolean) experimentDocSnapshot.get("location-required"),
@@ -202,7 +202,7 @@ public class ExperimentManager
         experimentData.put("location-required",experiment.isRequireLocation());
         experimentData.put("min-trials",experiment.getMinTrials());
         experimentData.put("owner",owner);
-        //experimentData.put("type",experiment.getType());
+        experimentData.put("type",experiment.getType().name());//enum to string
 
         db.collection("experiments").document(experimentUUIDString)
                 .set(experimentData)

@@ -220,16 +220,33 @@ public class NaturalCountExperiment extends Experiment {
                 valuesLarge.add(values.get(i));
             }
 
-            quartiles[0]=getMedianList(valuesSmall);
+            quartiles[0] = getMedianList(valuesSmall);
 
-            quartiles[2]=getMedianList(valuesLarge);
+            quartiles[2] = getMedianList(valuesLarge);
         }
-        else{
-            quartiles[0]=0f;
-            quartiles[2]=0f;
+
+        else if(results.size() == 3){
+            ArrayList<Integer> values = new ArrayList<>();
+            for (NaturalCountTrial trial : results) {
+                values.add(trial.getResult());
+            }
+            Collections.sort(values);
+
+            quartiles[0] = values.get(0);
+            quartiles[1] = values.get(1);
+            quartiles[2] = values.get(2);
         }
 
         return quartiles;
 
     }
+
+    /**
+     * Gets the size of the experiment
+     * @return size of the experiment
+     */
+    public Integer getSize(){
+        return results.size();
+    }
+
 }

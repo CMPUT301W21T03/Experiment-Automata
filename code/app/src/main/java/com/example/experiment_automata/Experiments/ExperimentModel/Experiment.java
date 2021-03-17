@@ -179,4 +179,10 @@ public abstract class Experiment implements Serializable, StatSummary {
     {
         this.experimentId = UUID.randomUUID();
     }
+
+    /**
+     * Gets the size of the experiment
+     * @return size of the experiment
+     */
+    public abstract Integer getSize();
 }

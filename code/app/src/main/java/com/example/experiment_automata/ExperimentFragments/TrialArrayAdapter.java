@@ -1,18 +1,17 @@
 package com.example.experiment_automata.ExperimentFragments;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.experiment_automata.R;
-import com.example.experiment_automata.UserInformation.User;
 import com.example.experiment_automata.trials.BinomialTrial;
 import com.example.experiment_automata.trials.CountTrial;
 import com.example.experiment_automata.trials.MeasurementTrial;
@@ -76,6 +75,15 @@ public class TrialArrayAdapter extends ArrayAdapter<Trial> {
         } else if (trial instanceof MeasurementTrial) {
             trialValueView.setText(String.format("%.4f", ((MeasurementTrial) trial).getResult()));
         }
+
+        CheckBox checkBox = view.findViewById(R.id.trial_ignore_checkbox);
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean ignore = ((CheckBox) v).isChecked();
+                trial.setIgnore(ignore);
+            }
+        });
 
         return view;
     }

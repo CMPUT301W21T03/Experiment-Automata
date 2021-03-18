@@ -239,6 +239,7 @@ public class NavExperimentDetailsFragment extends Fragment {
             for (Fragment fragment : getChildFragmentManager().getFragments()) {
                 if (fragment instanceof TrialsFragment) {
                     ((TrialsFragment) fragment).updateView();
+                    break;
                 }
             }
         }

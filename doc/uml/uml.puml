@@ -109,6 +109,7 @@ abstract class Trial {
     -QRcode: QRCode
     -location: Optional<Location>
     -date: Date
+    -ignore: Boolean
 }
 
 class CountTrial extends Trial {

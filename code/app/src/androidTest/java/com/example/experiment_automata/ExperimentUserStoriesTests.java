@@ -4,10 +4,18 @@ package com.example.experiment_automata;
 /**
  * Test functionality the deals with
  *  1. us.01.01.01
- *  2.
+ *  2. us.01.02.01
+ *  3. us.01.03.01
+ *  4. us.01.04.01 - Not yet implemented
+ *  5. us.01.05.01
+ *  6. us.01.06.01 - Not yet implemented
+ *  7. us.01.07.01 - Not yet implemented
+ *  8. us.01.08.01 - Not yet implemented
+ *  9. us.01.09.01 - Not yet implemented
  *
  * Known Issues:
  *  1. Since we have not added the ability to add coordinates that is not tested
+ *  2. Not yet dealing with the owner/experimenter access values
  *
  */
 

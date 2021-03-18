@@ -3,11 +3,12 @@ package com.example.experiment_automata;
 
 /**
  * Test functionality the deals with
- *  1. us.01.01.01
- *  2.
+ *  1. us.02.01.01
+ *  2. us.02.02.01
+ *  3. us.02.03.01
  *
  * Known Issues:
- *  1. Since we have not added the ability to add coordinates that is not tested
+ *  1. Not yet dealing with the owner/experimenter access values
  *
  */
 
@@ -50,7 +51,6 @@ public class QuestionsUserStoriesTests {
     private View countTrialsEdit;
     private View location;
     private View acceptNewResults;
-    private View publishButton;
 
     //Needed Objects
 

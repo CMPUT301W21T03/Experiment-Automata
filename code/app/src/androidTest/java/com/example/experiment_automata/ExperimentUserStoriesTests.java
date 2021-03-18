@@ -14,10 +14,12 @@ package com.example.experiment_automata;
 
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ListView;
 
 import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
 import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentMaker;
 import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentType;
+import com.example.experiment_automata.ui.home.HomeFragment;
 import com.robotium.solo.Solo;
 
 import org.junit.Before;
@@ -27,6 +29,8 @@ import org.junit.Test;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -46,6 +50,10 @@ public class ExperimentUserStoriesTests
     private View acceptNewResults;
     private View publishButton;
 
+    //Needed Objects
+    private ExperimentMaker maker;
+    private Experiment testExperiment;
+    private UUID testUUID;
 
     @Rule
     public ActivityTestRule<NavigationActivity> rule =
@@ -59,6 +67,15 @@ public class ExperimentUserStoriesTests
         currentTestingActivity = (NavigationActivity) solo.getCurrentActivity();
         //Finding the buttons we need to press
         addExperimentButton = currentTestingActivity.findViewById(R.id.add_experiment_button);
+        maker = new ExperimentMaker();
+        testUUID = UUID.randomUUID();
+        testExperiment = maker.makeExperiment(ExperimentType.Count,
+                "Test Experiment",
+                0,
+                true,
+                true,
+                testUUID);
+
     }
 
     /**
@@ -325,7 +342,32 @@ public class ExperimentUserStoriesTests
     @Test
     public void testingAddingTrials()
     {
-        fail("not yet implemented");
+        assertNotEquals("Can't find + button", null, addExperimentButton);
+
+        //Click from the home screen the + button to make an experiment
+        solo.clickOnView(addExperimentButton);
+        solo.waitForDialogToOpen();
+        descriptionEdit = solo.getView(R.id.create_experiment_description_editText);
+        assertNotEquals("Can't find description box", null, descriptionEdit);
+
+        //We need to fill the form to add the experiment
+        //Writing description
+        solo.clickOnView(descriptionEdit);
+        solo.enterText((EditText) descriptionEdit, "GUI Test Experiment");
+
+        //Writing min num trials
+        countTrialsEdit = solo.getView(R.id.experiment_min_trials_editText);
+        assertNotEquals("Can't find description box", null, countTrialsEdit);
+        solo.clickOnView(countTrialsEdit);
+        solo.enterText((EditText) countTrialsEdit, "3");
+
+        //Setting the boxes
+        location = solo.getView(R.id.experiment_require_location_switch);
+        acceptNewResults = solo.getView(R.id.experiment_accept_new_results_switch);
+        solo.clickOnView(location);
+        solo.clickOnView(acceptNewResults);
+        solo.clickOnText("Ok");
+        ///something 
     }
 
     /**

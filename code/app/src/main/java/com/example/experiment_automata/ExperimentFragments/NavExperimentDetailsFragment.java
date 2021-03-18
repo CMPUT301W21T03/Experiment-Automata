@@ -234,6 +234,13 @@ public class NavExperimentDetailsFragment extends Fragment {
             histogram.getXAxis().setValueFormatter(new LargeValueFormatter());
             resultsPlot.setTouchEnabled(false);
             resultsPlot.getDescription().setEnabled(false);
+
+            // trial results
+            for (Fragment fragment : getChildFragmentManager().getFragments()) {
+                if (fragment instanceof TrialsFragment) {
+                    ((TrialsFragment) fragment).updateView();
+                }
+            }
         }
 
 

@@ -1,7 +1,6 @@
 package com.example.experiment_automata.Experiments.ExperimentModel;
 
 import com.example.experiment_automata.trials.BinomialTrial;
-import com.example.experiment_automata.trials.NaturalCountTrial;
 import com.example.experiment_automata.trials.Trial;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
@@ -207,11 +206,6 @@ public class BinomialExperiment extends Experiment {
      * @return
      *  the quartiles
      */
-    /**
-     * Gets the quartiles of the trials
-     * @return
-     *  the quartiles
-     */
     public float[] getQuartiles() {
         float[] quartiles = new float[3];
         quartiles[1]=getMedian();
@@ -284,4 +278,6 @@ public class BinomialExperiment extends Experiment {
     public Integer getSize(){
         return results.size();
     }
+
+    public Collection<BinomialTrial> getTrials() { return results; }
 }

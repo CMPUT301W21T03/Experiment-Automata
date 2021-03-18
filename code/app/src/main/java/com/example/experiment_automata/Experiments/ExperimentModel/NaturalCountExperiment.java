@@ -249,4 +249,5 @@ public class NaturalCountExperiment extends Experiment {
         return results.size();
     }
 
+    public Collection<NaturalCountTrial> getTrials() { return results; }
 }

@@ -13,6 +13,10 @@ import androidx.annotation.Nullable;
 
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.UserInformation.User;
+import com.example.experiment_automata.trials.BinomialTrial;
+import com.example.experiment_automata.trials.CountTrial;
+import com.example.experiment_automata.trials.MeasurementTrial;
+import com.example.experiment_automata.trials.NaturalCountTrial;
 import com.example.experiment_automata.trials.Trial;
 
 import java.util.ArrayList;
@@ -52,17 +56,26 @@ public class TrialArrayAdapter extends ArrayAdapter<Trial> {
         //  2021-02-04, Public Domain, https://eclass.srv.ualberta.ca/pluginfile.php/6713985/mod_resource/content/1/Lab%203%20instructions%20-%20CustomList.pdf
         View view = convertView;
         if (view == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.experiment_layout, parent, false);
+            view = LayoutInflater.from(context).inflate(R.layout.trial_layout, parent, false);
         }
         // The experiment we're going to set the XML file with
         Trial trial = trials.get(position);
 
-        // Find the corresponding views from experiment_layout
-        TextView experimenter = view.findViewById(R.id.experimentOwner);
+        TextView experimenterNameView = view.findViewById(R.id.trial_experimenter_name);
+        UUID userId = trial.getCollector();
+        // TODO: FIX ERROR
+//        experimenterNameView.setText(User.getInstance(userId).getInfo().getName());
 
-        // Set the name of the experiment accordingly
-        UUID oid = trial.getCollector();
-        experimenter.setText(User.getInstance(oid).getInfo().getName());
+        TextView trialValueView = view.findViewById(R.id.trial_value);
+        if (trial instanceof CountTrial) {
+            trialValueView.setText("");
+        } else if (trial instanceof NaturalCountTrial) {
+            trialValueView.setText(String.format("%d", ((NaturalCountTrial) trial).getResult()));
+        } else if (trial instanceof BinomialTrial) {
+            trialValueView.setText(((BinomialTrial) trial).getResult() ? "Passed" : "Failed");
+        } else if (trial instanceof MeasurementTrial) {
+            trialValueView.setText(String.format("%.4f", ((MeasurementTrial) trial).getResult()));
+        }
 
         return view;
     }

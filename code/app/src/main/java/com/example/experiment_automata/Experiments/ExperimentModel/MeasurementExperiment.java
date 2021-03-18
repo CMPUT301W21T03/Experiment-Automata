@@ -248,4 +248,6 @@ public class MeasurementExperiment extends Experiment {
     public Integer getSize(){
         return results.size();
     }
+
+    public Collection<MeasurementTrial> getTrials() { return results; }
 }

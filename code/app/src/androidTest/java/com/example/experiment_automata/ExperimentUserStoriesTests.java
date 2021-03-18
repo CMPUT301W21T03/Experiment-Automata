@@ -8,8 +8,6 @@ package com.example.experiment_automata;
  *
  * Known Issues:
  *  1. Since we have not added the ability to add coordinates that is not tested
- *  2. There is no way to get to the action bar menu stuff this is going to be a little harder
- *
  *
  */
 
@@ -261,6 +259,75 @@ public class ExperimentUserStoriesTests
                 solo.searchText("GUI Test Experiment"));
     }
 
-    
+    /**
+     * Testing if we can mark an experiment as inactive so that we can
+     * still see the results of that experiment but not add anymore data.
+     * As per (us.01.03.01)
+     */
+    @Test
+    public void testingIfWeCanEndAnExperiment()
+    {
+        fail("not yet implemented");
+    }
 
+    /**
+     * Testing if we can subscribe to an experiment to participate in that experiment
+     * as per(us.01.04.01)
+     */
+    @Test
+    public void testingIfSubcribePartcipate()
+    {
+        fail("not yet implemented");
+    }
+
+    /**
+     * Testing if we can add trials to an experiment
+     * as per(us.01.05.01)
+     */
+    @Test
+    public void testingAddingTrials()
+    {
+        fail("not yet implemented");
+    }
+
+    /**
+     * Testing if we can ignore experiment results that we added to an experiment.
+     * as per (us.01.08.01)
+     */
+    @Test
+    public void testingIgnoreResults()
+    {
+        fail("not yet implemented");
+    }
+
+    /**
+     * Testing if we can stats about an experiment
+     *  (quartiles, median, mean, stdev)
+     * as per(us.01.09.01)
+     */
+    @Test
+    public void testingStats()
+    {
+        fail("not yet implemented");
+    }
+
+    /**
+     * Testing if we can see histograms of the current experiment.
+     * as per(us.01.06.01)
+     */
+    @Test
+    public void testingHistograms()
+    {
+        fail("not yet implemented");
+    }
+
+    /**
+     * Testing if we can see a plot of the data given to an experiment
+     * as per(us.01.07.01)
+     */
+    @Test
+    public void testingIfWeCanSeePlots()
+    {
+        fail("not yet implemented");
+    }
 }

@@ -1,9 +1,5 @@
 package com.example.experiment_automata.Experiments.ExperimentModel;
 
-import android.util.Log;
-
-import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;

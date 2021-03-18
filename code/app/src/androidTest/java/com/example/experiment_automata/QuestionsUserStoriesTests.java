@@ -68,17 +68,8 @@ public class QuestionsUserStoriesTests {
         addExperimentButton = currentTestingActivity.findViewById(R.id.add_experiment_button);
     }
 
-    /**
-     * Testing user story - us.02.01.01
-     * Here we're testing if the we're able to add questions to an experiment
-     * and have them be displayed.
-     */
-    @Test
-    public void testingAddingQuestionsExperiment()
+    private void makeExperiment(String des)
     {
-        View questionButton = null;
-        assertNotEquals("Can't find + button", null, addExperimentButton);
-
         //Click from the home screen the + button to make an experiment
         solo.clickOnView(addExperimentButton);
         solo.waitForDialogToOpen();
@@ -88,7 +79,7 @@ public class QuestionsUserStoriesTests {
         //We need to fill the form to add the experiment
         //Writing description
         solo.clickOnView(descriptionEdit);
-        solo.enterText((EditText) descriptionEdit, "GUI Test Experiment");
+        solo.enterText((EditText) descriptionEdit, des);
 
         //Writing min num trials
         countTrialsEdit = solo.getView(R.id.experiment_min_trials_editText);
@@ -100,8 +91,22 @@ public class QuestionsUserStoriesTests {
         location = solo.getView(R.id.experiment_require_location_switch);
         acceptNewResults = solo.getView(R.id.experiment_accept_new_results_switch);
         solo.clickOnView(location);
-        solo.clickOnView(acceptNewResults);
+        if(des != "One")
+            solo.clickOnView(acceptNewResults);
         solo.clickOnText("Ok");
+    }
+
+    /**
+     * Testing user story - us.02.01.01
+     * Here we're testing if the we're able to add questions to an experiment
+     * and have them be displayed.
+     */
+    @Test
+    public void testingAddingQuestionsExperiment()
+    {
+        View questionButton = null;
+
+        makeExperiment("GUI Test Experiment");
 
         int beforeAddingQuestionCount = currentTestingActivity.questionManager.getAllQuestions().size();
         solo.clickOnText("GUI Test Experiment");
@@ -127,31 +132,7 @@ public class QuestionsUserStoriesTests {
         View replyButton = null;
         View questionButton = null;
 
-        assertNotEquals("Can't find + button", null, addExperimentButton);
-
-        //Click from the home screen the + button to make an experiment
-        solo.clickOnView(addExperimentButton);
-        solo.waitForDialogToOpen();
-        descriptionEdit = solo.getView(R.id.create_experiment_description_editText);
-        assertNotEquals("Can't find description box", null, descriptionEdit);
-
-        //We need to fill the form to add the experiment
-        //Writing description
-        solo.clickOnView(descriptionEdit);
-        solo.enterText((EditText) descriptionEdit, "GUI Test Experiment");
-
-        //Writing min num trials
-        countTrialsEdit = solo.getView(R.id.experiment_min_trials_editText);
-        assertNotEquals("Can't find description box", null, countTrialsEdit);
-        solo.clickOnView(countTrialsEdit);
-        solo.enterText((EditText) countTrialsEdit, "3");
-
-        //Setting the boxes
-        location = solo.getView(R.id.experiment_require_location_switch);
-        acceptNewResults = solo.getView(R.id.experiment_accept_new_results_switch);
-        solo.clickOnView(location);
-        solo.clickOnView(acceptNewResults);
-        solo.clickOnText("Ok");
+        makeExperiment("GUI Test Experiment");
 
         solo.clickOnText("GUI Test Experiment");
         questionButton = solo.getView(R.id.nav_fragment_experiment_detail_view_qa_button);
@@ -186,32 +167,7 @@ public class QuestionsUserStoriesTests {
     {
         View replyButton = null;
         View questionButton = null;
-
-        assertNotEquals("Can't find + button", null, addExperimentButton);
-
-        //Click from the home screen the + button to make an experiment
-        solo.clickOnView(addExperimentButton);
-        solo.waitForDialogToOpen();
-        descriptionEdit = solo.getView(R.id.create_experiment_description_editText);
-        assertNotEquals("Can't find description box", null, descriptionEdit);
-
-        //We need to fill the form to add the experiment
-        //Writing description
-        solo.clickOnView(descriptionEdit);
-        solo.enterText((EditText) descriptionEdit, "GUI Test Experiment");
-
-        //Writing min num trials
-        countTrialsEdit = solo.getView(R.id.experiment_min_trials_editText);
-        assertNotEquals("Can't find description box", null, countTrialsEdit);
-        solo.clickOnView(countTrialsEdit);
-        solo.enterText((EditText) countTrialsEdit, "3");
-
-        //Setting the boxes
-        location = solo.getView(R.id.experiment_require_location_switch);
-        acceptNewResults = solo.getView(R.id.experiment_accept_new_results_switch);
-        solo.clickOnView(location);
-        solo.clickOnView(acceptNewResults);
-        solo.clickOnText("Ok");
+        makeExperiment("GUI Test Experiment");
 
         solo.clickOnText("GUI Test Experiment");
         questionButton = solo.getView(R.id.nav_fragment_experiment_detail_view_qa_button);

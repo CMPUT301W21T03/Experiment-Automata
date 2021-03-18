@@ -115,7 +115,7 @@ public class SearchUserStoriesTests
     @Test
     public void testSearchDisplayingResultsActive()
     {
-        String testQuery = "two";
+        String testQuery = "CAT";
         makeExperiment(testQuery);
         makeExperiment("two");
         makeExperiment("three");

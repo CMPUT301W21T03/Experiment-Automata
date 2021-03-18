@@ -223,6 +223,7 @@ public class QuestionsUserStoriesTests {
 
         replyButton = solo.getView(R.id.main_question_display_reply_button);
         solo.clickOnView(replyButton);
+        questionBox = solo.getView(R.id.frag_add_edit_question_input_box_diolog);
         solo.enterText((EditText)questionBox,"Test reply");
         solo.clickOnText("Ok");
 

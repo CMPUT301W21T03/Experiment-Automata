@@ -2,16 +2,20 @@ package com.example.experiment_automata;
 
 
 /**
- * Test class the deals with us.01.01.01
+ * Test functionality the deals with
+ *  1. us.01.01.01
+ *  2.
  *
  * Known Issues:
  *  1. Since we have not added the ability to add coordinates that is not tested
+ *  2. There is no way to get to the action bar menu stuff this is going to be a little harder
+ *
+ *
  */
 
-import android.app.Instrumentation;
+
 import android.view.View;
 import android.widget.EditText;
-import android.widget.RadioButton;
 
 import com.robotium.solo.Solo;
 
@@ -24,8 +28,9 @@ import androidx.test.rule.ActivityTestRule;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.fail;
 
-public class AddExperimentsIntentsTests
+public class ExperimentUserStoriesTests
 {
     private Solo solo;
     private NavigationActivity currentTestingActivity;
@@ -36,6 +41,7 @@ public class AddExperimentsIntentsTests
     private View countTrialsEdit;
     private View location;
     private View acceptNewResults;
+    private View publishButton;
 
 
     @Rule
@@ -79,8 +85,8 @@ public class AddExperimentsIntentsTests
         //Writing description
         solo.clickOnView(descriptionEdit);
         solo.enterText((EditText) descriptionEdit, "GUI Test Experiment");
-        //Writing min num trials
 
+        //Writing min num trials
         countTrialsEdit = solo.getView(R.id.experiment_min_trials_editText);
         assertNotEquals("Can't find description box", null, countTrialsEdit);
         solo.clickOnView(countTrialsEdit);
@@ -93,6 +99,13 @@ public class AddExperimentsIntentsTests
         solo.clickOnView(acceptNewResults);
         solo.clickOnText("Ok");
 
+        //Clicking on publish button
+        publishButton = solo.getView(R.id.publishedCheckbox);
+        solo.clickOnView(publishButton);
+
+        //TODO: Find some way to click on navigation menu.
+
+
         assertEquals("Failed to find experiment text please make sure model works",
                 true,
                 solo.searchText("GUI Test Experiment"));
@@ -102,6 +115,7 @@ public class AddExperimentsIntentsTests
     /**
      * Here we're testing if change our minds and decide not to make an experiment.
      *(Testing what happens if we cancel after we make an experiment )
+     * per(us.01.01.01)
      */
     @Test
     public void testMakeExperimentCancel()
@@ -140,6 +154,7 @@ public class AddExperimentsIntentsTests
     /**
      * Here we're trying to see if the user can enter an empty experiment into the their
      * published views.
+     * per(us.01.01.01)
      */
     @Test
     public void makeEmptyExperiment()
@@ -174,4 +189,12 @@ public class AddExperimentsIntentsTests
                 false,
                 solo.searchText("Experiment Owner"));
     }
+
+    /**
+     * Here we're testing if we can un-publish an experiment that the
+     * user had made.
+     * per(us.01.02.01)
+     * 
+     */
+
 }

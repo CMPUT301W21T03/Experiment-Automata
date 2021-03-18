@@ -18,18 +18,21 @@ public abstract class Trial {
     private UUID collector;
     private Location location;
     private Date date;
+    private boolean ignore;
 //    TODO: uncomment qr line once qr support has been added
 //    private QRcode qr;
 
     public Trial(UUID collector) {
         this.collector = collector;
         this.date = new Date();
+        this.ignore = true;
     }
 
     public Trial(UUID collector, Location location) {
         this.collector = collector;
         this.location = location;
         this.date = new Date();
+        this.ignore = false;
     }
 
     /**
@@ -45,4 +48,18 @@ public abstract class Trial {
      *  date of the trial
      */
     public Date getDate() { return date; }
+
+    /**
+     * Set whether to ignore the trial result in statistic calculations.
+     * @param ignore
+     *  boolean to set whether to ignore the trial result
+     */
+    public void setIgnore(boolean ignore) { this.ignore = ignore; }
+
+    /**
+     * Return whether to ignore the trial result in statistic calculations.
+     * @return
+     *  whether to ignore
+     */
+    public boolean isIgnored() { return ignore; }
 }

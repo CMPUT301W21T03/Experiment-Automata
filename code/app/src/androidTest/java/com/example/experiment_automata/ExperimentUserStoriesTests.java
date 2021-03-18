@@ -164,7 +164,6 @@ public class ExperimentUserStoriesTests
     @Test
     public void makeEmptyExperiment()
     {
-        fail();
         assertNotEquals("Can't find + button", null, addExperimentButton);
 
         //Click from the home screen the + button to make an experiment
@@ -267,7 +266,46 @@ public class ExperimentUserStoriesTests
     @Test
     public void testingIfWeCanEndAnExperiment()
     {
-        fail("not yet implemented");
+        View editButton = null;
+        assertNotEquals("Can't find + button", null, addExperimentButton);
+
+        //Click from the home screen the + button to make an experiment
+        solo.clickOnView(addExperimentButton);
+        solo.waitForDialogToOpen();
+        descriptionEdit = solo.getView(R.id.create_experiment_description_editText);
+        assertNotEquals("Can't find description box", null, descriptionEdit);
+
+        //We need to fill the form to add the experiment
+        //Writing description
+        solo.clickOnView(descriptionEdit);
+        solo.enterText((EditText) descriptionEdit, "GUI Test Experiment");
+
+        //Writing min num trials
+        countTrialsEdit = solo.getView(R.id.experiment_min_trials_editText);
+        assertNotEquals("Can't find description box", null, countTrialsEdit);
+        solo.clickOnView(countTrialsEdit);
+        solo.enterText((EditText) countTrialsEdit, "3");
+
+        //Setting the boxes
+        location = solo.getView(R.id.experiment_require_location_switch);
+        acceptNewResults = solo.getView(R.id.experiment_accept_new_results_switch);
+        solo.clickOnView(location);
+        solo.clickOnView(acceptNewResults);
+        solo.clickOnText("Ok");
+
+        //Clicking on experiment
+        solo.clickOnText("GUI Test Experiment");
+        editButton = solo.getView(R.id.nav_fragment_experiment_detail_view_edit_button);
+        assertNotEquals("Could not find edit button please check view", null, editButton);
+        solo.clickOnView(editButton);
+        solo.clickOnView(acceptNewResults);
+        solo.clickOnText("Ok");
+
+        solo.clickOnActionBarHomeButton();
+
+        assertEquals("Failed to disable experiment: Please make sure bools are checked",
+                true,
+                solo.searchText("Inactive"));
     }
 
     /**

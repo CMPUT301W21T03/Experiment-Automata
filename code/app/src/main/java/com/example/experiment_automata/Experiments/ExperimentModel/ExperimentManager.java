@@ -157,4 +157,14 @@ public class ExperimentManager
     public Experiment getCurrentExperiment() { return currentExperiment; }
 
     public void setCurrentExperiment(Experiment experiment) { currentExperiment = experiment; }
+
+    /**
+     * Get all of the experiments that have been made regardless of the UUID
+     * @return
+     *  The list of all made experiments
+     */
+    public ArrayList<Experiment> getAllExperiments()
+    {
+        return new ArrayList(experiments.values());
+    }
 }

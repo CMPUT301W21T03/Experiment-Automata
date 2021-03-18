@@ -367,7 +367,23 @@ public class ExperimentUserStoriesTests
         solo.clickOnView(location);
         solo.clickOnView(acceptNewResults);
         solo.clickOnText("Ok");
-        ///something 
+        ///something
+
+        Experiment current = null;
+        if(currentTestingActivity.experimentManager.getAllExperiments().size() > 0) {
+            current = currentTestingActivity.experimentManager.getAllExperiments().get(0);
+
+            int trialSizeBefore = current.getSize();
+            solo.clickOnText(current.getDescription());
+            solo.clickOnView(addExperimentButton);
+            solo.clickOnView(addExperimentButton);
+            solo.clickOnActionBarHomeButton();
+            int trialSizeAfter = current.getSize();
+
+            assertEquals("Trials not added", true, trialSizeAfter > trialSizeBefore);
+        }
+        else
+            fail("Should never happen: if it does it's error with robotium");
     }
 
     /**

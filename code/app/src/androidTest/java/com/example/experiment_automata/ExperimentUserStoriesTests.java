@@ -17,6 +17,9 @@ package com.example.experiment_automata;
 import android.view.View;
 import android.widget.EditText;
 
+import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
+import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentMaker;
+import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentType;
 import com.robotium.solo.Solo;
 
 import org.junit.Before;
@@ -25,6 +28,8 @@ import org.junit.Test;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
+
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -73,6 +78,7 @@ public class ExperimentUserStoriesTests
     @Test
     public void testMakeAnExperimentCount()
     {
+
         assertNotEquals("Can't find + button", null, addExperimentButton);
 
         //Click from the home screen the + button to make an experiment
@@ -103,7 +109,8 @@ public class ExperimentUserStoriesTests
         publishButton = solo.getView(R.id.publishedCheckbox);
         solo.clickOnView(publishButton);
 
-        //TODO: Find some way to click on navigation menu.
+        solo.clickOnActionBarHomeButton();
+        solo.clickOnText("Published Experiments");
 
 
         assertEquals("Failed to find experiment text please make sure model works",
@@ -159,6 +166,7 @@ public class ExperimentUserStoriesTests
     @Test
     public void makeEmptyExperiment()
     {
+        fail();
         assertNotEquals("Can't find + button", null, addExperimentButton);
 
         //Click from the home screen the + button to make an experiment
@@ -185,6 +193,14 @@ public class ExperimentUserStoriesTests
         solo.clickOnView(acceptNewResults);
         solo.clickOnText("Ok");
 
+
+        //Clicking on publish button
+        publishButton = solo.getView(R.id.publishedCheckbox);
+        solo.clickOnView(publishButton);
+
+        solo.clickOnActionBarHomeButton();
+        solo.clickOnText("Published Experiments");
+
         assertEquals("An empty experiment was made and displayed in the published view",
                 false,
                 solo.searchText("Experiment Owner"));
@@ -194,7 +210,57 @@ public class ExperimentUserStoriesTests
      * Here we're testing if we can un-publish an experiment that the
      * user had made.
      * per(us.01.02.01)
-     * 
      */
+    @Test
+    public void testingUnpublishedExperiment()
+    {
+        assertNotEquals("Can't find + button", null, addExperimentButton);
+
+        //Click from the home screen the + button to make an experiment
+        solo.clickOnView(addExperimentButton);
+        solo.waitForDialogToOpen();
+        descriptionEdit = solo.getView(R.id.create_experiment_description_editText);
+        assertNotEquals("Can't find description box", null, descriptionEdit);
+
+        //We need to fill the form to add the experiment
+        //Writing description
+        solo.clickOnView(descriptionEdit);
+        solo.enterText((EditText) descriptionEdit, "GUI Test Experiment");
+
+        //Writing min num trials
+        countTrialsEdit = solo.getView(R.id.experiment_min_trials_editText);
+        assertNotEquals("Can't find description box", null, countTrialsEdit);
+        solo.clickOnView(countTrialsEdit);
+        solo.enterText((EditText) countTrialsEdit, "3");
+
+        //Setting the boxes
+        location = solo.getView(R.id.experiment_require_location_switch);
+        acceptNewResults = solo.getView(R.id.experiment_accept_new_results_switch);
+        solo.clickOnView(location);
+        solo.clickOnView(acceptNewResults);
+        solo.clickOnText("Ok");
+
+        //Clicking on publish button
+        publishButton = solo.getView(R.id.publishedCheckbox);
+        solo.clickOnView(publishButton);
+
+        solo.clickOnActionBarHomeButton();
+        solo.clickOnText("Published Experiments");
+
+
+        solo.clickOnActionBarHomeButton();
+        solo.clickOnText("My Experiments");
+        solo.clickOnView(publishButton);
+
+
+        solo.clickOnActionBarHomeButton();
+        solo.clickOnText("Published Experiments");
+
+        assertEquals("Failed un-publish functionality still displays unpublished experiment",
+                false,
+                solo.searchText("GUI Test Experiment"));
+    }
+
+    
 
 }

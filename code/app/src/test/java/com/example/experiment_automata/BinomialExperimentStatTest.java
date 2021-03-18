@@ -1,23 +1,15 @@
 package com.example.experiment_automata;
 
 import com.example.experiment_automata.Experiments.ExperimentModel.BinomialExperiment;
-import com.example.experiment_automata.Experiments.ExperimentModel.CountExperiment;
-import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
-import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentMaker;
-import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentType;
-import com.example.experiment_automata.Experiments.ExperimentModel.MeasurementExperiment;
-import com.example.experiment_automata.Experiments.ExperimentModel.NaturalCountExperiment;
 import com.example.experiment_automata.trials.BinomialTrial;
-import com.example.experiment_automata.trials.CountTrial;
-import com.example.experiment_automata.trials.NaturalCountTrial;
 
 import org.junit.Before;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BinomialExperimentStatTest {
 

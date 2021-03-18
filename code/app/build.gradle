@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.experiment_automata"
-        minSdkVersion 16
+        minSdkVersion 24
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -58,7 +58,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'androidx.navigation:navigation-fragment:2.3.3'
     implementation 'androidx.navigation:navigation-ui:2.3.3'
+    implementation "com.google.zxing:core:3.4.1"
+    implementation 'com.journeyapps:zxing-android-embedded:4.1.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
     android.defaultConfig.vectorDrawables.useSupportLibrary = true
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

@@ -7,6 +7,7 @@ import com.example.experiment_automata.trials.BinomialTrial;
 import com.example.experiment_automata.trials.CountTrial;
 import com.example.experiment_automata.trials.MeasurementTrial;
 import com.example.experiment_automata.trials.NaturalCountTrial;
+import com.example.experiment_automata.trials.Trial;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -31,6 +33,14 @@ public class TrialTest {
         assertNotNull(new CountTrial(userId));
         Location loc = new Location(LocationManager.NETWORK_PROVIDER);
         assertNotNull(new CountTrial(userId, loc));
+    }
+
+    @Test
+    public void ignore() {
+        Trial trial = new BinomialTrial(userId, false);
+        assertTrue(trial.isIgnored());
+        trial.setIgnore(false);
+        assertFalse(trial.isIgnored());
     }
 
     @Test

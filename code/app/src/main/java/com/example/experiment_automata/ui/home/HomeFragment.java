@@ -95,15 +95,16 @@ public class HomeFragment extends Fragment {
                 break;
             case "published":
                 experimentsArrayList.addAll(parentActivity.experimentManager
-                        .queryPublishedExperiments());
+                        .getPublishedExperiments());
                 break;
             case "subscribed":
                 experimentsArrayList.addAll(parentActivity.experimentManager
                         .queryExperiments(parentActivity.loggedUser.getSubscriptions()));
                 break;
             case "search":
+                String query = getArguments().getString("query");
                 experimentsArrayList.addAll(parentActivity.experimentManager
-                        .queryExperiments(getArguments().getString("query")));
+                        .queryPublishedExperiments(query));
                 break;
             default:
                 throw new IllegalArgumentException();

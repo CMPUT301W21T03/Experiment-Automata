@@ -8,6 +8,7 @@ import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentTyp
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -71,16 +72,68 @@ public class ExperimentManagerTest {
     }
 
     @Test
+    public void queryExperimentsUUID() {
+        ArrayList<Experiment> foundExperiments = experimentManager.queryExperiments(experimentReferences);
+        assertEquals(experiments, foundExperiments);
+
+        ArrayList<UUID> fakeUUID = new ArrayList<>();
+        fakeUUID.add(UUID.randomUUID());
+        ArrayList<Experiment> fakeExperiments = experimentManager.queryExperiments(fakeUUID);
+        assertEquals(0, fakeExperiments.size());
+        assertEquals(0, fakeExperiments.size());
+    }
+
+    @Test
+    public void queryOwnedExperiments() {
+        assertEquals(experiments.get(0), experimentManager
+                .queryOwnedExperiments("Test", userId).get(0));
+        assertEquals(0,  experimentManager
+                .queryOwnedExperiments("Garbage", userId).size());
+        assertEquals(0,  experimentManager
+                .queryOwnedExperiments("Test", UUID.randomUUID()).size());
+    }
+
+    @Test
     public void publishedExperiments() {
-        ArrayList<Experiment> publishedExperiments = experimentManager.queryPublishedExperiments();
+        ArrayList<Experiment> publishedExperiments = experimentManager.getPublishedExperiments();
         // None of the experiments have been published
         assertEquals(0, publishedExperiments.size());
         // Publish all the experiments
         for (Experiment e : experiments) {
             e.setPublished(true);
         }
-        publishedExperiments = experimentManager.queryPublishedExperiments();
+        publishedExperiments = experimentManager.getPublishedExperiments();
         assertEquals(2, publishedExperiments.size());
+    }
+
+    @Test
+    public void queryExperimentsString() {
+        assertEquals(1, experimentManager.queryExperiments("Second").size());
+        assertEquals(1, experimentManager.queryExperiments("First").size());
+        assertEquals(2, experimentManager.queryExperiments("test").size());
+        assertEquals(0, experimentManager.queryExperiments("garbage").size());
+    }
+
+    @Test
+    public void queryExperimentsUUIDAndString() {
+        ArrayList<UUID> fakeIds = new ArrayList<>();
+        fakeIds.add(UUID.randomUUID());
+        assertEquals(1, experimentManager.queryExperiments("Second", experimentReferences).size());
+        assertEquals(1, experimentManager.queryExperiments("First", experimentReferences).size());
+        assertEquals(2, experimentManager.queryExperiments("Test", experimentReferences).size());
+        assertEquals(0, experimentManager.queryExperiments("first", fakeIds).size());
+    }
+
+    @Test
+    public void queryPublishedExperiments() {
+        assertEquals(0, experimentManager.queryPublishedExperiments("First").size());
+        assertEquals(0, experimentManager.queryPublishedExperiments("Garbage").size());
+        for (Experiment e : experiments) {
+            e.setPublished(true);
+        }
+        assertEquals(1, experimentManager.queryPublishedExperiments("First").size());
+        assertEquals(0, experimentManager.queryPublishedExperiments("Garbage").size());
+        assertEquals(2, experimentManager.queryPublishedExperiments("Experiment").size());
     }
 
     @Test
@@ -102,7 +155,7 @@ public class ExperimentManagerTest {
     }
 
     @Test
-    public void testingAllExperimentsReuturned()
+    public void testingAllExperimentsReturned()
     {
         ExperimentMaker maker = new ExperimentMaker();
         ArrayList<Experiment> testValues = new ArrayList<>();

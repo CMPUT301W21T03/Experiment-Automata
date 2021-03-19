@@ -161,9 +161,7 @@ public class BinomialTrialTests {
         String quertile = ((TextView)solo.getView(R.id.quartiles_value)).getText().toString();
         Double median = new Double(((TextView)solo.getView(R.id.median_value)).getText().toString());
         Double mean = new Double(((TextView)solo.getView(R.id.mean_value)).getText().toString());
-        Double std = new Double(((TextView)solo.getView(R.id.stdev_text)).getText().toString());
 
-        assertNotEquals("Standard div wrong", std, null);
         assertEquals("Mean wrong", meanTestValue, mean, 0.00001);
         assertEquals("Median wrong", medianTestValue, median, 0.00001);
         assertNotEquals("Quartile set wrong", null, quertile);

@@ -172,7 +172,7 @@ public class NavExperimentDetailsFragment extends Fragment {
      *
      * @param experimentStringId : The unique id that each experiment contains
      */
-    private void update(String experimentStringId) {
+    public void update(String experimentStringId) {
         Log.d("UPDATE", "Screen info updated");
         Experiment current = (((NavigationActivity)getActivity()).getExperimentManager())
                 .getAtUUIDDescription(UUID.fromString(experimentStringId));
@@ -191,6 +191,8 @@ public class NavExperimentDetailsFragment extends Fragment {
             float[] quartiles = current.getQuartiles();
             String quartileString = String.format("q1: %.4f, q3: %.4f", quartiles[0], quartiles[2]);
             textViewQuartiles.setText(quartileString);
+        } else {
+            textViewQuartiles.setText(R.string.no_trials);
         }
 
         if (current.getSize() >= 1) {
@@ -219,6 +221,7 @@ public class NavExperimentDetailsFragment extends Fragment {
             histogram.getAxisRight().setEnabled(false);
             histogram.setTouchEnabled(false);
             histogram.getDescription().setEnabled(false);
+            histogram.invalidate();
 
             LineDataSet resultsData = new LineDataSet(current.generatePlot(), "");
             resultsData.setColor(R.color.purple_500);
@@ -234,9 +237,20 @@ public class NavExperimentDetailsFragment extends Fragment {
             histogram.getXAxis().setValueFormatter(new LargeValueFormatter());
             resultsPlot.setTouchEnabled(false);
             resultsPlot.getDescription().setEnabled(false);
+            resultsPlot.invalidate();
+
+            // trial results
+            for (Fragment fragment : getChildFragmentManager().getFragments()) {
+                if (fragment instanceof TrialsFragment) {
+                    ((TrialsFragment) fragment).updateView();
+                    break;
+                }
+            }
+        } else {
+            textViewMean.setText(R.string.no_trials);
+            textViewMedian.setText(R.string.no_trials);
+            textViewStdev.setText(R.string.no_trials);
         }
-
-
     }
 
     @Override

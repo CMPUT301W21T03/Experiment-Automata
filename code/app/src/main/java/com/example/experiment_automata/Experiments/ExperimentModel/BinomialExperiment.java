@@ -1,7 +1,6 @@
 package com.example.experiment_automata.Experiments.ExperimentModel;
 
 import com.example.experiment_automata.trials.BinomialTrial;
-import com.example.experiment_automata.trials.NaturalCountTrial;
 import com.example.experiment_automata.trials.Trial;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
@@ -74,9 +73,11 @@ public class BinomialExperiment extends Experiment {
         int[] bins = new int[amountOfBins];
         for (int i = 0; i < amountOfBins; i++) { bins[i] = 0; }
         for (BinomialTrial trial: results) {
-            boolean value = trial.getResult();
-            int bin = value ? 1 : 0;
-            bins[bin]++;
+            if (!trial.isIgnored()) {
+                boolean value = trial.getResult();
+                int bin = value ? 1 : 0;
+                bins[bin]++;
+            }
         }
         // Convert bins to entries
         List<BarEntry> data = new ArrayList<>();
@@ -96,11 +97,13 @@ public class BinomialExperiment extends Experiment {
         boolean first = true;
         long offset = 0;
         for (BinomialTrial trial : results ) {
-            if (first) {
-                first = false;
-                offset = trial.getDate().getTime();
+            if (!trial.isIgnored()) {
+                if (first) {
+                    first = false;
+                    offset = trial.getDate().getTime();
+                }
+                data.add(new Entry(trial.getDate().getTime() - offset, trial.getResult() ? 1 : 0));
             }
-            data.add(new Entry(trial.getDate().getTime() - offset, trial.getResult() ? 1 : 0));
         }
         return data;
     }
@@ -114,18 +117,19 @@ public class BinomialExperiment extends Experiment {
         int totalTrials = 0;
         int successfulTrials = 0;
 
-        for(Trial trial: results) {
-            totalTrials = totalTrials + 1;
-            final BinomialTrial binomialTrial = (BinomialTrial) trial;
-            if (binomialTrial.getResult()) {
-                successfulTrials = successfulTrials + 1;
+        for (Trial trial: results) {
+            if (!trial.isIgnored()) {
+                totalTrials = totalTrials + 1;
+                final BinomialTrial binomialTrial = (BinomialTrial) trial;
+                if (binomialTrial.getResult()) {
+                    successfulTrials = successfulTrials + 1;
+                }
             }
         }
         float answer;
-        if(totalTrials>0) {
+        if (totalTrials > 0) {
             answer = ((float) successfulTrials) / (totalTrials);
-        }
-        else {
+        } else {
             // No results
             answer = 0;
         }
@@ -143,23 +147,22 @@ public class BinomialExperiment extends Experiment {
         int failureTrials = 0;
 
         for(BinomialTrial trial: results) {
-            if (trial.getResult()) {
-                successfulTrials = successfulTrials + 1;
-            }
-            else{
-                failureTrials = failureTrials + 1;
+            if (!trial.isIgnored()) {
+                if (trial.getResult()) {
+                    successfulTrials = successfulTrials + 1;
+                } else {
+                    failureTrials = failureTrials + 1;
+                }
             }
         }
-        if(successfulTrials > failureTrials){
+        if (successfulTrials > failureTrials) {
             // More successes than failures
-            return 1;
-        }
-        else if(successfulTrials == failureTrials){
-            return (float) 0.5;
-        }
-        else{
+            return 1f;
+        } else if (successfulTrials == failureTrials) {
+            return 0.5f;
+        } else {
             // More failures than successes
-            return 0;
+            return 0f;
         }
     }
 
@@ -191,15 +194,16 @@ public class BinomialExperiment extends Experiment {
         float sum = 0;
         float result;
         for (BinomialTrial trial : results) {
-            if(trial.getResult()){
-                result=1f;
+            if (!trial.isIgnored()) {
+                if (trial.getResult()) {
+                    result = 1f;
+                } else {
+                    result = 0f;
+                }
+                sum += Math.pow(result - getMean(), 2);
             }
-            else{
-                result=0f;
-            }
-            sum += Math.pow( result - getMean(), 2);
         }
-        return (float) Math.sqrt(sum / results.size());
+        return (float) Math.sqrt(sum / getSize());
     }
 
     /**
@@ -207,64 +211,59 @@ public class BinomialExperiment extends Experiment {
      * @return
      *  the quartiles
      */
-    /**
-     * Gets the quartiles of the trials
-     * @return
-     *  the quartiles
-     */
     public float[] getQuartiles() {
         float[] quartiles = new float[3];
-        quartiles[1]=getMedian();
+        final int size = getSize();
+        quartiles[1] = getMedian();
         // Can only compute other quartiles if there's at least 4 data points
-        if(results.size() >= 4){
+        if (size >= 4) {
             // Sort all the values in results
             ArrayList<Integer> values = new ArrayList<>();
             for (BinomialTrial trial : results) {
-                if(trial.getResult()){
-                    // Add 1 for a positive result and 0 otherwise
-                    values.add(1);
-                }
-                else{
-                    values.add(0);
+                if (!trial.isIgnored()) {
+                    if (trial.getResult()) {
+                        // Add 1 for a positive result and 0 otherwise
+                        values.add(1);
+                    } else {
+                        values.add(0);
+                    }
                 }
             }
             Collections.sort(values);
             int highPoint;
             // If we have an array of size 5, then we want to find the median of (0 to 1) and (3 to 4)
             // If we have an array of size 4, then we want to find the median of (0 to 1) and (2 to 3)
-            int lowPoint = results.size()/2-1;
-            if(results.size()%2 == 0 ){
-                highPoint = lowPoint+1;
-            }
-            else{
-                highPoint = lowPoint+2;
+            int lowPoint = size / 2 - 1;
+            if (size % 2 == 0 ) {
+                highPoint = lowPoint + 1;
+            } else {
+                highPoint = lowPoint + 2;
             }
 
             ArrayList<Integer> valuesSmall = new ArrayList<>();
             ArrayList<Integer> valuesLarge = new ArrayList<>();
-            for(int i = 0; i <= lowPoint; i++){
+            for (int i = 0; i <= lowPoint; i++) {
                 valuesSmall.add(values.get(i));
             }
 
-            for(int i=highPoint; i<values.size(); i++){
+            for (int i = highPoint; i < values.size(); i++) {
                 valuesLarge.add(values.get(i));
             }
 
-            quartiles[0]=getMedian(valuesSmall);
+            quartiles[0] = getMedian(valuesSmall);
 
-            quartiles[2]=getMedian(valuesLarge);
-        }
-
-        else if(results.size() == 3){
+            quartiles[2] = getMedian(valuesLarge);
+        } else if (size == 3) {
             // Sort all the values in results
             ArrayList<Integer> values = new ArrayList<>();
             for (BinomialTrial trial : results) {
-                if(trial.getResult()){
-                    // Add 1 for a positive result and 0 otherwise
-                    values.add(1);
-                }
-                else{
-                    values.add(0);
+                if (!trial.isIgnored()) {
+                    if (trial.getResult()) {
+                        // Add 1 for a positive result and 0 otherwise
+                        values.add(1);
+                    } else {
+                        values.add(0);
+                    }
                 }
             }
             Collections.sort(values);
@@ -273,15 +272,23 @@ public class BinomialExperiment extends Experiment {
             quartiles[1] = values.get(1);
             quartiles[2] = values.get(2);
         }
-        return quartiles;
 
+        return quartiles;
     }
 
     /**
-     * Gets the size of the experiment
-     * @return size of the experiment
+     * Gets the size of the trials. Does not include ignored trials.
+     * @return size of the trials
      */
     public Integer getSize(){
-        return results.size();
+        int size = 0;
+        for (Trial trial : results) {
+            if (!trial.isIgnored()) {
+                size++;
+            }
+        }
+        return size;
     }
+
+    public Collection<BinomialTrial> getTrials() { return results; }
 }

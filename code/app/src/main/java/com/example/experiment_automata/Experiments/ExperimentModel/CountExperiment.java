@@ -136,4 +136,5 @@ public class CountExperiment extends Experiment {
     public Integer getSize(){
         return results.size();
     }
+
 }

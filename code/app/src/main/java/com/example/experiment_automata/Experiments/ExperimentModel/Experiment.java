@@ -26,7 +26,6 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
     private boolean published; // changed from UML for style
     private boolean requireLocation; // added to align with storyboard
     private ExperimentType type; // todo: do we need type here if an experiment has a type? (yes makes it easy)
-    private ArrayList<UUID> crowedExperimenter; // Experimenter id's
     private ArrayList<Question> questions;
 
     /**
@@ -37,7 +36,6 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
     public Experiment(String description)
     {
         this.description = description;
-        this.crowedExperimenter = new ArrayList<>();
 
     }
 
@@ -60,7 +58,6 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
         this.active = acceptNewResults;
         this.ownerId = ownerId;
         this.experimentId = UUID.randomUUID();
-        this.crowedExperimenter = new ArrayList<>();
         this.type = type;
         this.questions = new ArrayList<>();
     }
@@ -74,23 +71,6 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
      */
     public boolean compare(Experiment experiment) {
         return experimentId.equals(experiment.experimentId);
-    }
-
-    /**
-     * Adds userID to the list so that each experiment knows which users can participate in them
-     * @param userId UserID to be added to the experiment
-     */
-    public void addUserId(UUID userId){
-        crowedExperimenter.add(userId);
-    }
-
-    /**
-     * Removes userID from the list so that the user can no longer participate in it
-     * @param userId UserID to be removed from the experiment
-     */
-
-    public void removeUserId(UUID userId){
-        crowedExperimenter.remove(userId);
     }
 
     /**

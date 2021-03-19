@@ -78,8 +78,9 @@ public class ExperimentManagerTest {
 
         ArrayList<UUID> fakeUUID = new ArrayList<>();
         fakeUUID.add(UUID.randomUUID());
-        foundExperiments = experimentManager.queryExperiments(fakeUUID);
-        assertEquals(0, foundExperiments.size());
+        ArrayList<Experiment> fakeExperiments = experimentManager.queryExperiments(fakeUUID);
+        assertEquals(0, fakeExperiments.size());
+        assertEquals(0, fakeExperiments.size());
     }
 
     @Test
@@ -120,7 +121,7 @@ public class ExperimentManagerTest {
         ArrayList<UUID> fakeIds = new ArrayList<>();
         fakeIds.add(UUID.randomUUID());
         assertEquals(0, experimentManager.queryExperiments("Second", userIds).size());
-        assertEquals(1, experimentManager.queryExperiments("First", userIds).size());
+        assertEquals(1, experimentManager.queryExperiments("first", userIds).size());
         assertEquals(0, experimentManager.queryExperiments("first", fakeIds).size());
     }
 

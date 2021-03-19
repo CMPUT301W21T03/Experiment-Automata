@@ -90,7 +90,9 @@ public class ExperimentManager
     public ArrayList<Experiment> queryExperiments(Collection<UUID> experimentIds) {
         ArrayList<Experiment> experimentsList = new ArrayList<>();
         for (UUID id : experimentIds) {
-            experimentsList.add(experiments.get(id));
+            if (experiments.containsKey(id)) {
+                experimentsList.add(experiments.get(id));
+            }
         }
         return experimentsList;
     }

@@ -1,17 +1,11 @@
 package com.example.experiment_automata.QuestionsModel;
 
 
-import android.os.Build;
 import android.util.Log;
 
-import androidx.annotation.RequiresApi;
-
-import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
-
-import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -30,6 +24,7 @@ public class QuestionManager {
     private static HashMap<UUID, Question> questionFromId;
     private static  HashMap<UUID, Reply> replies;
     private static QuestionManager questionManager;
+
 
     /**
      * Initializes the question manager.
@@ -153,4 +148,13 @@ public class QuestionManager {
         return replies.get(questionId);
     }
 
+    /**
+     * Gets all questions without keys
+     * @return
+     *  return all questions
+     */
+    public Collection<ArrayList<Question>> getAllQuestions()
+    {
+        return questions.values();
+    }
 }

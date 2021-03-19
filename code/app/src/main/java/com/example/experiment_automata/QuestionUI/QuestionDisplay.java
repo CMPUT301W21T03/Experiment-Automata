@@ -14,13 +14,7 @@ import android.widget.ListView;
 import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
 import com.example.experiment_automata.NavigationActivity;
 import com.example.experiment_automata.QuestionsModel.Question;
-import com.example.experiment_automata.QuestionsModel.QuestionController;
-import com.example.experiment_automata.QuestionsModel.QuestionManager;
 import com.example.experiment_automata.R;
-import com.example.experiment_automata.ui.Screen;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.protobuf.Internal;
-
 import java.util.ArrayList;
 
 /**
@@ -49,7 +43,6 @@ public class QuestionDisplay extends Fragment {
 
 
     private Experiment currentExperiment;
-    private QuestionController questionController;
     private ArrayAdapter<Question> questionDisplayAdapter;
     ArrayList<Question> questionsList = new ArrayList<>();
 

@@ -26,8 +26,9 @@ class ExperimentManager{
    + queryExperiments(query: String): ArrayList<Experiment> 
    + queryExperiments(experimentIds: Collection<UUID>): ArrayList<Experiment> 
    + queryPublishedExperiments(): ArrayList<Experiment>
-   + getAtUUIDDescription(experimentUUID: UUID): Experiment 
-   - queryMatch(query: String, source: String): Boolean 
+   + getAtUUIDDescription(experimentUUID: UUID): Experiment
+   + getAllExperiments(): ArrayList<Experiment> 
+   - queryMatch(query: String, source: String): Boolean
 }
 
 ExperimentManager o-- "0..*" Experiment 
@@ -65,7 +66,7 @@ class QuestionManager{
     + getTotalQuestions(experimentId: UUID): Integer 
     + getQuestionReply(questionID: UUID): Reply 
     + getExperimentQuestions(experimentID: UUID): ArrayList<Question>
-    ' + getAllQuestions(): Collection<ArrayList<Question>>
+    + getAllQuestions(): Collection<ArrayList<Question>>
  
 }
 

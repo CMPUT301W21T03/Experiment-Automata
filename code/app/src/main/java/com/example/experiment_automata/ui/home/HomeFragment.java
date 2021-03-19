@@ -104,7 +104,7 @@ public class HomeFragment extends Fragment {
             case "search":
                 String query = getArguments().getString("query");
                 experimentsArrayList.addAll(parentActivity.experimentManager
-                        .queryExperiments(query));
+                        .queryPublishedExperiments(query));
                 break;
             default:
                 throw new IllegalArgumentException();

@@ -57,8 +57,9 @@ import java.util.UUID;
  *
  *  Known Issue:
  *
- *      1. When using the search feature, creating multiple queries without pressing
- *         the back button will result in a nesting of queries.
+ *      1. When searching for an item, the label at the top stays as whatever the current
+ *         screen is. Should update to 'published' while still in search fragment
+ *      2. Search must be cleared each time or a bug appears where 2 searches are performed.
  */
 
 public class NavigationActivity extends AppCompatActivity implements

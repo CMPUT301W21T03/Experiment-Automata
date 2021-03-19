@@ -89,7 +89,7 @@ public class ExperimentManagerTest {
         assertEquals(0,  experimentManager
                 .queryOwnedExperiments("Garbage", userId).size());
         assertEquals(0,  experimentManager
-                .queryOwnedExperiments("Test", UUID.randomUUID()).get(0));
+                .queryOwnedExperiments("Test", UUID.randomUUID()).size());
     }
 
     @Test
@@ -107,10 +107,10 @@ public class ExperimentManagerTest {
 
     @Test
     public void queryExperimentsString() {
-        assertEquals(1, experimentManager.queryExperiments("Second"));
-        assertEquals(1, experimentManager.queryExperiments("First"));
-        assertEquals(2, experimentManager.queryExperiments("test"));
-        assertEquals(0, experimentManager.queryExperiments("garbage"));
+        assertEquals(1, experimentManager.queryExperiments("Second").size());
+        assertEquals(1, experimentManager.queryExperiments("First").size());
+        assertEquals(2, experimentManager.queryExperiments("test").size());
+        assertEquals(0, experimentManager.queryExperiments("garbage").size());
     }
 
     @Test
@@ -122,6 +122,18 @@ public class ExperimentManagerTest {
         assertEquals(0, experimentManager.queryExperiments("Second", userIds).size());
         assertEquals(experiments.get(0), experimentManager.queryExperiments("First", userIds).get(0));
         assertEquals(0, experimentManager.queryExperiments("first", fakeIds).size());
+    }
+
+    @Test
+    public void queryPublishedExperiments() {
+        assertEquals(0, experimentManager.queryPublishedExperiments("First").size());
+        assertEquals(0, experimentManager.queryPublishedExperiments("Garbage").size());
+        for (Experiment e : experiments) {
+            e.setPublished(true);
+        }
+        assertEquals(1, experimentManager.queryPublishedExperiments("First").size());
+        assertEquals(0, experimentManager.queryPublishedExperiments("Garbage").size());
+        assertEquals(2, experimentManager.queryPublishedExperiments("Experiment").size());
     }
 
     @Test

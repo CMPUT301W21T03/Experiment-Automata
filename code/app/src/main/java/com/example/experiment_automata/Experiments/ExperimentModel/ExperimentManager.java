@@ -153,7 +153,7 @@ public class ExperimentManager
      * @return
      *  The experiments from the group that match the query
      */
-    public ArrayList<Experiment> queryExperiments(String query, Collection<UUID> experimentIds) {
+    public ArrayList<Experiment> queryExperiments(String query, Collection<UUID> experimentIds)  {
         ArrayList<Experiment> experimentsList = new ArrayList<>();
         for (UUID id : experimentIds) {
             if (queryMatch(query, experiments.get(id).getDescription())) {

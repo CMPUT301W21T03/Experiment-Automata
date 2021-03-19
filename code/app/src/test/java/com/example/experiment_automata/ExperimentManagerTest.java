@@ -8,6 +8,7 @@ import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentTyp
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -71,6 +72,27 @@ public class ExperimentManagerTest {
     }
 
     @Test
+    public void queryExperimentsUUID() {
+        ArrayList<Experiment> foundExperiments = experimentManager.queryExperiments(experimentReferences);
+        assertEquals(experiments, foundExperiments);
+
+        ArrayList<UUID> fakeUUID = new ArrayList<>();
+        fakeUUID.add(UUID.randomUUID());
+        foundExperiments = experimentManager.queryExperiments(fakeUUID);
+        assertEquals(0, foundExperiments.size());
+    }
+
+    @Test
+    public void queryOwnedExperiments() {
+        assertEquals(experiments.get(0), experimentManager
+                .queryOwnedExperiments("Test", userId).get(0));
+        assertEquals(0,  experimentManager
+                .queryOwnedExperiments("Garbage", userId).size());
+        assertEquals(0,  experimentManager
+                .queryOwnedExperiments("Test", UUID.randomUUID()).get(0));
+    }
+
+    @Test
     public void publishedExperiments() {
         ArrayList<Experiment> publishedExperiments = experimentManager.getPublishedExperiments();
         // None of the experiments have been published
@@ -81,6 +103,25 @@ public class ExperimentManagerTest {
         }
         publishedExperiments = experimentManager.getPublishedExperiments();
         assertEquals(2, publishedExperiments.size());
+    }
+
+    @Test
+    public void queryExperimentsString() {
+        assertEquals(1, experimentManager.queryExperiments("Second"));
+        assertEquals(1, experimentManager.queryExperiments("First"));
+        assertEquals(2, experimentManager.queryExperiments("test"));
+        assertEquals(0, experimentManager.queryExperiments("garbage"));
+    }
+
+    @Test
+    public void queryExperimentsUUIDAndString() {
+        ArrayList<UUID> userIds = new ArrayList<>();
+        userIds.add(userId);
+        ArrayList<UUID> fakeIds = new ArrayList<>();
+        fakeIds.add(UUID.randomUUID());
+        assertEquals(0, experimentManager.queryExperiments("Second", userIds).size());
+        assertEquals(experiments.get(0), experimentManager.queryExperiments("First", userIds).get(0));
+        assertEquals(0, experimentManager.queryExperiments("first", fakeIds).size());
     }
 
     @Test
@@ -102,7 +143,7 @@ public class ExperimentManagerTest {
     }
 
     @Test
-    public void testingAllExperimentsReuturned()
+    public void testingAllExperimentsReturned()
     {
         ExperimentMaker maker = new ExperimentMaker();
         ArrayList<Experiment> testValues = new ArrayList<>();

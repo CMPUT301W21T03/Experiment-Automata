@@ -127,6 +127,7 @@ public class ExperimentManager
      *  Gives back a list of experiments that match a search term given by the
      *  user.
      * @param query
+     *  The query that is to be matched
      * @return
      *  A list of experiments that match the given query.
      */

@@ -103,16 +103,11 @@ public class BinomialTrialTests {
         View binmoailTrailRadio = solo.getView(R.id.add_binomial_value);
         if(click)
             solo.clickOnView(binmoailTrailRadio);
-        solo.clickOnView(addExperimentButton);
     }
 
 
     @Test
     public void testIntentIgnoringTrials() {
-        View quertile = null;
-        View median = null;
-        View mean = null;
-        View std = null;
         String testDes = "Testing Intent";
         makeExperiment(testDes);
         solo.clickOnText(testDes);
@@ -121,28 +116,9 @@ public class BinomialTrialTests {
         for (int i = 0; i < 5; i++) {
             addBinomalTrial(i % 2 == 0);
         }
-        //Getting the current numbers
-        quertile = solo.getView(R.id.quartiles_value);
-        median = solo.getView(R.id.median_value);
-        mean = solo.getView(R.id.mean_value);
-        std = solo.getView(R.id.stdev_value);
-        Integer querNum = new Integer(((EditText) quertile).getText().toString());
-        Integer medNum = new Integer(((EditText) median).getText().toString());
-        Integer meNum = new Integer(((EditText) mean).getText().toString());
-        Integer stdNum = new Integer(((EditText) std).getText().toString());
-        ListView trialList = (ListView) solo.getView(R.id.trials_fragment);
-        View topExperiment = trialList.getChildAt(0);
-        solo.clickOnView(topExperiment.findViewById(R.id.trial_ignore_checkbox));
-        quertile = solo.getView(R.id.quartiles_value);
-        median = solo.getView(R.id.median_value);
-        mean = solo.getView(R.id.mean_value);
-        std = solo.getView(R.id.stdev_value);
-        Integer querNum2 = new Integer(((EditText) quertile).getText().toString());
-        Integer medNum2 = new Integer(((EditText) median).getText().toString());
-        Integer meNum2 = new Integer(((EditText) mean).getText().toString());
-        Integer stdNum2 = new Integer(((EditText) std).getText().toString());
 
 
-        assertNotEquals("Mean is the same when it should not be", medNum, medNum2);
+
+        assertNotEquals("Mean is the same when it should not be", 1, 1);
     }
 }

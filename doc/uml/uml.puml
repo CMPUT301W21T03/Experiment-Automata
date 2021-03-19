@@ -147,6 +147,7 @@ abstract class Trial {
     -collector: UUID
     -location: Location
     -date: Date
+    -ignore: Boolean
 }
 
 class CountTrial extends Trial {

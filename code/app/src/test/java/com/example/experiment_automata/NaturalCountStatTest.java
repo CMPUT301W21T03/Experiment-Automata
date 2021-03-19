@@ -26,6 +26,11 @@ public class NaturalCountStatTest {
     NaturalCountExperiment natExperiment=new NaturalCountExperiment("This is a test", 5, false, true, ownerId);
     UUID id = UUID.randomUUID();
     UUID id2 = UUID.randomUUID();
+    UUID id3 = UUID.randomUUID();
+    UUID id4 = UUID.randomUUID();
+
+    NaturalCountTrial ignoreNatural = new NaturalCountTrial(id3, 3);
+    NaturalCountTrial ignoreNatural2 = new NaturalCountTrial(id4, 5);
 
     @Before
     public void setup() {
@@ -201,5 +206,69 @@ public class NaturalCountStatTest {
         assertEquals(quartiles[1], 7);
         assertEquals(quartiles[2], 11);
 
+    }
+
+
+    @Test
+    public void testIgnore(){
+        // True values computed from https://www.calculatorsoup.com/calculators/statistics/quartile-calculator.php
+
+        ignoreNatural.setIgnore(true);
+
+        ignoreNatural2.setIgnore(true);
+
+        natExperiment.recordTrial(new NaturalCountTrial(id, 3));
+
+        natExperiment.recordTrial(new NaturalCountTrial(id, 7));
+
+        natExperiment.recordTrial(new NaturalCountTrial(id, 11));
+
+        natExperiment.recordTrial(ignoreNatural);
+
+        natExperiment.recordTrial(ignoreNatural2);
+
+        natExperiment.recordTrial(ignoreNatural);
+
+        natExperiment.recordTrial(ignoreNatural2);
+
+        // These should be the same as in getQuartilesTest4
+
+        float[] quartiles = natExperiment.getQuartiles();
+        assertEquals(quartiles[0], 3);
+        assertEquals(quartiles[1], 7);
+        assertEquals(quartiles[2], 11);
+
+    }
+
+    @Test
+    public void testIgnore2(){
+        // Numbers for verification computed from https://www.calculator.net/standard-deviation-calculator.html
+        ignoreNatural.setIgnore(true);
+
+        ignoreNatural2.setIgnore(true);
+
+        natExperiment.recordTrial(ignoreNatural);
+
+        natExperiment.recordTrial(ignoreNatural2);
+
+        natExperiment.recordTrial(ignoreNatural);
+
+        natExperiment.recordTrial(ignoreNatural2);
+
+        // Should be the same as in the median test since the above trials are ignored
+
+        natExperiment.recordTrial(new NaturalCountTrial(id, 2));
+        assertEquals(natExperiment.getStdev(), 0);
+        natExperiment.recordTrial(new NaturalCountTrial(id, 3));
+        assertEquals(natExperiment.getStdev(), 0.5);
+
+        natExperiment.recordTrial(new NaturalCountTrial(id, 4));
+        assertTrue(marginOfError(natExperiment.getStdev(), 0.81649658092773f));
+
+        natExperiment.recordTrial(new NaturalCountTrial(id, 9));
+        assertTrue(marginOfError(natExperiment.getStdev(), 2.6925824035673f));
+
+        natExperiment.recordTrial(new NaturalCountTrial(id, 3));
+        assertTrue(marginOfError(natExperiment.getStdev(),  2.4819347291982f));
     }
 }

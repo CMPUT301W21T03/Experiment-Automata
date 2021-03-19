@@ -3,9 +3,11 @@ package com.example.experiment_automata.Experiments.ExperimentModel;
 import com.example.experiment_automata.Graphable;
 import com.example.experiment_automata.StatSummary;
 import com.example.experiment_automata.QuestionsModel.Question;
+import com.example.experiment_automata.trials.Trial;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.UUID;
 
 

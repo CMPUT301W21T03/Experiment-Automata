@@ -20,7 +20,8 @@ import java.util.UUID;
  *
  * Known Issue:
  *
- *      1. None
+ *      1. stat calculation implementation is not final awaiting input from customer on
+ *         how count experiments should analyzed.
  */
 public class CountExperiment extends Experiment {
     private Collection<CountTrial> results;

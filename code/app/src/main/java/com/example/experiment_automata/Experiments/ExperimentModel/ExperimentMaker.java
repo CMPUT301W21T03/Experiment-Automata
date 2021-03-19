@@ -18,7 +18,6 @@ import java.util.UUID;
 
 public class ExperimentMaker
 {
-    private String description; // Do we need this to have any attributes? can't we just create an experiment maker when needed?
 
     /**
      * Will create a desired experiment type with a description

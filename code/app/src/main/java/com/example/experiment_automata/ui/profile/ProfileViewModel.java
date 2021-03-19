@@ -3,10 +3,18 @@ package com.example.experiment_automata.ui.profile;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.example.experiment_automata.UserInformation.User;
 
 import java.util.UUID;
+/**
+ * Role/Pattern:
+ *     Test fragment that might be removed at some point in the future.
+ *
+ *  Known Issue:
+ *
+ *      1. Not in use might be removed
+ */
+
 
 public class ProfileViewModel extends ViewModel {
 

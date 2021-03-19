@@ -20,6 +20,15 @@ import com.example.experiment_automata.UserInformation.User;
 
 import static android.content.Context.MODE_PRIVATE;
 
+/**
+ * Role/Pattern:
+ *
+ *  Displays a user profile with contact information
+ *
+ *  Known Issue:
+ *
+ *      1. No ability to edit information
+ */
 public class ProfileFragment extends Fragment {
 
     private ProfileViewModel profileViewModel;

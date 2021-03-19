@@ -10,7 +10,15 @@ import android.view.ViewGroup;
 
 import com.example.experiment_automata.R;
 import com.github.mikephil.charting.charts.LineChart;
-
+/**
+ * Role/Pattern:
+ *
+ *       This fragment class inflates the results fragment view.
+ *
+ * Known Issue:
+ *
+ *      1. None
+ */
 public class ResultsFragment extends Fragment {
     public ResultsFragment() {
         // Required empty public constructor

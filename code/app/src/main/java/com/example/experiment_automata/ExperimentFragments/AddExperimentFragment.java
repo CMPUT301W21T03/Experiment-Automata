@@ -55,6 +55,7 @@ public class AddExperimentFragment extends DialogFragment {
      * This is an interface for any activity using this fragment
      */
     public interface OnFragmentInteractionListener {
+
         void onOkPressed(Experiment newExperiment);
         void onOKPressedEdit(String experimentDescription, int experimentTrials,
                              boolean experimentLocation, boolean experimentNewResults,

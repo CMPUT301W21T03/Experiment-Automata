@@ -41,7 +41,6 @@ import java.util.UUID;
 
 public class NavExperimentDetailsFragment extends Fragment {
 
-    private String ERROR_LOG_VALUE = "ERROR_LOG-EXPERIMENT-VIEW";
     public static final String CURRENT_EXPERIMENT_ID = "FRAGMENT_CURRENT_FRAGMENT-ID";
 
 

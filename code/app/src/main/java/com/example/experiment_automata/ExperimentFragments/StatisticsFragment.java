@@ -9,7 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.experiment_automata.R;
-
+/**
+ * Role/Pattern:
+ *
+ *  This fragment class inflates ths stats view for the experiment.
+ *
+ * Known Issue:
+ *
+ *      1. None
+ */
 public class StatisticsFragment extends Fragment {
     public StatisticsFragment() {
         // Required empty public constructor

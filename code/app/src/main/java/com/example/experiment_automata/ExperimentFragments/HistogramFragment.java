@@ -11,6 +11,16 @@ import android.view.ViewGroup;
 import com.example.experiment_automata.R;
 import com.github.mikephil.charting.charts.BarChart;
 
+/**
+ * Role/Pattern:
+ *
+ *       This class inflates the histogram fragment.
+ *
+ * Known Issue:
+ *
+ *      1. None
+ */
+
 public class HistogramFragment extends Fragment {
     public HistogramFragment() {
         // Required empty public constructor

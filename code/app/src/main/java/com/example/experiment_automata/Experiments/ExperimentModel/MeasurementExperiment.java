@@ -266,5 +266,9 @@ public class MeasurementExperiment extends Experiment {
         return size;
     }
 
+    /**
+     * get the trials made about this experiment
+     * @return the trials
+     */
     public Collection<MeasurementTrial> getTrials() { return results; }
 }

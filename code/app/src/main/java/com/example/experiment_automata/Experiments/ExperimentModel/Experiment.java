@@ -120,18 +120,34 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
      */
     public void setPublished(boolean p) { published = p; }
 
+    /**
+     * set the description of experiment
+     * @param description value to be set
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * sets the min trials for the experiment
+     * @param minTrials value to be set
+     */
     public void setMinTrials(int minTrials) {
         this.minTrials = minTrials;
     }
 
+    /**
+     * sets the activity for each of the experiments
+     * @param active value to be set
+     */
     public void setActive(boolean active) {
         this.active = active;
     }
 
+    /**
+     * sets if we need a location
+     * @param requireLocation value to be set
+     */
     public void setRequireLocation(boolean requireLocation) {
         this.requireLocation = requireLocation;
     }
@@ -146,10 +162,18 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
         return type;
     }
 
+    /**
+     * get the min trials
+     * @return the int min trial value
+     */
     public int getMinTrials() {
         return minTrials;
     }
 
+    /**
+     * check if a location is required by the experiment
+     * @return the result
+     */
     public boolean isRequireLocation() {
         return requireLocation;
     }

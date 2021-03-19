@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModel;
  *
  *  Known Issue:
  *
- *      1. Might be removed
+ *      1. Not in use might be removed
  */
 public class HomeViewModel extends ViewModel {
 

@@ -52,7 +52,6 @@ public class TrialsFragment extends Fragment {
             case Count:
                 CountExperiment countExperiment = (CountExperiment) e;
                 trialsArrayList.addAll(countExperiment.getTrials());
-                System.out.println(countExperiment.getTrials().size());
                 break;
             case NaturalCount:
                 NaturalCountExperiment naturalCountExperiment = (NaturalCountExperiment) e;

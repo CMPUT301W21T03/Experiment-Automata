@@ -19,6 +19,7 @@ import com.example.experiment_automata.trials.NaturalCountTrial;
 import com.example.experiment_automata.trials.Trial;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.UUID;
 
 public class TrialArrayAdapter extends ArrayAdapter<Trial> {
@@ -69,11 +70,13 @@ public class TrialArrayAdapter extends ArrayAdapter<Trial> {
         if (trial instanceof CountTrial) {
             trialValueView.setText("");
         } else if (trial instanceof NaturalCountTrial) {
-            trialValueView.setText(String.format("%d", ((NaturalCountTrial) trial).getResult()));
+            trialValueView.setText(String.format(Locale.CANADA, "%d",
+                    ((NaturalCountTrial) trial).getResult()));
         } else if (trial instanceof BinomialTrial) {
             trialValueView.setText(((BinomialTrial) trial).getResult() ? "Passed" : "Failed");
         } else if (trial instanceof MeasurementTrial) {
-            trialValueView.setText(String.format("%.4f", ((MeasurementTrial) trial).getResult()));
+            trialValueView.setText(String.format(Locale.CANADA, "%.4f",
+                    ((MeasurementTrial) trial).getResult()));
         }
 
         CheckBox checkBox = (CheckBox) view.findViewById(R.id.trial_ignore_checkbox);
@@ -81,7 +84,7 @@ public class TrialArrayAdapter extends ArrayAdapter<Trial> {
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean ignore = ((CheckBox) v).isChecked();
+                boolean ignore = !((CheckBox) v).isChecked();
                 trial.setIgnore(ignore);
             }
         });

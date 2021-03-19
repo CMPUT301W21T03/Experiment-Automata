@@ -35,7 +35,7 @@ class ExperimentManager{
    - queryMatch(query: String, source: String): Boolean
 }
 
-ExperimentManager o-- "0..*" Experiment 
+ExperimentManager o-- "0..*" Experiment
 
 class Question {
     -question: String
@@ -47,37 +47,37 @@ class Question {
 
 Question -- "1" User: Asks
 Question "1" -- "0..*" Reply: Answers
-Question "0..*" --o "1" Experiment 
+Question "0..*" --o "1" Experiment
 
 ' assume that anyone who can reply to a question is a type of User
 class Reply {
     -reply: String
     -experimenter: UUID
-    -replyID: UUID 
+    -replyID: UUID
 }
 
-Reply -- User: Answers 
+Reply -- User: Answers
 
 class QuestionManager{
     - {static} questions: HashMap<UUID, ArrayList<Question>>
     - {static} questionFromID: HashMap<UUID, Question>
     - {static} replies: hasMap<UUID, Reply>
-    - {static} questionManager: QuestionManager 
+    - {static} questionManager: QuestionManager
 
     + addQuestion(experimentID: UUID, question: Question)
     + addReply(id: UUID, reply: Reply)
-    + getQuestion(questionId: UUID): Question 
-    + getTotalQuestions(experimentId: UUID): Integer 
-    + getQuestionReply(questionID: UUID): Reply 
+    + getQuestion(questionId: UUID): Question
+    + getTotalQuestions(experimentId: UUID): Integer
+    + getQuestionReply(questionID: UUID): Reply
     + getExperimentQuestions(experimentID: UUID): ArrayList<Question>
     + getAllQuestions(): Collection<ArrayList<Question>>
  
 }
 
 QuestionManager "1" *-- "1" QuestionManager
-QuestionManager "1" *-- "0..*" Question: addQuestion 
-QuestionManager "1" *-- "0..*" Reply: addReply 
-QuestionManager -- Experiment 
+QuestionManager "1" *-- "0..*" Question: addQuestion
+QuestionManager "1" *-- "0..*" Reply: addReply
+QuestionManager -- Experiment
 
 ' allows the experiment to enforce only one trial type
 enum ExperimentType {
@@ -101,8 +101,8 @@ abstract class Experiment implements StatSummary, Graphable {
     ' this is the userId of the owner
     -ownerId: UUID
     -type: ExperimentType
-    -questions: ArrayList<Question> 
-    +getSize(): Integer 
+    -questions: ArrayList<Question>
+    +getSize(): Integer
     +makeNewUUID()
 }
 
@@ -119,23 +119,23 @@ class CountExperiment extends Experiment {
 class NaturalCountExperiment extends Experiment {
     -results: Collection<NaturalCountTrial>
     +recordTrial(trial: NaturalCountTrial)
-    -getMedian(values: ArrayList<Integer>): Float 
+    -getMedian(values: ArrayList<Integer>): Float
 }
 
 class BinomialExperiment extends Experiment {
     -results: Collection<BinomialTrial>
-    +recordTrial(trial: BinomialTrial) 
-    -getMedian(values: ArrayList<Integer>): Float 
+    +recordTrial(trial: BinomialTrial)
+    -getMedian(values: ArrayList<Integer>): Float
 }
 
 class MeasurementExperiment extends Experiment {
     -results: Collection<MeasurementTrial>
     +recordTrial(trial: MeasurementTrial)
-    -getMedian(values: ArrayList<Integer>): Float 
+    -getMedian(values: ArrayList<Integer>): Float
 
 }
 
-interface StatSummary {
+interface "StatSummary" as StatSummary <<Interface>> {
     +getMean(): Float
     +getMedian(): Float
     +getStdev(): Float
@@ -170,10 +170,10 @@ class MeasurementTrial extends Trial {
 
 
 class QRCodeManager {
-    + createQRFromUUID(uuid: String): Bitmap 
+    + createQRFromUUID(uuid: String): Bitmap
     + encodeStringToQR(encodedContent: String): Bitmap
-    -unpackQRString(code: String): String 
-    -packQRString(content: String): String 
+    -unpackQRString(code: String): String
+    -packQRString(content: String): String
 }
 
 class Location {
@@ -191,7 +191,7 @@ GeographicalMap -- "1..*" Location
 
 interface "Graphable" as Graphable <<Interface>>> {
     +generateHistogram(): List<BarEntry>
-    +generatePlot(): List<Entry> 
+    +generatePlot(): List<Entry>
 }
 
 class ContactInformation {

@@ -230,7 +230,6 @@ public class NavigationActivity extends AppCompatActivity implements
                         throw new IllegalArgumentException();
                 }
                 navController.navigate(R.id.nav_search, bundle);
-                searchView.setQuery("", false);
                 return false;
             }
 

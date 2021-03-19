@@ -288,16 +288,6 @@ public class ExperimentUserStoriesTests
     }
 
     /**
-     * Testing if we can subscribe to an experiment to participate in that experiment
-     * as per(us.01.04.01)
-     */
-    @Test
-    public void testingIfSubcribePartcipate()
-    {
-        fail("not yet implemented");
-    }
-
-    /**
      * Testing if we can add trials to an experiment
      * as per(us.01.05.01)
      */
@@ -320,26 +310,5 @@ public class ExperimentUserStoriesTests
         }
         else
             fail("Should never happen: if it does it's error with robotium");
-    }
-
-    /**
-     * Testing if we can ignore experiment results that we added to an experiment.
-     * as per (us.01.08.01)
-     */
-    @Test
-    public void testingIgnoreResults()
-    {
-        fail("not yet implemented");
-    }
-
-    /**
-     * Testing if we can stats about an experiment
-     *  (quartiles, median, mean, stdev)
-     * as per(us.01.09.01)
-     */
-    @Test
-    public void testingStats()
-    {
-        fail("not yet implemented");
     }
 }

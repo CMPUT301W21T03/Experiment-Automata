@@ -104,23 +104,8 @@ public class HomeFragment extends Fragment {
             case "search":
                 Log.d("Search Size", "" + experimentsArrayList.size());
                 String query = getArguments().getString("query");
-                switch (parentActivity.experimentManager.getCurrentFragment()) {
-                    case "owned":
-                        experimentsArrayList.addAll(parentActivity.experimentManager
-                                .queryOwnedExperiments(query, parentActivity.loggedUser.getUserId()));
-                        break;
-                    case "published":
-                        experimentsArrayList.addAll(parentActivity.experimentManager
-                                .queryPublishedExperiments(query));
-                        break;
-                    case "subscribed":
-                        experimentsArrayList.addAll(parentActivity.experimentManager
-                                .queryExperiments(query, parentActivity.loggedUser.getSubscriptions()));
-                        break;
-                    case "search":
-                        Log.d("uh oh", "search");
-                        break;
-                }
+                experimentsArrayList.addAll(parentActivity.experimentManager
+                        .queryPublishedExperiments(query));
                 break;
             default:
                 throw new IllegalArgumentException();

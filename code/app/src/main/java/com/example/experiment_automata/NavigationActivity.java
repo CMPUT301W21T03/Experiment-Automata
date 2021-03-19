@@ -209,26 +209,6 @@ public class NavigationActivity extends AppCompatActivity implements
             public boolean onQueryTextSubmit(String query) {
                 Bundle bundle = new Bundle();
                 bundle.putString("query", query);
-                switch (currentFragment.getArguments().getString("mode")) {
-                    case "owned":
-                        experimentManager.setCurrentFragment("owned");
-                        break;
-
-                    case "published":
-                        experimentManager.setCurrentFragment("published");
-                        break;
-
-                    case "subscribed":
-                        experimentManager.setCurrentFragment("subscribed");
-                        break;
-
-                    case "search":
-                        Log.d("Nested Search", "Fix Later");
-                        break;
-
-                    default:
-                        throw new IllegalArgumentException();
-                }
                 navController.navigate(R.id.nav_search, bundle);
                 return false;
             }

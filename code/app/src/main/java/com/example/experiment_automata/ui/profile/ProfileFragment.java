@@ -15,6 +15,15 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.ui.profile.ProfileViewModel;
 
+/**
+ * Role/Pattern:
+ *
+ *  Displays a user profile with contact information
+ *
+ *  Known Issue:
+ *
+ *      1. No ability to edit information
+ */
 public class ProfileFragment extends Fragment {
 
     private ProfileViewModel profileViewModel;

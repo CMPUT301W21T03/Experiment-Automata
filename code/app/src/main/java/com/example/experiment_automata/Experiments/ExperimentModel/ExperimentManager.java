@@ -94,6 +94,10 @@ public class ExperimentManager
         return experimentsList;
     }
 
+    /**
+     * gets a list of all the published experiments.
+     * @return all published experiments
+     */
     public ArrayList<Experiment> queryPublishedExperiments() {
         ArrayList<Experiment> experimentsList = new ArrayList<>();
         for (Map.Entry<UUID, Experiment> entry : experiments.entrySet()) {
@@ -137,10 +141,21 @@ public class ExperimentManager
         return experimentsList;
     }
 
+    /**
+     * looks for specific experiment
+     * @param experimentId the id of that experiment to search
+     * @return the found experiment
+     */
     public Experiment query(UUID experimentId) {
         return experiments.get(experimentId);
     }
 
+    /**
+     * check to see if two strings match
+     * @param query what to look for
+     * @param source what to look in
+     * @return if a match was found
+     */
     private boolean queryMatch(String query, String source) {
         String[] queryTokens = query.toLowerCase().split("\\W");
         for (int j = 0; j < queryTokens.length; j++) {
@@ -150,8 +165,16 @@ public class ExperimentManager
         return false;
     }
 
+    /**
+     * get the current experiment
+     * @return the current experiment
+     */
     public Experiment getCurrentExperiment() { return currentExperiment; }
 
+    /**
+     * sets the current experiment
+     * @param experiment the current experiment to be updated
+     */
     public void setCurrentExperiment(Experiment experiment) { currentExperiment = experiment; }
 
     /**

@@ -8,7 +8,7 @@ package com.example.experiment_automata.CustomExceptions;
  *
  * Known Issue:
  *
- *      1. Might not be needed!
+ *      1. No longer in use, to be deleted!
  */
 public class IllegalExperimentException extends Exception
 {

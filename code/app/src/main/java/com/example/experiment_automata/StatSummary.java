@@ -5,7 +5,14 @@ import com.example.experiment_automata.trials.Trial;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
+/**
+ * Role/Pattern:
+ *     provides contract for stats
+ *
+ *  Known Issue:
+ *
+ *      1. None
+ */
 public interface StatSummary {
     /**
      * Gets the mean value of the trials.

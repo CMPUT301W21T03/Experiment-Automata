@@ -21,6 +21,19 @@ import com.example.experiment_automata.trials.Trial;
 
 import java.util.ArrayList;
 
+/**
+ * Role/Pattern:
+ *
+ *       This fragment class inflates the trial list fragment.
+ *       Also contains the trail array adapter.
+ *       This fragment contains a list of trials which can be ignored or included
+ *       in the stats computation.
+ *
+ * Known Issue:
+ *
+ *      1. None
+ */
+
 public class TrialsFragment extends Fragment {
     private ArrayList<Trial> trialsArrayList;
     private TrialArrayAdapter trialArrayAdapter;

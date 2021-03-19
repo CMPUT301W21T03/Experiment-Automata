@@ -1,5 +1,5 @@
 package com.example.experiment_automata.QRCode;
-//Bitmap conversion from ρяσѕρєя K,https://stackoverflow.com/questions/19337448/generate-qr-code-directly-into-imageview
+//Bitmap conversion from Râsẑrêâ K (original name in Cyrilic) K,https://stackoverflow.com/questions/19337448/generate-qr-code-directly-into-imageview
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -15,7 +15,7 @@ import com.google.zxing.qrcode.QRCodeWriter;
  *
  *  Known Issue:
  *
- *      1. None
+ *      1. The constructor is a string but will become uuid
  */
 public class QRCodeManager {
     //Header for custom QR codes

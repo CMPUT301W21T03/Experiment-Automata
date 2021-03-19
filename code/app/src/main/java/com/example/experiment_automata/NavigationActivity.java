@@ -57,7 +57,8 @@ import java.util.UUID;
  *
  *  Known Issue:
  *
- *      1. None
+ *      1. When using the search feature, creating multiple queries without pressing
+ *         the back button will result in a nesting of queries.
  */
 
 public class NavigationActivity extends AppCompatActivity implements

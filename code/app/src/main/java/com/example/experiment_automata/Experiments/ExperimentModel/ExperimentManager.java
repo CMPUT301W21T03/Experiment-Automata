@@ -20,6 +20,7 @@ public class ExperimentManager
 {
     private static HashMap<UUID, Experiment> experiments;
     private Experiment currentExperiment;
+    private String currentFragment;
 
 
     /**
@@ -251,4 +252,18 @@ public class ExperimentManager
     {
         return new ArrayList(experiments.values());
     }
+
+    /**
+     * Get the current fragment in case in the search screen
+     * @return
+     *  A string of the name of the last non-search fragment
+     */
+    public String getCurrentFragment() {return this.currentFragment;}
+
+    /**
+     * Set the current fragment in case someone does many searches in a row
+     * @param newFragment
+     *  A string for the name of the current non-search fragment
+     */
+    public void setCurrentFragment(String newFragment) {this.currentFragment = newFragment;}
 }

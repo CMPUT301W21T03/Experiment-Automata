@@ -210,19 +210,19 @@ public class NavigationActivity extends AppCompatActivity implements
                 bundle.putString("query", query);
                 switch (currentFragment.getArguments().getString("mode")) {
                     case "owned":
-                        bundle.putString("screen", "owned");
+                        experimentManager.setCurrentFragment("owned");
                         break;
 
                     case "published":
-                        bundle.putString("screen", "published");
+                        experimentManager.setCurrentFragment("published");
                         break;
 
                     case "subscribed":
-                        bundle.putString("screen", "subscribed");
+                        experimentManager.setCurrentFragment("subscribed");
                         break;
 
                     case "search":
-                        bundle.putString("screen", "search");
+                        Log.d("Nested Search", "Fix Later");
                         break;
 
                     default:

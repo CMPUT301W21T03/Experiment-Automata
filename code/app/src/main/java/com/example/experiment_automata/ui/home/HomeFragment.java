@@ -104,7 +104,7 @@ public class HomeFragment extends Fragment {
             case "search":
                 Log.d("Search Size", "" + experimentsArrayList.size());
                 String query = getArguments().getString("query");
-                switch (getArguments().getString("screen")) {
+                switch (parentActivity.experimentManager.getCurrentFragment()) {
                     case "owned":
                         experimentsArrayList.addAll(parentActivity.experimentManager
                                 .queryOwnedExperiments(query, parentActivity.loggedUser.getUserId()));

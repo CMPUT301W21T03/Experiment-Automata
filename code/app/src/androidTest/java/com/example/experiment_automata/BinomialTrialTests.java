@@ -13,13 +13,11 @@ package com.example.experiment_automata;
 
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
 import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentMaker;
 import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentType;
-import com.example.experiment_automata.ui.home.HomeFragment;
 import com.robotium.solo.Solo;
 
 import org.junit.Before;
@@ -29,8 +27,6 @@ import org.junit.Test;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -108,8 +104,7 @@ public class BinomialTrialTests {
         solo.clickOnText("Ok");
     }
 
-    private void addBinomalTrial(boolean click)
-    {
+    private void addBinomialTrial(boolean click) {
         solo.clickOnView(addExperimentButton);
         if(click) {
             solo.waitForText("Passed");
@@ -131,7 +126,7 @@ public class BinomialTrialTests {
         solo.clickOnText(testDes);
         // Adding 3 trial
         for (int i = 0; i < 3; i++) {
-            addBinomalTrial(i % 2 == 0);
+            addBinomialTrial(i % 2 == 0);
         }
         View qur = solo.getView(R.id.quartiles_text);
         String qur1 = ((TextView)qur).getText().toString();
@@ -147,8 +142,7 @@ public class BinomialTrialTests {
      * After finish adding some number of trials
      */
     @Test
-    public void testIntentIQRNumbersAppear()
-    {
+    public void testIntentIQRNumbersAppear() {
         Double medianTestValue = 1.000;
         Double meanTestValue = 1.000;
         String testDes = "Testing Intent";
@@ -156,7 +150,7 @@ public class BinomialTrialTests {
         solo.clickOnText(testDes);
         // Adding 4 trial
         for (int i = 0; i < 4; i++) {
-            addBinomalTrial(true);
+            addBinomialTrial(true);
         }
         String quertile = ((TextView)solo.getView(R.id.quartiles_value)).getText().toString();
         Double median = new Double(((TextView)solo.getView(R.id.median_value)).getText().toString());
@@ -174,12 +168,11 @@ public class BinomialTrialTests {
      * really compare graphs without overcomplicated results
      */
     @Test
-    public void testIntentChartHistogramDataDisplayed()
-    {
+    public void testIntentChartHistogramDataDisplayed() {
         String testDes = "Testing Intent";
         makeExperiment(testDes);
         solo.clickOnText(testDes);
-        addBinomalTrial(true);
+        addBinomialTrial(true);
         assertNotEquals("Chart data not displayed", true, solo.searchText("Histogram"));
     }
 
@@ -188,12 +181,11 @@ public class BinomialTrialTests {
      * really compare graphs without overcomplicated results
      */
     @Test
-    public void testIntentChartPlotDataDisplayed()
-    {
+    public void testIntentChartPlotDataDisplayed() {
         String testDes = "Testing Intent";
         makeExperiment(testDes);
         solo.clickOnText(testDes);
-        addBinomalTrial(true);
+        addBinomialTrial(true);
         assertNotEquals("Chart data not displayed", true, solo.searchText("Results"));
     }
 }

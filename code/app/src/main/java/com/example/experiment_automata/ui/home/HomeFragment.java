@@ -115,14 +115,12 @@ public class HomeFragment extends Fragment {
                         break;
                     case "subscribed":
                         experimentsArrayList.addAll(parentActivity.experimentManager
-                                .queryExperiments(parentActivity.loggedUser.getSubscriptions()));
+                                .queryExperiments(query, parentActivity.loggedUser.getSubscriptions()));
                         break;
                     case "search":
                         Log.d("uh oh", "search");
                         break;
                 }
-//                experimentsArrayList.addAll(parentActivity.experimentManager
-//                        .queryExperiments(getArguments().getString("query")));
                 break;
             default:
                 throw new IllegalArgumentException();

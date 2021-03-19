@@ -73,6 +73,11 @@ public class NavigationActivity extends AppCompatActivity implements
     public final User loggedUser = new User();
     public Experiment currentExperiment;
 
+    /**
+     * Method called when creating NavigationActivity
+     * @param savedInstanceState
+     *  A bundle with stored information if required
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +97,11 @@ public class NavigationActivity extends AppCompatActivity implements
         NavigationUI.setupWithNavController(navigationView, navController);
         FloatingActionButton addExperimentButton = findViewById(R.id.add_experiment_button);
         addExperimentButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Deal with the FAB when clicked
+             * @param view
+             *  The current view being used
+             */
             @Override
             public void onClick(View view) {
                 switch (currentScreen) {
@@ -165,6 +175,13 @@ public class NavigationActivity extends AppCompatActivity implements
         });
     }
 
+    /**
+     * Prepare search bar functionality
+     * @param menu
+     *  A menu to help create the object
+     * @return
+     *  A boolean based on success of creation
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -191,7 +208,6 @@ public class NavigationActivity extends AppCompatActivity implements
             public boolean onQueryTextSubmit(String query) {
                 Bundle bundle = new Bundle();
                 bundle.putString("query", query);
-                Log.d("Current Screen", currentFragment.getArguments().getString("mode"));
                 switch (currentFragment.getArguments().getString("mode")) {
                     case "owned":
                         bundle.putString("screen", "owned");
@@ -231,6 +247,11 @@ public class NavigationActivity extends AppCompatActivity implements
         return true;
     }
 
+    /**
+     * Deals with when a user navigates up in the application
+     * @return
+     * A boolean based on the success of the operation
+     */
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -238,6 +259,11 @@ public class NavigationActivity extends AppCompatActivity implements
                 || super.onSupportNavigateUp();
     }
 
+    /**
+     * Tells the application how to respond when OK is pressed in experiment creation
+     * @param experiment
+     *  Experiment to be added to the experiment manager
+     */
     @Override
     public void onOkPressed(Experiment experiment) {
 
@@ -257,6 +283,19 @@ public class NavigationActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * Edits an existing experiment with the information given
+     * @param experimentDescription
+     *  New description of the experiment
+     * @param experimentTrials
+     *  New minimum trials for this experiment
+     * @param experimentLocation
+     *  Boolean for if this experiment requires a location
+     * @param experimentNewResults
+     *  Boolean for if this experiment accepts new results
+     * @param currentExperiment
+     *  The current experiment being modified
+     */
     @Override
     // todo: this functionality should be moved into something else in the future
     public void onOKPressedEdit(String experimentDescription, int experimentTrials,
@@ -269,20 +308,39 @@ public class NavigationActivity extends AppCompatActivity implements
         ((NavExperimentDetailsFragment) currentFragment).updateScreen();
     }
 
-
+    /**
+     * Sets the current screen variable
+     * @param currentScreen
+     *  The screen to set as currentScreen
+     */
     public void setCurrentScreen(Screen currentScreen) {
         this.currentScreen = currentScreen;
     }
 
+    /**
+     * Sets the current fragment variable
+     * @param currentFragment
+     *  The fragment to set as currentFragment
+     */
     public void setCurrentFragment(Fragment currentFragment) {
         this.currentFragment = currentFragment;
     }
 
+    /**
+     * Gives the singleton Experiment Manager used throughout
+     * @return
+     */
     public ExperimentManager getExperimentManager() {
         return experimentManager;
     }
 
-
+    /**
+     * Creates a question from QuestionDialog and adds it to QuestionManager
+     * @param question
+     *  The message of the question
+     * @param experimentId
+     *  The ID of the experiment it's related to.
+     */
     @Override
     public void onOkPressedQuestion(String question, UUID experimentId) {
         Question newQuestion = new Question(question, loggedUser.getUserId(), experimentId);
@@ -294,6 +352,13 @@ public class NavigationActivity extends AppCompatActivity implements
         Log.d("current screen", currentScreen + "");
     }
 
+    /**
+     * Creates a reply from the QuestionDialog and adds it to QuestionManager
+     * @param reply
+     *  The message of the reply
+     * @param questionId
+     *  The ID of the associated Question
+     */
     @Override
     public void onOkPressedReply(String reply, UUID questionId) {
         Reply newReply = new Reply(reply, questionId);

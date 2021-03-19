@@ -24,8 +24,10 @@ class ExperimentManager{
    + getOwnedExperiments(ownerID: UUID): ArrayList<Experiment> 
    + query(experimentID: UUID): Experiment 
    + queryExperiments(query: String): ArrayList<Experiment> 
-   + queryExperiments(experimentIds: Collection<UUID>): ArrayList<Experiment> 
-   + queryPublishedExperiments(): ArrayList<Experiment>
+   + queryExperiments(experimentIds: Collection<UUID>): ArrayList<Experiment>
+   + queryExperiments(query: String, experimentIds: Collection<UUID>): ArrayList<Experiment>
+   + queryOwnedExperiments(query: String, ownerId: UUID): ArrayList<Experiment> 
+   + getPublishedExperiments(): ArrayList<Experiment>
    + getAtUUIDDescription(experimentUUID: UUID): Experiment
    + getAllExperiments(): ArrayList<Experiment> 
    - queryMatch(query: String, source: String): Boolean

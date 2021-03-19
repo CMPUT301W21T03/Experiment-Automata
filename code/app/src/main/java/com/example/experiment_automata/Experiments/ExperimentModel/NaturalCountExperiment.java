@@ -234,7 +234,7 @@ public class NaturalCountExperiment extends Experiment {
 
             quartiles[0] = getMedian(valuesSmall);
 
-            quartiles[2] = getMedianList(valuesLarge);
+            quartiles[2] = getMedian(valuesLarge);
         } else if (size == 3) {
             ArrayList<Integer> values = new ArrayList<>();
             for (NaturalCountTrial trial : results) {

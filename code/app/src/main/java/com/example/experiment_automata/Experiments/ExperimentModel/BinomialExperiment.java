@@ -250,9 +250,9 @@ public class BinomialExperiment extends Experiment {
                 valuesLarge.add(values.get(i));
             }
 
-            quartiles[0] = getMedianList(valuesSmall);
+            quartiles[0] = getMedian(valuesSmall);
 
-            quartiles[2] = getMedianList(valuesLarge);
+            quartiles[2] = getMedian(valuesLarge);
         } else if (size == 3) {
             // Sort all the values in results
             ArrayList<Integer> values = new ArrayList<>();

@@ -233,9 +233,9 @@ public class MeasurementExperiment extends Experiment {
                 valuesLarge.add(values.get(i));
             }
 
-            quartiles[0] = getMedianList(valuesSmall);
+            quartiles[0] = getMedian(valuesSmall);
 
-            quartiles[2] = getMedianList(valuesLarge);
+            quartiles[2] = getMedian(valuesLarge);
         } else if (size == 3) {
             ArrayList<Float> values = new ArrayList<>();
             for (MeasurementTrial trial : results) {

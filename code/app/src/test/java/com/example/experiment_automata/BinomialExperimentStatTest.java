@@ -17,14 +17,24 @@ public class BinomialExperimentStatTest {
     BinomialExperiment binomialExperiment=new BinomialExperiment("This is a test", 5, false, true, ownerId);
     UUID id = UUID.randomUUID();
     UUID id2 = UUID.randomUUID();
+    UUID id3 = UUID.randomUUID();
+    UUID id4 = UUID.randomUUID();
 
     BinomialTrial successTrial = new BinomialTrial(id, true);
 
-    BinomialTrial failureTrial = new BinomialTrial(id, false);
+    BinomialTrial failureTrial = new BinomialTrial(id2, false);
+
+    BinomialTrial ignoreSuccess = new BinomialTrial(id3, true);
+
+    BinomialTrial ignoreFailure = new BinomialTrial(id4, false);
+
+
 
     @Before
     public void setup() {
         // Reset the binomial experiment
+        successTrial = new BinomialTrial(id, true);
+        failureTrial = new BinomialTrial(id, false);
         binomialExperiment = new BinomialExperiment("This is a test", 5, false, true, ownerId);
     }
 
@@ -215,6 +225,89 @@ public class BinomialExperimentStatTest {
         assertEquals(quartiles[0], 0) ;
         assertEquals(quartiles[1], 0);
         assertEquals(quartiles[2], 1);
+
+    }
+
+    @Test
+    public void testIgnore(){
+
+        ignoreSuccess.setIgnore(true);
+        ignoreFailure.setIgnore(true);
+
+        binomialExperiment.recordTrial(successTrial);
+        binomialExperiment.recordTrial(failureTrial);
+
+        binomialExperiment.recordTrial(ignoreSuccess);
+
+        // Shouldn't have changed
+        assertEquals(binomialExperiment.getMean(), 0.5);
+
+
+        binomialExperiment.recordTrial(successTrial);
+        // Within a reasonable margin of error for this one with a non-terminating decimal expansion
+        assertTrue(marginOfError(binomialExperiment.getMean(), (float) 0.6666667));
+
+        binomialExperiment.recordTrial(successTrial);
+        assertTrue(marginOfError(binomialExperiment.getMean(), (float) 0.75));
+
+        // 3/5 successes
+
+        binomialExperiment.recordTrial(ignoreFailure);
+
+        // Should not have changed from above
+        assertTrue(marginOfError(binomialExperiment.getMean(), (float) 0.75));
+
+        binomialExperiment.recordTrial(failureTrial);
+        assertTrue(marginOfError(binomialExperiment.getMean(), (float) 0.6));
+
+        // 3/6 successes
+
+        binomialExperiment.recordTrial(failureTrial);
+
+
+        // 4/7 successes
+
+        binomialExperiment.recordTrial(ignoreSuccess);
+        assertTrue(marginOfError(binomialExperiment.getMean(), (float) 0.5));
+
+        binomialExperiment.recordTrial(successTrial);
+        // Within a reasonable margin of error
+        assertTrue(marginOfError(binomialExperiment.getMean(), (float) 0.57142857));
+    }
+
+    @Test
+    public void testIgnore2(){
+        // True values computed from https://www.calculatorsoup.com/calculators/statistics/quartile-calculator.php
+
+        ignoreSuccess.setIgnore(true);
+        ignoreFailure.setIgnore(true);
+
+        binomialExperiment.recordTrial(successTrial);
+
+        binomialExperiment.recordTrial(failureTrial);
+
+        binomialExperiment.recordTrial(successTrial);
+
+        binomialExperiment.recordTrial(failureTrial);
+
+        binomialExperiment.recordTrial(successTrial);
+
+        binomialExperiment.recordTrial(successTrial);
+
+        // These should all be ignored
+        binomialExperiment.recordTrial(ignoreSuccess);
+
+        binomialExperiment.recordTrial(ignoreFailure);
+
+        binomialExperiment.recordTrial(ignoreSuccess);
+        // Data is: 0, 0, 1, 1, 1, 1 (should be the same as in the quartiles test)
+
+        float[] quartiles = binomialExperiment.getQuartiles();
+
+        assertEquals(quartiles[0], 0);
+        assertEquals(quartiles[1], 1);
+        assertEquals(quartiles[2], 1);
+
 
     }
 }

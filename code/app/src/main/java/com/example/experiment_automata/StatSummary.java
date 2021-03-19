@@ -3,6 +3,7 @@ package com.example.experiment_automata;
 import com.example.experiment_automata.trials.BinomialTrial;
 import com.example.experiment_automata.trials.Trial;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public interface StatSummary {
@@ -33,4 +34,5 @@ public interface StatSummary {
      *  the quartiles
      */
     public float[] getQuartiles();
+
 }

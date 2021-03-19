@@ -102,10 +102,9 @@ public class HomeFragment extends Fragment {
                         .queryExperiments(parentActivity.loggedUser.getSubscriptions()));
                 break;
             case "search":
-                Log.d("Search Size", "" + experimentsArrayList.size());
                 String query = getArguments().getString("query");
                 experimentsArrayList.addAll(parentActivity.experimentManager
-                        .queryPublishedExperiments(query));
+                        .queryExperiments(query));
                 break;
             default:
                 throw new IllegalArgumentException();

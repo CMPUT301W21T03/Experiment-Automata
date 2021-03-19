@@ -16,7 +16,7 @@ public class ProfileViewModel extends ViewModel {
     private MutableLiveData<String> phone;
 
     public ProfileViewModel() {
-        user = new User();
+        //user = new User();
         username = new MutableLiveData<>();
 //        username.setValue(user.getInfo().getName());
         email = new MutableLiveData<>();

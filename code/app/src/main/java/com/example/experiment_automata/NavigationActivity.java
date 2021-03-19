@@ -2,21 +2,46 @@ package com.example.experiment_automata;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.SearchView;
 
 import com.example.experiment_automata.ExperimentFragments.AddExperimentFragment;
+import com.example.experiment_automata.Experiments.ExperimentModel.BinomialExperiment;
+import com.example.experiment_automata.Experiments.ExperimentModel.CountExperiment;
 import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentManager;
 import com.example.experiment_automata.ExperimentFragments.NavExperimentDetailsFragment;
 import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
+
+import com.example.experiment_automata.QuestionUI.AddQuestionFragment;
+import com.example.experiment_automata.QuestionUI.QuestionDisplay;
+import com.example.experiment_automata.QuestionsModel.Question;
+import com.example.experiment_automata.QuestionsModel.QuestionManager;
+import com.example.experiment_automata.QuestionsModel.Reply;
+
+import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentType;
+import com.example.experiment_automata.Experiments.ExperimentModel.MeasurementExperiment;
+import com.example.experiment_automata.Experiments.ExperimentModel.NaturalCountExperiment;
+
 import com.example.experiment_automata.UserInformation.User;
+import com.example.experiment_automata.trials.BinomialTrial;
+import com.example.experiment_automata.trials.CountTrial;
+import com.example.experiment_automata.trials.MeasurementTrial;
+import com.example.experiment_automata.trials.NaturalCountTrial;
 import com.example.experiment_automata.ui.Screen;
 import com.example.experiment_automata.ui.home.HomeFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -25,6 +50,9 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import java.util.UUID;
+import java.util.prefs.Preferences;
 
 /**
  * Role/Pattern:
@@ -35,28 +63,27 @@ import androidx.appcompat.widget.Toolbar;
  *      1. None
  */
 
-public class NavigationActivity extends AppCompatActivity implements AddExperimentFragment.OnFragmentInteractionListener {
+public class NavigationActivity extends AppCompatActivity implements
+        AddExperimentFragment.OnFragmentInteractionListener,
+        AddQuestionFragment.OnFragmentInteractionListener {
 
     private AppBarConfiguration mAppBarConfiguration;
     public final ExperimentManager experimentManager = new ExperimentManager();
+    public QuestionManager questionManager = QuestionManager.getInstance();
 
     private Screen currentScreen;
     public Fragment currentFragment;
-    public final User loggedUser = new User();
+    public  User loggedUser;
+    public Experiment currentExperiment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences preferences  = getSharedPreferences("experiment_automata", MODE_PRIVATE);
+        loggedUser = new User(preferences);
         setContentView(R.layout.activity_navigation);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton addExperimentButton = findViewById(R.id.add_experiment_button);
-        addExperimentButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new AddExperimentFragment().show(getSupportFragmentManager(), "ADD_EXPERIMENT");
-            }
-        });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -68,6 +95,79 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        FloatingActionButton addExperimentButton = findViewById(R.id.add_experiment_button);
+        addExperimentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (currentScreen) {
+                    case ExperimentList:
+                        new AddExperimentFragment().show(getSupportFragmentManager(), "ADD_EXPERIMENT");
+                        break;
+                    case ExperimentDetails:
+                        switch (experimentManager.getCurrentExperiment().getType()) {
+                            case Count:
+                                navController.navigate(R.id.nav_add_count_trial);
+                                break;
+                            case NaturalCount:
+                                navController.navigate(R.id.nav_add_natural_count_trial);
+                                break;
+                            case Binomial:
+                                navController.navigate(R.id.nav_add_binomial_trial);
+                                break;
+                            case Measurement:
+                                navController.navigate(R.id.nav_add_measurement_trial);
+                                break;
+                        }
+                        currentScreen = Screen.Trial;
+                        break;
+                    case Trial:
+                        Experiment experiment = experimentManager.getCurrentExperiment();
+                        Snackbar snackbar = Snackbar.make(view, "No value was given", Snackbar.LENGTH_SHORT);
+                        try {
+                            switch (experiment.getType()) {
+                                case Count:
+                                    CountExperiment countExperiment = (CountExperiment) experiment;
+                                    CountTrial countTrial = new CountTrial(loggedUser.getUserId());
+                                    countExperiment.recordTrial(countTrial);
+                                    break;
+                                case NaturalCount:
+                                    NaturalCountExperiment naturalCountExperiment = (NaturalCountExperiment) experiment;
+                                    // get value
+                                    EditText naturalCountInput = (EditText) findViewById(R.id.add_natural_count_value);
+                                    final int naturalCount = Integer.parseInt(naturalCountInput.getText().toString());
+                                    NaturalCountTrial naturalCountTrial = new NaturalCountTrial(loggedUser.getUserId(), naturalCount);
+                                    naturalCountExperiment.recordTrial(naturalCountTrial);
+                                    break;
+                                case Binomial:
+                                    BinomialExperiment binomialExperiment = (BinomialExperiment) experiment;
+                                    // get value
+                                    CheckBox passedInput = (CheckBox) findViewById(R.id.add_binomial_value);
+                                    final boolean passed = passedInput.isChecked();
+                                    BinomialTrial binomialTrial = new BinomialTrial(loggedUser.getUserId(), passed);
+                                    binomialExperiment.recordTrial(binomialTrial);
+                                    break;
+                                case Measurement:
+                                    MeasurementExperiment measurementExperiment = (MeasurementExperiment) experiment;
+                                    // get value
+                                    EditText measurementInput = (EditText) findViewById(R.id.add_measurement_value);
+                                    final float measurement = Float.parseFloat(measurementInput.getText().toString());
+                                    MeasurementTrial measurementTrial = new MeasurementTrial(loggedUser.getUserId(), measurement);
+                                    measurementExperiment.recordTrial(measurementTrial);
+                                    break;
+                            }
+                            currentScreen = Screen.ExperimentDetails;
+                            navController.navigateUp();
+                        } catch (NumberFormatException ignored) {
+                            // if no value was given
+                            snackbar.show();
+                        }
+                        break;
+                    case Questions:
+                        ((QuestionDisplay) currentFragment).makeQuestion();
+                        break;
+                }
+            }
+        });
     }
 
     @Override
@@ -124,7 +224,17 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
 
     @Override
     public void onOkPressed(Experiment experiment) {
-        experimentManager.add(experiment.getExperimentId(), experiment);
+
+        boolean added = false;
+        while (!added) {
+            try {
+                experimentManager.add(experiment.getExperimentId(), experiment);
+                added = true;
+            } catch (IllegalArgumentException badUUID) {
+                experiment.makeNewUUID();
+            }
+        }
+
         loggedUser.addExperiment(experiment.getExperimentId());
         if (currentScreen == Screen.ExperimentList) {
             ((HomeFragment) currentFragment).updateScreen();
@@ -132,6 +242,7 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
     }
 
     @Override
+    // todo: this functionality should be moved into something else in the future
     public void onOKPressedEdit(String experimentDescription, int experimentTrials,
                          boolean experimentLocation, boolean experimentNewResults,
                          Experiment currentExperiment) {
@@ -142,6 +253,7 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
         ((NavExperimentDetailsFragment) currentFragment).updateScreen();
     }
 
+
     public void setCurrentScreen(Screen currentScreen) {
         this.currentScreen = currentScreen;
     }
@@ -150,9 +262,29 @@ public class NavigationActivity extends AppCompatActivity implements AddExperime
         this.currentFragment = currentFragment;
     }
 
-    public ExperimentManager getExperimentManager()
-    {
+    public ExperimentManager getExperimentManager() {
         return experimentManager;
     }
 
+
+    @Override
+    public void onOkPressedQuestion(String question, UUID experimentId) {
+        Question newQuestion = new Question(question, loggedUser.getUserId(), experimentId);
+        Log.d("question id", newQuestion.getExperimentId().toString());
+        questionManager.addQuestion(experimentId, newQuestion);
+
+        ((QuestionDisplay)currentFragment).updateQuestionsList();
+
+        Log.d("current screen", currentScreen + "");
+    }
+
+    @Override
+    public void onOkPressedReply(String reply, UUID questionId) {
+        Reply newReply = new Reply(reply, questionId);
+        questionManager.addReply(questionId, newReply);
+
+        ((QuestionDisplay)currentFragment).updateQuestionsList();
+        Log.d("Reply is ", reply);
+        Log.d("current screen", currentScreen + "");
+    }
 }

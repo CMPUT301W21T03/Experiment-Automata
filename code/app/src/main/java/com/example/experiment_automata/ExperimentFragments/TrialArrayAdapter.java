@@ -21,6 +21,7 @@ import com.example.experiment_automata.trials.Trial;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.concurrent.Callable;
 
 public class TrialArrayAdapter extends ArrayAdapter<Trial> {
     // Syntax inspired by Abdul Ali Bangash, "Lab 3 Instructions - Custom List",
@@ -28,6 +29,7 @@ public class TrialArrayAdapter extends ArrayAdapter<Trial> {
 
     private ArrayList<Trial> trials;
     private Context context;
+    private NavExperimentDetailsFragment parentFragment;
 
     /**
      * Constructor takes in an array list of experiments and a context to set the attributes properly
@@ -36,10 +38,11 @@ public class TrialArrayAdapter extends ArrayAdapter<Trial> {
      * @param trialList
      *  the list of the trials to display
      */
-    public TrialArrayAdapter(Context context, ArrayList<Trial> trialList){
+    public TrialArrayAdapter(Context context, ArrayList<Trial> trialList, NavExperimentDetailsFragment parentFragment){
         super(context, 0, trialList);
         this.trials = trialList;
         this.context = context;
+        this.parentFragment = parentFragment;
     }
 
     /**
@@ -86,6 +89,7 @@ public class TrialArrayAdapter extends ArrayAdapter<Trial> {
             public void onClick(View v) {
                 boolean ignore = !((CheckBox) v).isChecked();
                 trial.setIgnore(ignore);
+                parentFragment.updateScreen();
             }
         });
 

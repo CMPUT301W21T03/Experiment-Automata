@@ -71,9 +71,11 @@ public class NaturalCountExperiment extends Experiment {
         // Get range of values (min/max)
         int min = Integer.MAX_VALUE, max = 0;
         for (NaturalCountTrial trial : results) {
-            int value = trial.getResult();
-            if (value > max) max = value;
-            if (value < min) min = value;
+            if (!trial.isIgnored()) {
+                int value = trial.getResult();
+                if (value > max) max = value;
+                if (value < min) min = value;
+            }
         }
         int range = min + max;
         // Get data range counts into bins
@@ -81,10 +83,12 @@ public class NaturalCountExperiment extends Experiment {
         int[] bins = new int[amountOfBins];
         for (int i = 0; i < amountOfBins; i++) { bins[i] = 0; }
         for (NaturalCountTrial trial : results) {
-            float value = trial.getResult();
-            int bin = (int) ((value - min) / range * amountOfBins);
-            if (bin == amountOfBins) bin--;
-            bins[bin]++;
+            if (!trial.isIgnored()) {
+                float value = trial.getResult();
+                int bin = (int) ((value - min) / range * amountOfBins);
+                if (bin == amountOfBins) bin--;
+                bins[bin]++;
+            }
         }
         // Convert bins to entries
         List<BarEntry> data = new ArrayList<>();
@@ -104,11 +108,13 @@ public class NaturalCountExperiment extends Experiment {
         boolean first = true;
         long offset = 0;
         for (NaturalCountTrial trial : results ) {
-            if (first) {
-                first = false;
-                offset = trial.getDate().getTime();
+            if (!trial.isIgnored()) {
+                if (first) {
+                    first = false;
+                    offset = trial.getDate().getTime();
+                }
+                data.add(new Entry(trial.getDate().getTime() - offset, trial.getResult()));
             }
-            data.add(new Entry(trial.getDate().getTime() - offset, trial.getResult()));
         }
         return data;
     }
@@ -120,13 +126,13 @@ public class NaturalCountExperiment extends Experiment {
      */
     public float getMean() {
         int sum = 0;
-        int numTrials = 0;
         for (NaturalCountTrial trial : results) {
-            sum += trial.getResult();
-            numTrials += 1;
+            if (!trial.isIgnored()) {
+                sum += trial.getResult();
+            }
         }
         // Return sum of all the results divided by the number of trials
-        return (float) sum/numTrials;
+        return (float) sum / getSize();
     }
 
     /**
@@ -137,7 +143,9 @@ public class NaturalCountExperiment extends Experiment {
     public float getMedian() {
         ArrayList<Integer> values = new ArrayList<>();
         for (NaturalCountTrial trial : results) {
-            values.add(trial.getResult());
+            if (!trial.isIgnored()) {
+                values.add(trial.getResult());
+            }
         }
         Collections.sort(values);
         int size = values.size();
@@ -178,9 +186,11 @@ public class NaturalCountExperiment extends Experiment {
     public float getStdev() {
         float sum = 0;
         for (NaturalCountTrial trial : results) {
-            sum += Math.pow(trial.getResult() - getMean(), 2);
+            if (!trial.isIgnored()) {
+                sum += Math.pow(trial.getResult() - getMean(), 2);
+            }
         }
-        return (float) Math.sqrt(sum / results.size());
+        return (float) Math.sqrt(sum / getSize());
     }
 
     /**
@@ -190,45 +200,47 @@ public class NaturalCountExperiment extends Experiment {
      */
     public float[] getQuartiles() {
         float[] quartiles = new float[3];
-        quartiles[1]=getMedian();
+        int size = getSize();
+        quartiles[1] = getMedian();
         // Can only compute other quartiles if there's at least 4 data points
-        if(results.size() >= 4){
+        if (size >= 4) {
             // Sort all the values in results
             ArrayList<Integer> values = new ArrayList<>();
             for (NaturalCountTrial trial : results) {
-                values.add(trial.getResult());
+                if (!trial.isIgnored()) {
+                    values.add(trial.getResult());
+                }
             }
             Collections.sort(values);
             int highPoint;
             // If we have an array of size 5, then we want to find the median of (0 to 1) and (3 to 4)
             // If we have an array of size 4, then we want to find the median of (0 to 1) and (2 to 3)
-            int lowPoint = results.size()/2-1;
-            if(results.size()%2 == 0 ){
+            int lowPoint = results.size() / 2 - 1;
+            if (results.size() % 2 == 0 ) {
                 highPoint = lowPoint+1;
-            }
-            else{
+            } else{
                 highPoint = lowPoint+2;
             }
 
             ArrayList<Integer> valuesSmall = new ArrayList<>();
             ArrayList<Integer> valuesLarge = new ArrayList<>();
-            for(int i = 0; i <= lowPoint; i++){
+            for (int i = 0; i <= lowPoint; i++) {
                 valuesSmall.add(values.get(i));
             }
 
-            for(int i=highPoint; i<values.size(); i++){
+            for (int i = highPoint; i <  values.size(); i++){
                 valuesLarge.add(values.get(i));
             }
 
             quartiles[0] = getMedianList(valuesSmall);
 
             quartiles[2] = getMedianList(valuesLarge);
-        }
-
-        else if(results.size() == 3){
+        } else if (size == 3) {
             ArrayList<Integer> values = new ArrayList<>();
             for (NaturalCountTrial trial : results) {
-                values.add(trial.getResult());
+                if (!trial.isIgnored()) {
+                    values.add(trial.getResult());
+                }
             }
             Collections.sort(values);
 
@@ -236,9 +248,7 @@ public class NaturalCountExperiment extends Experiment {
             quartiles[1] = values.get(1);
             quartiles[2] = values.get(2);
         }
-
         return quartiles;
-
     }
 
     /**
@@ -246,7 +256,13 @@ public class NaturalCountExperiment extends Experiment {
      * @return size of the experiment
      */
     public Integer getSize(){
-        return results.size();
+        int size = 0;
+        for (Trial trial : results) {
+            if (!trial.isIgnored()) {
+                size++;
+            }
+        }
+        return size;
     }
 
     public Collection<NaturalCountTrial> getTrials() { return results; }

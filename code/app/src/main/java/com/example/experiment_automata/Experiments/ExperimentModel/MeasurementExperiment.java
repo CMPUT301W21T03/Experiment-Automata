@@ -71,9 +71,11 @@ public class MeasurementExperiment extends Experiment {
         // Get range of values (min/max)
         float min = Float.POSITIVE_INFINITY, max = Float.NEGATIVE_INFINITY;
         for (MeasurementTrial trial: results) {
-            float value = trial.getResult();
-            if (value > max) max = value;
-            if (value < min) min = value;
+            if (!trial.isIgnored()) {
+                float value = trial.getResult();
+                if (value > max) max = value;
+                if (value < min) min = value;
+            }
         }
         float range = min + max;
         // Get data range counts into bins
@@ -81,10 +83,12 @@ public class MeasurementExperiment extends Experiment {
         int[] bins = new int[amountOfBins];
         for (int i = 0; i < amountOfBins; i++) { bins[i] = 0; }
         for (MeasurementTrial trial: results) {
-            float value = trial.getResult();
-            int bin = (int) ((value - min) / range * amountOfBins);
-            if (bin == amountOfBins) bin--;
-            bins[bin]++;
+            if (!trial.isIgnored()) {
+                float value = trial.getResult();
+                int bin = (int) ((value - min) / range * amountOfBins);
+                if (bin == amountOfBins) bin--;
+                bins[bin]++;
+            }
         }
         // Convert bins to entries
         List<BarEntry> data = new ArrayList<>();
@@ -104,11 +108,13 @@ public class MeasurementExperiment extends Experiment {
         boolean first = true;
         long offset = 0;
         for (MeasurementTrial trial : results ) {
-            if (first) {
-                first = false;
-                offset = trial.getDate().getTime();
+            if (!trial.isIgnored()) {
+                if (first) {
+                    first = false;
+                    offset = trial.getDate().getTime();
+                }
+                data.add(new Entry(trial.getDate().getTime() - offset, trial.getResult()));
             }
-            data.add(new Entry(trial.getDate().getTime() - offset, trial.getResult()));
         }
         return data;
     }
@@ -120,13 +126,13 @@ public class MeasurementExperiment extends Experiment {
      */
     public float getMean() {
         float sum = 0;
-        int numTrials = 0;
         for (MeasurementTrial trial : results) {
-            sum += trial.getResult();
-            numTrials += 1;
+            if (!trial.isIgnored()) {
+                sum += trial.getResult();
+            }
         }
         // Return sum of all the results divided by the number of trials
-        return (float) sum/numTrials;
+        return (float) sum / getSize();
     }
 
     /**
@@ -137,7 +143,9 @@ public class MeasurementExperiment extends Experiment {
     public float getMedian() {
         ArrayList<Float> values = new ArrayList<>();
         for (MeasurementTrial trial : results) {
-            values.add(trial.getResult());
+            if (!trial.isIgnored()) {
+                values.add(trial.getResult());
+            }
         }
         Collections.sort(values);
         int size = values.size();
@@ -179,9 +187,11 @@ public class MeasurementExperiment extends Experiment {
     public float getStdev() {
         float sum = 0;
         for (MeasurementTrial trial : results) {
-            sum += Math.pow(trial.getResult() - getMean(), 2);
+            if (!trial.isIgnored()) {
+                sum += Math.pow(trial.getResult() - getMean(), 2);
+            }
         }
-        return (float) Math.sqrt(sum / results.size());
+        return (float) Math.sqrt(sum / getSize());
     }
 
     /**
@@ -191,44 +201,47 @@ public class MeasurementExperiment extends Experiment {
      */
     public float[] getQuartiles() {
         float[] quartiles = new float[3];
-        quartiles[1]=getMedian();
+        int size = getSize();
+        quartiles[1] = getMedian();
         // Can only compute other quartiles if there's at least 4 data points
-        if(results.size() >= 4){
+        if (size >= 4) {
             // Sort all the values in results
             ArrayList<Float> values = new ArrayList<>();
             for (MeasurementTrial trial : results) {
-                values.add(trial.getResult());
+                if (!trial.isIgnored()) {
+                    values.add(trial.getResult());
+                }
             }
             Collections.sort(values);
             int highPoint;
             // If we have an array of size 5, then we want to find the median of (0 to 1) and (3 to 4)
             // If we have an array of size 4, then we want to find the median of (0 to 1) and (2 to 3)
-            int lowPoint = results.size()/2-1;
-            if(results.size()%2 == 0 ){
-                highPoint = lowPoint+1;
-            }
-            else{
-                highPoint = lowPoint+2;
+            int lowPoint = results.size() / 2 - 1;
+            if (size % 2 == 0) {
+                highPoint = lowPoint + 1;
+            } else {
+                highPoint = lowPoint + 2;
             }
 
             ArrayList<Float> valuesSmall = new ArrayList<>();
             ArrayList<Float> valuesLarge = new ArrayList<>();
-            for(int i = 0; i <= lowPoint; i++){
+            for (int i = 0; i <= lowPoint; i++){
                 valuesSmall.add(values.get(i));
             }
 
-            for(int i=highPoint; i<values.size(); i++){
+            for (int i = highPoint; i < values.size(); i++){
                 valuesLarge.add(values.get(i));
             }
 
-            quartiles[0]=getMedianList(valuesSmall);
+            quartiles[0] = getMedianList(valuesSmall);
 
-            quartiles[2]=getMedianList(valuesLarge);
-        }
-        else if(results.size() == 3){
+            quartiles[2] = getMedianList(valuesLarge);
+        } else if (size == 3) {
             ArrayList<Float> values = new ArrayList<>();
             for (MeasurementTrial trial : results) {
-                values.add(trial.getResult());
+                if (!trial.isIgnored()) {
+                    values.add(trial.getResult());
+                }
             }
             Collections.sort(values);
 
@@ -236,9 +249,7 @@ public class MeasurementExperiment extends Experiment {
             quartiles[1] = values.get(1);
             quartiles[2] = values.get(2);
         }
-
         return quartiles;
-
     }
 
     /**
@@ -246,7 +257,13 @@ public class MeasurementExperiment extends Experiment {
      * @return size of the experiment
      */
     public Integer getSize(){
-        return results.size();
+        int size = 0;
+        for (Trial trial : results) {
+            if (!trial.isIgnored()) {
+                size++;
+            }
+        }
+        return size;
     }
 
     public Collection<MeasurementTrial> getTrials() { return results; }

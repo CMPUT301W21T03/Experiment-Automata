@@ -39,7 +39,7 @@ public class TrialsFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_trials, container, false);
         ListView trialList = (ListView) root.findViewById(R.id.trial_list);
         trialsArrayList = new ArrayList<>();
-        trialArrayAdapter = new TrialArrayAdapter(getActivity(), trialsArrayList);
+        trialArrayAdapter = new TrialArrayAdapter(getActivity(), trialsArrayList, (NavExperimentDetailsFragment) getParentFragment());
         trialList.setAdapter(trialArrayAdapter);
         return root;
     }

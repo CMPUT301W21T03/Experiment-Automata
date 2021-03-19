@@ -3,6 +3,9 @@ package com.example.experiment_automata.ui.profile;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import com.example.experiment_automata.UserInformation.User;
+
+import java.util.UUID;
 /**
  * Role/Pattern:
  *     Test fragment that might be removed at some point in the future.
@@ -11,16 +14,34 @@ import androidx.lifecycle.ViewModel;
  *
  *      1. Not in use might be removed
  */
+
+
 public class ProfileViewModel extends ViewModel {
 
-    private MutableLiveData<String> mText;
+    private User user;
+    private MutableLiveData<String> username;
+    private MutableLiveData<String> email;
+    private MutableLiveData<String> phone;
 
     public ProfileViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is profile fragment");
+        //user = new User();
+        username = new MutableLiveData<>();
+//        username.setValue(user.getInfo().getName());
+        email = new MutableLiveData<>();
+//        email.setValue(user.getInfo().getPhone());
+        phone = new MutableLiveData<>();
+//        phone.setValue(user.getInfo().getEmail());
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public LiveData<String> getName() {
+        return username;
+    }
+
+    public LiveData<String> getEmail() {
+        return email;
+    }
+
+    public LiveData<String> getPhone() {
+        return phone;
     }
 }

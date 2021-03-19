@@ -16,16 +16,19 @@ class User {
 
 
 class ExperimentManager{
-   - {static} experiments: HashMap<UUID, Experiment>
-   - currentExperiment: Experiment
+   - {static} experiments: HashMap<UUID, Experiment> 
+   - currentExperiment: Experiment 
 
    + delete(id: UUID)
    + add(id: UUID, experiment: Experiment)
-   + getOwnedExperiments(ownerID: UUID): ArrayList<Experiment>
-   + query(experimentID: UUID): Experiment
-   + queryExperiments(query: String): ArrayList<Experiment>
+   + getOwnedExperiments(ownerID: UUID): ArrayList<Experiment> 
+   + query(experimentID: UUID): Experiment 
+   + queryExperiments(query: String): ArrayList<Experiment> 
    + queryExperiments(experimentIds: Collection<UUID>): ArrayList<Experiment>
-   + queryPublishedExperiments(): ArrayList<Experiment>
+   + queryExperiments(query: String, experimentIds: Collection<UUID>): ArrayList<Experiment>
+   + queryOwnedExperiments(query: String, ownerId: UUID): ArrayList<Experiment>
+   + queryPublishedExperiments(query: String): ArrayList<Experiment>
+   + getPublishedExperiments(): ArrayList<Experiment>
    + getAtUUIDDescription(experimentUUID: UUID): Experiment
    + getAllExperiments(): ArrayList<Experiment> 
    - queryMatch(query: String, source: String): Boolean
@@ -195,6 +198,8 @@ class ContactInformation {
     -name: String
     -email: String
     -phone: String
+    -editable: Boolean
+    -preferences: SharePreferences
 }
 
 class SearchController {

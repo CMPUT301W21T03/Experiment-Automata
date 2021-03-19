@@ -31,6 +31,7 @@ import static android.content.Context.MODE_PRIVATE;
  *      1. None
  */
 public class User {
+    private static String DEFAULT_UUID_STRING = "00000000-0000-0000-0000-000000000000";//move this to a constants class later
     private static final String TAG = "User";
     private UUID userId;//changed from int to UUID
     private ContactInformation info;
@@ -148,5 +149,4 @@ public class User {
      * @param experimentId
      */
     public void addExperiment(UUID experimentId) { ownedExperiments.add(experimentId); }
-
 }

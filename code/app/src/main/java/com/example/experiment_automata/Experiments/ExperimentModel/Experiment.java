@@ -1,5 +1,7 @@
 package com.example.experiment_automata.Experiments.ExperimentModel;
 
+import com.example.experiment_automata.Graphable;
+import com.example.experiment_automata.StatSummary;
 import com.example.experiment_automata.QuestionsModel.Question;
 
 import java.io.Serializable;
@@ -15,8 +17,7 @@ import java.util.UUID;
  *
  *      1. None
  */
-public abstract class Experiment implements Serializable {
-
+public abstract class Experiment implements Serializable, StatSummary, Graphable {
     private String description;
     private int minTrials;
     private UUID experimentId; // changed from UML to better match project
@@ -25,7 +26,6 @@ public abstract class Experiment implements Serializable {
     private boolean published; // changed from UML for style
     private boolean requireLocation; // added to align with storyboard
     private ExperimentType type; // todo: do we need type here if an experiment has a type? (yes makes it easy)
-    private ArrayList<UUID> crowedExperimenter; // Experimenter id's
     private ArrayList<Question> questions;
 
     /**
@@ -36,7 +36,6 @@ public abstract class Experiment implements Serializable {
     public Experiment(String description)
     {
         this.description = description;
-        this.crowedExperimenter = new ArrayList<>();
 
     }
 
@@ -59,7 +58,6 @@ public abstract class Experiment implements Serializable {
         this.active = acceptNewResults;
         this.ownerId = ownerId;
         this.experimentId = UUID.randomUUID();
-        this.crowedExperimenter = new ArrayList<>();
         this.type = type;
         this.questions = new ArrayList<>();
     }
@@ -73,23 +71,6 @@ public abstract class Experiment implements Serializable {
      */
     public boolean compare(Experiment experiment) {
         return experimentId.equals(experiment.experimentId);
-    }
-
-    /**
-     * Adds userID to the list so that each experiment knows which users can participate in them
-     * @param userId UserID to be added to the experiment
-     */
-    public void addUserId(UUID userId){
-        crowedExperimenter.add(userId);
-    }
-
-    /**
-     * Removes userID from the list so that the user can no longer participate in it
-     * @param userId UserID to be removed from the experiment
-     */
-
-    public void removeUserId(UUID userId){
-        crowedExperimenter.remove(userId);
     }
 
     /**
@@ -178,4 +159,10 @@ public abstract class Experiment implements Serializable {
     {
         this.experimentId = UUID.randomUUID();
     }
+
+    /**
+     * Gets the size of the experiment
+     * @return size of the experiment
+     */
+    public abstract Integer getSize();
 }

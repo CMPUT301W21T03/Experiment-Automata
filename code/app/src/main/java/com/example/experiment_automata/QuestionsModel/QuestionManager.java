@@ -1,17 +1,11 @@
 package com.example.experiment_automata.QuestionsModel;
 
 
-import android.os.Build;
 import android.util.Log;
 
-import androidx.annotation.RequiresApi;
-
-import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
-
-import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -31,6 +25,7 @@ public class QuestionManager {
     private static  HashMap<UUID, Reply> replies;
     private static QuestionManager questionManager;
 
+
     /**
      * Initializes the question manager.
      */
@@ -44,9 +39,9 @@ public class QuestionManager {
     public static QuestionManager getInstance()
     {
         if (questionManager == null)
-            return new QuestionManager();
-        else
-            return questionManager;
+            questionManager =  new QuestionManager();
+
+        return questionManager;
     }
 
 
@@ -57,14 +52,16 @@ public class QuestionManager {
      * @param question
      *  question to add to the manager
      */
-    public void addQuestion(UUID experimentId, Question question) {
+    public void addQuestion(UUID experimentId, Question question)
+    {
         ArrayList<Question> returnQuestions = new ArrayList<>();
         returnQuestions.add(question);
+
         if(questions.containsKey(experimentId))
             returnQuestions.addAll(questions.get(experimentId));
 
         questions.put(experimentId, returnQuestions);
-        Log.d("question", question.getQuestionId().toString());
+        Log.d("question", "" + question.getQuestionId().toString());
         questionFromId.put(question.getQuestionId(), question);
     }
 
@@ -107,14 +104,17 @@ public class QuestionManager {
      *   the experiment you want to check
      * @return
      *  the number of questions that experiment has
-     * @throws IllegalArgumentException
-     *  the that experiment does not exist
+     *  -1 If the experiment is not contained
      */
-    public int getTotalQuestions(UUID experimentId) throws IllegalArgumentException {
-        if (!questions.containsKey(experimentId)) {
-            throw new IllegalArgumentException();
-        }
-        return questions.get(experimentId).size();
+    public int getTotalQuestions(UUID experimentId)
+    {
+        int count;
+        if (!questions.containsKey(experimentId))
+            count = -1;
+        else
+            count = questions.get(experimentId).size();
+
+        return count;
     }
 
 
@@ -148,4 +148,13 @@ public class QuestionManager {
         return replies.get(questionId);
     }
 
+    /**
+     * Gets all questions without keys
+     * @return
+     *  return all questions
+     */
+    public Collection<ArrayList<Question>> getAllQuestions()
+    {
+        return questions.values();
+    }
 }

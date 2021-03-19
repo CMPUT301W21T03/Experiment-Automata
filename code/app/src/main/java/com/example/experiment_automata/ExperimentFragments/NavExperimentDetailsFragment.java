@@ -1,12 +1,6 @@
 package com.example.experiment_automata.ExperimentFragments;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.NavigationUI;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +8,23 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+
 import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
 import com.example.experiment_automata.NavigationActivity;
+import com.example.experiment_automata.QRCode.ViewQRFragment;
 import com.example.experiment_automata.QuestionUI.QuestionDisplay;
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.ui.Screen;
-import com.google.firebase.firestore.local.BundleCache;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.LargeValueFormatter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.UUID;
@@ -45,6 +50,14 @@ public class NavExperimentDetailsFragment extends Fragment {
     private TextView typeView;
     private ImageButton editImageButton;
     private ImageButton questionsButton;
+    private ImageButton qrButton;
+
+    private TextView textViewQuartiles;
+    private TextView textViewMean;
+    private TextView textViewMedian;
+    private TextView textViewStdev;
+    private BarChart histogram;
+    private LineChart resultsPlot;
 
 
     public NavExperimentDetailsFragment() {
@@ -105,7 +118,17 @@ public class NavExperimentDetailsFragment extends Fragment {
         typeView = root.findViewById(R.id.nav_experiment_details_experiment_type);
         editImageButton = root.findViewById(R.id.nav_fragment_experiment_detail_view_edit_button);
         questionsButton = root.findViewById(R.id.nav_fragment_experiment_detail_view_qa_button);
+        qrButton = root.findViewById(R.id.nav_fragment_experiment_detail_view_qr_button);
+
         getActivity().findViewById(R.id.add_experiment_button).setVisibility(View.GONE);
+
+        textViewQuartiles = root.findViewById(R.id.quartiles_value);
+        textViewMean = root.findViewById(R.id.mean_value);
+        textViewMedian = root.findViewById(R.id.median_value);
+        textViewStdev = root.findViewById(R.id.stdev_value);
+
+        histogram = root.findViewById(R.id.histogram_chart);
+        resultsPlot = root.findViewById(R.id.results_chart);
 
         if (experimentStringId != null) {
             update(experimentStringId);
@@ -127,6 +150,18 @@ public class NavExperimentDetailsFragment extends Fragment {
             launchQuestionView();
         });
 
+        qrButton.setOnClickListener(v -> {
+            Experiment current = (((NavigationActivity)getActivity()).getExperimentManager())
+                    .getAtUUIDDescription(UUID.fromString(experimentStringId));
+
+            Fragment viewQRFragment = new ViewQRFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("UUID",CURRENT_EXPERIMENT_ID);
+            bundle.putString("DESCRIPTION",current.getDescription());
+            viewQRFragment.setArguments(bundle);
+            //getActivity().getSupportFragmentManager().beginTransaction().show(viewQRFragment);
+            getActivity().getSupportFragmentManager().beginTransaction().add(viewQRFragment,"QR").commit();
+        });
         return root;
     }
 
@@ -151,6 +186,57 @@ public class NavExperimentDetailsFragment extends Fragment {
         } else {
             fab.setVisibility(View.VISIBLE);
         }
+
+        if (current.getSize() >= 3) {
+            float[] quartiles = current.getQuartiles();
+            String quartileString = String.format("q1: %.4f, q3: %.4f", quartiles[0], quartiles[2]);
+            textViewQuartiles.setText(quartileString);
+        }
+
+        if (current.getSize() >= 1) {
+            float mean = current.getMean();
+            float median = current.getMedian();
+            float stdev = current.getStdev();
+
+            String meanString = String.format("%.4f", mean);
+            String medianString = String.format("%.4f", median);
+            String stdevString = String.format("%.4f", stdev);
+
+            textViewMean.setText(meanString);
+            textViewMedian.setText(medianString);
+            textViewStdev.setText(stdevString);
+
+            // Charts
+            BarDataSet histogramData = new BarDataSet(current.generateHistogram(), "");
+            histogramData.setColors(R.color.purple_500);
+            histogram.setData(new BarData(histogramData));
+            histogram.getLegend().setEnabled(false);
+            histogram.setDrawGridBackground(false);
+            histogram.getXAxis().setDrawGridLines(false);
+            histogram.getXAxis().setValueFormatter(new LargeValueFormatter());
+            histogram.getAxisLeft().setEnabled(false);
+            histogram.getAxisLeft().setAxisMinimum(0f);
+            histogram.getAxisRight().setEnabled(false);
+            histogram.setTouchEnabled(false);
+            histogram.getDescription().setEnabled(false);
+
+            LineDataSet resultsData = new LineDataSet(current.generatePlot(), "");
+            resultsData.setColor(R.color.purple_500);
+            resultsData.setFillAlpha(255);
+            resultsData.setLineWidth(2f);
+            resultsData.setDrawCircles(false);
+            resultsData.setDrawValues(false);
+            resultsData.setCircleColor(R.color.purple_500);
+            resultsData.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+            resultsPlot.setData(new LineData(resultsData));
+            resultsPlot.getLegend().setEnabled(false);
+            resultsPlot.getXAxis().setEnabled(false);
+            histogram.getXAxis().setValueFormatter(new LargeValueFormatter());
+            resultsPlot.setTouchEnabled(false);
+            resultsPlot.getDescription().setEnabled(false);
+        }
+
+
     }
 
     @Override

@@ -63,7 +63,7 @@ public class ExperimentMaker
      * @throws IllegalExperimentException
      *   will be thrown if ExperimentType is an illegal type.
      */
-    public Experiment makeExperiment(ExperimentType type, String description, int minTrials,
+    public static Experiment makeExperiment(ExperimentType type, String description, int minTrials,
                                      boolean requireLocation, boolean acceptNewResults,
                                      UUID ownerId) {
         switch (type) {

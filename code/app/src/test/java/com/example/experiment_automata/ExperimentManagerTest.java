@@ -100,4 +100,27 @@ public class ExperimentManagerTest {
         query = "first";
         assertEquals(1, experimentManager.queryExperiments(query).size());
     }
+
+    @Test
+    public void testingAllExperimentsReuturned()
+    {
+        ExperimentMaker maker = new ExperimentMaker();
+        ArrayList<Experiment> testValues = new ArrayList<>();
+        for(int i = 0; i < 10; i++)
+        {
+            String des = "" + i;
+            int minTrials = i;
+            boolean active = (i % 2) == 0;
+            boolean location = (i % 3) == 0;
+            UUID random = UUID.randomUUID();
+            Experiment ex = maker.makeExperiment(ExperimentType.Count, des, minTrials, active, location, random);
+            testValues.add(ex);
+            experimentManager.add(random, ex);
+        }
+
+        // Sub 2 because of those made in start up
+        assertEquals("Not all experiments returned",
+                experimentManager.getAllExperiments().size()-2,
+                testValues.size());
+    }
 }

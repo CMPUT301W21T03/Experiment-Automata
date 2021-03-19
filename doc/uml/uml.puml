@@ -18,7 +18,6 @@ class User {
 class ExperimentManager{
    - {static} experiments: HashMap<UUID, Experiment> 
    - currentExperiment: Experiment 
-   - currentFragment: String
 
    + delete(id: UUID)
    + add(id: UUID, experiment: Experiment)

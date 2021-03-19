@@ -23,9 +23,14 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MeasurementStatTest {
 
     UUID ownerId = UUID.randomUUID();
-    MeasurementExperiment mesExperiment=new MeasurementExperiment("This is a test", 5, false, true, ownerId);
+    MeasurementExperiment mesExperiment = new MeasurementExperiment("This is a test", 5, false, true, ownerId);
     UUID id = UUID.randomUUID();
     UUID id2 = UUID.randomUUID();
+    UUID id3 = UUID.randomUUID();
+    UUID id4 = UUID.randomUUID();
+
+    MeasurementTrial measurementIgnore = new MeasurementTrial(id3, 13.7f);
+    MeasurementTrial measurementIgnore2 = new MeasurementTrial(id4, 17.1f);
 
     @Before
     public void setup() {
@@ -193,5 +198,80 @@ public class MeasurementStatTest {
         assertTrue(marginOfError(quartiles[1], 6.9f));
         assertTrue(marginOfError(quartiles[2], 8.0f));
 
+    }
+
+    @Test
+    public void testIgnore(){
+        // True values computed from https://www.calculatorsoup.com/calculators/statistics/quartile-calculator.php
+
+        measurementIgnore.setIgnore(true);
+
+        measurementIgnore2.setIgnore(true);
+
+        mesExperiment.recordTrial(new MeasurementTrial(id, 4.1f));
+
+        mesExperiment.recordTrial(new MeasurementTrial(id, 6.9f));
+
+        mesExperiment.recordTrial(new MeasurementTrial(id, 8.0f));
+
+        // Ignore the measurement experiments from above
+
+        mesExperiment.recordTrial(measurementIgnore);
+
+        mesExperiment.recordTrial(measurementIgnore2);
+
+        mesExperiment.recordTrial(measurementIgnore);
+
+        mesExperiment.recordTrial(measurementIgnore2);
+
+        // Should be the same results as the previous test case
+
+        float[] quartiles = mesExperiment.getQuartiles();
+        assertTrue(marginOfError(quartiles[0], 4.1f));
+        assertTrue(marginOfError(quartiles[1], 6.9f));
+        assertTrue(marginOfError(quartiles[2], 8.0f));
+
+    }
+
+    @Test
+    public void testIgnore2(){
+        // Numbers for verification were computed from https://www.calculator.net/standard-deviation-calculator.html
+        measurementIgnore.setIgnore(true);
+
+        measurementIgnore2.setIgnore(true);
+
+        // Should be ignored (results should be the same as in stdev tests)
+
+        mesExperiment.recordTrial(measurementIgnore2);
+
+        mesExperiment.recordTrial(measurementIgnore);
+
+        mesExperiment.recordTrial(measurementIgnore2);
+
+        mesExperiment.recordTrial(new MeasurementTrial(id, 2.4f));
+        assertEquals(mesExperiment.getStdev(), 0f);
+
+        mesExperiment.recordTrial(new MeasurementTrial(id, 3.1f));
+        assertTrue(marginOfError(mesExperiment.getStdev(), 0.35f));
+
+        mesExperiment.recordTrial(new MeasurementTrial(id, 4.61f));
+        assertTrue(marginOfError(mesExperiment.getStdev(), 0.92220749653571f));
+
+        // Should be ignored
+
+        mesExperiment.recordTrial(measurementIgnore2);
+
+        mesExperiment.recordTrial(measurementIgnore);
+
+        mesExperiment.recordTrial(measurementIgnore2);
+
+        mesExperiment.recordTrial(new MeasurementTrial(id, 9f));
+        assertTrue(marginOfError(mesExperiment.getStdev(), 2.56534963504f));
+
+        mesExperiment.recordTrial(new MeasurementTrial(id, 14.12f));
+        assertTrue(marginOfError(mesExperiment.getStdev(), 4.3852005655386f));
+
+        mesExperiment.recordTrial(new MeasurementTrial(id, 16.1234f));
+        assertTrue(marginOfError(mesExperiment.getStdev(), 5.3385523261357f));
     }
 }

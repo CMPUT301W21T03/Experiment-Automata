@@ -137,4 +137,5 @@ public class CountExperiment extends Experiment {
         return results.size();
     }
 
+    public Collection<CountTrial> getTrials() { return results; }
 }

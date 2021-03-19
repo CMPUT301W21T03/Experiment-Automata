@@ -148,6 +148,11 @@ public class QuestionManager {
         return replies.get(questionId);
     }
 
+    /**
+     * Gets all questions without keys
+     * @return
+     *  return all questions
+     */
     public Collection<ArrayList<Question>> getAllQuestions()
     {
         return questions.values();

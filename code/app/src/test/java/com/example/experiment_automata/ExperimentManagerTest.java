@@ -116,12 +116,11 @@ public class ExperimentManagerTest {
 
     @Test
     public void queryExperimentsUUIDAndString() {
-        ArrayList<UUID> userIds = new ArrayList<>();
-        userIds.add(userId);
         ArrayList<UUID> fakeIds = new ArrayList<>();
         fakeIds.add(UUID.randomUUID());
-        assertEquals(0, experimentManager.queryExperiments("Second", userIds).size());
-        assertEquals(1, experimentManager.queryExperiments("first", userIds).size());
+        assertEquals(1, experimentManager.queryExperiments("Second", experimentReferences).size());
+        assertEquals(1, experimentManager.queryExperiments("First", experimentReferences).size());
+        assertEquals(2, experimentManager.queryExperiments("Test", experimentReferences).size());
         assertEquals(0, experimentManager.queryExperiments("first", fakeIds).size());
     }
 

@@ -2,8 +2,10 @@ package com.example.experiment_automata;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
@@ -50,6 +52,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import java.util.UUID;
+import java.util.prefs.Preferences;
 
 /**
  * Role/Pattern:
@@ -72,7 +75,7 @@ public class NavigationActivity extends AppCompatActivity implements
 
     private Screen currentScreen;
     public Fragment currentFragment;
-    public final User loggedUser = new User();
+    public  User loggedUser;
     public Experiment currentExperiment;
 
     /**
@@ -83,6 +86,8 @@ public class NavigationActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences preferences  = getSharedPreferences("experiment_automata", MODE_PRIVATE);
+        loggedUser = new User(preferences);
         setContentView(R.layout.activity_navigation);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

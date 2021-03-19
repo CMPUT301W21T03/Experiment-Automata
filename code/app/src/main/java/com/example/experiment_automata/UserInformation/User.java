@@ -1,8 +1,12 @@
 package com.example.experiment_automata.UserInformation;
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.experiment_automata.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
@@ -14,6 +18,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.prefs.Preferences;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Role/Pattern:
@@ -35,22 +42,15 @@ public class User {
 
     /**
      * Creates the user. Assigns a user id automatically.
-     * @param info
+     * @param preferences
      * the ContactInformation object containing the information for the user
      */
-    public User(ContactInformation info) {
-        userId = UUID.randomUUID();//generates a random UUID
-        this.info = info;
-        updateFirestore();
-    }
-
-    /**
-     * Creates the stub user class
-     */
-    public User() {
-        userId = UUID.fromString(DEFAULT_UUID_STRING);//hard code UUID for stub to defaultUUIDString
-        this.info = new ContactInformation("Individual",
-                "example@ualberta.ca", "780-555-1234");
+    public User(SharedPreferences preferences) {
+        this.userId = UUID.fromString(preferences.getString("userId", UUID.randomUUID().toString()));
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("userId", userId.toString());
+        editor.apply();
+        this.info = new ContactInformation(preferences);
         this.ownedExperiments = new ArrayList<>();
         this.subscribedExperiments = new ArrayList<>();
     }
@@ -90,9 +90,9 @@ public class User {
      */
     protected void updateFirestore() {
         Map<String, String> userInfo = new HashMap<String, String>();
-        userInfo.put("name", info.getName());
-        userInfo.put("email", info.getEmail());
-        userInfo.put("phone", info.getPhone());
+        userInfo.put("name", this.info.getName());
+        userInfo.put("email", this.info.getEmail());
+        userInfo.put("phone", this.info.getPhone());
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("users").document(this.userId.toString())
@@ -122,6 +122,15 @@ public class User {
     }
 
     /**
+     * Get the user's information
+     * @return
+     * The user's contact information object
+     */
+    public ContactInformation getInfo() {
+        return this.info;
+    }
+
+    /**
      * Get a collection of all the owned experiment IDs.
      * @return
      *  The IDs of owned experiments
@@ -140,11 +149,4 @@ public class User {
      * @param experimentId
      */
     public void addExperiment(UUID experimentId) { ownedExperiments.add(experimentId); }
-
-    /**
-     * Returns the information of the user.
-     * @return
-     *  The contact information of the user
-     */
-    public ContactInformation getInfo() { return info; }
 }

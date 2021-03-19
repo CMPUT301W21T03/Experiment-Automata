@@ -198,6 +198,8 @@ class ContactInformation {
     -name: String
     -email: String
     -phone: String
+    -editable: Boolean
+    -preferences: SharePreferences
 }
 
 class SearchController {

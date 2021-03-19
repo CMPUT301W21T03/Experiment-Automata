@@ -1,5 +1,7 @@
 package com.example.experiment_automata.UserInformation;
 
+import android.content.SharedPreferences;
+
 /**
  * Role/Pattern:
  *     The contact information of a user.
@@ -12,6 +14,8 @@ public class ContactInformation {
     private String name;
     private String email;
     private String phone;
+    private SharedPreferences preferences;
+    boolean editable;
 
     /**
      * Creates a new contact information.
@@ -26,6 +30,19 @@ public class ContactInformation {
         this.name = name;
         this.email = email;
         this.phone = phone;
+        this.editable = false;
+    }
+
+    /**
+     * Creates new contact information for local user on device
+     * @param preferences
+     */
+    public ContactInformation(SharedPreferences preferences) {
+        this.name = preferences.getString("userName", "name");
+        this.email = preferences.getString("userEmail", "email");
+        this.phone = preferences.getString("userPhone", "phone");
+        this.preferences = preferences;
+        this.editable = true;
     }
 
     /**
@@ -43,7 +60,12 @@ public class ContactInformation {
      *  The contact's new name
      */
     public void setName(String name) {
-        this.name = name;
+        if (this.editable) {
+            this.name = name;
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("userName", name);
+            editor.apply();
+        }
     }
 
     /**
@@ -61,7 +83,12 @@ public class ContactInformation {
      *  The contact's new email address
      */
     public void setEmail(String email) {
-        this.email = email;
+        if (this.editable) {
+            this.email = email;
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("userName", name);
+            editor.apply();
+        }
     }
 
     /**
@@ -79,6 +106,23 @@ public class ContactInformation {
      *  The contact's new phone number
      */
     public void setPhone(String phone) {
-        this.phone = phone;
+        if (this.editable) {
+            this.phone = phone;
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("userName", name);
+            editor.apply();
+        }
+    }
+
+    /**
+     * Set all contact information variables
+     * @param name
+     * @param email
+     * @param phone
+     */
+    public void setAll(String name, String email, String phone) {
+        this.setName(name);
+        this.setEmail(email);
+        this.setPhone(phone);
     }
 }

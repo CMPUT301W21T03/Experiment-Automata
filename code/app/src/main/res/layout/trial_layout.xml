@@ -4,6 +4,15 @@
     android:layout_height="wrap_content"
     android:gravity="center">
 
+    <CheckBox
+        android:id="@+id/trial_ignore_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:checked="true"
+        android:minWidth="0dp"
+        android:minHeight="0dp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,19 +33,6 @@
             android:layout_weight="0"
             android:text="Trial Value" />
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
     </LinearLayout>
-
-    <CheckBox
-        android:id="@+id/trial_ignore_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:checked="true"
-        android:minWidth="0dp"
-        android:minHeight="0dp" />
 
 </LinearLayout>

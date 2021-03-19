@@ -25,7 +25,7 @@ public abstract class Trial {
     public Trial(UUID collector) {
         this.collector = collector;
         this.date = new Date();
-        this.ignore = true;
+        this.ignore = false;
     }
 
     public Trial(UUID collector, Location location) {

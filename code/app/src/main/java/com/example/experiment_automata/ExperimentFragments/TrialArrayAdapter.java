@@ -76,7 +76,8 @@ public class TrialArrayAdapter extends ArrayAdapter<Trial> {
             trialValueView.setText(String.format("%.4f", ((MeasurementTrial) trial).getResult()));
         }
 
-        CheckBox checkBox = view.findViewById(R.id.trial_ignore_checkbox);
+        CheckBox checkBox = (CheckBox) view.findViewById(R.id.trial_ignore_checkbox);
+        checkBox.setChecked(!trial.isIgnored());
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

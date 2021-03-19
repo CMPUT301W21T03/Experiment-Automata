@@ -38,9 +38,9 @@ public class TrialTest {
     @Test
     public void ignore() {
         Trial trial = new BinomialTrial(userId, false);
-        assertTrue(trial.isIgnored());
-        trial.setIgnore(false);
         assertFalse(trial.isIgnored());
+        trial.setIgnore(true);
+        assertTrue(trial.isIgnored());
     }
 
     @Test

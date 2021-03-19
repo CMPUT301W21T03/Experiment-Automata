@@ -95,15 +95,34 @@ public class HomeFragment extends Fragment {
                 break;
             case "published":
                 experimentsArrayList.addAll(parentActivity.experimentManager
-                        .queryPublishedExperiments());
+                        .getPublishedExperiments());
                 break;
             case "subscribed":
                 experimentsArrayList.addAll(parentActivity.experimentManager
                         .queryExperiments(parentActivity.loggedUser.getSubscriptions()));
                 break;
             case "search":
-                experimentsArrayList.addAll(parentActivity.experimentManager
-                        .queryExperiments(getArguments().getString("query")));
+                Log.d("Search Size", "" + experimentsArrayList.size());
+                String query = getArguments().getString("query");
+                switch (getArguments().getString("screen")) {
+                    case "owned":
+                        experimentsArrayList.addAll(parentActivity.experimentManager
+                                .queryOwnedExperiments(query, parentActivity.loggedUser.getUserId()));
+                        break;
+                    case "published":
+                        experimentsArrayList.addAll(parentActivity.experimentManager
+                                .queryPublishedExperiments(query));
+                        break;
+                    case "subscribed":
+                        experimentsArrayList.addAll(parentActivity.experimentManager
+                                .queryExperiments(parentActivity.loggedUser.getSubscriptions()));
+                        break;
+                    case "search":
+                        Log.d("uh oh", "search");
+                        break;
+                }
+//                experimentsArrayList.addAll(parentActivity.experimentManager
+//                        .queryExperiments(getArguments().getString("query")));
                 break;
             default:
                 throw new IllegalArgumentException();

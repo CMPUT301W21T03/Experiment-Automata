@@ -72,14 +72,14 @@ public class ExperimentManagerTest {
 
     @Test
     public void publishedExperiments() {
-        ArrayList<Experiment> publishedExperiments = experimentManager.queryPublishedExperiments();
+        ArrayList<Experiment> publishedExperiments = experimentManager.getPublishedExperiments();
         // None of the experiments have been published
         assertEquals(0, publishedExperiments.size());
         // Publish all the experiments
         for (Experiment e : experiments) {
             e.setPublished(true);
         }
-        publishedExperiments = experimentManager.queryPublishedExperiments();
+        publishedExperiments = experimentManager.getPublishedExperiments();
         assertEquals(2, publishedExperiments.size());
     }
 

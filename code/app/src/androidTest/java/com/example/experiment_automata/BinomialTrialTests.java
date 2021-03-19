@@ -31,6 +31,7 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class BinomialTrialTests {
@@ -171,7 +172,7 @@ public class BinomialTrialTests {
         makeExperiment(testDes);
         solo.clickOnText(testDes);
         addBinomialTrial(true);
-        assertNotEquals("Chart data not displayed", true, solo.searchText("Histogram"));
+        assertTrue("Chart data not displayed", solo.searchText("Histogram"));
     }
 
     /**
@@ -184,6 +185,6 @@ public class BinomialTrialTests {
         makeExperiment(testDes);
         solo.clickOnText(testDes);
         addBinomialTrial(true);
-        assertNotEquals("Chart data not displayed", true, solo.searchText("Results"));
+        assertTrue("Chart data not displayed", solo.searchText("Results"));
     }
 }

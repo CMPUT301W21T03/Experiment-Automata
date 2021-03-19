@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -115,6 +116,24 @@ public class QuestionManagerTest {
         } catch (IllegalArgumentException e) {}
         questionManager.addQuestion(experimentId1, q1);
         questionManager.getTotalQuestions(q1.getExperimentId());
+    }
+
+    @Test
+    public void testGetAllQuestions()
+    {
+        Collection<ArrayList<Question>> givenQuestion = new ArrayList<>();
+        for(int i = 0; i < 20; i++)
+        {
+            ArrayList temp = new ArrayList();
+            Question q = new Question("ddd", UUID.randomUUID(), UUID.randomUUID());
+            temp.add(q);
+            givenQuestion.add(temp);
+            questionManager.addQuestion(UUID.randomUUID(), q);
+        }
+        //Removing 5 because of the ones we added
+        assertEquals("Was not able to get the list of all questions",
+                questionManager.getAllQuestions().size() - 5,
+                givenQuestion.size());
     }
 
 }

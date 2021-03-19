@@ -165,7 +165,7 @@ public class MeasurementExperiment extends Experiment {
      * @param values An arraylist of floats
      * @return the median of the floats
      */
-    public float getMedianList(ArrayList<Float> values) {
+    private float getMedian(ArrayList<Float> values) {
         // Implementation exactly the same as getMedian above
         Collections.sort(values);
         int size = values.size();

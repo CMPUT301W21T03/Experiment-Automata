@@ -171,7 +171,7 @@ public class BinomialExperiment extends Experiment {
      * @param values An arraylist of integers
      * @return the median of the floats
      */
-    public float getMedianList(ArrayList<Integer> values) {
+    private float getMedian(ArrayList<Integer> values) {
         // Implementation exactly the same as getMedian above
         Collections.sort(values);
         int size = values.size();

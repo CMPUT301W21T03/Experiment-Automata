@@ -164,7 +164,7 @@ public class NaturalCountExperiment extends Experiment {
      * @param values An arraylist of integers
      * @return the median of the floats
      */
-    public float getMedianList(ArrayList<Integer> values) {
+    private float getMedian(ArrayList<Integer> values) {
         // Implementation exactly the same as getMedian above
         Collections.sort(values);
         int size = values.size();
@@ -232,7 +232,7 @@ public class NaturalCountExperiment extends Experiment {
                 valuesLarge.add(values.get(i));
             }
 
-            quartiles[0] = getMedianList(valuesSmall);
+            quartiles[0] = getMedian(valuesSmall);
 
             quartiles[2] = getMedianList(valuesLarge);
         } else if (size == 3) {

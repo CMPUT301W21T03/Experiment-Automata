@@ -1,10 +1,10 @@
 @startuml UML
 skinparam classAttributeIconSize 0
 
-' generic class for an experimenter
+' generic class for an User
 ' note that experiments will likely be stored by user id instead of by all experiment info
 ' We could do hasing, but it's probably easier for now (for the UML sake) to represent this as a collection of experiments
-class Experimenter {
+class User {
     -userId: UUID
     -info: ContactInformation
     -controller: SearchController
@@ -14,34 +14,66 @@ class Experimenter {
     +seeGeoLocation(experiments: Collection<Experiment>): Map
 }
 
-' what information does a subscription hold? an experiment & list of users subscribed? currently assumes all subscribers are experimenters of some kind
-class Subscription {
-    -experiment: Experiment
-    -subscribed: Collection<Experimenter>
-    +getSubscribers(): Collection<Experimenter>
+
+class ExperimentManager{
+   - {static} experiments: HashMap<UUID, Experiment>
+   - currentExperiment: Experiment
+
+   + delete(id: UUID)
+   + add(id: UUID, experiment: Experiment)
+   + getOwnedExperiments(ownerID: UUID): ArrayList<Experiment>
+   + query(experimentID: UUID): Experiment
+   + queryExperiments(query: String): ArrayList<Experiment>
+   + queryExperiments(experimentIds: Collection<UUID>): ArrayList<Experiment>
+   + queryPublishedExperiments(): ArrayList<Experiment>
+   + getAtUUIDDescription(experimentUUID: UUID): Experiment
+   + getAllExperiments(): ArrayList<Experiment> 
+   - queryMatch(query: String, source: String): Boolean
 }
+
+ExperimentManager o-- "0..*" Experiment
 
 class Question {
     -question: String
-    -user: Experimenter
-    -reply: Reply
-    +getQuestion(): String
-    +getQuestion(): Experimenter
-    +getReply(): Reply
+    -user: UUID
+    -reply: UUID
+    -experimentId: UUID
+    -questionId: UUID
 }
 
-' assume that anyone who can reply to a question is a type of experimenter
+Question -- "1" User: Asks
+Question "1" -- "0..*" Reply: Answers
+Question "0..*" --o "1" Experiment
+
+' assume that anyone who can reply to a question is a type of User
 class Reply {
     -reply: String
-    -user: Experimenter
-    +getReply(): String
+    -experimenter: UUID
+    -replyID: UUID
 }
 
-' in charge of questions & their replies
-class QuestionController {
-    +createQuestion(currentExperiment: Experiment, question: String, creator: Experimenter): Question
-    +createReply(currentExperiment: Experiment, question: String, owner: Experimenter): Reply
+Reply -- User: Answers
+
+class QuestionManager{
+    - {static} questions: HashMap<UUID, ArrayList<Question>>
+    - {static} questionFromID: HashMap<UUID, Question>
+    - {static} replies: hasMap<UUID, Reply>
+    - {static} questionManager: QuestionManager
+
+    + addQuestion(experimentID: UUID, question: Question)
+    + addReply(id: UUID, reply: Reply)
+    + getQuestion(questionId: UUID): Question
+    + getTotalQuestions(experimentId: UUID): Integer
+    + getQuestionReply(questionID: UUID): Reply
+    + getExperimentQuestions(experimentID: UUID): ArrayList<Question>
+    + getAllQuestions(): Collection<ArrayList<Question>>
+ 
 }
+
+QuestionManager "1" *-- "1" QuestionManager
+QuestionManager "1" *-- "0..*" Question: addQuestion
+QuestionManager "1" *-- "0..*" Reply: addReply
+QuestionManager -- Experiment
 
 ' allows the experiment to enforce only one trial type
 enum ExperimentType {
@@ -55,59 +87,62 @@ enum ExperimentType {
 ' idea: make this 'experimentInfo' and give every type of experiment an experimentInfo instead
 ' rational: for displaying info and searching we don't need the results, just the info
 ' both are implemented so whichever we don't use can just be deleted
-abstract class Experiment implements Graph {
+abstract class Experiment implements StatSummary, Graphable {
     -experimentId: UUID
     -description: String
     -minTrials: Integer
-    -isActve: Boolean
-    -isPublished: Boolean
-    -experimentId: UUID
+    #active: Boolean
+    -published: Boolean
+    -requireLocation: Boolean
     ' this is the userId of the owner
     -ownerId: UUID
     -type: ExperimentType
-    -crowdExperimenters: Collection<Integer>
-    +getExperimentId(): UUID
+    -questions: ArrayList<Question>
+    +getSize(): Integer
+    +makeNewUUID()
 }
+
+
+Experiment -- QRCodeManager
 
 
 
 class CountExperiment extends Experiment {
     -results: Collection<CountTrial>
-    +recordResult(result: int)
+    +recordTrial(trial: CountTrial)
 }
 
 class NaturalCountExperiment extends Experiment {
     -results: Collection<NaturalCountTrial>
-    +recordResult(result: int)
+    +recordTrial(trial: NaturalCountTrial)
+    -getMedian(values: ArrayList<Integer>): Float
 }
 
 class BinomialExperiment extends Experiment {
     -results: Collection<BinomialTrial>
-    +recordResult(result: boolean)
+    +recordTrial(trial: BinomialTrial)
+    -getMedian(values: ArrayList<Integer>): Float
 }
 
 class MeasurementExperiment extends Experiment {
     -results: Collection<MeasurementTrial>
-    +recordResult(result: float)
-}
-
-class StatSummary {
-    +getMean(trials: Collection<Trial>): Float
-    +getMedian(trials: Collection<Trial>): Float
-    +getStdev(trials: Collection<Trial>): Float
-    +getFirstQuartile(trials: Collection<Trial>): (Float, Float)
-    +getSecondQuartile(trials: Collection<Trial>): (Float, Float)
-    +getThirdQuartile(trials: Collection<Trial>): (Float, Float)
-    +getFourthQuartile(trials: Collection<Trial>): (Float, Float)
+    +recordTrial(trial: MeasurementTrial)
+    -getMedian(values: ArrayList<Integer>): Float
 
 }
 
-' each trial has a unique QRCode associated with it
+interface "StatSummary" as StatSummary <<Interface>> {
+    +getMean(): Float
+    +getMedian(): Float
+    +getStdev(): Float
+    +getQuartile(): Float[]
+}
+
+' each trial has a unique QRCodeManager associated with it
 abstract class Trial {
-    ' just going to user experimenter ID here
+    ' just going to user User ID here
     -collector: UUID
-    -QRcode: QRCode
-    -location: Optional<Location>
+    -location: Location
     -date: Date
     -ignore: Boolean
 }
@@ -119,36 +154,23 @@ class CountTrial extends Trial {
 ' no unsigned ints in java, not sure how to enforce natural numbers only
 class NaturalCountTrial extends Trial {
     -result: Integer
-    +getResults(): Integer
 }
 
 ' will likely specify true = pass, false = fail
 class BinomialTrial extends Trial {
     -result: Boolean
-    +getResults(): Boolean
 }
 
 class MeasurementTrial extends Trial {
     -result: Float
-    +getResults(): Float
 }
 
-class QRCodeGenerator {
-    ' implementation details unclear at the moment
-    +getQRCode(): QRCode
-}
 
-class QRCodeReader {
-    ' implementation details unclear at the moment
-    +readQRCode(qr: QRCode)
-}
-
-class QRCode {
-    ' somehow represent this?
-    -code: int
-    -isReadable: boolean
-    ' a lot of QR codes use a check digit to determine if they are valid or not
-    +checkDigit(code): boolean
+class QRCodeManager {
+    + createQRFromUUID(uuid: String): Bitmap
+    + encodeStringToQR(encodedContent: String): Bitmap
+    -unpackQRString(code: String): String
+    -packQRString(content: String): String
 }
 
 class Location {
@@ -164,15 +186,15 @@ class GeographicalMap{
 GeographicalMap -- "1..*" Location
 
 
-interface "Graph" as Graph <<Interface>>> {
-    +generateHistogram(Collection<Trial>): Image
-    +generatePlot(Collection<Trial>): Image
+interface "Graphable" as Graphable <<Interface>>> {
+    +generateHistogram(): List<BarEntry>
+    +generatePlot(): List<Entry>
 }
 
 class ContactInformation {
     -name: String
-    -email: Optional<String>
-    -phone: Optional<String>
+    -email: String
+    -phone: String
 }
 
 class SearchController {
@@ -181,20 +203,9 @@ class SearchController {
     +searchKeyWord(keyword: String): Collection<Experiment>
 }
 
-Experimenter "1" *-- "1" ContactInformation
-Experimenter "1" *-- "0...*" Experiment
+User "1" *-- "1" ContactInformation
+User "1" *-- "0...*" Experiment
 
-Subscription "0...*" o-- "0...*" Experimenter
-Subscription "1" o-- "1" Experiment
-
-Question "0...*" o-- "1" Experimenter
-' Note: does each question get one reply? or does it turn into a thread?
-Question "1" *-- "0...1" Reply
-
-Reply "0...*" o-- "1" Experimenter
-
-' Question: do we draw both aggregations since they are different and both are true?
-Experiment "0...*" o-- "0...*" Experimenter
 
 CountExperiment "1" *-- "0...*" CountTrial
 
@@ -205,24 +216,20 @@ BinomialExperiment "1" *-- "0...*" BinomialTrial
 
 MeasurementExperiment "1" *-- "0...*" MeasurementTrial
 
-Trial "0...*" o-- "1" Experimenter
-Trial "1" *-- "1" QRCode
+User -- Trial: Performs
 Trial "1" *-- "1" Location
 
-QRCodeGenerator --- QRCode
-QRCodeReader --- QRCode
+
 
 Experiment *-- "1" ExperimentType
 
 
-Experimenter "0..*" -- "1" SearchController
+User "0..*" -- "1" SearchController
 
-QuestionController  o-- Question
-QuestionController o-- Reply
+
 
 StatSummary -- Experiment
 
-QuestionController o-- Experiment
 
 StatSummary o-- Trial
 

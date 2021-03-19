@@ -225,8 +225,8 @@ public class ExperimentUserStoriesTests
         solo.clickOnActionBarHomeButton();
         solo.clickOnText("Published Experiments");
 
-        assertEquals("An empty experiment was made and displayed in the published view",
-                false,
+        assertEquals("Empty experiment not displayed",
+                true,
                 solo.searchText("Experiment Owner"));
     }
 

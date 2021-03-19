@@ -135,7 +135,7 @@ class MeasurementExperiment extends Experiment {
 
 }
 
-class StatSummary {
+interface StatSummary {
     +getMean(): Float
     +getMedian(): Float
     +getStdev(): Float

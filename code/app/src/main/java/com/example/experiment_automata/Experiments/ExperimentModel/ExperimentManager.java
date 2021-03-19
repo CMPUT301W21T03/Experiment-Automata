@@ -134,12 +134,14 @@ public class ExperimentManager
     public ArrayList<Experiment> queryExperiments(String query) {
         ArrayList<Experiment> experimentsList = new ArrayList<>();
         for (Map.Entry<UUID, Experiment> entry : experiments.entrySet()) {
-            Experiment experiment = experiments.get(entry.getKey());
-            //Log.d("SEARCHING", "Experiment:\t" + experiment.getDescription());
-            if (queryMatch(query, experiment.getDescription())) {
-                //Log.d("QUERY", "Found Match");
-                experimentsList.add(experiment);
-            }
+            try {
+                Experiment experiment = experiments.get(entry.getKey());
+                //Log.d("SEARCHING", "Experiment:\t" + experiment.getDescription());
+                if (queryMatch(query, experiment.getDescription())) {
+                    //Log.d("QUERY", "Found Match");
+                    experimentsList.add(experiment);
+                }
+            } catch (NullPointerException e) {}
         }
         return experimentsList;
     }
@@ -156,9 +158,12 @@ public class ExperimentManager
     public ArrayList<Experiment> queryExperiments(String query, Collection<UUID> experimentIds)  {
         ArrayList<Experiment> experimentsList = new ArrayList<>();
         for (UUID id : experimentIds) {
-            if (queryMatch(query, experiments.get(id).getDescription())) {
-                experimentsList.add(experiments.get(id));
-            }
+            try {
+                Experiment experiment = experiments.get(id);
+                if (queryMatch(query, experiment.getDescription())) {
+                    experimentsList.add(experiments.get(id));
+                }
+            } catch (NullPointerException e) {}
         }
         return experimentsList;
     }

@@ -120,7 +120,7 @@ public class ExperimentManagerTest {
         ArrayList<UUID> fakeIds = new ArrayList<>();
         fakeIds.add(UUID.randomUUID());
         assertEquals(0, experimentManager.queryExperiments("Second", userIds).size());
-        assertEquals(experiments.get(0), experimentManager.queryExperiments("First", userIds).get(0));
+        assertEquals(1, experimentManager.queryExperiments("First", userIds).size());
         assertEquals(0, experimentManager.queryExperiments("first", fakeIds).size());
     }
 

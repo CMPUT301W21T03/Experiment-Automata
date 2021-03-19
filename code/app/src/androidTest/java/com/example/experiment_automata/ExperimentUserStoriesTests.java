@@ -342,24 +342,4 @@ public class ExperimentUserStoriesTests
     {
         fail("not yet implemented");
     }
-
-    /**
-     * Testing if we can see histograms of the current experiment.
-     * as per(us.01.06.01)
-     */
-    @Test
-    public void testingHistograms()
-    {
-        fail("not yet implemented");
-    }
-
-    /**
-     * Testing if we can see a plot of the data given to an experiment
-     * as per(us.01.07.01)
-     */
-    @Test
-    public void testingIfWeCanSeePlots()
-    {
-        fail("not yet implemented");
-    }
 }

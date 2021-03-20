@@ -22,7 +22,7 @@ import java.util.UUID;
 public class QuestionManager {
     private static  HashMap<UUID, ArrayList<Question>> questions;
     private static HashMap<UUID, Question> questionFromId;
-    private static  HashMap<UUID, Reply> replies;
+    private static  HashMap<UUID, ArrayList<Reply>> replies;
     private static QuestionManager questionManager;
 
 
@@ -66,21 +66,21 @@ public class QuestionManager {
     }
 
     /**
-     * Adds the given reply that the user class/caller gives to this class.
-     * Currently assumes one question will have at most 1 reply
+     * Adds the given replies that the user class/caller gives to this class.
      * @param id
      *  id corresponding to the question
      * @param reply
      *  reply to add to the manager
-     * @throws IllegalArgumentException
-     *  the id is already associated to an experiment
      */
-    public void addReply(UUID id, Reply reply) throws IllegalArgumentException {
-        if(replies.containsKey(id))
-            throw new IllegalArgumentException();
-        else {
-            replies.put(id, reply);
-        }
+    public void addReply(UUID id, Reply reply)
+    {
+        ArrayList<Reply> reps = replies.get(id);
+        ArrayList<Reply> allReplies = new ArrayList<>();
+        allReplies.add(reply);
+        if(reps != null)
+            allReplies.addAll(reps);
+
+        replies.put(id, allReplies);
     }
 
     /**
@@ -139,11 +139,12 @@ public class QuestionManager {
      * @param questionId
      *  The question id for the reply we want
      * @return
-     *  A reply if one exists
+     *  A list of all replies given to that question
      */
-    public Reply getQuestionReply(UUID questionId) throws IllegalArgumentException {
+    public ArrayList<Reply> getQuestionReply(UUID questionId)
+    {
         if (!replies.containsKey(questionId)) {
-            throw new IllegalArgumentException();
+            return new ArrayList<Reply>();
         }
         return replies.get(questionId);
     }

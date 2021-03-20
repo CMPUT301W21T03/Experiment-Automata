@@ -34,4 +34,13 @@ public class Reply implements Serializable
     public UUID getReplyId() {
         return replyId;
     }
+
+    /**
+     * giving us more control as to how the replies are displayed
+     * @return
+     */
+    @Override
+    public String toString() {
+        return reply;
+    }
 }

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -45,9 +46,9 @@ public class SingleQuestionDisplay extends ArrayAdapter<Question>
     private Context context;
     private ImageButton replyButton;
     private TextView questionView;
-    private TextView replyView;
     private NavigationActivity mainActivity;
     private Question currentQuestion;
+    private ListView replyListView;
 
     /**
      * Constructor takes in an array list of questions and a context to set the attributes properly
@@ -86,9 +87,9 @@ public class SingleQuestionDisplay extends ArrayAdapter<Question>
         {
             root = LayoutInflater.from(context).inflate(R.layout.main_question_display, parent, false);
         }
+        replyListView = root.findViewById(R.id.main_question_display_list_view);
         questionView = root.findViewById(R.id.main_question_display_question_view);
         replyButton = root.findViewById(R.id.main_question_display_reply_button);
-        replyView = root.findViewById(R.id.main_question_display_reply);
 
         if(currentExperimentQuestions != null) {
             setView(root, position);
@@ -106,18 +107,12 @@ public class SingleQuestionDisplay extends ArrayAdapter<Question>
     private void setView(View root, int pos)
     {
         // try and find a reply for the current question
-        Reply currentReply;
-        try {
-            currentReply = mainActivity.questionManager.getQuestionReply(currentQuestion.getQuestionId());
-            Log.d("replyID", currentQuestion.getQuestion() + " " + currentReply.getReplyId().toString());
-            replyButton.setVisibility(View.GONE);
-            replyView.setText(currentReply.getReply());
-            replyView.setVisibility(View.VISIBLE);
-        } catch (IllegalArgumentException e) {
-            replyButton.setVisibility(View.VISIBLE);
-            replyView.setVisibility(View.GONE);
-            replyButton.setOnClickListener(v -> dealingWithReply(pos));
-        }
+        ArrayList<Reply> currentReplies = new ArrayList<>();
+        currentReplies.addAll(mainActivity.questionManager.getQuestionReply(currentQuestion.getQuestionId()));
+        ArrayAdapter<Reply> replyArrayAdapter = new ArrayAdapter<>(getContext(), R.layout.reply_layout_list, currentReplies);
+
+        replyListView.setAdapter(replyArrayAdapter);
+        replyButton.setOnClickListener(v -> dealingWithReply(pos));
         ((TextView) (root.findViewById(R.id.main_question_display_question_view)))
                 .setText(currentQuestion.getQuestion());
 
@@ -130,16 +125,18 @@ public class SingleQuestionDisplay extends ArrayAdapter<Question>
      * @param questionId : The unique id that each question contains
      */
     private void update(UUID questionId) {
+        /*
         Log.d("UPDATE", "Screen info updated");
         currentQuestion = mainActivity.questionManager.getQuestion(questionId);
         questionView.setText(currentQuestion.getQuestion());
         Reply currentReply;
         try {
-            currentReply = mainActivity.questionManager.getQuestionReply(currentQuestion.getQuestionId());
+            //currentReply = mainActivity.questionManager.getQuestionReply(currentQuestion.getQuestionId());
             Log.d("replyID", currentQuestion.getQuestion() + " " + currentReply.getReplyId().toString());
             replyButton.setVisibility(View.GONE);
-            replyView.setText(currentReply.getReply());
+            //replyView.setText(currentReply.getReply());
         } catch (IllegalArgumentException e) {}
+         */
     }
 
     /**
@@ -153,4 +150,5 @@ public class SingleQuestionDisplay extends ArrayAdapter<Question>
                 currentExperimentQuestions.get(position).getQuestionId());
         mainActivity.getSupportFragmentManager().beginTransaction().add(replyFragment, "Reply").commit();
     }
+
 }

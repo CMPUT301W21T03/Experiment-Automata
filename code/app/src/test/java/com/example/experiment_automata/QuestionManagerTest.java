@@ -84,7 +84,7 @@ public class QuestionManagerTest {
         Reply returnedReply = null;
         try
         {
-            returnedReply =  questionManager.getQuestionReply(q1.getQuestionId());
+            returnedReply =  questionManager.getQuestionReply(q1.getQuestionId()).get(0);
         }
         catch (IllegalArgumentException e) {}
 

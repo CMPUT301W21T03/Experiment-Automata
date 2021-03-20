@@ -67,7 +67,7 @@ class QuestionManager{
     + addReply(id: UUID, reply: Reply)
     + getQuestion(questionId: UUID): Question
     + getTotalQuestions(experimentId: UUID): Integer
-    + getQuestionReply(questionID: UUID): Reply
+    + getQuestionReply(questionID: UUID): ArrayList<Reply>
     + getExperimentQuestions(experimentID: UUID): ArrayList<Question>
     + getAllQuestions(): Collection<ArrayList<Question>>
  

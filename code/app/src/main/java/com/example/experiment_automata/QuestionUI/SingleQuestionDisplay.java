@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
@@ -40,7 +41,7 @@ import java.util.UUID;
  *      1. Partly inspired by lab of 301 lab
  *
  */
-public class SingleQuestionDisplay extends ArrayAdapter<Question>
+public class SingleQuestionDisplay extends ArrayAdapter
 {
     private ArrayList<Question> currentExperimentQuestions;
     private Context context;
@@ -49,6 +50,7 @@ public class SingleQuestionDisplay extends ArrayAdapter<Question>
     private NavigationActivity mainActivity;
     private Question currentQuestion;
     private ListView replyListView;
+    private ArrayAdapter<Reply> replyArrayAdapter;
 
     /**
      * Constructor takes in an array list of questions and a context to set the attributes properly
@@ -65,6 +67,7 @@ public class SingleQuestionDisplay extends ArrayAdapter<Question>
         this.context = context;
         this.currentExperimentQuestions = currentExperimentQuestions;
         this.mainActivity = (NavigationActivity) mainActivity;
+
     }
 
     /**
@@ -86,8 +89,8 @@ public class SingleQuestionDisplay extends ArrayAdapter<Question>
         if(root == null)
         {
             root = LayoutInflater.from(context).inflate(R.layout.main_question_display, parent, false);
+            update(root);
         }
-        replyListView = root.findViewById(R.id.main_question_display_list_view);
         questionView = root.findViewById(R.id.main_question_display_question_view);
         replyButton = root.findViewById(R.id.main_question_display_reply_button);
 
@@ -107,11 +110,7 @@ public class SingleQuestionDisplay extends ArrayAdapter<Question>
     private void setView(View root, int pos)
     {
         // try and find a reply for the current question
-        ArrayList<Reply> currentReplies = new ArrayList<>();
-        currentReplies.addAll(mainActivity.questionManager.getQuestionReply(currentQuestion.getQuestionId()));
-        ArrayAdapter<Reply> replyArrayAdapter = new ArrayAdapter<>(getContext(), R.layout.reply_layout_list, currentReplies);
-
-        replyListView.setAdapter(replyArrayAdapter);
+        update(root);
         replyButton.setOnClickListener(v -> dealingWithReply(pos));
         ((TextView) (root.findViewById(R.id.main_question_display_question_view)))
                 .setText(currentQuestion.getQuestion());
@@ -121,22 +120,15 @@ public class SingleQuestionDisplay extends ArrayAdapter<Question>
     /**
      * Updates the views as they are needed so as not clutter the main function and
      * to not violet DRY.
-     *
-     * @param questionId : The unique id that each question contains
      */
-    private void update(UUID questionId) {
-        /*
-        Log.d("UPDATE", "Screen info updated");
-        currentQuestion = mainActivity.questionManager.getQuestion(questionId);
-        questionView.setText(currentQuestion.getQuestion());
-        Reply currentReply;
-        try {
-            //currentReply = mainActivity.questionManager.getQuestionReply(currentQuestion.getQuestionId());
-            Log.d("replyID", currentQuestion.getQuestion() + " " + currentReply.getReplyId().toString());
-            replyButton.setVisibility(View.GONE);
-            //replyView.setText(currentReply.getReply());
-        } catch (IllegalArgumentException e) {}
-         */
+    private void update(View root)
+    {
+        replyListView = root.findViewById(R.id.main_question_display_list_view);
+        ArrayList<Reply> currentReplies = mainActivity.questionManager.getQuestionReply(currentQuestion.getQuestionId());
+        replyArrayAdapter = new ArrayAdapter<>(getContext(), R.layout.reply_layout_list, currentReplies);
+        replyListView.setAdapter(replyArrayAdapter);
+        replyArrayAdapter.notifyDataSetChanged();
+        notifyDataSetChanged();
     }
 
     /**
@@ -149,6 +141,7 @@ public class SingleQuestionDisplay extends ArrayAdapter<Question>
         Fragment replyFragment = AddQuestionFragment.newInstance("", false,
                 currentExperimentQuestions.get(position).getQuestionId());
         mainActivity.getSupportFragmentManager().beginTransaction().add(replyFragment, "Reply").commit();
+        notifyDataSetChanged();
     }
 
 }

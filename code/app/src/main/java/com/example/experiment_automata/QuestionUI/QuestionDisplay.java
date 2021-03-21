@@ -44,6 +44,7 @@ public class QuestionDisplay extends Fragment {
 
     private Experiment currentExperiment;
     private ArrayAdapter<Question> questionDisplayAdapter;
+    ListView questionsDisplayList;
     ArrayList<Question> questionsList = new ArrayList<>();
 
     public QuestionDisplay() {
@@ -92,7 +93,7 @@ public class QuestionDisplay extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_question_display, container, false);
-        ListView questionsDisplayList = root.findViewById(R.id.frag_questions_display_list_view);
+        questionsDisplayList = root.findViewById(R.id.frag_questions_display_list_view);
         //Getting all the questions
 
         ((NavigationActivity)getActivity()).setCurrentFragment(this);
@@ -134,22 +135,9 @@ public class QuestionDisplay extends Fragment {
      *  Link: https://stackoverflow.com/questions/15422120/notifydatasetchange-not-working-from-custom-adapter
      */
     public void updateQuestionsList() {
-        try {
-            questionsList.clear();
-            questionsList.addAll(
-                    ((NavigationActivity) getActivity())
-                            .questionManager
-                            .getExperimentQuestions(currentExperiment
-                                    .getExperimentId()));
-            if(questionDisplayAdapter != null) {
-                Log.d("updateAdapter", "not null");
-                questionDisplayAdapter.notifyDataSetChanged();
-            }
-        }
-        catch (Exception e)
-        {
-            //TODO: deal with this at some point
-        }
-
+        questionsDisplayList.setAdapter(new SingleQuestionDisplay(getContext(), ((NavigationActivity) getActivity())
+                .questionManager
+                .getExperimentQuestions(currentExperiment
+                        .getExperimentId()), getActivity()));
     }
 }

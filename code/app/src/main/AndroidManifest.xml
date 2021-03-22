@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ExperimentAutomata">
         <activity
-            android:name=".NavigationActivity"
+            android:name=".ui.NavigationActivity"
             android:label="@string/title_activity_navigation"
             android:theme="@style/Theme.ExperimentAutomata.NoActionBar">
             <intent-filter>

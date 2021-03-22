@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".QuestionUI.QuestionDisplay">
+    tools:context=".ui.question.QuestionDisplay">
 
     <ListView
         android:id="@+id/frag_questions_display_list_view"

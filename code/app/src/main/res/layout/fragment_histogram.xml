@@ -5,7 +5,7 @@
     android:id="@+id/histogram_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ExperimentFragments.HistogramFragment">
+    tools:context=".ui.experiments.HistogramFragment">
 
     <TextView
         android:id="@+id/histogram_subtitle"

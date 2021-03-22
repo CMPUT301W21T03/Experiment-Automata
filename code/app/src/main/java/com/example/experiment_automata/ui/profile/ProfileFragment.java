@@ -1,6 +1,5 @@
 package com.example.experiment_automata.ui.profile;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,12 +12,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.experiment_automata.NavigationActivity;
+import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.R;
-import com.example.experiment_automata.UserInformation.ContactInformation;
-import com.example.experiment_automata.UserInformation.User;
-
-import static android.content.Context.MODE_PRIVATE;
+import com.example.experiment_automata.backend.users.ContactInformation;
+import com.example.experiment_automata.backend.users.User;
 
 /**
  * Role/Pattern:

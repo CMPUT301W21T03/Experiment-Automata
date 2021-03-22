@@ -15,9 +15,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
-import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentMaker;
-import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentType;
+import com.example.experiment_automata.backend.experiments.Experiment;
+import com.example.experiment_automata.backend.experiments.ExperimentMaker;
+import com.example.experiment_automata.backend.experiments.ExperimentType;
+import com.example.experiment_automata.ui.NavigationActivity;
 import com.robotium.solo.Solo;
 
 import org.junit.Before;

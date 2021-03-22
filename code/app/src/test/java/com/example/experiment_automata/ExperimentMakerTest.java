@@ -1,12 +1,12 @@
 package com.example.experiment_automata;
 
-import com.example.experiment_automata.Experiments.ExperimentModel.BinomialExperiment;
-import com.example.experiment_automata.Experiments.ExperimentModel.CountExperiment;
-import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
-import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentMaker;
-import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentType;
-import com.example.experiment_automata.Experiments.ExperimentModel.MeasurementExperiment;
-import com.example.experiment_automata.Experiments.ExperimentModel.NaturalCountExperiment;
+import com.example.experiment_automata.backend.experiments.BinomialExperiment;
+import com.example.experiment_automata.backend.experiments.CountExperiment;
+import com.example.experiment_automata.backend.experiments.Experiment;
+import com.example.experiment_automata.backend.experiments.ExperimentMaker;
+import com.example.experiment_automata.backend.experiments.ExperimentType;
+import com.example.experiment_automata.backend.experiments.MeasurementExperiment;
+import com.example.experiment_automata.backend.experiments.NaturalCountExperiment;
 
 import org.junit.jupiter.api.Test;
 

@@ -1,7 +1,7 @@
 package com.example.experiment_automata;
 
-import com.example.experiment_automata.Experiments.ExperimentModel.BinomialExperiment;
-import com.example.experiment_automata.trials.BinomialTrial;
+import com.example.experiment_automata.backend.experiments.BinomialExperiment;
+import com.example.experiment_automata.backend.trials.BinomialTrial;
 
 import org.junit.Before;
 import org.junit.jupiter.api.Test;

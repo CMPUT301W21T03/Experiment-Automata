@@ -1,8 +1,13 @@
 package com.example.experiment_automata;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -37,11 +42,16 @@ import com.example.experiment_automata.trials.MeasurementTrial;
 import com.example.experiment_automata.trials.NaturalCountTrial;
 import com.example.experiment_automata.ui.Screen;
 import com.example.experiment_automata.ui.home.HomeFragment;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -51,6 +61,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.util.ArrayList;
 import java.util.UUID;
 import java.util.prefs.Preferences;
 
@@ -75,8 +86,14 @@ public class NavigationActivity extends AppCompatActivity implements
 
     private Screen currentScreen;
     public Fragment currentFragment;
-    public  User loggedUser;
+    public User loggedUser;
     public Experiment currentExperiment;
+
+    // Location and Map Flags and Request Codes
+    public static final int LOCATION_PERMISSION_REQUEST = 10;
+    private boolean canMakeLocationTrials = false;
+    private FusedLocationProviderClient fusedLocationProviderClient;
+    private Location currentLocation;
 
     /**
      * Method called when creating NavigationActivity
@@ -86,7 +103,8 @@ public class NavigationActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SharedPreferences preferences  = getSharedPreferences("experiment_automata", MODE_PRIVATE);
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        SharedPreferences preferences = getSharedPreferences("experiment_automata", MODE_PRIVATE);
         loggedUser = new User(preferences);
         setContentView(R.layout.activity_navigation);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -141,6 +159,9 @@ public class NavigationActivity extends AppCompatActivity implements
                                     CountExperiment countExperiment = (CountExperiment) experiment;
                                     CountTrial countTrial = new CountTrial(loggedUser.getUserId());
                                     countExperiment.recordTrial(countTrial);
+                                    if (experiment.isRequireLocation()) {
+                                        addLocationToTrial();
+                                    }
                                     break;
                                 case NaturalCount:
                                     NaturalCountExperiment naturalCountExperiment = (NaturalCountExperiment) experiment;
@@ -286,8 +307,8 @@ public class NavigationActivity extends AppCompatActivity implements
     @Override
     // todo: this functionality should be moved into something else in the future
     public void onOKPressedEdit(String experimentDescription, int experimentTrials,
-                         boolean experimentLocation, boolean experimentNewResults,
-                         Experiment currentExperiment) {
+                                boolean experimentLocation, boolean experimentNewResults,
+                                Experiment currentExperiment) {
         currentExperiment.setDescription(experimentDescription);
         currentExperiment.setMinTrials(experimentTrials);
         currentExperiment.setRequireLocation(experimentLocation);
@@ -334,7 +355,7 @@ public class NavigationActivity extends AppCompatActivity implements
         Log.d("question id", newQuestion.getExperimentId().toString());
         questionManager.addQuestion(experimentId, newQuestion);
 
-        ((QuestionDisplay)currentFragment).updateQuestionsList();
+        ((QuestionDisplay) currentFragment).updateQuestionsList();
 
         Log.d("current screen", currentScreen + "");
     }
@@ -351,8 +372,57 @@ public class NavigationActivity extends AppCompatActivity implements
         Reply newReply = new Reply(reply, questionId);
         questionManager.addReply(questionId, newReply);
 
-        ((QuestionDisplay)currentFragment).updateQuestionsList();
+        ((QuestionDisplay) currentFragment).updateQuestionsList();
         Log.d("Reply is ", reply);
         Log.d("current screen", currentScreen + "");
+    }
+
+
+    //Source: https://developer.android.com/training/location/retrieve-current#java
+    @SuppressLint("MissingPermission")
+    public void addLocationToTrial() {
+        requestLocationPermissions();
+
+        if(canMakeLocationTrials)
+        {
+            fusedLocationProviderClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    if(location != null)
+                        Log.wtf("DATA", location.getLatitude() + "");
+                    else
+                        Log.d("BAD", "EDN");
+                }
+            });
+        }
+        else
+            Log.d("PERMS_FAILED", "EDN");
+    }
+
+    //Source: https://developer.android.com/training/permissions/requesting#java
+    public void requestLocationPermissions()
+    {
+        if(ContextCompat.checkSelfPermission(getApplicationContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    LOCATION_PERMISSION_REQUEST);
+        }
+        else
+            canMakeLocationTrials = true; 
+    }
+
+    //Source: https://developer.android.com/training/permissions/requesting#java
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
+    {
+        switch (requestCode)
+        {
+            case LOCATION_PERMISSION_REQUEST:
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    canMakeLocationTrials = true;
+                return;
+
+        }
     }
 }

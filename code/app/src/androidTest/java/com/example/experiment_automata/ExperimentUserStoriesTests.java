@@ -18,12 +18,10 @@ package com.example.experiment_automata;
 
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ListView;
 
-import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
-import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentMaker;
-import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentType;
-import com.example.experiment_automata.ui.home.HomeFragment;
+import com.example.experiment_automata.backend.experiments.Experiment;
+import com.example.experiment_automata.backend.experiments.ExperimentMaker;
+import com.example.experiment_automata.backend.experiments.ExperimentType;
 import com.robotium.solo.Solo;
 
 import org.junit.Before;
@@ -33,8 +31,6 @@ import org.junit.Test;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;

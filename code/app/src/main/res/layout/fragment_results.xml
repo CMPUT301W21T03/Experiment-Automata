@@ -5,7 +5,7 @@
     android:id="@+id/results_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ExperimentFragments.ResultsFragment">
+    tools:context=".ui.experiments.ResultsFragment">
 
     <TextView
         android:id="@+id/results_subtitle"

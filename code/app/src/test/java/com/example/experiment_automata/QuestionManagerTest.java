@@ -1,15 +1,12 @@
 package com.example.experiment_automata;
 
-import android.util.Log;
-
-import com.example.experiment_automata.QuestionsModel.Question;
-import com.example.experiment_automata.QuestionsModel.QuestionManager;
-import com.example.experiment_automata.QuestionsModel.Reply;
+import com.example.experiment_automata.backend.questions.Question;
+import com.example.experiment_automata.backend.questions.QuestionManager;
+import com.example.experiment_automata.backend.questions.Reply;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;

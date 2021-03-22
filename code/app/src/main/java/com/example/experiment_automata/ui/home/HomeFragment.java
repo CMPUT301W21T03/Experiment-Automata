@@ -11,16 +11,15 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
-import com.example.experiment_automata.ExperimentFragments.NavExperimentDetailsFragment;
+import com.example.experiment_automata.backend.experiments.Experiment;
+import com.example.experiment_automata.ui.experiments.NavExperimentDetailsFragment;
 import com.example.experiment_automata.NavigationActivity;
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.ui.Screen;
-import com.example.experiment_automata.ExperimentFragments.ExperimentListAdapter;
+import com.example.experiment_automata.ui.experiments.ExperimentListAdapter;
 
 
 import java.util.ArrayList;
@@ -36,8 +35,6 @@ import java.util.UUID;
  */
 
 public class HomeFragment extends Fragment {
-
-    private HomeViewModel homeViewModel;
     private ArrayList<Experiment> experimentsArrayList;
     private ArrayAdapter<Experiment> experimentArrayAdapter;
 
@@ -45,8 +42,6 @@ public class HomeFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         Log.d("HomeFragment", "Entering home fragment: " + getArguments().getString("mode"));
         NavigationActivity parentActivity = ((NavigationActivity) getActivity());
-        homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
 
         getActivity().findViewById(R.id.add_experiment_button).setVisibility(View.VISIBLE);
 

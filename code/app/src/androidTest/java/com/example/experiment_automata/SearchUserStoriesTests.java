@@ -17,16 +17,11 @@ import android.widget.EditText;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
-import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
-import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentMaker;
-import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentType;
 import com.robotium.solo.Solo;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-
-import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;

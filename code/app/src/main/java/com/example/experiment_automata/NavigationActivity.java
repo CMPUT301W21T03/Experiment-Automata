@@ -3,9 +3,7 @@ package com.example.experiment_automata;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
@@ -13,35 +11,33 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.SearchView;
 
-import com.example.experiment_automata.ExperimentFragments.AddExperimentFragment;
-import com.example.experiment_automata.Experiments.ExperimentModel.BinomialExperiment;
-import com.example.experiment_automata.Experiments.ExperimentModel.CountExperiment;
-import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentManager;
-import com.example.experiment_automata.ExperimentFragments.NavExperimentDetailsFragment;
-import com.example.experiment_automata.Experiments.ExperimentModel.Experiment;
+import com.example.experiment_automata.ui.experiments.AddExperimentFragment;
+import com.example.experiment_automata.backend.experiments.BinomialExperiment;
+import com.example.experiment_automata.backend.experiments.CountExperiment;
+import com.example.experiment_automata.backend.experiments.ExperimentManager;
+import com.example.experiment_automata.ui.experiments.NavExperimentDetailsFragment;
+import com.example.experiment_automata.backend.experiments.Experiment;
 
-import com.example.experiment_automata.QuestionUI.AddQuestionFragment;
-import com.example.experiment_automata.QuestionUI.QuestionDisplay;
-import com.example.experiment_automata.QuestionsModel.Question;
-import com.example.experiment_automata.QuestionsModel.QuestionManager;
-import com.example.experiment_automata.QuestionsModel.Reply;
+import com.example.experiment_automata.ui.question.AddQuestionFragment;
+import com.example.experiment_automata.ui.question.QuestionDisplay;
+import com.example.experiment_automata.backend.questions.Question;
+import com.example.experiment_automata.backend.questions.QuestionManager;
+import com.example.experiment_automata.backend.questions.Reply;
 
-import com.example.experiment_automata.Experiments.ExperimentModel.ExperimentType;
-import com.example.experiment_automata.Experiments.ExperimentModel.MeasurementExperiment;
-import com.example.experiment_automata.Experiments.ExperimentModel.NaturalCountExperiment;
+import com.example.experiment_automata.backend.experiments.MeasurementExperiment;
+import com.example.experiment_automata.backend.experiments.NaturalCountExperiment;
 
-import com.example.experiment_automata.UserInformation.User;
-import com.example.experiment_automata.trials.BinomialTrial;
-import com.example.experiment_automata.trials.CountTrial;
-import com.example.experiment_automata.trials.MeasurementTrial;
-import com.example.experiment_automata.trials.NaturalCountTrial;
+import com.example.experiment_automata.backend.users.User;
+import com.example.experiment_automata.backend.trials.BinomialTrial;
+import com.example.experiment_automata.backend.trials.CountTrial;
+import com.example.experiment_automata.backend.trials.MeasurementTrial;
+import com.example.experiment_automata.backend.trials.NaturalCountTrial;
 import com.example.experiment_automata.ui.Screen;
 import com.example.experiment_automata.ui.home.HomeFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -52,7 +48,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import java.util.UUID;
-import java.util.prefs.Preferences;
 
 /**
  * Role/Pattern:

@@ -120,6 +120,8 @@ public class SingleQuestionDisplay extends ArrayAdapter
     /**
      * Updates the views as they are needed so as not clutter the main function and
      * to not violet DRY.
+     *
+     * @param root the current view that was made 
      */
     private void update(View root)
     {

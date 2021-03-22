@@ -3,11 +3,11 @@ package com.example.experiment_automata;
 import android.location.Location;
 import android.location.LocationManager;
 
-import com.example.experiment_automata.trials.BinomialTrial;
-import com.example.experiment_automata.trials.CountTrial;
-import com.example.experiment_automata.trials.MeasurementTrial;
-import com.example.experiment_automata.trials.NaturalCountTrial;
-import com.example.experiment_automata.trials.Trial;
+import com.example.experiment_automata.backend.trials.BinomialTrial;
+import com.example.experiment_automata.backend.trials.CountTrial;
+import com.example.experiment_automata.backend.trials.MeasurementTrial;
+import com.example.experiment_automata.backend.trials.NaturalCountTrial;
+import com.example.experiment_automata.backend.trials.Trial;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

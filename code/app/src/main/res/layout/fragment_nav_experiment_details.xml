@@ -5,7 +5,7 @@
     android:id="@+id/test"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ExperimentFragments.NavExperimentDetailsFragment">
+    tools:context=".ui.experiments.NavExperimentDetailsFragment">
 
 
     <TextView
@@ -103,20 +103,20 @@
 
             <fragment
                 android:id="@+id/stats_fragment"
-                android:name="com.example.experiment_automata.ExperimentFragments.StatisticsFragment"
+                android:name="com.example.experiment_automata.ui.experiments.StatisticsFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <fragment
                 android:id="@+id/histogram_fragment"
-                android:name="com.example.experiment_automata.ExperimentFragments.HistogramFragment"
+                android:name="com.example.experiment_automata.ui.experiments.HistogramFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp" />
 
             <fragment
                 android:id="@+id/results_fragment"
-                android:name="com.example.experiment_automata.ExperimentFragments.ResultsFragment"
+                android:name="com.example.experiment_automata.ui.experiments.ResultsFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp" />
@@ -126,7 +126,7 @@
 
     <fragment
         android:id="@+id/trials_fragment"
-        android:name="com.example.experiment_automata.ExperimentFragments.TrialsFragment"
+        android:name="com.example.experiment_automata.ui.trials.TrialsFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"

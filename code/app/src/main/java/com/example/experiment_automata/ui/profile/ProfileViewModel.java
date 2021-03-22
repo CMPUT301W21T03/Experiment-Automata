@@ -3,9 +3,8 @@ package com.example.experiment_automata.ui.profile;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import com.example.experiment_automata.UserInformation.User;
+import com.example.experiment_automata.backend.users.User;
 
-import java.util.UUID;
 /**
  * Role/Pattern:
  *     Test fragment that might be removed at some point in the future.

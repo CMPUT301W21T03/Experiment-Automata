@@ -3,12 +3,10 @@ package com.example.experiment_automata;
 import android.app.Activity;
 import android.content.SharedPreferences;
 
-import com.example.experiment_automata.UserInformation.ContactInformation;
-import com.example.experiment_automata.UserInformation.User;
+import com.example.experiment_automata.backend.users.ContactInformation;
+import com.example.experiment_automata.backend.users.User;
 
 import org.junit.Before;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;

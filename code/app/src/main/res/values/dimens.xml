@@ -7,4 +7,5 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="chart_height">300dp</dimen>
+    <dimen name="reply_list_height">64dp</dimen>
 </resources>

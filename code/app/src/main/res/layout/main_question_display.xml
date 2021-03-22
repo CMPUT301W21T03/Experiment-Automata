@@ -10,11 +10,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:textSize="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/main_question_display_reply"
+        app:layout_constraintBottom_toTopOf="@+id/main_question_display_listview_container"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,15 +29,32 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_baseline_subdirectory_arrow_left_24" />
 
-    <TextView
-        android:id="@+id/main_question_display_reply"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/main_question_display_listview_container"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/main_question_display_question_view" />
+        app:layout_constraintTop_toBottomOf="@+id/main_question_display_question_view">
+
+        <!--
+        Enabling full scroll citation
+        Author: https://stackoverflow.com/users/154152/noon-silk
+        Editor: https://stackoverflow.com/users/3924118/nbro
+        Full Link: https://stackoverflow.com/questions/2757396/how-do-i-comment-out-a-block-of-tags-in-xml
+        -->
+        <ListView
+            android:id="@+id/main_question_display_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/reply_list_height"
+            android:nestedScrollingEnabled="true"
+            android:smoothScrollbar="true" />
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

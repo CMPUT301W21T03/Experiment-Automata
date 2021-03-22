@@ -17,6 +17,7 @@ import android.widget.EditText;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
+import com.example.experiment_automata.ui.NavigationActivity;
 import com.robotium.solo.Solo;
 
 import org.junit.Before;

@@ -11,7 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.experiment_automata.backend.experiments.Experiment;
-import com.example.experiment_automata.NavigationActivity;
+import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.backend.questions.Question;
 import com.example.experiment_automata.R;
 import java.util.ArrayList;

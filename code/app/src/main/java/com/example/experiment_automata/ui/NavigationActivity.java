@@ -1,4 +1,4 @@
-package com.example.experiment_automata;
+package com.example.experiment_automata.ui;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.SearchView;
 
+import com.example.experiment_automata.R;
 import com.example.experiment_automata.ui.experiments.AddExperimentFragment;
 import com.example.experiment_automata.backend.experiments.BinomialExperiment;
 import com.example.experiment_automata.backend.experiments.CountExperiment;

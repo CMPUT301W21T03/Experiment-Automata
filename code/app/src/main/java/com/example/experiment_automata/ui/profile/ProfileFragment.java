@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.experiment_automata.NavigationActivity;
+import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.backend.users.ContactInformation;
 import com.example.experiment_automata.backend.users.User;

@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.experiment_automata.backend.experiments.NaturalCountExperiment;
-import com.example.experiment_automata.NavigationActivity;
+import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.R;
 
 /**

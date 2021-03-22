@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.experiment_automata.NavigationActivity;
+import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.backend.questions.Question;
 import com.example.experiment_automata.backend.questions.Reply;
 import com.example.experiment_automata.R;

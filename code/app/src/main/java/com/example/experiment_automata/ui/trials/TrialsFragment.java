@@ -14,7 +14,7 @@ import com.example.experiment_automata.backend.experiments.CountExperiment;
 import com.example.experiment_automata.backend.experiments.Experiment;
 import com.example.experiment_automata.backend.experiments.MeasurementExperiment;
 import com.example.experiment_automata.backend.experiments.NaturalCountExperiment;
-import com.example.experiment_automata.NavigationActivity;
+import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.backend.trials.Trial;
 import com.example.experiment_automata.ui.experiments.NavExperimentDetailsFragment;

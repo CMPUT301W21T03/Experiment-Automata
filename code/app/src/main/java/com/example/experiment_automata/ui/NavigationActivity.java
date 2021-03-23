@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.widget.EditText;
 import android.widget.SearchView;
 
 import com.example.experiment_automata.R;
+import com.example.experiment_automata.backend.trials.Trial;
 import com.example.experiment_automata.ui.experiments.AddExperimentFragment;
 import com.example.experiment_automata.backend.experiments.BinomialExperiment;
 import com.example.experiment_automata.backend.experiments.CountExperiment;
@@ -376,25 +378,29 @@ public class NavigationActivity extends AppCompatActivity implements
     }
 
 
-    //Source: https://developer.android.com/training/location/retrieve-current#java
+    /**
+     * Gets the current location that the user is in with 100 ms in wait time from the device
+     * then marks that trial with a location.
+     *
+     * @param currentTrial the trial we want to add to an experiment
+     *
+     *
+     * Source/Citation:
+     *        1.
+     *          Author: https://stackoverflow.com/users/1371853/swiftboy
+     *          Editor: https://stackoverflow.com/users/202311/ianb
+     *          Full Source: https://stackoverflow.com/questions/1513485/how-do-i-get-the-current-gps-location-programmatically-in-android
+     */
     @SuppressLint("MissingPermission")
-    public void addLocationToTrial() {
+    public void addLocationToTrial(Trial currentTrial) {
         requestLocationPermissions();
-
         if(canMakeLocationTrials)
         {
-            fusedLocationProviderClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                @Override
-                public void onSuccess(Location location) {
-                    if(location != null)
-                        Log.wtf("DATA", location.getLatitude() + "");
-                    else
-                        Log.d("BAD", "EDN");
-                }
-            });
+            LocationManager locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+            LocationListener locationListener = new com.example.experiment_automata.backend.Location.LocationServices();
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 10, locationListener);
+            currentLocation = ((com.example.experiment_automata.backend.Location.LocationServices) locationListener).getCurrentLocation();
         }
-        else
-            Log.d("PERMS_FAILED", "EDN");
     }
 
     //Source: https://developer.android.com/training/permissions/requesting#java

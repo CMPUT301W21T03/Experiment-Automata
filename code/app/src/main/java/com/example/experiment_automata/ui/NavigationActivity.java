@@ -305,6 +305,13 @@ public class NavigationActivity extends AppCompatActivity implements
     }
 
     /**
+     * Get the current screen variable
+     * @return
+     *  the current screen
+     */
+    public Screen getCurrentScreen() { return currentScreen; }
+
+    /**
      * Sets the current fragment variable
      * @param currentFragment
      *  The fragment to set as currentFragment

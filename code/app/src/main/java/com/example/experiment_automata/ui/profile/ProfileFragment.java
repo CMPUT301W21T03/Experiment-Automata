@@ -17,6 +17,7 @@ import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.backend.users.ContactInformation;
 import com.example.experiment_automata.backend.users.User;
+import com.example.experiment_automata.ui.Screen;
 
 /**
  * Role/Pattern:
@@ -28,44 +29,43 @@ import com.example.experiment_automata.backend.users.User;
  *      1. No ability to edit information
  */
 public class ProfileFragment extends Fragment {
-
     private ProfileViewModel profileViewModel;
+    private TextView nameView;
+    private TextView emailView;
+    private TextView phoneView;
 
+    /**
+     * Creates the fragment view.
+     * @param inflater
+     *  The inflater
+     * @param container
+     *  The container
+     * @param savedInstanceState
+     *  The saved instance state
+     * @return
+     *  The view of the fragment
+     */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         NavigationActivity parentActivity = (NavigationActivity) getActivity();
+        // Set current fragment in parent activity
+        parentActivity.setCurrentScreen(Screen.Profile);
+        parentActivity.setCurrentFragment(this);
         User user = parentActivity.loggedUser;
         ContactInformation userInfo = user.getInfo();
         profileViewModel =
                 new ViewModelProvider(this).get(ProfileViewModel.class);
+        profileViewModel.setUser(user);
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
         final TextView idView = root.findViewById(R.id.profile_userid);
         idView.setText(user.getUserId().toString());
-        final TextView nameView = root.findViewById(R.id.profile_username);
-        final TextView emailView = root.findViewById(R.id.profile_email);
-        final TextView phoneView = root.findViewById(R.id.profile_phone);
+        nameView = root.findViewById(R.id.profile_username);
+        emailView = root.findViewById(R.id.profile_email);
+        phoneView = root.findViewById(R.id.profile_phone);
         final ImageButton editButton = root.findViewById(R.id.profile_edit_button);
-        nameView.setText(userInfo.getName());
-        emailView.setText(userInfo.getEmail());
-        phoneView.setText(userInfo.getPhone());
-        profileViewModel.getName().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                nameView.setText(s);
-            }
-        });
-        profileViewModel.getEmail().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                emailView.setText(s);
-            }
-        });
-        profileViewModel.getPhone().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                phoneView.setText(s);
-            }
-        });
+        profileViewModel.getName().observe(getViewLifecycleOwner(), nameView::setText);
+        profileViewModel.getEmail().observe(getViewLifecycleOwner(), emailView::setText);
+        profileViewModel.getPhone().observe(getViewLifecycleOwner(), phoneView::setText);
         editButton.setOnClickListener(v -> {
             Fragment editUserFragment = new EditUserFragment();
             Bundle bundle = new Bundle();
@@ -75,5 +75,14 @@ public class ProfileFragment extends Fragment {
                     .add(editUserFragment, "USER").commit();
         });
         return root;
+    }
+
+    /**
+     * Update views on screen.
+     */
+    public void update() {
+        nameView.setText(profileViewModel.getName().getValue());
+        emailView.setText(profileViewModel.getEmail().getValue());
+        phoneView.setText(profileViewModel.getPhone().getValue());
     }
 }

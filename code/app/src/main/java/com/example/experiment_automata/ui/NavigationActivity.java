@@ -21,6 +21,7 @@ import com.example.experiment_automata.ui.experiments.NavExperimentDetailsFragme
 import com.example.experiment_automata.backend.experiments.Experiment;
 
 import com.example.experiment_automata.ui.profile.EditUserFragment;
+import com.example.experiment_automata.ui.profile.ProfileFragment;
 import com.example.experiment_automata.ui.question.AddQuestionFragment;
 import com.example.experiment_automata.ui.question.QuestionDisplay;
 import com.example.experiment_automata.backend.questions.Question;
@@ -370,5 +371,8 @@ public class NavigationActivity extends AppCompatActivity implements
         info.setName(name);
         info.setEmail(email);
         info.setPhone(phone);
+        if (currentScreen == Screen.Profile) {
+            ((ProfileFragment) currentFragment).update();
+        }
     }
 }

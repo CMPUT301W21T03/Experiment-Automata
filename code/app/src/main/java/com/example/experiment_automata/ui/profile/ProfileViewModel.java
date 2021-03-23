@@ -23,24 +23,27 @@ public class ProfileViewModel extends ViewModel {
     private MutableLiveData<String> phone;
 
     public ProfileViewModel() {
-        //user = new User();
         username = new MutableLiveData<>();
-//        username.setValue(user.getInfo().getName());
         email = new MutableLiveData<>();
-//        email.setValue(user.getInfo().getPhone());
         phone = new MutableLiveData<>();
-//        phone.setValue(user.getInfo().getEmail());
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public LiveData<String> getName() {
+        username.setValue(user.getInfo().getName());
         return username;
     }
 
     public LiveData<String> getEmail() {
+        email.setValue(user.getInfo().getEmail());
         return email;
     }
 
     public LiveData<String> getPhone() {
+        phone.setValue(user.getInfo().getPhone());
         return phone;
     }
 }

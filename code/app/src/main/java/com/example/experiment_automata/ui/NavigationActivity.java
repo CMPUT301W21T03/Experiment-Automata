@@ -403,7 +403,16 @@ public class NavigationActivity extends AppCompatActivity implements
         }
     }
 
-    //Source: https://developer.android.com/training/permissions/requesting#java
+    /**
+     * Requests permissions from the device if the user does not currently allow for us to use the
+     * current users location.
+     *
+     * Source/Citation:
+     *      1.
+     *          Author: Alphabet LLC
+     *          Editor: Alphabet LLC
+     *          Full Source: https://developer.android.com/training/permissions/requesting#java
+     */
     public void requestLocationPermissions()
     {
         if(ContextCompat.checkSelfPermission(getApplicationContext(),
@@ -416,7 +425,20 @@ public class NavigationActivity extends AppCompatActivity implements
             canMakeLocationTrials = true; 
     }
 
-    //Source: https://developer.android.com/training/permissions/requesting#java
+    /**
+     * Deals with the response to the user denying or allowing us to use the needed resources
+     * to complete needed tasks.
+     *
+     * @param requestCode The code the we set for the needed resource
+     * @param permissions What resource we're asking the system give us access to.
+     * @param grantResults The result from the system
+     *
+     *Source/Citation:
+     *      1.
+     *          Author: Alphabet LLC
+     *          Editor: Alphabet LLC
+     *          Full Source: https://developer.android.com/training/permissions/requesting#java
+    */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
     {

@@ -25,7 +25,7 @@ import java.util.UUID;
  *
  * Known Issue:
  *
- *      1. None
+ *      1. Doesn't generate a correct QR code. Generates one with a random Experiment ID. Will be fixed once parent activity has proper UUID implementation.
  */
 public class ViewQRFragment extends DialogFragment {
 
@@ -47,9 +47,9 @@ public class ViewQRFragment extends DialogFragment {
         // = new QRCodeManager();
 
         Bundle bundle = getArguments();
-        experimentUUIDString = bundle.getString("UUID");
+        experimentUUIDString = bundle.getString("UUID");//change to UUID once parent activity is fully implemented
         String description = bundle.getString("DESCRIPTION");
-        qrCode = new QRCode(UUID.fromString(experimentUUIDString));//change this Normal UUID once parent activity has a proper Experiment representation
+        qrCode = new QRCode(UUID.randomUUID());//change this Normal UUID once parent activity has a proper Experiment representation
         qrCodeImage = qrCode.getQrCodeImage();
         qrImageView.setImageBitmap(qrCodeImage);//qr_value_textView
         qrValue.setText(description);

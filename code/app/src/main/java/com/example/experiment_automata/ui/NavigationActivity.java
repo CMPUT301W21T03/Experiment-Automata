@@ -6,6 +6,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -96,6 +97,7 @@ public class NavigationActivity extends AppCompatActivity implements
     private boolean canMakeLocationTrials = false;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private Location currentLocation;
+    ArrayList<Trial> trials = new ArrayList<>();
 
     /**
      * Method called when creating NavigationActivity
@@ -160,18 +162,7 @@ public class NavigationActivity extends AppCompatActivity implements
                                 case Count:
                                     CountExperiment countExperiment = (CountExperiment) experiment;
                                     CountTrial countTrial = new CountTrial(loggedUser.getUserId());
-                                    if (experiment.isRequireLocation()) {
-                                        addLocationToTrial(countTrial);
-                                        if(countExperiment != null)
-                                            countExperiment.recordTrial(countTrial);
-                                        else
-                                            Toast.makeText(getApplicationContext(),
-                                                    "Error Location not Made try Again Later",
-                                                    Toast.LENGTH_LONG).show();
-                                    }
-                                    else
-                                        countExperiment.recordTrial(countTrial);
-
+                                    addTrial(countExperiment, countTrial);
                                     break;
                                 case NaturalCount:
                                     NaturalCountExperiment naturalCountExperiment = (NaturalCountExperiment) experiment;
@@ -179,7 +170,7 @@ public class NavigationActivity extends AppCompatActivity implements
                                     EditText naturalCountInput = (EditText) findViewById(R.id.add_natural_count_value);
                                     final int naturalCount = Integer.parseInt(naturalCountInput.getText().toString());
                                     NaturalCountTrial naturalCountTrial = new NaturalCountTrial(loggedUser.getUserId(), naturalCount);
-                                    naturalCountExperiment.recordTrial(naturalCountTrial);
+                                    addTrial(naturalCountExperiment, naturalCountTrial);
                                     break;
                                 case Binomial:
                                     BinomialExperiment binomialExperiment = (BinomialExperiment) experiment;
@@ -187,7 +178,7 @@ public class NavigationActivity extends AppCompatActivity implements
                                     CheckBox passedInput = (CheckBox) findViewById(R.id.add_binomial_value);
                                     final boolean passed = passedInput.isChecked();
                                     BinomialTrial binomialTrial = new BinomialTrial(loggedUser.getUserId(), passed);
-                                    binomialExperiment.recordTrial(binomialTrial);
+                                    addTrial(binomialExperiment, binomialTrial);
                                     break;
                                 case Measurement:
                                     MeasurementExperiment measurementExperiment = (MeasurementExperiment) experiment;
@@ -195,7 +186,7 @@ public class NavigationActivity extends AppCompatActivity implements
                                     EditText measurementInput = (EditText) findViewById(R.id.add_measurement_value);
                                     final float measurement = Float.parseFloat(measurementInput.getText().toString());
                                     MeasurementTrial measurementTrial = new MeasurementTrial(loggedUser.getUserId(), measurement);
-                                    measurementExperiment.recordTrial(measurementTrial);
+                                    addTrial(measurementExperiment, measurementTrial);
                                     break;
                             }
                             currentScreen = Screen.ExperimentDetails;
@@ -387,10 +378,31 @@ public class NavigationActivity extends AppCompatActivity implements
         Log.d("current screen", currentScreen + "");
     }
 
-
-    public Trial makeTrial(ExperimentType trialType)
+    /**
+     * records a trial to an experiment while also dealing with location sensitive data.
+     * If we encounter an error the trial is not recorded and an error is prompted.
+     * @param experiment the experiment we want to add the trial
+     * @param trial the trial we wish to add to the experiment
+     */
+    public void addTrial(Experiment experiment,  Trial trial)
     {
-        return null; 
+        if (experiment.isRequireLocation())
+        {
+            addLocationToTrial(trial);
+            if(trial.getLocation() != null) {
+                experiment.recordTrial(trial);
+                Log.d("Recorded Location is ->", trial.getLocation().getLatitude() + "");
+            }
+            else {
+                Toast.makeText(getApplicationContext(),
+                        "Error: Trial recorded due to error: try again later",
+                        Toast.LENGTH_LONG).show();
+            }
+        }
+        else {
+            experiment.recordTrial(trial);
+        }
+        trials.add(trial);
     }
 
     /**
@@ -413,12 +425,12 @@ public class NavigationActivity extends AppCompatActivity implements
         {
             LocationManager locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
             LocationListener locationListener = new com.example.experiment_automata.backend.Location.LocationServices();
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 10, locationListener);
-            currentLocation = ((com.example.experiment_automata.backend.Location.LocationServices) locationListener).getCurrentLocation();
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 30, locationListener);
+            currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         }
-        else
+        else {
             currentLocation = null;
-
+        }
         currentTrial.setLocation(currentLocation);
     }
 

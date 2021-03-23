@@ -53,9 +53,9 @@ public class MeasurementExperiment extends Experiment {
      * @param trial
      *  the trail to add
      */
-    public void recordTrial(MeasurementTrial trial) {
+    public void recordTrial(Trial trial) {
         if (active) {
-            results.add(trial);
+            results.add((MeasurementTrial) trial);
         } else {
             throw new IllegalStateException("Experiment is not accepting new results.");
         }

@@ -2,8 +2,6 @@ package com.example.experiment_automata.backend.Location;
 
 import android.location.Location;
 import android.location.LocationListener;
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 /**
@@ -38,13 +36,6 @@ public class LocationServices implements LocationListener
     @Override
     public void onLocationChanged(@NonNull Location location)
     {
-        Log.d("Location Changed LAT", "" + location.getLatitude());
-        Log.d("Location Changed LONG", ""+ location.getLongitude());
         currentLocation = location;
-    }
-
-    public Location getCurrentLocation()
-    {
-        return currentLocation;
     }
 }

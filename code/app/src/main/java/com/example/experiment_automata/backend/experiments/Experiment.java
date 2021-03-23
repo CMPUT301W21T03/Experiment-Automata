@@ -1,6 +1,7 @@
 package com.example.experiment_automata.backend.experiments;
 
 import com.example.experiment_automata.backend.questions.Question;
+import com.example.experiment_automata.backend.trials.Trial;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -187,4 +188,6 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
      * @return size of the experiment
      */
     public abstract Integer getSize();
+
+    public abstract void recordTrial(Trial trial);
 }

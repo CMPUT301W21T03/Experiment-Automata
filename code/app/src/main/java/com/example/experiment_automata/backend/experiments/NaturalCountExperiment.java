@@ -53,9 +53,9 @@ public class NaturalCountExperiment extends Experiment {
      * @param trial
      *  the trail to add
      */
-    public void recordTrial(NaturalCountTrial trial) {
+    public void recordTrial(Trial trial) {
         if (active) {
-            results.add(trial);
+            results.add((NaturalCountTrial) trial);
         } else {
             throw new IllegalStateException("Experiment is not accepting new results.");
         }

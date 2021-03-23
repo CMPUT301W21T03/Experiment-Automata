@@ -2,6 +2,7 @@ package com.example.experiment_automata.backend.experiments;
 
 
 import com.example.experiment_automata.backend.trials.CountTrial;
+import com.example.experiment_automata.backend.trials.Trial;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 
@@ -53,9 +54,9 @@ public class CountExperiment extends Experiment {
      * @param trial
      *  the trail to add
      */
-    public void recordTrial(CountTrial trial) {
+    public void recordTrial(Trial trial) {
         if (active) {
-            results.add(trial);
+            results.add((CountTrial) trial);
         } else {
             throw new IllegalStateException("Experiment is not accepting new results.");
         }

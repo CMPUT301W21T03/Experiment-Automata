@@ -72,4 +72,14 @@ public abstract class Trial {
     {
         this.location = newLocation;
     }
+
+    /**
+     * get the currently set location for this particular trial.
+     * @return
+     *      the currently set location
+     */
+    public Location getLocation()
+    {
+        return location;
+    }
 }

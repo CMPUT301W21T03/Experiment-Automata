@@ -368,9 +368,7 @@ public class NavigationActivity extends AppCompatActivity implements
     @Override
     public void onOkPressed(User user, String name, String email, String phone) {
         ContactInformation info = user.getInfo();
-        info.setName(name);
-        info.setEmail(email);
-        info.setPhone(phone);
+        info.setAll(name, email, phone);
         if (currentScreen == Screen.Profile) {
             ((ProfileFragment) currentFragment).update();
         }

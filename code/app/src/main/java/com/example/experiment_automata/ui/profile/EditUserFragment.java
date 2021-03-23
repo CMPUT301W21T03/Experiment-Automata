@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.experiment_automata.R;
@@ -72,11 +73,14 @@ public class EditUserFragment extends DialogFragment {
         }
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
+    /**
+     * Gives instructions for when creating this dialog and prepares it's dismissal.
+     * @param savedInstanceState
+     *   allows you to pass information about a user
+     * @return
+     *   the dialog that will be created
+     */
+    @NonNull
     @Override
     public Dialog onCreateDialog(@Nonnull Bundle savedInstanceState) {
         AlertDialog.Builder build = new AlertDialog.Builder(getContext());

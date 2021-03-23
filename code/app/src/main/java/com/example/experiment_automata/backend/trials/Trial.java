@@ -62,4 +62,14 @@ public abstract class Trial {
      *  whether to ignore
      */
     public boolean isIgnored() { return ignore; }
+
+    /**
+     * Sets the current location of a trial.
+     *
+     * @param newLocation the new location we want to change to.
+     */
+    public void setLocation(Location newLocation)
+    {
+        this.location = newLocation;
+    }
 }

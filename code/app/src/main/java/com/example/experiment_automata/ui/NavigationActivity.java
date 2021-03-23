@@ -17,8 +17,10 @@ import android.view.Menu;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.example.experiment_automata.R;
+import com.example.experiment_automata.backend.experiments.ExperimentType;
 import com.example.experiment_automata.backend.trials.Trial;
 import com.example.experiment_automata.ui.experiments.AddExperimentFragment;
 import com.example.experiment_automata.backend.experiments.BinomialExperiment;
@@ -158,10 +160,18 @@ public class NavigationActivity extends AppCompatActivity implements
                                 case Count:
                                     CountExperiment countExperiment = (CountExperiment) experiment;
                                     CountTrial countTrial = new CountTrial(loggedUser.getUserId());
-                                    countExperiment.recordTrial(countTrial);
                                     if (experiment.isRequireLocation()) {
-                                        addLocationToTrial();
+                                        addLocationToTrial(countTrial);
+                                        if(countExperiment != null)
+                                            countExperiment.recordTrial(countTrial);
+                                        else
+                                            Toast.makeText(getApplicationContext(),
+                                                    "Error Location not Made try Again Later",
+                                                    Toast.LENGTH_LONG).show();
                                     }
+                                    else
+                                        countExperiment.recordTrial(countTrial);
+
                                     break;
                                 case NaturalCount:
                                     NaturalCountExperiment naturalCountExperiment = (NaturalCountExperiment) experiment;
@@ -378,6 +388,11 @@ public class NavigationActivity extends AppCompatActivity implements
     }
 
 
+    public Trial makeTrial(ExperimentType trialType)
+    {
+        return null; 
+    }
+
     /**
      * Gets the current location that the user is in with 100 ms in wait time from the device
      * then marks that trial with a location.
@@ -401,6 +416,10 @@ public class NavigationActivity extends AppCompatActivity implements
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 10, locationListener);
             currentLocation = ((com.example.experiment_automata.backend.Location.LocationServices) locationListener).getCurrentLocation();
         }
+        else
+            currentLocation = null;
+
+        currentTrial.setLocation(currentLocation);
     }
 
     /**

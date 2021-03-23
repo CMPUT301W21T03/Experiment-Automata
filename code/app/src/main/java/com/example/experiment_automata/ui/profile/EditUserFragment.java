@@ -3,16 +3,17 @@ package com.example.experiment_automata.ui.profile;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.experiment_automata.R;
+import com.example.experiment_automata.backend.users.ContactInformation;
 import com.example.experiment_automata.backend.users.User;
 
 import javax.annotation.Nonnull;
@@ -31,6 +32,7 @@ import javax.annotation.Nonnull;
 // Abdul Ali Bangash, "Lab 3", 2021-02-04, Public Domain,
 // https://eclass.srv.ualberta.ca/pluginfile.php/6713985/mod_resource/content/1/Lab%203%20instructions%20-%20CustomList.pdf
 public class EditUserFragment extends DialogFragment {
+    private static final String bundleUserKey = "USER";
     private EditText name;
     private EditText email;
     private EditText phone;
@@ -40,7 +42,7 @@ public class EditUserFragment extends DialogFragment {
      * This is an interface for any activity using this fragment
      */
     public interface OnFragmentInteractionListener {
-        void onOkPressed(String name, String email, String phone);
+        void onOkPressed(User user, String name, String email, String phone);
     }
 
     /**
@@ -53,7 +55,7 @@ public class EditUserFragment extends DialogFragment {
     public static EditUserFragment newInstance(User user) {
         EditUserFragment fragment = new EditUserFragment();
         Bundle args = new Bundle();
-        args.putSerializable("USER", user);
+        args.putSerializable(bundleUserKey, user);
         fragment.setArguments(args);
         return fragment;
     }
@@ -83,7 +85,35 @@ public class EditUserFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nonnull Bundle savedInstanceState) {
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_edit_user, null);
+
+        // link all of the variables with their objects in the UI
+        name = view.findViewById(R.id.edit_name);
+        email = view.findViewById(R.id.edit_email);
+        phone = view.findViewById(R.id.edit_phone);
+
+        // prepare the UI elements with existing information
+        User user = (User) getArguments().getSerializable(bundleUserKey);
+        ContactInformation info = user.getInfo();
+        name.setText(info.getName());
+        email.setText(info.getEmail());
+        phone.setText(info.getPhone());
+
         AlertDialog.Builder build = new AlertDialog.Builder(getContext());
-        return build.create();
+        return build
+                .setView(view)
+                .setTitle("Edit Contact Information")
+                .setNegativeButton("Cancel", null)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String newName = name.getText().toString();
+                        String newEmail = email.getText().toString();
+                        String newPhone = phone.getText().toString();
+
+                        listener.onOkPressed(user, newName, newEmail, newPhone);
+                    }
+                })
+                .create();
     }
 }

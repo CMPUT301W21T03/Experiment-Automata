@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.SearchView;
 
 import com.example.experiment_automata.R;
+import com.example.experiment_automata.backend.users.ContactInformation;
 import com.example.experiment_automata.ui.experiments.AddExperimentFragment;
 import com.example.experiment_automata.backend.experiments.BinomialExperiment;
 import com.example.experiment_automata.backend.experiments.CountExperiment;
@@ -19,6 +20,7 @@ import com.example.experiment_automata.backend.experiments.ExperimentManager;
 import com.example.experiment_automata.ui.experiments.NavExperimentDetailsFragment;
 import com.example.experiment_automata.backend.experiments.Experiment;
 
+import com.example.experiment_automata.ui.profile.EditUserFragment;
 import com.example.experiment_automata.ui.question.AddQuestionFragment;
 import com.example.experiment_automata.ui.question.QuestionDisplay;
 import com.example.experiment_automata.backend.questions.Question;
@@ -63,7 +65,8 @@ import java.util.UUID;
 
 public class NavigationActivity extends AppCompatActivity implements
         AddExperimentFragment.OnFragmentInteractionListener,
-        AddQuestionFragment.OnFragmentInteractionListener {
+        AddQuestionFragment.OnFragmentInteractionListener,
+        EditUserFragment.OnFragmentInteractionListener {
 
     private AppBarConfiguration mAppBarConfiguration;
     public final ExperimentManager experimentManager = new ExperimentManager();
@@ -350,5 +353,22 @@ public class NavigationActivity extends AppCompatActivity implements
         ((QuestionDisplay)currentFragment).updateQuestionsList();
         Log.d("Reply is ", reply);
         Log.d("current screen", currentScreen + "");
+    }
+
+    /**
+     * Edits the contact information of a user.
+     * @param name
+     *  The new name
+     * @param email
+     *  The new email
+     * @param phone
+     *  The new phone number
+     */
+    @Override
+    public void onOkPressed(User user, String name, String email, String phone) {
+        ContactInformation info = user.getInfo();
+        info.setName(name);
+        info.setEmail(email);
+        info.setPhone(phone);
     }
 }

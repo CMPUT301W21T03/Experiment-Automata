@@ -14,7 +14,7 @@ import androidx.navigation.Navigation;
 
 import com.example.experiment_automata.backend.experiments.Experiment;
 import com.example.experiment_automata.ui.NavigationActivity;
-import com.example.experiment_automata.backend.qr.ViewQRFragment;
+import com.example.experiment_automata.ui.qr.ViewQRFragment;
 import com.example.experiment_automata.ui.question.QuestionDisplay;
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.ui.Screen;

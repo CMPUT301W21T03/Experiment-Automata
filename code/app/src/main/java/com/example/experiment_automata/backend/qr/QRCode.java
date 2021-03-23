@@ -30,12 +30,35 @@ public class QRCode {
     static String COUNT_ID = "c";
     static String MEASUREMENT_ID = "m";
     static String NATURALC_ID = "n";
+    static String EXPERIMENT_ONLY_ID = "e";
     private String rawContentString;
     private UUID experimentID;
+    private QRType type;
     private Bitmap qrCodeImage;
+
+    public QRCode(UUID experimentID){//build an Experiment only QR Code
+        this.experimentID = experimentID;
+        type = QRType.Experiment;
+        //pack header
+        String packedString = "";
+        packedString += AUTOMATA_QR_HEADER;
+        packedString += experimentID.toString();
+        packedString += EXPERIMENT_ONLY_ID;
+
+        //create QR image
+        try {
+            qrCodeImage =  encodeStringToQR(packedString);
+        }
+        catch (WriterException wException){
+            //return special bitmap maybe?
+            wException.printStackTrace();
+        }
+    }
+
 
     public QRCode(UUID experimentID, BinomialTrial trial){//build a Binomial QR code
         this.experimentID = experimentID;
+        type = QRType.BinomialTrial;
         //pack header
         String packedString = "";
         packedString += AUTOMATA_QR_HEADER;
@@ -62,6 +85,7 @@ public class QRCode {
 
     public QRCode(UUID experimentID, CountTrial trial){//build a Count QR code
         this.experimentID = experimentID;
+        type = QRType.CountTrial;
         String packedString = "";
         packedString += AUTOMATA_QR_HEADER;
         packedString += experimentID.toString();
@@ -80,6 +104,7 @@ public class QRCode {
     }
     public QRCode(UUID experimentID, MeasurementTrial trial){//build a Count QR code
         this.experimentID = experimentID;
+        type = QRType.MeasurementTrial;
         String packedString = "";
         packedString += AUTOMATA_QR_HEADER;
         packedString += experimentID.toString();
@@ -97,6 +122,7 @@ public class QRCode {
     }
     public QRCode(UUID experimentID, NaturalCountTrial trial){//build a Count QR code
         this.experimentID = experimentID;
+        type = QRType.NaturalCountTrial;
         String packedString = "";
         packedString += AUTOMATA_QR_HEADER;
         packedString += experimentID.toString();
@@ -143,4 +169,19 @@ public class QRCode {
 
     }
 
+    public String getRawContentString() {
+        return rawContentString;
+    }
+
+    public QRType getType() {
+        return type;
+    }
+
+    public UUID getExperimentID() {
+        return experimentID;
+    }
+
+    public Bitmap getQrCodeImage() {
+        return qrCodeImage;
+    }
 }

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -43,6 +44,7 @@ public class ProfileFragment extends Fragment {
         final TextView nameView = root.findViewById(R.id.profile_username);
         final TextView emailView = root.findViewById(R.id.profile_email);
         final TextView phoneView = root.findViewById(R.id.profile_phone);
+        final ImageButton editButton = root.findViewById(R.id.profile_edit_button);
         nameView.setText(userInfo.getName());
         emailView.setText(userInfo.getEmail());
         phoneView.setText(userInfo.getPhone());
@@ -63,6 +65,14 @@ public class ProfileFragment extends Fragment {
             public void onChanged(@Nullable String s) {
                 phoneView.setText(s);
             }
+        });
+        editButton.setOnClickListener(v -> {
+            Fragment editUserFragment = new EditUserFragment();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(EditUserFragment.bundleUserKey, user);
+            editUserFragment.setArguments(bundle);
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .add(editUserFragment, "USER").commit();
         });
         return root;
     }

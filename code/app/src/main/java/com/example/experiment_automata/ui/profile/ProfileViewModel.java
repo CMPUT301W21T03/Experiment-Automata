@@ -11,7 +11,7 @@ import com.example.experiment_automata.backend.users.User;
  *
  *  Known Issue:
  *
- *      1. Not in use might be removed
+ *      1. None
  */
 
 

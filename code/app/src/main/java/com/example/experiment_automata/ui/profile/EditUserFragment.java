@@ -32,7 +32,7 @@ import javax.annotation.Nonnull;
 // Abdul Ali Bangash, "Lab 3", 2021-02-04, Public Domain,
 // https://eclass.srv.ualberta.ca/pluginfile.php/6713985/mod_resource/content/1/Lab%203%20instructions%20-%20CustomList.pdf
 public class EditUserFragment extends DialogFragment {
-    private static final String bundleUserKey = "USER";
+    public static final String bundleUserKey = "USER";
     private EditText name;
     private EditText email;
     private EditText phone;

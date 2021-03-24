@@ -47,6 +47,7 @@ public class UserTests {
 
     @Test
     public void checkProfile() {
+        solo.waitForFragmentById(R.id.profile_screen);
         assertEquals(Screen.Profile, currentTestingActivity.getCurrentScreen());
         assertEquals(solo.getString(R.string.profile_contact),
                 ((TextView) solo.getView(R.id.profile_contact)).getText().toString());
@@ -54,6 +55,7 @@ public class UserTests {
 
     @Test
     public void editProfile() {
+        solo.waitForFragmentById(R.id.profile_screen);
         // click on edit button
         solo.clickOnImageButton(1);
         // generate new random phone number

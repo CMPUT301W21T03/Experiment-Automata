@@ -51,4 +51,8 @@
     <string name="no_trials">Not Enough Trials</string>
 
     <string name="profile_contact">Contact Information</string>
+
+    <string name="add_location_dialog_latitude">Latitude</string>
+    <string name="add_location_dialog_longitude">Longitude</string>
+    <string name="add_location_dialog_default_btn">Revert to Current</string>
 </resources>

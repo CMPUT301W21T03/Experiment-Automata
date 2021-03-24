@@ -1,6 +1,7 @@
 package com.example.experiment_automata;
 
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -13,6 +14,8 @@ import com.robotium.solo.Solo;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+
+import java.util.Random;
 
 import static org.junit.Assert.*;
 
@@ -47,5 +50,22 @@ public class UserTests {
         assertEquals(Screen.Profile, currentTestingActivity.getCurrentScreen());
         assertEquals(solo.getString(R.string.profile_contact),
                 ((TextView) solo.getView(R.id.profile_contact)).getText().toString());
+    }
+
+    @Test
+    public void editProfile() {
+        // click on edit button
+        solo.clickOnImageButton(1);
+        // generate new random phone number
+        Random random = new Random();
+        String newPhoneNumber = String.format("780-%03d-%04d",
+                random.nextInt(1000), random.nextInt(10000));
+        // change phone number
+        EditText phoneNumberField = (EditText) solo.getView(R.id.edit_phone);
+        solo.clearEditText(phoneNumberField);
+        solo.enterText(phoneNumberField, newPhoneNumber);
+        solo.clickOnText("Ok");
+        // check for new phone number
+        assertTrue(solo.searchText(newPhoneNumber));
     }
 }

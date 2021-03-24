@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -48,6 +49,7 @@ public class User implements Serializable {
         this.info = new ContactInformation(preferences);
         this.ownedExperiments = new ArrayList<>();
         this.subscribedExperiments = new ArrayList<>();
+        updateFirestore();
     }
 
     /**
@@ -58,7 +60,11 @@ public class User implements Serializable {
     private User(UUID id) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference documentReference = db.collection("users").document(id.toString());
-        DocumentSnapshot document = documentReference.get().getResult();
+        Task<DocumentSnapshot> task = documentReference.get();
+        // wait until the task is complete
+        while (!task.isComplete());
+        System.out.println(id.toString());
+        DocumentSnapshot document = task.getResult();
         String name = document.get("name").toString();
         String email = document.get("email").toString();
         String phone = document.get("phone").toString();

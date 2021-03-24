@@ -18,7 +18,7 @@
         android:layout_weight="1"
         android:orientation="horizontal">
 
-        <TextView
+        <com.example.experiment_automata.LinkView
             android:id="@+id/trial_experimenter_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

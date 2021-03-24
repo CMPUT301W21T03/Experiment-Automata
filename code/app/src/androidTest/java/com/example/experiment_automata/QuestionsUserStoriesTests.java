@@ -56,7 +56,7 @@ public class QuestionsUserStoriesTests {
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
         currentTestingActivity = (NavigationActivity) solo.getCurrentActivity();
         //Finding the buttons we need to press
-        addExperimentButton = currentTestingActivity.findViewById(R.id.add_experiment_button);
+        addExperimentButton = currentTestingActivity.findViewById(R.id.fab_button);
     }
 
     private void makeExperiment(String des)

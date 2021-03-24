@@ -67,7 +67,7 @@ public class ExperimentUserStoriesTests
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
         currentTestingActivity = (NavigationActivity) solo.getCurrentActivity();
         //Finding the buttons we need to press
-        addExperimentButton = currentTestingActivity.findViewById(R.id.add_experiment_button);
+        addExperimentButton = currentTestingActivity.findViewById(R.id.fab_button);
         maker = new ExperimentMaker();
         testUUID = UUID.randomUUID();
         testExperiment = maker.makeExperiment(ExperimentType.Count,

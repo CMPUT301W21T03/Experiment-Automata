@@ -1,6 +1,7 @@
 package com.example.experiment_automata.ui.trials;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,14 +11,20 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
+import com.example.experiment_automata.LinkView;
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.backend.trials.BinomialTrial;
 import com.example.experiment_automata.backend.trials.CountTrial;
 import com.example.experiment_automata.backend.trials.MeasurementTrial;
 import com.example.experiment_automata.backend.trials.NaturalCountTrial;
 import com.example.experiment_automata.backend.trials.Trial;
+import com.example.experiment_automata.backend.users.User;
+import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.ui.experiments.NavExperimentDetailsFragment;
+import com.example.experiment_automata.ui.profile.ProfileFragment;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -73,10 +80,16 @@ public class TrialArrayAdapter extends ArrayAdapter<Trial> {
         // The experiment we're going to set the XML file with
         Trial trial = trials.get(position);
 
-        TextView experimenterNameView = view.findViewById(R.id.trial_experimenter_name);
+        LinkView experimenterNameView = (LinkView) view.findViewById(R.id.trial_experimenter_name);
         UUID userId = trial.getCollector();
-        // TODO: FIX ERROR
-//        experimenterNameView.setText(User.getInstance(userId).getInfo().getName());
+        experimenterNameView.setText(User.getInstance(userId).getInfo().getName());
+        experimenterNameView.setOnClickListener(v -> {
+            NavigationActivity parentActivity = (NavigationActivity) context;
+            Bundle args = new Bundle();
+            args.putSerializable(ProfileFragment.userKey, User.getInstance(userId));
+            NavController navController = Navigation.findNavController(parentActivity, R.id.nav_host_fragment);
+            navController.navigate(R.id.nav_profile, args);
+        });
 
         TextView trialValueView = view.findViewById(R.id.trial_value);
         if (trial instanceof CountTrial) {

@@ -74,7 +74,7 @@ public class NavigationActivity extends AppCompatActivity implements
 
     private Screen currentScreen;
     public Fragment currentFragment;
-    public  User loggedUser;
+    public User loggedUser;
     public Experiment currentExperiment;
 
     /**
@@ -101,7 +101,7 @@ public class NavigationActivity extends AppCompatActivity implements
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-        FloatingActionButton addExperimentButton = findViewById(R.id.add_experiment_button);
+        FloatingActionButton addExperimentButton = findViewById(R.id.fab_button);
         addExperimentButton.setOnClickListener(new View.OnClickListener() {
             /**
              * Deal with the FAB when clicked

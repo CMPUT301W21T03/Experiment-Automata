@@ -39,7 +39,7 @@ public class UserTests {
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
         currentTestingActivity = (NavigationActivity) solo.getCurrentActivity();
         // Open navigation drawer
-        solo.clickOnScreen(72, 140); // tested on Pixel 3a
+        solo.clickOnImageButton(0);
         solo.waitForText(solo.getString(R.string.menu_profile));
         // Navigate to profile
         solo.clickOnView(solo.getView(R.id.nav_profile));

@@ -1,4 +1,4 @@
-package com.example.experiment_automata.backend.qr;
+package com.example.experiment_automata.ui.qr;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -14,7 +14,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.experiment_automata.R;
-import com.example.experiment_automata.ui.qr.QRCodeManager;
+import com.example.experiment_automata.backend.qr.QRCode;
+
+import java.util.UUID;
 
 /**
  * Role/Pattern:
@@ -23,7 +25,7 @@ import com.example.experiment_automata.ui.qr.QRCodeManager;
  *
  * Known Issue:
  *
- *      1. None
+ *      1. Doesn't generate a correct QR code. Generates one with a random Experiment ID. Will be fixed once parent activity has proper UUID implementation.
  */
 public class ViewQRFragment extends DialogFragment {
 
@@ -31,8 +33,8 @@ public class ViewQRFragment extends DialogFragment {
     private TextView qrValue;
     private Button backButton;
     private String experimentUUIDString;
-    private QRCodeManager qrManager;
-    private Bitmap qrCode;
+    private QRCode qrCode;
+    private Bitmap qrCodeImage;
 
 
     @Nullable
@@ -42,13 +44,14 @@ public class ViewQRFragment extends DialogFragment {
         backButton = view.findViewById(R.id.qr_code_back_button);
         qrImageView = view.findViewById(R.id.qr_code_imageView);
         qrValue = view.findViewById(R.id.qr_value_textView);
-        qrManager = new QRCodeManager();
+        // = new QRCodeManager();
 
         Bundle bundle = getArguments();
-        experimentUUIDString = bundle.getString("UUID");
+        experimentUUIDString = bundle.getString("UUID");//change to UUID once parent activity is fully implemented
         String description = bundle.getString("DESCRIPTION");
-        qrCode = qrManager.createQRFromUUID(experimentUUIDString);
-        qrImageView.setImageBitmap(qrCode);//qr_value_textView
+        qrCode = new QRCode(UUID.randomUUID());//change this Normal UUID once parent activity has a proper Experiment representation
+        qrCodeImage = qrCode.getQrCodeImage();
+        qrImageView.setImageBitmap(qrCodeImage);//qr_value_textView
         qrValue.setText(description);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override

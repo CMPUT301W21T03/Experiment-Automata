@@ -1,8 +1,10 @@
-package com.example.experiment_automata;
+package com.example.experiment_automata.ui;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+
+import com.example.experiment_automata.R;
 
 /**
  * Extends the TextView to add a uuid attribute

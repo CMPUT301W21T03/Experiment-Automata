@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import com.example.experiment_automata.LinkView;
+import com.example.experiment_automata.ui.LinkView;
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.backend.trials.BinomialTrial;
 import com.example.experiment_automata.backend.trials.CountTrial;

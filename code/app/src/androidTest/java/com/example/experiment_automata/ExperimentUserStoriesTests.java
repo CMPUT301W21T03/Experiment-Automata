@@ -18,11 +18,14 @@ package com.example.experiment_automata;
 
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.experiment_automata.backend.experiments.Experiment;
 import com.example.experiment_automata.backend.experiments.ExperimentMaker;
 import com.example.experiment_automata.backend.experiments.ExperimentType;
+import com.example.experiment_automata.backend.users.User;
 import com.example.experiment_automata.ui.NavigationActivity;
+import com.example.experiment_automata.ui.Screen;
 import com.robotium.solo.Solo;
 
 import org.junit.Before;
@@ -36,6 +39,7 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class ExperimentUserStoriesTests
@@ -305,5 +309,24 @@ public class ExperimentUserStoriesTests
         }
         else
             fail("Should never happen: if it does it's error with robotium");
+    }
+
+    /**
+     * Testing if we can navigate to an experimenter's profile from the trial result
+     */
+    @Test
+    public void testingLinkToExperimenter() {
+        String experimentDescription = "GUI Test Experiment";
+        makeExperiment(experimentDescription);
+        solo.sleep(2000);
+        solo.clickOnText(experimentDescription);
+        solo.clickOnView(addExperimentButton);
+        solo.clickOnView(addExperimentButton);
+        User user = currentTestingActivity.loggedUser;
+        solo.clickOnText(user.getInfo().getName());
+        solo.waitForFragmentById(R.id.profile_screen);
+        assertEquals(Screen.Profile, currentTestingActivity.getCurrentScreen());
+        assertEquals(solo.getString(R.string.profile_contact),
+                ((TextView) solo.getView(R.id.profile_contact)).getText().toString());
     }
 }

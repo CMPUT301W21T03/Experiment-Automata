@@ -381,6 +381,10 @@ public class NavigationActivity extends AppCompatActivity implements
     /**
      * records a trial to an experiment while also dealing with location sensitive data.
      * If we encounter an error the trial is not recorded and an error is prompted.
+     *
+     * Locations are asked for at the current insistence. Hopefully this will prevent
+     * massive battery spikes from asking for location from the gps.
+     *
      * @param experiment the experiment we want to add the trial
      * @param trial the trial we wish to add to the experiment
      */
@@ -391,7 +395,6 @@ public class NavigationActivity extends AppCompatActivity implements
             addLocationToTrial(trial);
             if(trial.getLocation() != null) {
                 experiment.recordTrial(trial);
-                Log.d("Recorded Location is ->", trial.getLocation().getLatitude() + "");
             }
             else {
                 Toast.makeText(getApplicationContext(),

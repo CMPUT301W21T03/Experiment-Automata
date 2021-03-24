@@ -289,6 +289,7 @@ public class ExperimentUserStoriesTests
     {
         Experiment current = null;
         makeExperiment("GUI Test Experiment");
+        solo.sleep(2000);
         if(currentTestingActivity.experimentManager.getAllExperiments().size() > 0) {
             current = currentTestingActivity.experimentManager.getAllExperiments().get(0);
 
@@ -297,6 +298,7 @@ public class ExperimentUserStoriesTests
             solo.clickOnView(addExperimentButton);
             solo.clickOnView(addExperimentButton);
             solo.clickOnActionBarHomeButton();
+            solo.sleep(2000);
             int trialSizeAfter = current.getSize();
 
             assertEquals("Trials not added", true, trialSizeAfter > trialSizeBefore);

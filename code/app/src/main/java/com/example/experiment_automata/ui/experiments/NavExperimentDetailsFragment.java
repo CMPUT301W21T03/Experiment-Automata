@@ -176,8 +176,10 @@ public class NavExperimentDetailsFragment extends Fragment {
                         (((NavigationActivity) getActivity())
                         .getExperimentManager())
                         .getAtUUIDDescription(UUID.fromString(experimentStringId)));
+
                 mapFragment.setArguments(neededMapData);
-                getActivity().getSupportFragmentManager().beginTransaction().add(mapFragment, "MAP-D").commit();
+                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                navController.navigate(R.id.map_display_fragment, neededMapData);
             }
         });
 

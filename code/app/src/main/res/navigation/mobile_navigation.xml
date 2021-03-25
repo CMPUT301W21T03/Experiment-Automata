@@ -92,6 +92,9 @@
 
             android:id="@+id/action_nav_experiment_details_to_questionDisplay"
             app:destination="@id/questionDisplay" />
+        <action
+            android:id="@+id/action_nav_experiment_details_to_map_display_fragment"
+            app:destination="@id/map_display_fragment" />
     </fragment>
     <fragment
         android:id="@+id/questionDisplay"
@@ -139,5 +142,10 @@
         android:name="com.example.experiment_automata.ui.trials.add.AddMeasurementTrialFragment"
         android:label="Add Measurement Trail"
         tools:layout="@layout/fragment_add_measurement_trial" />
+    <fragment
+        android:id="@+id/map_display_fragment"
+        android:name="com.example.experiment_automata.map_display_fragment"
+        android:label="fragment_map_display_fragment"
+        tools:layout="@layout/fragment_map_display_fragment" />
 
 </navigation>

@@ -55,7 +55,7 @@ public class MapPointViewFragment extends Fragment
          */
         Configuration.getInstance().load(getContext(), PreferenceManager.getDefaultSharedPreferences(getContext()));
 
-        View root = inflater.inflate(R.layout.fragment_map_view, container, false);
+        View root = inflater.inflate(R.layout.fragment_map_display_fragment, container, false);
         currentMapDisplay = root.findViewById(R.id.map_point_view_fragment_map_display);
         currentMapDisplay.setTileSource(TileSourceFactory.MAPNIK);
         currentExperiment = (Experiment) getArguments().getSerializable(CURRENT_EXPERIMENT);

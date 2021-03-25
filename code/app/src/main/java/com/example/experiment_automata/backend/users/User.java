@@ -63,7 +63,6 @@ public class User implements Serializable {
         Task<DocumentSnapshot> task = documentReference.get();
         // wait until the task is complete
         while (!task.isComplete());
-        System.out.println(id.toString());
         DocumentSnapshot document = task.getResult();
         String name = document.get("name").toString();
         String email = document.get("email").toString();

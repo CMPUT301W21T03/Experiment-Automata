@@ -12,14 +12,12 @@ import java.util.UUID;
  *
  *      1. None
  */
-public class Reply implements Serializable
-{
+public class Reply implements Serializable {
     private String reply;
     private UUID experimenter;
     private UUID replyId;
 
-    public Reply(String reply, UUID experimenter)
-    {
+    public Reply(String reply, UUID experimenter) {
         this.reply = reply;
         this.experimenter = experimenter;
         this.replyId = UUID.randomUUID();
@@ -33,9 +31,14 @@ public class Reply implements Serializable
         return replyId;
     }
 
+    public UUID getUser() {
+        return experimenter;
+    }
+
     /**
      * giving us more control as to how the replies are displayed
      * @return
+     *  text of the reply
      */
     @Override
     public String toString() {

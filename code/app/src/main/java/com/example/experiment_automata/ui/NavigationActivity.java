@@ -354,10 +354,10 @@ public class NavigationActivity extends AppCompatActivity implements
      */
     @Override
     public void onOkPressedReply(String reply, UUID questionId) {
-        Reply newReply = new Reply(reply, questionId);
+        Reply newReply = new Reply(reply, loggedUser.getUserId());
         questionManager.addReply(questionId, newReply);
 
-        ((QuestionDisplay)currentFragment).updateQuestionsList();
+        ((QuestionDisplay) currentFragment).updateQuestionsList();
         Log.d("Reply is ", reply);
         Log.d("current screen", currentScreen + "");
     }

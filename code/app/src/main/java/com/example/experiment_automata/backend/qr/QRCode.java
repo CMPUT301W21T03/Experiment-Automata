@@ -16,6 +16,7 @@ import java.util.UUID;
 /**
  * Role/Pattern:
  *     Class representing a QR code through it's image and content fields.
+ *     format is oulined here: https://github.com/CMPUT301W21T03/Experiment-Automata/wiki/Custom-QR-Code-Content-Format
  *
  *  Known Issue:
  *
@@ -23,14 +24,14 @@ import java.util.UUID;
  */
 public class QRCode {
     //Header for custom QR codes
-    static String AUTOMATA_QR_HEADER = "ATMA";
-    static int DEAFULT_QR_HEIGHT = 600;
-    static int DEFAULT_QR_WIDTH = 600;
-    static String BINOMIAL_ID = "b";
-    static String COUNT_ID = "c";
-    static String MEASUREMENT_ID = "m";
-    static String NATURALC_ID = "n";
-    static String EXPERIMENT_ONLY_ID = "e";
+    static final String AUTOMATA_QR_HEADER = "ATMA";
+    static final int DEAFULT_QR_HEIGHT = 600;
+    static final int DEFAULT_QR_WIDTH = 600;
+    static final String BINOMIAL_ID = "b";
+    static final String COUNT_ID = "c";
+    static final String MEASUREMENT_ID = "m";
+    static final String NATURALC_ID = "n";
+    static final String EXPERIMENT_ONLY_ID = "e";
     private String rawContentString;
     private UUID experimentID;
     private QRType type;

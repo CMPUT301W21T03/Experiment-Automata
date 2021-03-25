@@ -22,6 +22,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+    <ImageButton
+        android:id="@+id/binomial_trial_experiment_description_qr_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="76dp"
+        android:layout_marginEnd="28dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_baseline_qr_code_scanner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <CheckBox
         android:id="@+id/add_binomial_value"
         android:layout_width="wrap_content"

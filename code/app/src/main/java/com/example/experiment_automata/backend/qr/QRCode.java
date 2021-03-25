@@ -3,7 +3,6 @@ package com.example.experiment_automata.backend.qr;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
-import com.example.experiment_automata.backend.trials.BinomialTrial;
 import com.example.experiment_automata.backend.trials.CountTrial;
 import com.example.experiment_automata.backend.trials.MeasurementTrial;
 import com.example.experiment_automata.backend.trials.NaturalCountTrial;
@@ -42,32 +41,6 @@ public abstract class QRCode {
         this.type = type;
     }
 
-    public QRCode(UUID experimentID, BinomialTrial trial){//build a Binomial QR code
-        this.experimentID = experimentID;
-        type = QRType.BinomialTrial;
-        //pack header
-        String packedString = "";
-        packedString += AUTOMATA_QR_HEADER;
-        packedString += experimentID.toString();
-        packedString += BINOMIAL_ID;
-        rawContentString = packedString;
-        //pack content
-        if (trial.getResult()){
-            packedString += "1";
-        }
-        else {
-            packedString += "0";
-        }
-        rawContentString = packedString;
-        //create QR image
-        try {
-            qrCodeImage =  encodeStringToQR(packedString);
-        }
-        catch (WriterException wException){
-            //return special bitmap maybe?
-            wException.printStackTrace();
-        }
-    }
 
     public QRCode(UUID experimentID, CountTrial trial){//build a Count QR code
         this.experimentID = experimentID;

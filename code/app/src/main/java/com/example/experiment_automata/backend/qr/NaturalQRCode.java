@@ -3,7 +3,14 @@ package com.example.experiment_automata.backend.qr;
 import com.google.zxing.WriterException;
 
 import java.util.UUID;
-
+/**
+ * Role/Pattern:
+ *     Class representing a QR Code containing  a reference to a Natural count Trial
+ *
+ *  Known Issue:
+ *
+ *      1. None
+ */
 public class NaturalQRCode extends QRCode{
     private int value;
     public NaturalQRCode(UUID experimentID, int value) {

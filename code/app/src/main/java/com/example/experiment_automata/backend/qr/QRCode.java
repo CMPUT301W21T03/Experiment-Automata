@@ -3,9 +3,6 @@ package com.example.experiment_automata.backend.qr;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
-import com.example.experiment_automata.backend.trials.CountTrial;
-import com.example.experiment_automata.backend.trials.MeasurementTrial;
-import com.example.experiment_automata.backend.trials.NaturalCountTrial;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
@@ -36,66 +33,19 @@ public abstract class QRCode {
     private QRType type;
     private Bitmap qrCodeImage;
 
-    public QRCode(UUID experimentID, QRType type){//build an Experiment only QR Code
+    public QRCode(UUID experimentID, QRType type){//For creating QRCode image from data
         this.experimentID = experimentID;
         this.type = type;
     }
 
+    public QRCode(String rawContentString){//For creating QRCode from parsed image data
+        this.rawContentString = rawContentString;
+        if (!checkQRHeader(rawContentString)){
+            //not valid raise exception
+        }
+        //mask uuid
+        this.experimentID = UUID.fromString(rawContentString.substring(4, 41));
 
-    public QRCode(UUID experimentID, CountTrial trial){//build a Count QR code
-        this.experimentID = experimentID;
-        type = QRType.CountTrial;
-        String packedString = "";
-        packedString += AUTOMATA_QR_HEADER;
-        packedString += experimentID.toString();
-        packedString += COUNT_ID;
-        //CountTrial result field un-implemented
-        //create QR image
-        try {
-            qrCodeImage =  encodeStringToQR(packedString);
-        }
-        catch (WriterException wException){
-            //return special bitmap maybe?
-            wException.printStackTrace();
-        }
-        rawContentString = packedString;
-
-    }
-    public QRCode(UUID experimentID, MeasurementTrial trial){//build a Count QR code
-        this.experimentID = experimentID;
-        type = QRType.MeasurementTrial;
-        String packedString = "";
-        packedString += AUTOMATA_QR_HEADER;
-        packedString += experimentID.toString();
-        packedString += MEASUREMENT_ID;
-        packedString += String.valueOf(trial.getResult());
-        //create QR image
-        try {
-            qrCodeImage =  encodeStringToQR(packedString);
-        }
-        catch (WriterException wException){
-            //return special bitmap maybe?
-            wException.printStackTrace();
-        }
-        rawContentString = packedString;
-    }
-    public QRCode(UUID experimentID, NaturalCountTrial trial){//build a Count QR code
-        this.experimentID = experimentID;
-        type = QRType.NaturalCountTrial;
-        String packedString = "";
-        packedString += AUTOMATA_QR_HEADER;
-        packedString += experimentID.toString();
-        packedString += NATURALC_ID;
-        packedString += String.valueOf(trial.getResult());
-        //create QR image
-        try {
-            qrCodeImage =  encodeStringToQR(packedString);
-        }
-        catch (WriterException wException){
-            //return special bitmap maybe?
-            wException.printStackTrace();
-        }
-        rawContentString = packedString;
     }
 
     /**
@@ -125,7 +75,16 @@ public abstract class QRCode {
             }
         }
         return qrCodeBitmap;
-
+    }
+    /**
+     * Checks a string for the custom Automata QR identifier
+     * @param qrString
+     * raw string from QR to check
+     * @return
+     * returns a QRCode
+     */
+    public boolean checkQRHeader(String qrString){
+        return qrString.substring(0,4).equals(QRCode.AUTOMATA_QR_HEADER);
     }
 
     public void setRawContentString(String rawContentString) {

@@ -5,7 +5,7 @@ import com.google.zxing.WriterException;
 import java.util.UUID;
 /**
  * Role/Pattern:
- *     Class representing a QR Code containing only an Experiment Reference
+ *     Class representing a QR Code containing a reference to a Measurement Trial
  *
  *  Known Issue:
  *

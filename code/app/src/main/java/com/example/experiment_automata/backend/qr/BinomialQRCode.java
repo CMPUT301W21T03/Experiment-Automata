@@ -14,10 +14,11 @@ import java.util.UUID;
 public class BinomialQRCode extends QRCode{
     static final String BINOMIAL_TRUE = "t";
     static final String BINOMIAL_FALSE = "f";
-    private Boolean value;
-    public BinomialQRCode(UUID experimentID,Boolean value) {
+    private Boolean result;
+
+    public BinomialQRCode(UUID experimentID,Boolean result) {
         super(experimentID, QRType.BinomialTrial);
-        this.value = value;
+        this.result = result;
         //pack header
         String packedString = "";
         packedString += AUTOMATA_QR_HEADER;
@@ -25,8 +26,8 @@ public class BinomialQRCode extends QRCode{
         packedString += BINOMIAL_ID;
         this.setRawContentString(packedString);
         //pack content
-        this.value = value;
-        if(value){
+        this.result = result;
+        if(result){
             packedString += BINOMIAL_TRUE;
         }
         else{
@@ -42,8 +43,31 @@ public class BinomialQRCode extends QRCode{
             wException.printStackTrace();
         }
     }
+    public BinomialQRCode(String rawContent) {
+        super(rawContent);
+        if (!rawContent.substring(41, 42).equals(QRCode.BINOMIAL_ID)) {
+            //if incorrect type
+        }
+
+        String content = rawContent.substring(42);
+        switch (content) {
+            case BinomialQRCode.BINOMIAL_TRUE:
+                result = true;
+                break;
+            case BinomialQRCode.BINOMIAL_FALSE:
+                result = false;
+                break;
+        }
+        try {
+            this.setQrCodeImage(encodeStringToQR(rawContent));
+        }
+        catch (WriterException wException){
+            //return special bitmap maybe?
+            wException.printStackTrace();
+        }
+    }
     public boolean getValue() {
-        return value;
+        return result;
     }
 
 }

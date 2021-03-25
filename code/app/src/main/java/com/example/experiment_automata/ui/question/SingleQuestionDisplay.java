@@ -41,8 +41,7 @@ import java.util.ArrayList;
  *      1. Partly inspired by lab of 301 lab
  *
  */
-public class SingleQuestionDisplay extends ArrayAdapter
-{
+public class SingleQuestionDisplay extends ArrayAdapter {
     private ArrayList<Question> currentExperimentQuestions;
     private Context context;
     private ImageButton replyButton;
@@ -51,7 +50,7 @@ public class SingleQuestionDisplay extends ArrayAdapter
     private NavigationActivity mainActivity;
     private Question currentQuestion;
     private ListView replyListView;
-    private ArrayAdapter<Reply> replyArrayAdapter;
+    private ReplyArrayAdapter replyArrayAdapter;
 
     /**
      * Constructor takes in an array list of questions and a context to set the attributes properly
@@ -94,6 +93,11 @@ public class SingleQuestionDisplay extends ArrayAdapter
         questionView = (TextView) root.findViewById(R.id.main_question_display_question_view);
         replyButton = root.findViewById(R.id.main_question_display_reply_button);
         questionUser = (LinkView) root.findViewById(R.id.main_question_display_user);
+        replyListView = root.findViewById(R.id.main_question_display_list_view);
+
+        ArrayList<Reply> currentReplies = mainActivity.questionManager.getQuestionReply(currentQuestion.getQuestionId());
+        replyArrayAdapter = new ReplyArrayAdapter(getContext(), currentReplies);
+        replyListView.setAdapter(replyArrayAdapter);
 
         if(currentExperimentQuestions != null) {
             setView(root, position);
@@ -110,7 +114,6 @@ public class SingleQuestionDisplay extends ArrayAdapter
      */
     private void setView(View root, int pos) {
         // try and find a reply for the current question
-        update(root);
         replyButton.setOnClickListener(v -> dealingWithReply(pos));
         questionView.setText(currentQuestion.getQuestion());
         User user = User.getInstance(currentQuestion.getUser());
@@ -122,6 +125,7 @@ public class SingleQuestionDisplay extends ArrayAdapter
             navController.navigate(R.id.nav_profile, args);
         });
         questionUser.setText(user.getInfo().getName());
+        update(root);
     }
 
     /**
@@ -131,11 +135,9 @@ public class SingleQuestionDisplay extends ArrayAdapter
      * @param root the current view that was made 
      */
     private void update(View root) {
-        replyListView = root.findViewById(R.id.main_question_display_list_view);
-        ArrayList<Reply> currentReplies = mainActivity.questionManager.getQuestionReply(currentQuestion.getQuestionId());
-        replyArrayAdapter = new ArrayAdapter<>(getContext(), R.layout.reply_layout_list, currentReplies);
-        replyListView.setAdapter(replyArrayAdapter);
-        replyArrayAdapter.notifyDataSetChanged();
+        if (replyArrayAdapter != null) {
+            replyArrayAdapter.notifyDataSetChanged();
+        }
         notifyDataSetChanged();
     }
 

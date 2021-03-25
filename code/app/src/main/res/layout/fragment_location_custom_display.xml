@@ -1,84 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:backgroundTint="#FFFFFF"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/add_location_dialog_fragment_lat_display"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/add_location_dialog_latitude"
+        android:textSize="24dp" />
 
     <EditText
         android:id="@+id/add_dialog_frag_lati_input_box"
-        android:layout_width="345dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="79dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/add_dialog_frag_longi_input_box"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_dialog_loc_frag_lati_display" />
+        android:inputType="number" />
+
+    <TextView
+        android:id="@+id/add_location_dialog_longitude_display"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/add_location_dialog_longitude"
+        android:textSize="24dp" />
 
     <EditText
         android:id="@+id/add_dialog_frag_longi_input_box"
-        android:layout_width="354dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="502dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.48"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_dialog_frag_lati_input_box" />
+        android:inputType="number" />
 
     <Button
         android:id="@+id/add_dialog_revert_to_orginal_loc_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
-        android:backgroundTint="#FFFFFF"
-        android:hapticFeedbackEnabled="false"
         android:text="@string/add_location_dialog_default_btn"
         android:textColor="#000000"
-        android:textColorHighlight="#000000"
-        android:textColorLink="#000000"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_dialog_frag_longi_input_box"
-        app:rippleColor="#000000" />
-
-    <TextView
-        android:id="@+id/add_dialog_loc_frag_lati_display"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginBottom="21dp"
-        android:text="@string/add_location_dialog_latitude"
-        android:textColor="#000000"
-        android:textColorHighlight="#000000"
-        android:textColorHint="#000000"
-        android:textColorLink="#000000"
-        android:textSize="24dp"
-        app:layout_constraintBottom_toTopOf="@+id/add_dialog_frag_lati_input_box"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/add_location_diolog_fragment_longi_display"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="20dp"
-        android:text="@string/add_location_dialog_longitude"
-        android:textColor="#000000"
-        android:textColorHighlight="#000000"
-        android:textColorHint="#000000"
-        android:textColorLink="#000000"
-        android:textSize="24dp"
-        app:layout_constraintBottom_toTopOf="@+id/add_dialog_frag_longi_input_box"
-        app:layout_constraintStart_toStartOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:background="@color/white"/>
+</LinearLayout>

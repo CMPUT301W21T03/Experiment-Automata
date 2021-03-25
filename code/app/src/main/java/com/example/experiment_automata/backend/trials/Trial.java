@@ -2,6 +2,7 @@ package com.example.experiment_automata.backend.trials;
 
 import android.location.Location;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
@@ -14,7 +15,7 @@ import java.util.UUID;
  *
  *      1. None
  */
-public abstract class Trial {
+public abstract class Trial implements Serializable {
     private UUID collector;
     private Location location;
     private Date date;

@@ -6,11 +6,9 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,7 +19,6 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.experiment_automata.R;
-import com.example.experiment_automata.backend.experiments.ExperimentType;
 import com.example.experiment_automata.backend.trials.Trial;
 import com.example.experiment_automata.ui.experiments.AddExperimentFragment;
 import com.example.experiment_automata.backend.experiments.BinomialExperiment;
@@ -44,18 +41,16 @@ import com.example.experiment_automata.backend.trials.BinomialTrial;
 import com.example.experiment_automata.backend.trials.CountTrial;
 import com.example.experiment_automata.backend.trials.MeasurementTrial;
 import com.example.experiment_automata.backend.trials.NaturalCountTrial;
-import com.example.experiment_automata.ui.Screen;
 import com.example.experiment_automata.ui.home.HomeFragment;
+import com.example.experiment_automata.ui.trials.add.EditLocationDialog;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
-import androidx.annotation.RequiresApi;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -81,7 +76,8 @@ import java.util.UUID;
 
 public class NavigationActivity extends AppCompatActivity implements
         AddExperimentFragment.OnFragmentInteractionListener,
-        AddQuestionFragment.OnFragmentInteractionListener {
+        AddQuestionFragment.OnFragmentInteractionListener
+{
 
     private AppBarConfiguration mAppBarConfiguration;
     public final ExperimentManager experimentManager = new ExperimentManager();
@@ -91,6 +87,7 @@ public class NavigationActivity extends AppCompatActivity implements
     public Fragment currentFragment;
     public User loggedUser;
     public Experiment currentExperiment;
+    private Trial currentTrial;
 
     // Location and Map Flags and Request Codes
     public static final int LOCATION_PERMISSION_REQUEST = 10;
@@ -161,32 +158,32 @@ public class NavigationActivity extends AppCompatActivity implements
                             switch (experiment.getType()) {
                                 case Count:
                                     CountExperiment countExperiment = (CountExperiment) experiment;
-                                    CountTrial countTrial = new CountTrial(loggedUser.getUserId());
-                                    addTrial(countExperiment, countTrial);
+                                    currentTrial = new CountTrial(loggedUser.getUserId());
+                                    addTrial(countExperiment, currentTrial);
                                     break;
                                 case NaturalCount:
                                     NaturalCountExperiment naturalCountExperiment = (NaturalCountExperiment) experiment;
                                     // get value
                                     EditText naturalCountInput = (EditText) findViewById(R.id.add_natural_count_value);
                                     final int naturalCount = Integer.parseInt(naturalCountInput.getText().toString());
-                                    NaturalCountTrial naturalCountTrial = new NaturalCountTrial(loggedUser.getUserId(), naturalCount);
-                                    addTrial(naturalCountExperiment, naturalCountTrial);
+                                    currentTrial = new NaturalCountTrial(loggedUser.getUserId(), naturalCount);
+                                    addTrial(naturalCountExperiment, currentTrial);
                                     break;
                                 case Binomial:
                                     BinomialExperiment binomialExperiment = (BinomialExperiment) experiment;
                                     // get value
                                     CheckBox passedInput = (CheckBox) findViewById(R.id.add_binomial_value);
                                     final boolean passed = passedInput.isChecked();
-                                    BinomialTrial binomialTrial = new BinomialTrial(loggedUser.getUserId(), passed);
-                                    addTrial(binomialExperiment, binomialTrial);
+                                    currentTrial = new BinomialTrial(loggedUser.getUserId(), passed);
+                                    addTrial(binomialExperiment, currentTrial);
                                     break;
                                 case Measurement:
                                     MeasurementExperiment measurementExperiment = (MeasurementExperiment) experiment;
                                     // get value
                                     EditText measurementInput = (EditText) findViewById(R.id.add_measurement_value);
                                     final float measurement = Float.parseFloat(measurementInput.getText().toString());
-                                    MeasurementTrial measurementTrial = new MeasurementTrial(loggedUser.getUserId(), measurement);
-                                    addTrial(measurementExperiment, measurementTrial);
+                                    currentTrial = new MeasurementTrial(loggedUser.getUserId(), measurement);
+                                    addTrial(measurementExperiment, currentTrial);
                                     break;
                             }
                             currentScreen = Screen.ExperimentDetails;
@@ -395,6 +392,11 @@ public class NavigationActivity extends AppCompatActivity implements
             addLocationToTrial(trial);
             if(trial.getLocation() != null) {
                 experiment.recordTrial(trial);
+                Bundle trailBundle = new Bundle();
+                trailBundle.putSerializable(EditLocationDialog.PASSED_TRIAL, trial);
+                DialogFragment addLocationDialog = new EditLocationDialog();
+                addLocationDialog.setArguments(trailBundle);
+                getSupportFragmentManager().beginTransaction().add(addLocationDialog, "LOC_DATA").commit();
             }
             else {
                 Toast.makeText(getApplicationContext(),
@@ -406,7 +408,10 @@ public class NavigationActivity extends AppCompatActivity implements
             experiment.recordTrial(trial);
         }
         trials.add(trial);
+        currentTrial = null;
     }
+
+
 
     /**
      * Gets the current location that the user is in with 100 ms in wait time from the device
@@ -485,4 +490,5 @@ public class NavigationActivity extends AppCompatActivity implements
 
         }
     }
+
 }

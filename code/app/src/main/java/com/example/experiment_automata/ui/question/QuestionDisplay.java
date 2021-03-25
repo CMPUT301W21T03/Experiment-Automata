@@ -111,7 +111,7 @@ public class QuestionDisplay extends Fragment {
         questionsDisplayList.setAdapter(questionDisplayAdapter);
 
         //Getting rid of the floating button that adds experiments on every navigation
-        getActivity().findViewById(R.id.add_experiment_button).setVisibility(View.GONE);
+        getActivity().findViewById(R.id.fab_button).setVisibility(View.GONE);
 
         return root;
     }

@@ -120,7 +120,7 @@ public class NavExperimentDetailsFragment extends Fragment {
         questionsButton = root.findViewById(R.id.nav_fragment_experiment_detail_view_qa_button);
         qrButton = root.findViewById(R.id.nav_fragment_experiment_detail_view_qr_button);
 
-        getActivity().findViewById(R.id.add_experiment_button).setVisibility(View.GONE);
+        getActivity().findViewById(R.id.fab_button).setVisibility(View.GONE);
 
         textViewQuartiles = root.findViewById(R.id.quartiles_value);
         textViewMean = root.findViewById(R.id.mean_value);
@@ -180,7 +180,7 @@ public class NavExperimentDetailsFragment extends Fragment {
         typeView.setText("" + current.getType());
 
         // Disable FAB if not accepting new trials
-        FloatingActionButton fab = getActivity().findViewById(R.id.add_experiment_button);
+        FloatingActionButton fab = getActivity().findViewById(R.id.fab_button);
         if (!current.isActive()) {
             fab.setVisibility(View.GONE);
         } else {
@@ -256,7 +256,7 @@ public class NavExperimentDetailsFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        FloatingActionButton fab = getActivity().findViewById(R.id.add_experiment_button);
+        FloatingActionButton fab = getActivity().findViewById(R.id.fab_button);
         fab.setVisibility(View.VISIBLE);
     }
 

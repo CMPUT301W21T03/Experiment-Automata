@@ -8,9 +8,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.experiment_automata.ui.NavigationActivity;
@@ -18,6 +16,7 @@ import com.example.experiment_automata.R;
 import com.example.experiment_automata.backend.users.ContactInformation;
 import com.example.experiment_automata.backend.users.User;
 import com.example.experiment_automata.ui.Screen;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /**
  * Role/Pattern:
@@ -29,10 +28,12 @@ import com.example.experiment_automata.ui.Screen;
  *      1. No ability to edit information
  */
 public class ProfileFragment extends Fragment {
+    public static final String userKey = "user";
     private ProfileViewModel profileViewModel;
     private TextView nameView;
     private TextView emailView;
     private TextView phoneView;
+    private FloatingActionButton fab;
 
     /**
      * Creates the fragment view.
@@ -51,7 +52,12 @@ public class ProfileFragment extends Fragment {
         // Set current fragment in parent activity
         parentActivity.setCurrentScreen(Screen.Profile);
         parentActivity.setCurrentFragment(this);
-        User user = parentActivity.loggedUser;
+        User user;
+        if (getArguments() != null) {
+            user = (User) getArguments().getSerializable(userKey);
+        } else {
+            user = parentActivity.loggedUser;
+        }
         ContactInformation userInfo = user.getInfo();
         profileViewModel =
                 new ViewModelProvider(this).get(ProfileViewModel.class);
@@ -74,7 +80,17 @@ public class ProfileFragment extends Fragment {
             getActivity().getSupportFragmentManager().beginTransaction()
                     .add(editUserFragment, "USER").commit();
         });
+        fab = parentActivity.findViewById(R.id.fab_button);
+        fab.setVisibility(View.GONE);
         return root;
+    }
+
+    /**
+     * Runs when the fragment is paused in the lifecycle.
+     */
+    public void onPause() {
+        super.onPause();
+        fab.setVisibility(View.VISIBLE);
     }
 
     /**

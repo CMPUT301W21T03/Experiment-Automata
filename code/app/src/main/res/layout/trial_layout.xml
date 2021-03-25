@@ -18,12 +18,13 @@
         android:layout_weight="1"
         android:orientation="horizontal">
 
-        <TextView
+        <com.example.experiment_automata.ui.LinkView
             android:id="@+id/trial_experimenter_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Trial Experimenter Name" />
+            android:text="Trial Experimenter Name"
+            android:textColor="?android:attr/textColorLink" />
 
         <TextView
             android:id="@+id/trial_value"

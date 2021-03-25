@@ -1,0 +1,5 @@
+<resources>
+    <declare-styleable name="LinkView">
+        <attr name="uuidReference" format="string" />
+    </declare-styleable>
+</resources>

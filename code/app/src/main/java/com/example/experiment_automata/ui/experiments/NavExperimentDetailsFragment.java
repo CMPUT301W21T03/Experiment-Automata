@@ -18,6 +18,7 @@ import com.example.experiment_automata.backend.qr.ViewQRFragment;
 import com.example.experiment_automata.ui.question.QuestionDisplay;
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.ui.Screen;
+import com.example.experiment_automata.ui.trials.MapDisplay.MapPointViewFragment;
 import com.example.experiment_automata.ui.trials.TrialsFragment;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
@@ -51,6 +52,7 @@ public class NavExperimentDetailsFragment extends Fragment {
     private ImageButton editImageButton;
     private ImageButton questionsButton;
     private ImageButton qrButton;
+    private ImageButton mapButton;
 
     private TextView textViewQuartiles;
     private TextView textViewMean;
@@ -119,6 +121,7 @@ public class NavExperimentDetailsFragment extends Fragment {
         editImageButton = root.findViewById(R.id.nav_fragment_experiment_detail_view_edit_button);
         questionsButton = root.findViewById(R.id.nav_fragment_experiment_detail_view_qa_button);
         qrButton = root.findViewById(R.id.nav_fragment_experiment_detail_view_qr_button);
+        mapButton = root.findViewById(R.id.nav_fragment_experiment_detail_view_map_button);
 
         getActivity().findViewById(R.id.add_experiment_button).setVisibility(View.GONE);
 
@@ -162,6 +165,22 @@ public class NavExperimentDetailsFragment extends Fragment {
             //getActivity().getSupportFragmentManager().beginTransaction().show(viewQRFragment);
             getActivity().getSupportFragmentManager().beginTransaction().add(viewQRFragment,"QR").commit();
         });
+
+
+        mapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment mapFragment = new MapPointViewFragment();
+                Bundle neededMapData = new Bundle();
+                neededMapData.putSerializable(MapPointViewFragment.CURRENT_EXPERIMENT,
+                        (((NavigationActivity) getActivity())
+                        .getExperimentManager())
+                        .getAtUUIDDescription(UUID.fromString(experimentStringId)));
+                mapFragment.setArguments(neededMapData);
+                getActivity().getSupportFragmentManager().beginTransaction().add(mapFragment, "MAP-D").commit();
+            }
+        });
+
         return root;
     }
 

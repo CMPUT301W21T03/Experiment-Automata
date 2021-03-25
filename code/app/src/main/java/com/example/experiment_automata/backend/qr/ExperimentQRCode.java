@@ -3,7 +3,14 @@ package com.example.experiment_automata.backend.qr;
 import com.google.zxing.WriterException;
 
 import java.util.UUID;
-
+/**
+ * Role/Pattern:
+ *     Class representing a QR Code containing only an Experiment Reference
+ *
+ *  Known Issue:
+ *
+ *      1. None
+ */
 public class ExperimentQRCode extends QRCode{
     public ExperimentQRCode(UUID experimentID){//build a Binomial QR code
         super(experimentID,QRType.Experiment);

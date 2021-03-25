@@ -3,7 +3,14 @@ package com.example.experiment_automata.backend.qr;
 import com.google.zxing.WriterException;
 
 import java.util.UUID;
-
+/**
+ * Role/Pattern:
+ *     Class representing a QR Code containing a reference to a Binomial Trial
+ *
+ *  Known Issue:
+ *
+ *      1. None
+ */
 public class BinomialQRCode extends QRCode{
     static final String BINOMIAL_TRUE = "t";
     static final String BINOMIAL_FALSE = "f";

@@ -55,4 +55,6 @@
     <string name="add_location_dialog_latitude">Latitude</string>
     <string name="add_location_dialog_longitude">Longitude</string>
     <string name="add_location_dialog_default_btn">Revert to Current</string>
+
+    <string name="map_point_view_experiment_no_loc_err">This Experiment Cannot Have Locations</string>
 </resources>

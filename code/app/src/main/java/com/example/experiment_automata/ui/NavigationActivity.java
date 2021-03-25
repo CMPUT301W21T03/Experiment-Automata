@@ -392,11 +392,6 @@ public class NavigationActivity extends AppCompatActivity implements
             addLocationToTrial(trial);
             if(trial.getLocation() != null) {
                 experiment.recordTrial(trial);
-                Bundle trailBundle = new Bundle();
-                trailBundle.putSerializable(EditLocationDialog.PASSED_TRIAL, trial);
-                DialogFragment addLocationDialog = new EditLocationDialog();
-                addLocationDialog.setArguments(trailBundle);
-                getSupportFragmentManager().beginTransaction().add(addLocationDialog, "LOC_DATA").commit();
             }
             else {
                 Toast.makeText(getApplicationContext(),

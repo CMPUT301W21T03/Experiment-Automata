@@ -62,6 +62,16 @@ public class NaturalCountExperiment extends Experiment {
     }
 
     /**
+     * gets all the recorded trials for an experiment
+     *
+     * @return the recorded trials
+     */
+    @Override
+    public ArrayList<Trial> getRecordedTrials() {
+        return new ArrayList<>(results);
+    }
+
+    /**
      * Generate a list of entries needed to plot a histogram
      * @return
      *  the list of entries that represent a histogram of trials.

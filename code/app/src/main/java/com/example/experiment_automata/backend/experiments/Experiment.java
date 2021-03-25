@@ -189,5 +189,15 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
      */
     public abstract Integer getSize();
 
+    /**
+     * Add a trial to an experiment
+     * @param trial the trial we want to add
+     */
     public abstract void recordTrial(Trial trial);
+
+    /**
+     * gets all the recorded trials for an experiment
+     * @return the recorded trials
+     */
+    public abstract ArrayList<Trial> getRecordedTrials();
 }

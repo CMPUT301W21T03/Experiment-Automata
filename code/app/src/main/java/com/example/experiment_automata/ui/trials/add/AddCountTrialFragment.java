@@ -13,12 +13,15 @@ import com.example.experiment_automata.backend.experiments.CountExperiment;
 import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.R;
 
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link AddCountTrialFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class AddCountTrialFragment extends Fragment {
+
+
     public AddCountTrialFragment() {
         // Required empty public constructor
     }
@@ -39,4 +42,5 @@ public class AddCountTrialFragment extends Fragment {
         description.setText(experiment.getDescription());
         return root;
     }
+
 }

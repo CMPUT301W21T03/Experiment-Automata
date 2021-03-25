@@ -53,7 +53,6 @@ public class MapPointViewFragment extends Fragment
              * Full Link: https://github.com/osmdroid/osmdroid
              */
 
-
         }
 
         return root;

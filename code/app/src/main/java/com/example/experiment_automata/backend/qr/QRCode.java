@@ -22,7 +22,7 @@ import java.util.UUID;
  *
  *      1. None
  */
-public class QRCode {
+public abstract class QRCode {
     //Header for custom QR codes
     static final String AUTOMATA_QR_HEADER = "ATMA";
     static final int DEAFULT_QR_HEIGHT = 600;
@@ -37,25 +37,10 @@ public class QRCode {
     private QRType type;
     private Bitmap qrCodeImage;
 
-    public QRCode(UUID experimentID){//build an Experiment only QR Code
+    public QRCode(UUID experimentID, QRType type){//build an Experiment only QR Code
         this.experimentID = experimentID;
-        type = QRType.Experiment;
-        //pack header
-        String packedString = "";
-        packedString += AUTOMATA_QR_HEADER;
-        packedString += experimentID.toString();
-        packedString += EXPERIMENT_ONLY_ID;
-
-        //create QR image
-        try {
-            qrCodeImage =  encodeStringToQR(packedString);
-        }
-        catch (WriterException wException){
-            //return special bitmap maybe?
-            wException.printStackTrace();
-        }
+        this.type = type;
     }
-
 
     public QRCode(UUID experimentID, BinomialTrial trial){//build a Binomial QR code
         this.experimentID = experimentID;
@@ -168,6 +153,22 @@ public class QRCode {
         }
         return qrCodeBitmap;
 
+    }
+
+    public void setRawContentString(String rawContentString) {
+        this.rawContentString = rawContentString;
+    }
+
+    public void setExperimentID(UUID experimentID) {
+        this.experimentID = experimentID;
+    }
+
+    public void setType(QRType type) {
+        this.type = type;
+    }
+
+    public void setQrCodeImage(Bitmap qrCodeImage) {
+        this.qrCodeImage = qrCodeImage;
     }
 
     public String getRawContentString() {

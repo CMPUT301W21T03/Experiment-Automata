@@ -11,9 +11,6 @@ import java.util.UUID;
  *      1. None
  */
 public class QRMaker {
-    public QRMaker(){
-
-    }
     /**
      * Decodes a raw string that has been scanned from a custom QR code
      * @param rawContent
@@ -35,11 +32,20 @@ public class QRMaker {
         QRCode qrCode;
         switch (typeSpecifier){
             case QRCode.EXPERIMENT_ONLY_ID:
-                qrCode = new QRCode(experimentUUID);
+                qrCode = new ExperimentQRCode(experimentUUID);
                 break;
             case QRCode.BINOMIAL_ID:
                 //bin
-                qrCode = null;//temp
+                Boolean binVal = false;
+                switch (content){
+                    case BinomialQRCode.BINOMIAL_TRUE:
+                        binVal = true;
+                        break;
+                    case BinomialQRCode.BINOMIAL_FALSE:
+                        binVal = false;
+                        break;
+                }
+                qrCode = new BinomialQRCode(experimentUUID,binVal);//temp
                 break;
             case QRCode.COUNT_ID:
                 qrCode = null;//temp
@@ -51,9 +57,9 @@ public class QRMaker {
                 qrCode = null;//temp
                 break;
             default://incorrect type specifier
-                qrCode = null;//temp
-        return qrCode;
+                qrCode = null;
         }
+        return qrCode;
     }
     /**
      * Checks a string for the custom Automata QR identifier

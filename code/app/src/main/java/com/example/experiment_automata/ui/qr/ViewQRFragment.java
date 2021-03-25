@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.experiment_automata.R;
+import com.example.experiment_automata.backend.qr.ExperimentQRCode;
 import com.example.experiment_automata.backend.qr.QRCode;
 
 import java.util.UUID;
@@ -49,7 +50,7 @@ public class ViewQRFragment extends DialogFragment {
         Bundle bundle = getArguments();
         experimentUUIDString = bundle.getString("UUID");//change to UUID once parent activity is fully implemented
         String description = bundle.getString("DESCRIPTION");
-        qrCode = new QRCode(UUID.randomUUID());//change this Normal UUID once parent activity has a proper Experiment representation
+        qrCode = new ExperimentQRCode(UUID.randomUUID());//change this Normal UUID once parent activity has a proper Experiment representation
         qrCodeImage = qrCode.getQrCodeImage();
         qrImageView.setImageBitmap(qrCodeImage);//qr_value_textView
         qrValue.setText(description);

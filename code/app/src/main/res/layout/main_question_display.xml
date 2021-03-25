@@ -5,16 +5,27 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/main_question_display_question_view"
+    <com.example.experiment_automata.ui.LinkView
+        android:id="@+id/main_question_display_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
+        android:textColor="?android:attr/textColorLink"
         android:textSize="20dp"
         app:layout_constraintBottom_toTopOf="@+id/main_question_display_listview_container"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/main_question_display_question_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:textSize="20dp"
+        app:layout_constraintStart_toEndOf="@+id/main_question_display_user"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton

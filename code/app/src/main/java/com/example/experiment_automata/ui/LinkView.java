@@ -10,8 +10,6 @@ import com.example.experiment_automata.R;
  * Extends the TextView to add a uuid attribute
  */
 public class LinkView extends androidx.appcompat.widget.AppCompatTextView {
-    private float uuidReference;
-
     public LinkView(Context context) {
         super(context);
         init(null, 0);

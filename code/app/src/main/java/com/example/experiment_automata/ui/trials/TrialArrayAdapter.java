@@ -48,7 +48,7 @@ public class TrialArrayAdapter extends ArrayAdapter<Trial> {
     private NavExperimentDetailsFragment parentFragment;
 
     /**
-     * Constructor takes in an array list of experiments and a context to set the attributes properly
+     * Constructor takes in an array list of trials and a context to set the attributes properly
      * @param context
      *  Context of the array adapter
      * @param trialList

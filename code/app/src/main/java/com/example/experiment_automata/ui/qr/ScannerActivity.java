@@ -1,4 +1,4 @@
-package com.example.experiment_automata.backend.qr;
+package com.example.experiment_automata.ui.qr;
 //parts of scanner implementation taken from ZXing-embedded example program https://github.com/journeyapps/zxing-android-embedded
 
 import android.content.Intent;
@@ -13,6 +13,16 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 
+/**
+ * Role/Pattern:
+ *
+ *       This class opens a camera viewport for scanner qr codes
+ *
+ * Known Issue:
+ *
+ *      1. no barcode/qr return functionality.
+ *      2. Barcodes untested
+ */
 public class ScannerActivity extends AppCompatActivity {
     DecoratedBarcodeView barcodeView;
 

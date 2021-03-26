@@ -42,6 +42,7 @@ import com.example.experiment_automata.backend.trials.CountTrial;
 import com.example.experiment_automata.backend.trials.MeasurementTrial;
 import com.example.experiment_automata.backend.trials.NaturalCountTrial;
 import com.example.experiment_automata.ui.home.HomeFragment;
+import com.example.experiment_automata.ui.trials.add.EditLocationDialog;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -197,7 +198,7 @@ public class NavigationActivity extends AppCompatActivity implements
                         break;
 
                     case MAP:
-                        addExperimentButton.setVisibility(View.INVISIBLE);
+                        addExperimentButton.show();
                         break;
                 }
             }

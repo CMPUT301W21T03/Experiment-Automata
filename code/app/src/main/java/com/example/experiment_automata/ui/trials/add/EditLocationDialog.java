@@ -54,7 +54,6 @@ public class EditLocationDialog extends DialogFragment
         if (context instanceof EditLocationDialog.AddLocationListener) {
             listener = (EditLocationDialog.AddLocationListener) context;
         } else {
-            throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
         }
     }
 

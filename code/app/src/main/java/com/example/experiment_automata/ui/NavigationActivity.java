@@ -19,11 +19,9 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.experiment_automata.R;
-<<<<<<< HEAD
 import com.example.experiment_automata.backend.trials.Trial;
-=======
 import com.example.experiment_automata.backend.users.ContactInformation;
->>>>>>> main
+
 import com.example.experiment_automata.ui.experiments.AddExperimentFragment;
 import com.example.experiment_automata.backend.experiments.BinomialExperiment;
 import com.example.experiment_automata.backend.experiments.CountExperiment;

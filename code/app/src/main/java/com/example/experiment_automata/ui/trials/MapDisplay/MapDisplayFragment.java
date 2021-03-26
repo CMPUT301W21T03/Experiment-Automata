@@ -83,7 +83,10 @@ public class MapDisplayFragment extends Fragment {
         Configuration.getInstance().load(getContext(), PreferenceManager.getDefaultSharedPreferences(getContext()));
         View root = inflater.inflate(R.layout.fragment_map_display_fragment, container, false);
         currentMapDisplay = root.findViewById(R.id.map_point_view_fragment_map_display);
-        getActivity().findViewById(R.id.fab_button).setVisibility(View.GONE);
+        FloatingActionButton fab = (getActivity().findViewById(R.id.fab_button));
+        fab.setVisibility(View.GONE);
+        int x = fab.getVisibility();
+        ((NavigationActivity)(getActivity())).setCurrentScreen(Screen.MAP);
 
         if(currentExperiment.isRequireLocation())
         {
@@ -123,7 +126,8 @@ public class MapDisplayFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        //getActivity().findViewById(R.id.fab_button).setVisibility(View.VISIBLE);
+        Log.d("SOMETHING", "DATA");
+        //((FloatingActionButton)(getActivity().findViewById(R.id.fab_button))).show();
     }
 
 }

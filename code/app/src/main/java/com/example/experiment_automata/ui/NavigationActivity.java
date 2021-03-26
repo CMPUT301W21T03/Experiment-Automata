@@ -202,7 +202,7 @@ public class NavigationActivity extends AppCompatActivity implements
                         break;
 
                     case MAP:
-                        addExperimentButton.show();
+                        //
                         break;
                 }
             }

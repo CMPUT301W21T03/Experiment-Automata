@@ -133,9 +133,7 @@ public class NavExperimentDetailsFragment extends Fragment {
         histogram = root.findViewById(R.id.histogram_chart);
         resultsPlot = root.findViewById(R.id.results_chart);
 
-        if (experimentStringId != null) {
-            update(experimentStringId);
-        }
+
 
         editImageButton.setOnClickListener(v -> {
             Fragment editExperiment = new AddExperimentFragment();
@@ -168,20 +166,22 @@ public class NavExperimentDetailsFragment extends Fragment {
 
 
         mapButton.setOnClickListener(v -> {
-            Fragment mapFragment = new MapDisplayFragment();
             Bundle locArgs = new Bundle();
             locArgs.putSerializable(MapDisplayFragment.CURRENT_EXPERIMENT,
                     (((NavigationActivity) getActivity())
                     .getExperimentManager())
                     .getAtUUIDDescription(UUID.fromString(experimentStringId)));
-            mapFragment.setArguments(locArgs);
 
             NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
             navController.navigate(R.id.map_display_fragment, locArgs);
             parentActivity.setCurrentScreen(Screen.MAP);
             parentActivity.setCurrentFragment(this);
+            parentActivity.findViewById(R.id.fab_button).setVisibility(View.GONE);
         });
 
+        if (experimentStringId != null) {
+            update(experimentStringId);
+        }
         return root;
     }
 
@@ -276,8 +276,6 @@ public class NavExperimentDetailsFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        FloatingActionButton fab = getActivity().findViewById(R.id.fab_button);
-        fab.setVisibility(View.VISIBLE);
     }
 
     /**

@@ -70,7 +70,7 @@ public class ExperimentMaker {
         }
     }
     /**
-     * Will create an experiment with the selected type from the Add Experiment Fragment
+     * Will create an experiment with the selected type from Firestore
      * @param type
      *   the type of experiment that will be created
      * @param description
@@ -81,6 +81,10 @@ public class ExperimentMaker {
      *   a boolean for whether this experiment requires location
      * @param acceptNewResults
      *   a boolean for whether this experiment is accepting new results
+     * @param published
+     *   a boolean for whether this experiment is published
+     * @param experimentId
+     *   UUID representing the current experiment
      * @return
      *   an experiment object of the requested type with information
      */

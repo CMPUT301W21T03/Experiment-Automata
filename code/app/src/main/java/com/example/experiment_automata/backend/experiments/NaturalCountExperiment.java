@@ -48,7 +48,7 @@ public class NaturalCountExperiment extends Experiment {
         results = new ArrayList<>();
     }
     /**
-     * Default constructor for Natural Count Experiment from using the AddExperimentFragment
+     * Firestore constructor for NaturalCountExperiment
      * @param description
      *   the description for the experiment
      * @param minTrials
@@ -57,6 +57,10 @@ public class NaturalCountExperiment extends Experiment {
      *   a boolean for if the trials need a location
      * @param acceptNewResults
      *   a boolean for if the experiment is accepting new results
+     * @param published
+     *  a boolean for if the experiment is published or not
+     * @param experimentId
+     * UUID representing the current experiment
      */
     public NaturalCountExperiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId, Boolean published, UUID experimentId) {
         super(description, minTrials, requireLocation, acceptNewResults, ownerId, ExperimentType.NaturalCount, published, experimentId);

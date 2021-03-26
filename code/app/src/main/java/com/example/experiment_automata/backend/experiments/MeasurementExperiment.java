@@ -49,7 +49,7 @@ public class MeasurementExperiment extends Experiment {
     }
 
     /**
-     * Default constructor for Measurement Experiment from using the AddExperimentFragment
+     * Firestore constructor for MeasurementExperiment
      * @param description
      *   the description for the experiment
      * @param minTrials
@@ -58,6 +58,10 @@ public class MeasurementExperiment extends Experiment {
      *   a boolean for if the trials need a location
      * @param acceptNewResults
      *   a boolean for if the experiment is accepting new results
+     * @param published
+     *  a boolean for if the experiment is published or not
+     * @param experimentId
+     * UUID representing the current experiment
      */
     public MeasurementExperiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId, Boolean published, UUID experimentId) {
         super(description, minTrials, requireLocation, acceptNewResults, ownerId, ExperimentType.Measurement, published, experimentId);

@@ -69,7 +69,7 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
     }
 
     /**
-     * Experiment constructor to be used by ExperimentMaker when creating an experiment from the AddExperimentFragment
+     * Experiment constructor to be used by ExperimentMaker when creating an experiment from the Firestore
      * @param description
      *   the description of the experiment
      * @param minTrials

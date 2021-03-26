@@ -5,12 +5,8 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -61,7 +57,6 @@ public class ExperimentManager
             throw new IllegalArgumentException();
         else {
             experiments.put(id, experiment);
-            //postAllToFirestore();
         }
     }
 
@@ -227,38 +222,7 @@ public class ExperimentManager
     }
 
     /**
-     * Get a specific Experiment from firestore
-     * @param experimentID
-     * The UUID of the requested experiment
-     * @return
-     * Returns the requested Experiment object, returns null if requested experiment not found in firestore
-     */
-    public Experiment getExperimentFromFirestore(UUID experimentID) {
-        ExperimentMaker maker = new ExperimentMaker();
-        Experiment experiment;
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference experimentDocRef = db.collection("experiments").document(experimentID.toString());
-        DocumentSnapshot experimentDocSnapshot = experimentDocRef.get().getResult();//Task --> DocumentSnapshot
-        DocumentReference ownerDocument = (DocumentReference)experimentDocSnapshot.get("owner");
-        UUID ownerID = UUID.fromString(ownerDocument.getId());//is the returned string the path or just the ID?
-
-        if (experimentDocSnapshot.exists()){
-            experiment = maker.makeExperiment(
-                    ExperimentType.valueOf((String) experimentDocSnapshot.get("type")),//String to ExperimentType
-                    (String) experimentDocSnapshot.get("description"),
-                    (int) experimentDocSnapshot.get("min-trials"),
-                    (boolean) experimentDocSnapshot.get("location-required"),
-                    (boolean) experimentDocSnapshot.get("accepting-new-results"),
-                    ownerID//is this value path to document or the ID?
-            );
-            return experiment;
-        }
-        else{
-            return null;
-        }
-    }
-    /**
-     * Get all experiments from firestore
+     * Populate experiments in Experiment manager with all experiments from Firestore
      */
     public void getAllFromFirestore(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -292,50 +256,6 @@ public class ExperimentManager
         });
     }
 
-    /**
-     * Post all experiments contained in current ExperimentManager to firestore
-     */
-    public void postAllToFirestore(){
-        //FirebaseFirestore db = FirebaseFirestore.getInstance();
-        experiments.forEach((key,experiment) -> {
-            postExperimentToFirestore(experiment);
-        });
-    }
-
-    /**
-     * Post given experiment to firestore
-     * @param experiment
-     * experiment to post
-     */
-    public void postExperimentToFirestore(Experiment experiment){
-        //add key field?
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Map<String,Object> experimentData = new HashMap<>();
-        String experimentUUIDString = experiment.getExperimentId().toString();
-
-        experimentData.put("accepting-new-results",experiment.isActive());
-        experimentData.put("description",experiment.getDescription());
-        experimentData.put("location-required",experiment.isRequireLocation());
-        experimentData.put("min-trials",experiment.getMinTrials());
-        experimentData.put("owner",experiment.getOwnerId().toString());
-        experimentData.put("type",experiment.getType().toString());//enum to string
-        experimentData.put("published",experiment.isPublished());
-
-        db.collection("experiments").document(experimentUUIDString)
-                .set(experimentData)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                    }
-                });
-    }
 
     /**
      * Will query a specific experiment based on it's UUID

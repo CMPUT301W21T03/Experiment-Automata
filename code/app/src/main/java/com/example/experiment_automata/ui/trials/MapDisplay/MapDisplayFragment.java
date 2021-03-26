@@ -83,6 +83,7 @@ public class MapDisplayFragment extends Fragment {
         Configuration.getInstance().load(getContext(), PreferenceManager.getDefaultSharedPreferences(getContext()));
         View root = inflater.inflate(R.layout.fragment_map_display_fragment, container, false);
         currentMapDisplay = root.findViewById(R.id.map_point_view_fragment_map_display);
+        //
 
         if(currentExperiment.isRequireLocation())
         {
@@ -107,7 +108,7 @@ public class MapDisplayFragment extends Fragment {
                 temp.setTitle("Trial for: " + currentExperiment.getDescription());
                 temp.setSubDescription("This is a: " + t.getType());
                 // Set location of marker to be the longitude and latitude of the point t
-                temp.setPosition(new GeoPoint(t.getLocation())); 
+                temp.setPosition(new GeoPoint(t.getLocation()));
                 currentMapDisplay.getOverlays().add(temp);
             }
         }

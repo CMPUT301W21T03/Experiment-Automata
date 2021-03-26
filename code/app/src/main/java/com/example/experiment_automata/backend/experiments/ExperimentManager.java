@@ -61,7 +61,7 @@ public class ExperimentManager
             throw new IllegalArgumentException();
         else {
             experiments.put(id, experiment);
-            postAllToFirestore();
+            //postAllToFirestore();
         }
     }
 

@@ -3,14 +3,10 @@ package com.example.experiment_automata.backend.experiments;
 import androidx.annotation.NonNull;
 
 import com.example.experiment_automata.backend.questions.Question;
-<<<<<<< HEAD
 import com.example.experiment_automata.backend.trials.Trial;
-=======
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
->>>>>>> main
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;

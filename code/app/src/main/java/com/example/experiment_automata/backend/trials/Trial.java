@@ -83,4 +83,11 @@ public abstract class Trial implements Serializable {
     {
         return location;
     }
+
+    /**
+     * get the the type of the current trial
+     * @return
+     *  the type of the current trial
+     */
+    public abstract String getType();
 }

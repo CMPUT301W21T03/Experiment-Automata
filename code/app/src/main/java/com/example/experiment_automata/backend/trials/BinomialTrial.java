@@ -33,4 +33,14 @@ public class BinomialTrial extends Trial {
     public boolean getResult() {
         return result;
     }
+
+    /**
+     * get the the type of the current trial
+     *
+     * @return the type of the current trial
+     */
+    @Override
+    public String getType() {
+        return "Binomial";
+    }
 }

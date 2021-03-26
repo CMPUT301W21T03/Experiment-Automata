@@ -195,6 +195,10 @@ public class NavigationActivity extends AppCompatActivity implements
                     case Questions:
                         ((QuestionDisplay) currentFragment).makeQuestion();
                         break;
+
+                    case MAP:
+                        addExperimentButton.setVisibility(View.INVISIBLE);
+                        break;
                 }
             }
         });

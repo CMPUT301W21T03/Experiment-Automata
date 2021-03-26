@@ -144,7 +144,7 @@
         tools:layout="@layout/fragment_add_measurement_trial" />
     <fragment
         android:id="@+id/map_display_fragment"
-        android:name="com.example.experiment_automata.map_display_fragment"
+        android:name="com.example.experiment_automata.ui.trials.MapDisplay.map_display_fragment"
         android:label="fragment_map_display_fragment"
         tools:layout="@layout/fragment_map_display_fragment" />
 

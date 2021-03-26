@@ -18,7 +18,7 @@ import com.example.experiment_automata.backend.qr.ViewQRFragment;
 import com.example.experiment_automata.ui.question.QuestionDisplay;
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.ui.Screen;
-import com.example.experiment_automata.ui.trials.MapDisplay.MapPointViewFragment;
+import com.example.experiment_automata.ui.trials.MapDisplay.map_display_fragment;
 import com.example.experiment_automata.ui.trials.TrialsFragment;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
@@ -167,20 +167,17 @@ public class NavExperimentDetailsFragment extends Fragment {
         });
 
 
-        mapButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Fragment mapFragment = new MapPointViewFragment();
-                Bundle neededMapData = new Bundle();
-                neededMapData.putSerializable(MapPointViewFragment.CURRENT_EXPERIMENT,
-                        (((NavigationActivity) getActivity())
-                        .getExperimentManager())
-                        .getAtUUIDDescription(UUID.fromString(experimentStringId)));
+        mapButton.setOnClickListener(v -> {
+            Fragment mapFragment = new map_display_fragment();
+            Bundle locArgs = new Bundle();
+            locArgs.putSerializable(map_display_fragment.CURRENT_EXPERIMENT,
+                    (((NavigationActivity) getActivity())
+                    .getExperimentManager())
+                    .getAtUUIDDescription(UUID.fromString(experimentStringId)));
+            mapFragment.setArguments(locArgs);
 
-                mapFragment.setArguments(neededMapData);
-                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
-                navController.navigate(R.id.map_display_fragment, neededMapData);
-            }
+            NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+            navController.navigate(R.id.map_display_fragment, locArgs);
         });
 
         return root;

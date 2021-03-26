@@ -42,7 +42,6 @@ import com.example.experiment_automata.backend.trials.CountTrial;
 import com.example.experiment_automata.backend.trials.MeasurementTrial;
 import com.example.experiment_automata.backend.trials.NaturalCountTrial;
 import com.example.experiment_automata.ui.home.HomeFragment;
-import com.example.experiment_automata.ui.trials.add.EditLocationDialog;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -50,7 +49,6 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -104,6 +102,7 @@ public class NavigationActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestLocationResourcePermissions();
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         SharedPreferences preferences = getSharedPreferences("experiment_automata", MODE_PRIVATE);
         loggedUser = new User(preferences);
@@ -423,7 +422,6 @@ public class NavigationActivity extends AppCompatActivity implements
      */
     @SuppressLint("MissingPermission")
     public void addLocationToTrial(Trial currentTrial) {
-        requestLocationPermissions();
         if(canMakeLocationTrials)
         {
             LocationManager locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
@@ -447,16 +445,22 @@ public class NavigationActivity extends AppCompatActivity implements
      *          Editor: Alphabet LLC
      *          Full Source: https://developer.android.com/training/permissions/requesting#java
      */
-    public void requestLocationPermissions()
+    public void requestLocationResourcePermissions()
     {
         if(ContextCompat.checkSelfPermission(getApplicationContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
         {
-            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+            requestPermissions(new String[]
+                            {
+                                    Manifest.permission.ACCESS_FINE_LOCATION,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                    Manifest.permission.ACCESS_NETWORK_STATE,
+
+                            },
                     LOCATION_PERMISSION_REQUEST);
         }
         else
-            canMakeLocationTrials = true; 
+            canMakeLocationTrials = true;
     }
 
     /**

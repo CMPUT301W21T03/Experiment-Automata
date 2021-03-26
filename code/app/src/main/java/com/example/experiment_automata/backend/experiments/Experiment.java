@@ -103,8 +103,7 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
 
 
     /**
-     * Post given experiment to firestore
-
+     * Post the current experiment to firestore
      */
     public void postExperimentToFirestore(){
         //add key field?

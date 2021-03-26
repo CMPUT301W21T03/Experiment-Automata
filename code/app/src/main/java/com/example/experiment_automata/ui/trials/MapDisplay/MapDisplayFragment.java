@@ -92,7 +92,7 @@ public class MapDisplayFragment extends Fragment {
             currentMapDisplay.setHorizontalMapRepetitionEnabled(false);
             currentMapDisplay.setMultiTouchControls(true);
             IMapController mapController = currentMapDisplay.getController();
-            mapController.setZoom(3f);
+            mapController.setZoom(2f);
 
             ArrayList<Trial> experimentTrials = currentExperiment.getRecordedTrials();
 
@@ -107,7 +107,7 @@ public class MapDisplayFragment extends Fragment {
                 temp.setTitle("Trial for: " + currentExperiment.getDescription());
                 temp.setSubDescription("This is a: " + t.getType());
                 // Set location of marker to be the longitude and latitude of the point t
-                temp.setPosition(new GeoPoint(t.getLocation().getLatitude(), t.getLocation().getLongitude()));
+                temp.setPosition(new GeoPoint(t.getLocation())); 
                 currentMapDisplay.getOverlays().add(temp);
             }
         }

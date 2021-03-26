@@ -1,5 +1,16 @@
 package com.example.experiment_automata.backend.experiments;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -27,7 +38,9 @@ public class ExperimentManager
      */
     public ExperimentManager()
     {
+
         experiments = new HashMap<UUID, Experiment>();
+        getAllFromFirestore();
     }
 
     /**
@@ -207,6 +220,42 @@ public class ExperimentManager
         }
         return experimentsList;
     }
+
+    /**
+     * Populate experiments in Experiment manager with all experiments from Firestore
+     */
+    public void getAllFromFirestore(){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference experimentCollection = db.collection("experiments");
+        experimentCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                ExperimentMaker maker = new ExperimentMaker();
+                if (task.isSuccessful()){
+                    for (QueryDocumentSnapshot document : task.getResult()){
+                        Experiment currentExperiment = maker.makeExperiment(
+                                ExperimentType.valueOf((String) document.get("type")),
+                                (String) document.get("description"),
+                                ((Long) document.get("min-trials")).intValue(),
+                                (boolean) document.get("location-required"),
+                                (boolean) document.get("accepting-new-results"),
+                                UUID.fromString((String) document.get("owner")),
+                                (boolean) document.get("published"),
+                                UUID.fromString(document.getId())
+                        );
+                        UUID currentDocId = UUID.fromString(document.getId());
+                        experiments.put(currentDocId,currentExperiment);
+                        Log.d("FIRESTORE",(String) document.get("description"));
+                    }
+                }
+                else{
+                    //not able to query all from firestore
+                    Log.d("FIRESTORE","Unable to pull experiments from firestore");
+                }
+            }
+        });
+    }
+
 
     /**
      * Will query a specific experiment based on it's UUID

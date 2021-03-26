@@ -1,12 +1,19 @@
 package com.example.experiment_automata.backend.experiments;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,7 +42,9 @@ public class ExperimentManager
      */
     public ExperimentManager()
     {
+
         experiments = new HashMap<UUID, Experiment>();
+        getAllFromFirestore();
     }
 
     /**
@@ -52,6 +61,7 @@ public class ExperimentManager
             throw new IllegalArgumentException();
         else {
             experiments.put(id, experiment);
+            postAllToFirestore();
         }
     }
 
@@ -221,7 +231,7 @@ public class ExperimentManager
      * @param experimentID
      * The UUID of the requested experiment
      * @return
-     * Returns the reqested Experiment object, returns null if requested experiment not found in firestore
+     * Returns the requested Experiment object, returns null if requested experiment not found in firestore
      */
     public Experiment getExperimentFromFirestore(UUID experimentID) {
         ExperimentMaker maker = new ExperimentMaker();
@@ -247,6 +257,40 @@ public class ExperimentManager
             return null;
         }
     }
+    /**
+     * Get all experiments from firestore
+     */
+    public void getAllFromFirestore(){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference experimentCollection = db.collection("experiments");
+        experimentCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                ExperimentMaker maker = new ExperimentMaker();
+                if (task.isSuccessful()){
+                    for (QueryDocumentSnapshot document : task.getResult()){
+                        Experiment currentExperiment = maker.makeExperiment(
+                                ExperimentType.valueOf((String) document.get("type")),
+                                (String) document.get("description"),
+                                ((Long) document.get("min-trials")).intValue(),
+                                (boolean) document.get("location-required"),
+                                (boolean) document.get("accepting-new-results"),
+                                UUID.fromString((String) document.get("owner")),
+                                (boolean) document.get("published"),
+                                UUID.fromString(document.getId())
+                        );
+                        UUID currentDocId = UUID.fromString(document.getId());
+                        experiments.put(currentDocId,currentExperiment);
+                        Log.d("FIRESTORE",(String) document.get("description"));
+                    }
+                }
+                else{
+                    //not able to query all from firestore
+                    Log.d("FIRESTORE","Unable to pull experiments from firestore");
+                }
+            }
+        });
+    }
 
     /**
      * Post all experiments contained in current ExperimentManager to firestore
@@ -268,14 +312,14 @@ public class ExperimentManager
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String,Object> experimentData = new HashMap<>();
         String experimentUUIDString = experiment.getExperimentId().toString();
-        DocumentReference owner = db.collection("users").document("/users" + experiment.getOwnerId().toString());
 
         experimentData.put("accepting-new-results",experiment.isActive());
         experimentData.put("description",experiment.getDescription());
         experimentData.put("location-required",experiment.isRequireLocation());
         experimentData.put("min-trials",experiment.getMinTrials());
-        experimentData.put("owner",owner);
-        experimentData.put("type",experiment.getType().name());//enum to string
+        experimentData.put("owner",experiment.getOwnerId().toString());
+        experimentData.put("type",experiment.getType().toString());//enum to string
+        experimentData.put("published",experiment.isPublished());
 
         db.collection("experiments").document(experimentUUIDString)
                 .set(experimentData)

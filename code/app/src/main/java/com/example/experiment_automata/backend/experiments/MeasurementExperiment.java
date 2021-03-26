@@ -49,6 +49,22 @@ public class MeasurementExperiment extends Experiment {
     }
 
     /**
+     * Default constructor for Measurement Experiment from using the AddExperimentFragment
+     * @param description
+     *   the description for the experiment
+     * @param minTrials
+     *   the minimum number of trials for the experiment
+     * @param requireLocation
+     *   a boolean for if the trials need a location
+     * @param acceptNewResults
+     *   a boolean for if the experiment is accepting new results
+     */
+    public MeasurementExperiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId, Boolean published, UUID experimentId) {
+        super(description, minTrials, requireLocation, acceptNewResults, ownerId, ExperimentType.Measurement, published, experimentId);
+        results = new ArrayList<>();
+    }
+
+    /**
      * Record a trial.
      * @param trial
      *  the trail to add

@@ -69,4 +69,37 @@ public class ExperimentMaker {
                 return null;
         }
     }
+    /**
+     * Will create an experiment with the selected type from the Add Experiment Fragment
+     * @param type
+     *   the type of experiment that will be created
+     * @param description
+     *   the description of the experiment to be created
+     * @param minTrials
+     *   the minimum number of trials for this experiment
+     * @param requireLocation
+     *   a boolean for whether this experiment requires location
+     * @param acceptNewResults
+     *   a boolean for whether this experiment is accepting new results
+     * @return
+     *   an experiment object of the requested type with information
+     */
+    public static Experiment makeExperiment(ExperimentType type, String description, int minTrials,
+                                            boolean requireLocation, boolean acceptNewResults,
+                                            UUID ownerId, Boolean published, UUID experimentId) {
+        switch (type) {
+            case NaturalCount:
+                return new NaturalCountExperiment(description, minTrials, requireLocation, acceptNewResults, ownerId, published, experimentId);
+            case Binomial:
+                return new BinomialExperiment(description, minTrials, requireLocation, acceptNewResults, ownerId, published, experimentId);
+            case Count:
+                return new CountExperiment(description, minTrials, requireLocation, acceptNewResults, ownerId, published, experimentId);
+            case Measurement:
+                return new MeasurementExperiment(description, minTrials, requireLocation, acceptNewResults, ownerId, published, experimentId);
+            default:
+                return null;
+        }
+    }
+
+
 }

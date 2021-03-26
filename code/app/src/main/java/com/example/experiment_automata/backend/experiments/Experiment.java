@@ -61,6 +61,29 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
     }
 
     /**
+     * Experiment constructor to be used by ExperimentMaker when creating an experiment from the AddExperimentFragment
+     * @param description
+     *   the description of the experiment
+     * @param minTrials
+     *   the minimum number of trials for this experiment
+     * @param requireLocation
+     *   a boolean for whether or not the trials need a location
+     * @param acceptNewResults
+     *   a boolean for whether this trial should be accepting new requests or not
+     */
+    public Experiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId, ExperimentType type, Boolean published, UUID experimentId) {//MAKE SURE WE ADD QUESTIONS TO THIS CONSTRUCTOR
+        this.description = description;
+        this.minTrials = minTrials;
+        this.requireLocation = requireLocation;
+        this.published = published;
+        this.active = acceptNewResults;
+        this.ownerId = ownerId;
+        this.experimentId = experimentId;
+        this.type = type;
+        this.questions = new ArrayList<>();
+
+    }
+    /**
      * This method will check if an experiment has the same id as another
      * @param experiment
      *   The experiment you want to compare with

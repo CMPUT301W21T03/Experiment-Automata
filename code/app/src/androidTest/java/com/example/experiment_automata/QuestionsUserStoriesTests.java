@@ -1,22 +1,12 @@
 package com.example.experiment_automata;
 
-
-/**
- * Test functionality the deals with
- *  1. us.02.01.01
- *  2. us.02.02.01
- *  3. us.02.03.01
- *
- * Known Issues:
- *  1. Not yet dealing with the owner/experimenter access values
- *
- */
-
-
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
+import com.example.experiment_automata.ui.LinkView;
 import com.example.experiment_automata.ui.NavigationActivity;
+import com.example.experiment_automata.ui.Screen;
 import com.robotium.solo.Solo;
 
 import org.junit.Before;
@@ -30,8 +20,17 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.fail;
 
+/**
+ * Test functionality the deals with
+ *  1. us.02.01.01
+ *  2. us.02.02.01
+ *  3. us.02.03.01
+ *
+ * Known Issues:
+ *  1. Not yet dealing with the owner/experimenter access values
+ *
+ */
 public class QuestionsUserStoriesTests {
     private Solo solo;
     private NavigationActivity currentTestingActivity;
@@ -56,11 +55,11 @@ public class QuestionsUserStoriesTests {
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
         currentTestingActivity = (NavigationActivity) solo.getCurrentActivity();
         //Finding the buttons we need to press
-        addExperimentButton = currentTestingActivity.findViewById(R.id.add_experiment_button);
+        addExperimentButton = currentTestingActivity.findViewById(R.id.fab_button);
+        makeExperiment("GUI Test Experiment");
     }
 
-    private void makeExperiment(String des)
-    {
+    private void makeExperiment(String des) {
         //Click from the home screen the + button to make an experiment
         solo.clickOnView(addExperimentButton);
         solo.waitForDialogToOpen();
@@ -93,11 +92,8 @@ public class QuestionsUserStoriesTests {
      * and have them be displayed.
      */
     @Test
-    public void testingAddingQuestionsExperiment()
-    {
+    public void testingAddingQuestionsExperiment() {
         View questionButton = null;
-
-        makeExperiment("GUI Test Experiment");
 
         int beforeAddingQuestionCount = currentTestingActivity.questionManager.getAllQuestions().size();
         solo.clickOnText("GUI Test Experiment");
@@ -118,12 +114,9 @@ public class QuestionsUserStoriesTests {
      * Adding a reply to a question that the user has already entered
      */
     @Test
-    public void testingAddingReplies()
-    {
+    public void testingAddingReplies() {
         View replyButton = null;
         View questionButton = null;
-
-        makeExperiment("GUI Test Experiment");
 
         solo.clickOnText("GUI Test Experiment");
         questionButton = solo.getView(R.id.nav_fragment_experiment_detail_view_qa_button);
@@ -154,11 +147,9 @@ public class QuestionsUserStoriesTests {
      * have more than one reply.
      */
     @Test
-    public void testingUserCanSeeQuestionAndReplies()
-    {
+    public void testingUserCanSeeQuestionAndReplies() {
         View replyButton = null;
         View questionButton = null;
-        makeExperiment("GUI Test Experiment");
 
         solo.clickOnText("GUI Test Experiment");
         questionButton = solo.getView(R.id.nav_fragment_experiment_detail_view_qa_button);
@@ -178,5 +169,67 @@ public class QuestionsUserStoriesTests {
         assertEquals("Failed to display the questions and reply onto the screen",
                 true,
                 replyQuestionOnScreen);
+    }
+
+    /**
+     * Testing if the username of the question post links to the user profile.
+     */
+    @Test
+    public void testingQuestionLinksToProfile() {
+        View replyButton = null;
+        View questionButton = null;
+
+        solo.clickOnText("GUI Test Experiment");
+        questionButton = solo.getView(R.id.nav_fragment_experiment_detail_view_qa_button);
+        solo.clickOnView(questionButton);
+        solo.clickOnView(addExperimentButton);
+        View questionBox = solo.getView(R.id.frag_add_edit_question_input_box_diolog);
+        solo.enterText((EditText)questionBox,"Test Question");
+        solo.clickOnText("Ok");
+
+        replyButton = solo.getView(R.id.main_question_display_reply_button);
+        solo.clickOnView(replyButton);
+        questionBox = solo.getView(R.id.frag_add_edit_question_input_box_diolog);
+        solo.enterText((EditText)questionBox,"Test reply");
+        solo.clickOnText("Ok");
+
+        // check linking to profile
+        View questionUsername = solo.getView(R.id.main_question_display_user);
+        solo.clickOnView(questionUsername);
+        solo.waitForFragmentById(R.id.profile_screen);
+        assertEquals(Screen.Profile, currentTestingActivity.getCurrentScreen());
+        assertEquals(solo.getString(R.string.profile_contact),
+                ((TextView) solo.getView(R.id.profile_contact)).getText().toString());
+    }
+
+    /**
+     * Testing if the username of the reply post links to the user profile.
+     */
+    @Test
+    public void testingReplyLinksToProfile() {
+        View replyButton = null;
+        View questionButton = null;
+
+        solo.clickOnText("GUI Test Experiment");
+        questionButton = solo.getView(R.id.nav_fragment_experiment_detail_view_qa_button);
+        solo.clickOnView(questionButton);
+        solo.clickOnView(addExperimentButton);
+        View questionBox = solo.getView(R.id.frag_add_edit_question_input_box_diolog);
+        solo.enterText((EditText)questionBox,"Test Question");
+        solo.clickOnText("Ok");
+
+        replyButton = solo.getView(R.id.main_question_display_reply_button);
+        solo.clickOnView(replyButton);
+        questionBox = solo.getView(R.id.frag_add_edit_question_input_box_diolog);
+        solo.enterText((EditText)questionBox,"Test reply");
+        solo.clickOnText("Ok");
+
+        // check linking to profile
+        LinkView replyUsername = (LinkView) solo.clickInList(0).get(0);
+        solo.clickOnView(replyUsername);
+        solo.waitForFragmentById(R.id.profile_screen);
+        assertEquals(Screen.Profile, currentTestingActivity.getCurrentScreen());
+        assertEquals(solo.getString(R.string.profile_contact),
+                ((TextView) solo.getView(R.id.profile_contact)).getText().toString());
     }
 }

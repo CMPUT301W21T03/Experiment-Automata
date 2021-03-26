@@ -11,6 +11,9 @@ import android.content.SharedPreferences;
  *      1. None
  */
 public class ContactInformation {
+    private static final String nameKey = "userName";
+    private static final String emailKey = "userEmail";
+    private static final String phoneKey = "userPhone";
     private String name;
     private String email;
     private String phone;
@@ -38,9 +41,9 @@ public class ContactInformation {
      * @param preferences
      */
     public ContactInformation(SharedPreferences preferences) {
-        this.name = preferences.getString("userName", "name");
-        this.email = preferences.getString("userEmail", "email");
-        this.phone = preferences.getString("userPhone", "phone");
+        this.name = preferences.getString(nameKey, "name");
+        this.email = preferences.getString(emailKey, "email");
+        this.phone = preferences.getString(phoneKey, "phone");
         this.preferences = preferences;
         this.editable = true;
     }
@@ -63,7 +66,7 @@ public class ContactInformation {
         if (this.editable) {
             this.name = name;
             SharedPreferences.Editor editor = preferences.edit();
-            editor.putString("userName", name);
+            editor.putString(nameKey, name);
             editor.apply();
         }
     }
@@ -86,7 +89,7 @@ public class ContactInformation {
         if (this.editable) {
             this.email = email;
             SharedPreferences.Editor editor = preferences.edit();
-            editor.putString("userName", name);
+            editor.putString(emailKey, email);
             editor.apply();
         }
     }
@@ -109,7 +112,7 @@ public class ContactInformation {
         if (this.editable) {
             this.phone = phone;
             SharedPreferences.Editor editor = preferences.edit();
-            editor.putString("userName", name);
+            editor.putString(phoneKey, phone);
             editor.apply();
         }
     }
@@ -117,8 +120,11 @@ public class ContactInformation {
     /**
      * Set all contact information variables
      * @param name
+     *  the new name to set
      * @param email
+     *  the new email to set
      * @param phone
+     *  the new phone number to set
      */
     public void setAll(String name, String email, String phone) {
         this.setName(name);

@@ -1,10 +1,20 @@
 package com.example.experiment_automata.backend.experiments;
 
+import androidx.annotation.NonNull;
+
 import com.example.experiment_automata.backend.questions.Question;
+<<<<<<< HEAD
 import com.example.experiment_automata.backend.trials.Trial;
+=======
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+>>>>>>> main
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 
@@ -59,8 +69,32 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
         this.experimentId = UUID.randomUUID();
         this.type = type;
         this.questions = new ArrayList<>();
+        //un-comment this to enable firestore put
+        //postExperimentToFirestore();
     }
 
+    /**
+     * Experiment constructor to be used by ExperimentMaker when creating an experiment from the Firestore
+     * @param description
+     *   the description of the experiment
+     * @param minTrials
+     *   the minimum number of trials for this experiment
+     * @param requireLocation
+     *   a boolean for whether or not the trials need a location
+     * @param acceptNewResults
+     *   a boolean for whether this trial should be accepting new requests or not
+     */
+    public Experiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId, ExperimentType type, Boolean published, UUID experimentId) {//MAKE SURE WE ADD QUESTIONS TO THIS CONSTRUCTOR
+        this.description = description;
+        this.minTrials = minTrials;
+        this.requireLocation = requireLocation;
+        this.published = published;
+        this.active = acceptNewResults;
+        this.ownerId = ownerId;
+        this.experimentId = experimentId;
+        this.type = type;
+        this.questions = new ArrayList<>();
+    }
     /**
      * This method will check if an experiment has the same id as another
      * @param experiment
@@ -70,6 +104,41 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
      */
     public boolean compare(Experiment experiment) {
         return experimentId.equals(experiment.experimentId);
+    }
+
+
+    /**
+     * Post the current experiment to firestore
+     */
+    public void postExperimentToFirestore(){
+        //add key field?
+        Experiment experiment = this;
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String,Object> experimentData = new HashMap<>();
+        String experimentUUIDString = experiment.getExperimentId().toString();
+
+        experimentData.put("accepting-new-results",experiment.isActive());
+        experimentData.put("description",experiment.getDescription());
+        experimentData.put("location-required",experiment.isRequireLocation());
+        experimentData.put("min-trials",experiment.getMinTrials());
+        experimentData.put("owner",experiment.getOwnerId().toString());
+        experimentData.put("type",experiment.getType().toString());//enum to string
+        experimentData.put("published",experiment.isPublished());
+
+        db.collection("experiments").document(experimentUUIDString)
+                .set(experimentData)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
     }
 
     /**

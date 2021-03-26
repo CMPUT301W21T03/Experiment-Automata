@@ -43,7 +43,7 @@ public class HomeFragment extends Fragment {
         Log.d("HomeFragment", "Entering home fragment: " + getArguments().getString("mode"));
         NavigationActivity parentActivity = ((NavigationActivity) getActivity());
 
-        getActivity().findViewById(R.id.add_experiment_button).setVisibility(View.VISIBLE);
+        getActivity().findViewById(R.id.fab_button).setVisibility(View.VISIBLE);
 
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         parentActivity.setCurrentScreen(Screen.ExperimentList);

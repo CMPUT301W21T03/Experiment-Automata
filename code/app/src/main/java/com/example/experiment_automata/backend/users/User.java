@@ -6,10 +6,12 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -24,7 +26,7 @@ import java.util.UUID;
  *
  *      1. None
  */
-public class User {
+public class User implements Serializable {
     private static String DEFAULT_UUID_STRING = "00000000-0000-0000-0000-000000000000";//move this to a constants class later
     private static final String TAG = "User";
     private UUID userId;//changed from int to UUID
@@ -47,6 +49,7 @@ public class User {
         this.info = new ContactInformation(preferences);
         this.ownedExperiments = new ArrayList<>();
         this.subscribedExperiments = new ArrayList<>();
+        updateFirestore();
     }
 
     /**
@@ -57,7 +60,10 @@ public class User {
     private User(UUID id) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference documentReference = db.collection("users").document(id.toString());
-        DocumentSnapshot document = documentReference.get().getResult();
+        Task<DocumentSnapshot> task = documentReference.get();
+        // wait until the task is complete
+        while (!task.isComplete());
+        DocumentSnapshot document = task.getResult();
         String name = document.get("name").toString();
         String email = document.get("email").toString();
         String phone = document.get("phone").toString();

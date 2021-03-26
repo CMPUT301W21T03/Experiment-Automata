@@ -19,7 +19,11 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.experiment_automata.R;
+<<<<<<< HEAD
 import com.example.experiment_automata.backend.trials.Trial;
+=======
+import com.example.experiment_automata.backend.users.ContactInformation;
+>>>>>>> main
 import com.example.experiment_automata.ui.experiments.AddExperimentFragment;
 import com.example.experiment_automata.backend.experiments.BinomialExperiment;
 import com.example.experiment_automata.backend.experiments.CountExperiment;
@@ -27,6 +31,8 @@ import com.example.experiment_automata.backend.experiments.ExperimentManager;
 import com.example.experiment_automata.ui.experiments.NavExperimentDetailsFragment;
 import com.example.experiment_automata.backend.experiments.Experiment;
 
+import com.example.experiment_automata.ui.profile.EditUserFragment;
+import com.example.experiment_automata.ui.profile.ProfileFragment;
 import com.example.experiment_automata.ui.question.AddQuestionFragment;
 import com.example.experiment_automata.ui.question.QuestionDisplay;
 import com.example.experiment_automata.backend.questions.Question;
@@ -75,8 +81,8 @@ import java.util.UUID;
 
 public class NavigationActivity extends AppCompatActivity implements
         AddExperimentFragment.OnFragmentInteractionListener,
-        AddQuestionFragment.OnFragmentInteractionListener
-{
+        AddQuestionFragment.OnFragmentInteractionListener,
+        EditUserFragment.OnFragmentInteractionListener {
 
     private AppBarConfiguration mAppBarConfiguration;
     public final ExperimentManager experimentManager = new ExperimentManager();
@@ -121,7 +127,7 @@ public class NavigationActivity extends AppCompatActivity implements
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-        FloatingActionButton addExperimentButton = findViewById(R.id.add_experiment_button);
+        FloatingActionButton addExperimentButton = findViewById(R.id.fab_button);
         addExperimentButton.setOnClickListener(new View.OnClickListener() {
             /**
              * Deal with the FAB when clicked
@@ -328,6 +334,13 @@ public class NavigationActivity extends AppCompatActivity implements
     }
 
     /**
+     * Get the current screen variable
+     * @return
+     *  the current screen
+     */
+    public Screen getCurrentScreen() { return currentScreen; }
+
+    /**
      * Sets the current fragment variable
      * @param currentFragment
      *  The fragment to set as currentFragment
@@ -371,7 +384,7 @@ public class NavigationActivity extends AppCompatActivity implements
      */
     @Override
     public void onOkPressedReply(String reply, UUID questionId) {
-        Reply newReply = new Reply(reply, questionId);
+        Reply newReply = new Reply(reply, loggedUser.getUserId());
         questionManager.addReply(questionId, newReply);
 
         ((QuestionDisplay) currentFragment).updateQuestionsList();
@@ -495,4 +508,21 @@ public class NavigationActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * Edits the contact information of a user.
+     * @param name
+     *  The new name
+     * @param email
+     *  The new email
+     * @param phone
+     *  The new phone number
+     */
+    @Override
+    public void onOkPressed(User user, String name, String email, String phone) {
+        ContactInformation info = user.getInfo();
+        info.setAll(name, email, phone);
+        if (currentScreen == Screen.Profile) {
+            ((ProfileFragment) currentFragment).update();
+        }
+    }
 }

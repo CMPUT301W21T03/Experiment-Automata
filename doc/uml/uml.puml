@@ -31,6 +31,7 @@ class ExperimentManager{
    + getPublishedExperiments(): ArrayList<Experiment>
    + getAtUUIDDescription(experimentUUID: UUID): Experiment
    + getAllExperiments(): ArrayList<Experiment> 
+   + getAllFromFirestore()
    - queryMatch(query: String, source: String): Boolean
 }
 
@@ -103,11 +104,12 @@ abstract class Experiment implements StatSummary, Graphable {
     -questions: ArrayList<Question>
     +getSize(): Integer
     +makeNewUUID()
+	+postExperimentToFirestore()
 }
 
 
-Experiment -- QRCodeManager
 
+Experiment -- QRCode
 
 
 class CountExperiment extends Experiment {
@@ -141,7 +143,7 @@ interface "StatSummary" as StatSummary <<Interface>> {
     +getQuartile(): Float[]
 }
 
-' each trial has a unique QRCodeManager associated with it
+' each trial has a unique QRCode associated with it
 abstract class Trial {
     ' just going to user User ID here
     -collector: UUID
@@ -168,13 +170,15 @@ class MeasurementTrial extends Trial {
     -result: Float
 }
 
-
-class QRCodeManager {
-    + createQRFromUUID(uuid: String): Bitmap
-    + encodeStringToQR(encodedContent: String): Bitmap
-    -unpackQRString(code: String): String
-    -packQRString(content: String): String
+class QRCode {
+	- rawContentString: String
+	- experimentID: UUID
+	- type: QRType
+	- qrCodeImage: Bitmap
+	
+	+ encodeStringToQR(encodedContent: String): Bitmap
 }
+
 
 class Location {
   -latitude: double

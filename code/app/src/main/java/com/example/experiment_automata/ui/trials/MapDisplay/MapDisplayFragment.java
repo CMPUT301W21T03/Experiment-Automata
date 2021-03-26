@@ -8,14 +8,12 @@ import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.backend.experiments.Experiment;
 import com.example.experiment_automata.backend.trials.Trial;
 import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.ui.Screen;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
@@ -28,10 +26,10 @@ import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link map_display_fragment#newInstance} factory method to
+ * Use the {@link MapDisplayFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class map_display_fragment extends Fragment {
+public class MapDisplayFragment extends Fragment {
 
 
     public static final String CURRENT_EXPERIMENT ="MAP_POINT_VIEW_EXPERIMENT";
@@ -39,7 +37,7 @@ public class map_display_fragment extends Fragment {
     private MapView currentMapDisplay;
     private Experiment currentExperiment;
 
-    public map_display_fragment() {
+    public MapDisplayFragment() {
         // Required empty public constructor
     }
 
@@ -50,8 +48,8 @@ public class map_display_fragment extends Fragment {
      * @param currentExperiment the current experiment
      * @return A new instance of fragment map_display_fragment.
      */
-    public static map_display_fragment newInstance(Experiment currentExperiment) {
-        map_display_fragment fragment = new map_display_fragment();
+    public static MapDisplayFragment newInstance(Experiment currentExperiment) {
+        MapDisplayFragment fragment = new MapDisplayFragment();
         Bundle args = new Bundle();
         args.putSerializable(CURRENT_EXPERIMENT, currentExperiment);
         fragment.setArguments(args);
@@ -80,16 +78,17 @@ public class map_display_fragment extends Fragment {
          */
         Configuration.getInstance().load(getContext(), PreferenceManager.getDefaultSharedPreferences(getContext()));
         View root = inflater.inflate(R.layout.fragment_map_display_fragment, container, false);
-
+        ((getActivity()).findViewById(R.id.add_experiment_button)).setVisibility(View.GONE);
         if(currentExperiment.isRequireLocation())
         {
+            (root.findViewById(R.id.map_point_view_experiment_loc_error_display)).setVisibility(View.INVISIBLE);
             currentMapDisplay = root.findViewById(R.id.map_point_view_fragment_map_display);
             currentMapDisplay.setTileSource(TileSourceFactory.MAPNIK);
             currentMapDisplay.setVerticalMapRepetitionEnabled(false);
             currentMapDisplay.setHorizontalMapRepetitionEnabled(false);
             currentMapDisplay.setMultiTouchControls(true);
             IMapController mapController = currentMapDisplay.getController();
-            mapController.setZoom(2.5f);
+            mapController.setZoom(2.7f);
 
             ArrayList<Trial> experimentTrials = currentExperiment.getRecordedTrials();
 
@@ -109,7 +108,17 @@ public class map_display_fragment extends Fragment {
                 //temp.setAnchor();
             }
         }
+        else
+        {
+            currentMapDisplay.setVisibility(View.GONE);
+        }
 
         return root;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ((getActivity()).findViewById(R.id.add_experiment_button)).setVisibility(View.VISIBLE);
     }
 }

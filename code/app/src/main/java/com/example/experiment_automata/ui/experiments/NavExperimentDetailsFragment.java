@@ -18,7 +18,7 @@ import com.example.experiment_automata.backend.qr.ViewQRFragment;
 import com.example.experiment_automata.ui.question.QuestionDisplay;
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.ui.Screen;
-import com.example.experiment_automata.ui.trials.MapDisplay.map_display_fragment;
+import com.example.experiment_automata.ui.trials.MapDisplay.MapDisplayFragment;
 import com.example.experiment_automata.ui.trials.TrialsFragment;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
@@ -168,9 +168,9 @@ public class NavExperimentDetailsFragment extends Fragment {
 
 
         mapButton.setOnClickListener(v -> {
-            Fragment mapFragment = new map_display_fragment();
+            Fragment mapFragment = new MapDisplayFragment();
             Bundle locArgs = new Bundle();
-            locArgs.putSerializable(map_display_fragment.CURRENT_EXPERIMENT,
+            locArgs.putSerializable(MapDisplayFragment.CURRENT_EXPERIMENT,
                     (((NavigationActivity) getActivity())
                     .getExperimentManager())
                     .getAtUUIDDescription(UUID.fromString(experimentStringId)));
@@ -178,6 +178,8 @@ public class NavExperimentDetailsFragment extends Fragment {
 
             NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
             navController.navigate(R.id.map_display_fragment, locArgs);
+            parentActivity.setCurrentScreen(Screen.MAP);
+            parentActivity.setCurrentFragment(this);
         });
 
         return root;

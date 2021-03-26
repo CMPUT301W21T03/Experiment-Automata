@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.trials.MapDisplay.map_display_fragment">
+    tools:context=".ui.trials.MapDisplay.MapDisplayFragment">
 
     <TextView
         android:id="@+id/map_point_view_experiment_loc_error_display"

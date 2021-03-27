@@ -18,7 +18,7 @@ public class QRMaker {
      * @return
      * returns a QRCode
      */
-    public QRCode decodeQRString(String rawContent){//VOID IS TEMP
+    public QRCode decodeQRString(String rawContent){
         if (!checkQRHeader(rawContent)){
             //not valid raise exception
         }
@@ -45,16 +45,18 @@ public class QRMaker {
                         binVal = false;
                         break;
                 }
-                qrCode = new BinomialQRCode(experimentUUID,binVal);//temp
+                qrCode = new BinomialQRCode(experimentUUID,binVal);
                 break;
             case QRCode.COUNT_ID:
-                qrCode = null;//temp
+                qrCode = new CountQRCode(experimentUUID);
                 break;
             case QRCode.MEASUREMENT_ID:
-                qrCode = null;//temp
+                String resultM = rawContent.substring(43);
+                qrCode = new MeasurementQRCode(experimentUUID,Float.parseFloat(resultM));
                 break;
             case QRCode.NATURALC_ID:
-                qrCode = null;//temp
+                String resultN = rawContent.substring(43);
+                qrCode = new NaturalQRCode(experimentUUID, Integer.parseInt(resultN));
                 break;
             default://incorrect type specifier
                 qrCode = null;

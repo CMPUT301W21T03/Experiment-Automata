@@ -126,8 +126,6 @@ public class MapDisplayFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d("SOMETHING", "DATA");
-        //((FloatingActionButton)(getActivity().findViewById(R.id.fab_button))).show();
     }
 
 }

@@ -117,7 +117,7 @@ public class MapDisplayFragment extends Fragment {
         }
         else
         {
-            //Fix something
+            //TODO: Make change so that we don't need the experiment error. 
         }
 
         return root;

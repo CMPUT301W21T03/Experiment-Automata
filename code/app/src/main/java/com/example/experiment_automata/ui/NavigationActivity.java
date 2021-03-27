@@ -46,7 +46,6 @@ import com.example.experiment_automata.backend.trials.CountTrial;
 import com.example.experiment_automata.backend.trials.MeasurementTrial;
 import com.example.experiment_automata.backend.trials.NaturalCountTrial;
 import com.example.experiment_automata.ui.home.HomeFragment;
-import com.example.experiment_automata.ui.trials.add.EditLocationDialog;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -93,7 +92,7 @@ public class NavigationActivity extends AppCompatActivity implements
     private Trial currentTrial;
 
     // Location and Map Flags and Request Codes
-    public static final int LOCATION_PERMISSION_REQUEST = 10;
+    public static final int PERMISSON_REQUEST_CODE = 10;
     private boolean canMakeLocationTrials = false;
     private FusedLocationProviderClient fusedLocationProviderClient;
     public Location currentLocation;
@@ -161,9 +160,9 @@ public class NavigationActivity extends AppCompatActivity implements
                         try {
                             switch (experiment.getType()) {
                                 case Count:
-                                    CountExperiment countExperiment = (CountExperiment) experiment;
-                                    currentTrial = new CountTrial(loggedUser.getUserId());
-                                    addTrial(countExperiment, currentTrial);
+                                   // CountExperiment countExperiment = (CountExperiment) experiment;
+                                    //currentTrial = new CountTrial(loggedUser.getUserId());
+                                    //addTrial(countExperiment, currentTrial);
                                     break;
                                 case NaturalCount:
                                     NaturalCountExperiment naturalCountExperiment = (NaturalCountExperiment) experiment;
@@ -404,6 +403,7 @@ public class NavigationActivity extends AppCompatActivity implements
     {
         if (experiment.isRequireLocation())
         {
+            //TODO: Make dialog or warning about this trail needed location details
             addLocationToTrial(trial);
             if(trial.getLocation() != null) {
                 experiment.recordTrial(trial);
@@ -442,7 +442,7 @@ public class NavigationActivity extends AppCompatActivity implements
         {
             LocationManager locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
             LocationListener locationListener = new com.example.experiment_automata.backend.Location.LocationServices();
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 30, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 1, locationListener);
             currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         }
         else {
@@ -473,7 +473,7 @@ public class NavigationActivity extends AppCompatActivity implements
                                     Manifest.permission.ACCESS_NETWORK_STATE,
 
                             },
-                    LOCATION_PERMISSION_REQUEST);
+                    PERMISSON_REQUEST_CODE);
         }
         else
             canMakeLocationTrials = true;
@@ -498,9 +498,13 @@ public class NavigationActivity extends AppCompatActivity implements
     {
         switch (requestCode)
         {
-            case LOCATION_PERMISSION_REQUEST:
+            case PERMISSON_REQUEST_CODE:
                 if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                     canMakeLocationTrials = true;
+                else
+                {
+                    //TODO: Make dialog or warning windows of what these means for the project
+                }
                 return;
 
         }

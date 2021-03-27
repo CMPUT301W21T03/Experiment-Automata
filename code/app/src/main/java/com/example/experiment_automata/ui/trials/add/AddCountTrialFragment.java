@@ -1,12 +1,10 @@
 package com.example.experiment_automata.ui.trials.add;
 
-import android.location.Location;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +24,6 @@ import org.osmdroid.events.MapEventsReceiver;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
-import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
 import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
 
@@ -40,8 +37,8 @@ public class AddCountTrialFragment extends Fragment {
 
     private MapView currentMapDisplay;
     private Experiment currentExperiment;
-    private Location currentLocation;
     private Marker currentLocationMarker;
+    private Trial countTrial;
 
 
     public AddCountTrialFragment() {
@@ -63,7 +60,6 @@ public class AddCountTrialFragment extends Fragment {
         currentExperiment = (CountExperiment) parentActivity.experimentManager.getCurrentExperiment();
         description.setText(currentExperiment.getDescription());
         currentMapDisplay = root.findViewById(R.id.count_trial_map_view);
-        currentLocation = parentActivity.currentLocation;
 
         /**
          * Authors: OSMDROID Contributors on Github (https://github.com/osmdroid/osmdroid/graphs/contributors)
@@ -77,37 +73,45 @@ public class AddCountTrialFragment extends Fragment {
         else {
             setupMap();
             currentLocationMarker = new Marker(currentMapDisplay);
-            currentLocationMarker.setTitle("Current Location");
-            if(currentLocation != null)
-                currentLocationMarker.setPosition(new GeoPoint(currentLocation));
+            currentLocationMarker.setTitle("Recorded Location");
+            currentLocationMarker.setSubDescription("This location is what is saved into the trial!");
+            countTrial = new CountTrial(parentActivity.loggedUser.getUserId());
+            parentActivity.addLocationToTrial(countTrial);
+            currentLocationMarker.setPosition(new GeoPoint(countTrial.getLocation()));
 
-            Trial t = new CountTrial(parentActivity.loggedUser.getUserId());
-            parentActivity.addLocationToTrial(t);
-
-            //TODO: Makes changes to add location from add trial view through touch on map!
-            // TODO: Add source from: https://github.com/osmdroid/osmdroid/issues/295
+            /**
+             * How to set the on click listener
+             * Author: https://github.com/wildfiregt
+             * Editor: https://github.com/wildfiregt
+             * Licence: Unknown
+             * Date of Publication: Unknown
+             * Full Link: https://github.com/osmdroid/osmdroid/issues/295#issuecomment-207787051
+             */
             MapEventsReceiver mapEventsReceiver = new MapEventsReceiver() {
                 @Override
                 public boolean singleTapConfirmedHelper(GeoPoint p) {
-
-                    //currentLocation.setLatitude(p.getLatitude());
-                    //currentLocation.setLongitude(p.getLongitude());
-                    Log.d("DONE", "MAYBE 0->" + p.getLatitude());
-
+                    currentMapDisplay.invalidate();
+                    countTrial.getLocation().setLongitude(p.getLongitude());
+                    countTrial.getLocation().setLatitude(p.getLatitude());
+                    currentLocationMarker.setPosition(new GeoPoint(countTrial.getLocation()));
                     return false;
                 }
 
                 @Override
                 public boolean longPressHelper(GeoPoint p) {
+
+                    Toast.makeText(getContext(), "" + p, Toast.LENGTH_SHORT).show();
+
                     return false;
                 }
             };
 
             MapEventsOverlay mapEventsOverlay = new MapEventsOverlay(getContext(), mapEventsReceiver);
             currentMapDisplay.getOverlays().add(mapEventsOverlay);
+            currentMapDisplay.getOverlays().add(currentLocationMarker);
         }
 
-
+        parentActivity.addTrial(currentExperiment, countTrial);
         return root;
     }
 

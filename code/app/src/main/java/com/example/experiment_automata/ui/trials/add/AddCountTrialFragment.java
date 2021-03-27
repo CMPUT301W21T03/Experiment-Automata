@@ -85,7 +85,7 @@ public class AddCountTrialFragment extends Fragment {
             parentActivity.addLocationToTrial(t);
 
             //TODO: Makes changes to add location from add trial view through touch on map!
-
+            // TODO: Add source from: https://github.com/osmdroid/osmdroid/issues/295
             MapEventsReceiver mapEventsReceiver = new MapEventsReceiver() {
                 @Override
                 public boolean singleTapConfirmedHelper(GeoPoint p) {

@@ -15,6 +15,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -49,6 +50,7 @@ public class User implements Serializable {
         this.info = new ContactInformation(preferences);
         this.ownedExperiments = new ArrayList<>();
         this.subscribedExperiments = new ArrayList<>();
+        updateFromFirestore();
         updateFirestore();
     }
 
@@ -58,20 +60,8 @@ public class User implements Serializable {
      *  The id of the user to get the firestore document
      */
     private User(UUID id) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference documentReference = db.collection("users").document(id.toString());
-        Task<DocumentSnapshot> task = documentReference.get();
-        // wait until the task is complete
-        while (!task.isComplete());
-        DocumentSnapshot document = task.getResult();
-        String name = document.get("name").toString();
-        String email = document.get("email").toString();
-        String phone = document.get("phone").toString();
-
         this.userId = id;
-        this.info = new ContactInformation(name, email, phone);
-        this.ownedExperiments = new ArrayList<>();
-        this.subscribedExperiments = new ArrayList<>();
+        updateFromFirestore();
     }
 
     /**
@@ -120,6 +110,34 @@ public class User implements Serializable {
                         Log.w(TAG, "Error writing document", e);
                     }
                 });
+    }
+
+    /**
+     * Update the user information from the Firestore.
+     */
+    protected void updateFromFirestore() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference documentReference = db.collection("users").document(this.userId.toString());
+        Task<DocumentSnapshot> task = documentReference.get();
+        // wait until the task is complete
+        while (!task.isComplete());
+        DocumentSnapshot document = task.getResult();
+        String name = document.get("name").toString();
+        String email = document.get("email").toString();
+        String phone = document.get("phone").toString();
+        Collection<String> ownedExperiments = (List<String>) document.get("owned");
+        Collection<String> subscribedExperiments = (List<String>) document.get("subscriptions");
+        // Convert Collection of String to Collection of UUIDs
+        this.ownedExperiments = new ArrayList<>();
+        for (String experimentId : ownedExperiments) {
+            this.ownedExperiments.add(UUID.fromString(experimentId));
+        }
+        this.subscribedExperiments = new ArrayList<>();
+        for (String experimentId : subscribedExperiments) {
+            this.subscribedExperiments.add(UUID.fromString(experimentId));
+        }
+
+        this.info = new ContactInformation(name, email, phone);
     }
 
     /**

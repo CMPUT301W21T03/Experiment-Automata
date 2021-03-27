@@ -292,6 +292,8 @@ public class NavExperimentDetailsFragment extends Fragment {
      * Set up and gets read to launch the questions display.
      */
     private void launchQuestionView() {
+        (((NavigationActivity)getActivity()).findViewById(R.id.fab_button)).setVisibility(View.VISIBLE);
+
         NavigationActivity parentActivity = (NavigationActivity) getActivity();
         Bundle questionBundle = new Bundle();
         questionBundle.putSerializable(QuestionDisplay.QUESTION_EXPERIMENT,

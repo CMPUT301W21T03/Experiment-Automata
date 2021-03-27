@@ -45,4 +45,14 @@ public class MeasurementTrial extends Trial {
     public String getType() {
         return "Measurement";
     }
+
+    /**
+     * sets the result so something
+     * @param result
+     *  the result we want to set
+     */
+    public void setResult(float result)
+    {
+        this.result = result;
+    }
 }

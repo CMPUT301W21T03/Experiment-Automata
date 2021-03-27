@@ -2,6 +2,7 @@ package com.example.experiment_automata.ui;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -46,6 +47,8 @@ import com.example.experiment_automata.backend.trials.CountTrial;
 import com.example.experiment_automata.backend.trials.MeasurementTrial;
 import com.example.experiment_automata.backend.trials.NaturalCountTrial;
 import com.example.experiment_automata.ui.home.HomeFragment;
+import com.example.experiment_automata.ui.trials.MapDisplay.MapUtility;
+import com.example.experiment_automata.ui.trials.add.AddNaturalCountTrialFragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -61,6 +64,8 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import org.osmdroid.views.MapView;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -89,14 +94,16 @@ public class NavigationActivity extends AppCompatActivity implements
     public Fragment currentFragment;
     public User loggedUser;
     public Experiment currentExperiment;
-    private Trial currentTrial;
+    public Trial currentTrial;
 
     // Location and Map Flags and Request Codes
     public static final int PERMISSON_REQUEST_CODE = 10;
     private boolean canMakeLocationTrials = false;
     private FusedLocationProviderClient fusedLocationProviderClient;
     public Location currentLocation;
-    ArrayList<Trial> trials = new ArrayList<>();
+    private ArrayList<Trial> trials = new ArrayList<>();
+    public Activity currentActivity;
+    public FloatingActionButton addExperimentButton;
 
     /**
      * Method called when creating NavigationActivity
@@ -107,6 +114,7 @@ public class NavigationActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestLocationResourcePermissions();
+        currentActivity = this;
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         SharedPreferences preferences = getSharedPreferences("experiment_automata", MODE_PRIVATE);
         loggedUser = new User(preferences);
@@ -124,7 +132,7 @@ public class NavigationActivity extends AppCompatActivity implements
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-        FloatingActionButton addExperimentButton = findViewById(R.id.fab_button);
+        addExperimentButton = findViewById(R.id.fab_button);
         addExperimentButton.setOnClickListener(new View.OnClickListener() {
             /**
              * Deal with the FAB when clicked
@@ -163,10 +171,13 @@ public class NavigationActivity extends AppCompatActivity implements
                                    // Something (Might no longer be needed)
                                     break;
                                 case NaturalCount:
-                                    // Something Needs work
+                                    EditText naturalCountInput = (EditText) findViewById(R.id.add_natural_count_value);
+                                    final int naturalCount = Integer.parseInt(naturalCountInput.getText().toString());
+                                    ((NaturalCountTrial)currentTrial).setResult(naturalCount);
+                                    currentTrial = null;
                                     break;
                                 case Binomial:
-                                    // Something
+                                    // // Something (Might no longer be needed)
                                     break;
                                 case Measurement:
                                     MeasurementExperiment measurementExperiment = (MeasurementExperiment) experiment;
@@ -406,7 +417,6 @@ public class NavigationActivity extends AppCompatActivity implements
             experiment.recordTrial(trial);
         }
         trials.add(trial);
-        currentTrial = null;
     }
 
 

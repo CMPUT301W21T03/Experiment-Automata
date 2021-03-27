@@ -7,11 +7,19 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.experiment_automata.backend.experiments.NaturalCountExperiment;
+import com.example.experiment_automata.backend.trials.NaturalCountTrial;
 import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.R;
+import com.example.experiment_automata.ui.trials.MapDisplay.MapUtility;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.osmdroid.views.MapView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +27,10 @@ import com.example.experiment_automata.R;
  * create an instance of this fragment.
  */
 public class AddNaturalCountTrialFragment extends Fragment {
+
+    private MapView currentMapDisplay;
+    private MapUtility utility;
+
     public AddNaturalCountTrialFragment() {
         // Required empty public constructor
     }
@@ -37,6 +49,13 @@ public class AddNaturalCountTrialFragment extends Fragment {
         NavigationActivity parentActivity = ((NavigationActivity) getActivity());
         NaturalCountExperiment experiment = (NaturalCountExperiment) parentActivity.experimentManager.getCurrentExperiment();
         description.setText(experiment.getDescription());
+        currentMapDisplay = root.findViewById(R.id.natural_count_trial_experiment_map_view);
+
+        parentActivity.currentTrial = new NaturalCountTrial(parentActivity.loggedUser.getUserId(), 0);
+        utility = new MapUtility(experiment, currentMapDisplay, getContext(), parentActivity, parentActivity.currentTrial);
+        utility.mapSupport();
+
         return root;
     }
+
 }

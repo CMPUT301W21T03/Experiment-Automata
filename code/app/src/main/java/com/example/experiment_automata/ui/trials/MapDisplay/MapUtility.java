@@ -2,6 +2,7 @@ package com.example.experiment_automata.ui.trials.MapDisplay;
 
 import android.content.Context;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -72,10 +73,14 @@ public class MapUtility
             MapEventsReceiver mapEventsReceiver = new MapEventsReceiver() {
                 @Override
                 public boolean singleTapConfirmedHelper(GeoPoint p) {
-                    display.invalidate();
-                    trial.getLocation().setLongitude(p.getLongitude());
-                    trial.getLocation().setLatitude(p.getLatitude());
-                    marker.setPosition(new GeoPoint(trial.getLocation()));
+                    boolean boundingBoxLatiCheck = p.getLatitude() > -85.05112877980658 && p.getLatitude() <  85.05112877980658;
+                    boolean boundingBoxLongiCheck = p.getLongitude() > -180.0 && p.getLongitude() < 180.0;
+                    if(boundingBoxLatiCheck && boundingBoxLongiCheck) {
+                        display.invalidate();
+                        trial.getLocation().setLongitude(p.getLongitude());
+                        trial.getLocation().setLatitude(p.getLatitude());
+                        marker.setPosition(new GeoPoint(trial.getLocation()));
+                    }
                     return false;
                 }
 

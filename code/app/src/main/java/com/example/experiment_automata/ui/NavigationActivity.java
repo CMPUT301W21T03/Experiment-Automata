@@ -215,7 +215,6 @@ public class NavigationActivity extends AppCompatActivity implements
                 Bundle bundle = new Bundle();
                 bundle.putString("query", query);
                 navController.navigate(R.id.nav_search, bundle);
-                searchView.setQuery("", false);
                 return false;
             }
 

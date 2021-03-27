@@ -89,10 +89,21 @@ public class User implements Serializable {
      * Update the user information in the Firestore
      */
     protected void updateFirestore() {
-        Map<String, String> userInfo = new HashMap<String, String>();
+        // convert collection of UUIDs to collection of Strings
+        Collection<String> owned = new ArrayList<>();
+        for (UUID experimentId : this.ownedExperiments) {
+            owned.add(experimentId.toString());
+        }
+        Collection<String> subscriptions = new ArrayList<>();
+        for (UUID experimentId : this.subscribedExperiments) {
+            subscriptions.add(experimentId.toString());
+        }
+        Map<String, Object> userInfo = new HashMap<>();
         userInfo.put("name", this.info.getName());
         userInfo.put("email", this.info.getEmail());
         userInfo.put("phone", this.info.getPhone());
+        userInfo.put("owned", owned);
+        userInfo.put("subscriptions", subscriptions);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("users").document(this.userId.toString())
@@ -152,7 +163,8 @@ public class User implements Serializable {
     public void addExperiment(UUID experimentId) { ownedExperiments.add(experimentId); }
 
     /**
-     * Adds/removes the experiment reference to the subscribed experiments
+     * Adds/removes the experiment reference to the subscribed experiments.
+     * Also updates the firestore.
      * If already subscribed, unsubscribes
      * If not subscribed, subscribes
      * @param experimentId
@@ -164,5 +176,6 @@ public class User implements Serializable {
         } else {
             subscribedExperiments.add(experimentId);
         }
+        updateFirestore();
     }
 }

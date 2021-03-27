@@ -11,6 +11,9 @@ import java.util.UUID;
  *      1. None
  */
 public class QRMaker {
+    public QRMaker(){
+
+    }
     /**
      * Decodes a raw string that has been scanned from a custom QR code
      * @param rawContent
@@ -18,17 +21,18 @@ public class QRMaker {
      * @return
      * returns a QRCode
      */
-    public QRCode decodeQRString(String rawContent){
+    public QRCode decodeQRString(String rawContent) throws QRMalformattedException {
         if (!checkQRHeader(rawContent)){
             //not valid raise exception
+            throw new QRMalformattedException("IncorrectHeader");
         }
         //mask uuid
         UUID experimentUUID;
-        experimentUUID = UUID.fromString(rawContent.substring(4, 41));
+        experimentUUID = UUID.fromString(rawContent.substring(4, 40));
         //Build based on type
         String typeSpecifier;
-        typeSpecifier = rawContent.substring(41,42);
-        String content = rawContent.substring(42);
+        typeSpecifier = rawContent.substring(40,41);
+        String content = rawContent.substring(41);
         QRCode qrCode;
         switch (typeSpecifier){
             case QRCode.EXPERIMENT_ONLY_ID:

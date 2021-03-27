@@ -160,25 +160,13 @@ public class NavigationActivity extends AppCompatActivity implements
                         try {
                             switch (experiment.getType()) {
                                 case Count:
-                                   // CountExperiment countExperiment = (CountExperiment) experiment;
-                                    //currentTrial = new CountTrial(loggedUser.getUserId());
-                                    //addTrial(countExperiment, currentTrial);
+                                   // Something (Might no longer be needed)
                                     break;
                                 case NaturalCount:
-                                    NaturalCountExperiment naturalCountExperiment = (NaturalCountExperiment) experiment;
-                                    // get value
-                                    EditText naturalCountInput = (EditText) findViewById(R.id.add_natural_count_value);
-                                    final int naturalCount = Integer.parseInt(naturalCountInput.getText().toString());
-                                    currentTrial = new NaturalCountTrial(loggedUser.getUserId(), naturalCount);
-                                    addTrial(naturalCountExperiment, currentTrial);
+                                    // Something Needs work
                                     break;
                                 case Binomial:
-                                    BinomialExperiment binomialExperiment = (BinomialExperiment) experiment;
-                                    // get value
-                                    CheckBox passedInput = (CheckBox) findViewById(R.id.add_binomial_value);
-                                    final boolean passed = passedInput.isChecked();
-                                    currentTrial = new BinomialTrial(loggedUser.getUserId(), passed);
-                                    addTrial(binomialExperiment, currentTrial);
+                                    // Something
                                     break;
                                 case Measurement:
                                     MeasurementExperiment measurementExperiment = (MeasurementExperiment) experiment;

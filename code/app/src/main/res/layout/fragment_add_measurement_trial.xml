@@ -34,13 +34,13 @@
     <LinearLayout
         android:id="@+id/linearLayout4"
         android:layout_width="400dp"
-        android:layout_height="557dp"
-        android:layout_marginBottom="16dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="41dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_measurement_value">
+        app:layout_constraintTop_toBottomOf="@+id/add_measurment_trial_revert_loc_bttn">
 
         <org.osmdroid.views.MapView
             android:id="@+id/measurement_trial_experiment_map_view"
@@ -48,5 +48,18 @@
             android:layout_height="match_parent" />
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/add_measurment_trial_revert_loc_bttn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="85dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="#FFFFFF"
+        android:text="@string/add_location_dialog_default_btn"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

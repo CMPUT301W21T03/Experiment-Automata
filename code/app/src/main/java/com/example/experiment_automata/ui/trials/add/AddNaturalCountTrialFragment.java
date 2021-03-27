@@ -7,17 +7,13 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.experiment_automata.backend.experiments.NaturalCountExperiment;
 import com.example.experiment_automata.backend.trials.NaturalCountTrial;
 import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.ui.trials.MapDisplay.MapUtility;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.osmdroid.views.MapView;
 
@@ -53,6 +49,7 @@ public class AddNaturalCountTrialFragment extends Fragment {
 
         parentActivity.currentTrial = new NaturalCountTrial(parentActivity.loggedUser.getUserId(), 0);
         utility = new MapUtility(experiment, currentMapDisplay, getContext(), parentActivity, parentActivity.currentTrial);
+        utility.setRevertBack(root.findViewById(R.id.add_natural_trial_revert_loc_bttn));
         utility.mapSupport();
 
         return root;

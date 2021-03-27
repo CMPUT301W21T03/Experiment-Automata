@@ -8,12 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.experiment_automata.backend.experiments.BinomialExperiment;
 import com.example.experiment_automata.backend.trials.BinomialTrial;
-import com.example.experiment_automata.backend.trials.NaturalCountTrial;
 import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.ui.trials.MapDisplay.MapUtility;
@@ -57,6 +55,7 @@ public class AddBinomialTrialFragment extends Fragment {
         BinomialTrial binomialTrial = new BinomialTrial(parentActivity.loggedUser.getUserId(), passed);
 
         utility = new MapUtility(experiment, currentMapDisplay, getContext(), parentActivity, binomialTrial);
+        utility.setRevertBack(root.findViewById(R.id.add_binomial_trial_revert_loc_bttn));
         utility.mapSupport();
 
         return root;

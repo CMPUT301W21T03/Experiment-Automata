@@ -93,7 +93,6 @@ public class NavigationActivity extends AppCompatActivity implements
     private Screen currentScreen;
     public Fragment currentFragment;
     public User loggedUser;
-    public Experiment currentExperiment;
     public Trial currentTrial;
 
     // Location and Map Flags and Request Codes

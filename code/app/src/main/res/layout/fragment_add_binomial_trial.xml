@@ -12,10 +12,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
         android:text="@string/description"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,6 +30,7 @@
         app:layout_constraintTop_toBottomOf="@+id/binomial_trial_experiment_description" />
 
     <LinearLayout
+        android:id="@+id/linearLayout5"
         android:layout_width="402dp"
         android:layout_height="604dp"
         android:layout_marginTop="64dp"
@@ -48,6 +47,16 @@
             android:layout_height="match_parent" />
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/add_binomial_trial_revert_loc_bttn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#FFFFFF"
+        android:text="@string/add_location_dialog_default_btn"
+        android:textColor="#000000"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout5" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

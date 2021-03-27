@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.example.experiment_automata.backend.experiments.MeasurementExperiment;
 import com.example.experiment_automata.backend.trials.MeasurementTrial;
-import com.example.experiment_automata.backend.trials.NaturalCountTrial;
 import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.ui.trials.MapDisplay.MapUtility;
@@ -50,6 +49,7 @@ public class AddMeasurementTrialFragment extends Fragment {
 
         parentActivity.currentTrial = new MeasurementTrial(parentActivity.loggedUser.getUserId(), 0);
         utility = new MapUtility(experiment, currentMapDisplay, getContext(), parentActivity, parentActivity.currentTrial);
+        utility.setRevertBack(root.findViewById(R.id.add_measurment_trial_revert_loc_bttn));
         utility.mapSupport();
         return root;
     }

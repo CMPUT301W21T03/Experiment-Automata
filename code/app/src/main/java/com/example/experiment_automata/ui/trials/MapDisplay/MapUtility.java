@@ -3,6 +3,7 @@ package com.example.experiment_automata.ui.trials.MapDisplay;
 import android.content.Context;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.experiment_automata.backend.experiments.Experiment;
@@ -40,6 +41,7 @@ public class MapUtility
     private Context context;
     private Marker marker;
     private NavigationActivity parentActivity;
+    private Button revertBack;
 
     public MapUtility(Experiment experiment,
                       MapView display,
@@ -55,13 +57,16 @@ public class MapUtility
         marker = new Marker(this.display);
     }
 
+    public void setRevertBack(Button revertBack)
+    {
+        this.revertBack = revertBack;
+    }
 
     /**
      * Set up the map such it moves a marker around where the user clicks.
      * Where the user clicks is the location of that trial.
      *
-     * TODO: Add revert to old button
-     */
+     * */
     public void mapSupport()
     {
         setupMap();
@@ -80,6 +85,23 @@ public class MapUtility
             marker.setSubDescription("This location is what is saved into the trial!");
 
             parentActivity.addLocationToTrial(trial);
+            GeoPoint oldLocation = new GeoPoint(trial.getLocation());
+
+            if(revertBack != null)
+            {
+                revertBack.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        // Maybe make into function -> Violating dry a bit :p
+                        marker.setPosition(oldLocation);
+                        trial.getLocation().setLongitude(oldLocation.getLongitude());
+                        trial.getLocation().setLatitude(oldLocation.getLatitude());
+                        display.invalidate();
+                    }
+                });
+            }
+
             marker.setPosition(new GeoPoint(trial.getLocation()));
 
             /**

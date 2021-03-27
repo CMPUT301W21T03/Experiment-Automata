@@ -147,6 +147,22 @@ public class User implements Serializable {
     /**
      * Add the experiment reference to the owned experiments
      * @param experimentId
+     *  the UUID of the experiment
      */
     public void addExperiment(UUID experimentId) { ownedExperiments.add(experimentId); }
+
+    /**
+     * Adds/removes the experiment reference to the subscribed experiments
+     * If already subscribed, unsubscribes
+     * If not subscribed, subscribes
+     * @param experimentId
+     *  the UUID of the experiment
+     */
+    public void subscribeExperiment(UUID experimentId) {
+        if (subscribedExperiments.contains(experimentId)) {
+            subscribedExperiments.remove(experimentId);
+        } else {
+            subscribedExperiments.add(experimentId);
+        }
+    }
 }

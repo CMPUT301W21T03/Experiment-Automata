@@ -1,13 +1,11 @@
 package com.example.experiment_automata.ui.trials.MapDisplay;
 
-import android.app.Activity;
 import android.content.Context;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.experiment_automata.backend.experiments.Experiment;
-import com.example.experiment_automata.backend.trials.CountTrial;
 import com.example.experiment_automata.backend.trials.Trial;
 import com.example.experiment_automata.ui.NavigationActivity;
 

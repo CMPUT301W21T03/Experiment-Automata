@@ -180,12 +180,10 @@ public class NavigationActivity extends AppCompatActivity implements
                                     // // Something (Might no longer be needed)
                                     break;
                                 case Measurement:
-                                    MeasurementExperiment measurementExperiment = (MeasurementExperiment) experiment;
-                                    // get value
                                     EditText measurementInput = (EditText) findViewById(R.id.add_measurement_value);
                                     final float measurement = Float.parseFloat(measurementInput.getText().toString());
-                                    currentTrial = new MeasurementTrial(loggedUser.getUserId(), measurement);
-                                    addTrial(measurementExperiment, currentTrial);
+                                    ((MeasurementTrial)currentTrial).setResult(measurement);
+                                    currentTrial = null;
                                     break;
                             }
                             currentScreen = Screen.ExperimentDetails;
@@ -200,7 +198,7 @@ public class NavigationActivity extends AppCompatActivity implements
                         break;
 
                     case MAP:
-                        //
+                        //// // Something (Might no longer be needed)
                         break;
                 }
             }

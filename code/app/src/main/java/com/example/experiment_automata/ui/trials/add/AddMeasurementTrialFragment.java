@@ -10,8 +10,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.experiment_automata.backend.experiments.MeasurementExperiment;
+import com.example.experiment_automata.backend.trials.MeasurementTrial;
+import com.example.experiment_automata.backend.trials.NaturalCountTrial;
 import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.R;
+import com.example.experiment_automata.ui.trials.MapDisplay.MapUtility;
+
+import org.osmdroid.views.MapView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +24,10 @@ import com.example.experiment_automata.R;
  * create an instance of this fragment.
  */
 public class AddMeasurementTrialFragment extends Fragment {
+
+    private MapView currentMapDisplay;
+    private MapUtility utility;
+
     public AddMeasurementTrialFragment() {
         // Required empty public constructor
     }
@@ -37,6 +46,11 @@ public class AddMeasurementTrialFragment extends Fragment {
         NavigationActivity parentActivity = ((NavigationActivity) getActivity());
         MeasurementExperiment experiment = (MeasurementExperiment) parentActivity.experimentManager.getCurrentExperiment();
         description.setText(experiment.getDescription());
+        currentMapDisplay = root.findViewById(R.id.measurement_trial_experiment_map_view);
+
+        parentActivity.currentTrial = new MeasurementTrial(parentActivity.loggedUser.getUserId(), 0);
+        utility = new MapUtility(experiment, currentMapDisplay, getContext(), parentActivity, parentActivity.currentTrial);
+        utility.mapSupport();
         return root;
     }
 }

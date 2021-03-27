@@ -2,7 +2,6 @@ package com.example.experiment_automata.ui.trials.MapDisplay;
 
 import android.content.Context;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -19,8 +18,22 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
 
+/**
+ * Role/Pattern:
+ *     Deals with map information when displaying and adding trial locations
+ *
+ *  Known Issue:
+ *
+ *      1. None
+ */
 public class MapUtility
 {
+    private static final double MIN_BOUND_SIZE_LAT = -85.05112877980658;
+    private static final double MAX_BOUND_SIZE_LAT = 85.05112877980658;
+    private static final double MIN_BOUND_SIZE_LONG = -180.0;
+    private static final double MAX_BOUND_SIZE_LONG = 180.0;
+
+
     private Experiment experiment;
     private Trial trial;
     private MapView display;
@@ -42,6 +55,13 @@ public class MapUtility
         marker = new Marker(this.display);
     }
 
+
+    /**
+     * Set up the map such it moves a marker around where the user clicks.
+     * Where the user clicks is the location of that trial.
+     *
+     * TODO: Add revert to old button
+     */
     public void mapSupport()
     {
         setupMap();
@@ -73,8 +93,8 @@ public class MapUtility
             MapEventsReceiver mapEventsReceiver = new MapEventsReceiver() {
                 @Override
                 public boolean singleTapConfirmedHelper(GeoPoint p) {
-                    boolean boundingBoxLatiCheck = p.getLatitude() > -85.05112877980658 && p.getLatitude() <  85.05112877980658;
-                    boolean boundingBoxLongiCheck = p.getLongitude() > -180.0 && p.getLongitude() < 180.0;
+                    boolean boundingBoxLatiCheck = p.getLatitude() > MIN_BOUND_SIZE_LAT && p.getLatitude() < MAX_BOUND_SIZE_LAT;
+                    boolean boundingBoxLongiCheck = p.getLongitude() > MIN_BOUND_SIZE_LONG && p.getLongitude() < MAX_BOUND_SIZE_LONG;
                     if(boundingBoxLatiCheck && boundingBoxLongiCheck) {
                         display.invalidate();
                         trial.getLocation().setLongitude(p.getLongitude());
@@ -101,6 +121,9 @@ public class MapUtility
         parentActivity.addTrial(experiment, trial);
     }
 
+    /**
+     * Initializes all the needed items for the map to be displayed and viewed
+     */
     private void setupMap()
     {
         Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(context));

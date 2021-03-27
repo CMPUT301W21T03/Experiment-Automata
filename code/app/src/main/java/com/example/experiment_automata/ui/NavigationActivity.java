@@ -96,7 +96,7 @@ public class NavigationActivity extends AppCompatActivity implements
     public static final int LOCATION_PERMISSION_REQUEST = 10;
     private boolean canMakeLocationTrials = false;
     private FusedLocationProviderClient fusedLocationProviderClient;
-    private Location currentLocation;
+    public Location currentLocation;
     ArrayList<Trial> trials = new ArrayList<>();
 
     /**

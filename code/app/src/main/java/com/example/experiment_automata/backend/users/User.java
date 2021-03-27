@@ -126,7 +126,9 @@ public class User implements Serializable {
         String email = document.get("email").toString();
         String phone = document.get("phone").toString();
         Collection<String> ownedExperiments = (List<String>) document.get("owned");
+        if (ownedExperiments == null) ownedExperiments = new ArrayList<>();
         Collection<String> subscribedExperiments = (List<String>) document.get("subscriptions");
+        if (subscribedExperiments == null) subscribedExperiments = new ArrayList<>();
         // Convert Collection of String to Collection of UUIDs
         this.ownedExperiments = new ArrayList<>();
         for (String experimentId : ownedExperiments) {

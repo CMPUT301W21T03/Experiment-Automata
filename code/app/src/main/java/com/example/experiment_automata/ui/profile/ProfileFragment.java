@@ -72,14 +72,18 @@ public class ProfileFragment extends Fragment {
         profileViewModel.getName().observe(getViewLifecycleOwner(), nameView::setText);
         profileViewModel.getEmail().observe(getViewLifecycleOwner(), emailView::setText);
         profileViewModel.getPhone().observe(getViewLifecycleOwner(), phoneView::setText);
-        editButton.setOnClickListener(v -> {
-            Fragment editUserFragment = new EditUserFragment();
-            Bundle bundle = new Bundle();
-            bundle.putSerializable(EditUserFragment.bundleUserKey, user);
-            editUserFragment.setArguments(bundle);
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .add(editUserFragment, "USER").commit();
-        });
+        if (parentActivity.loggedUser == user) {
+            editButton.setOnClickListener(v -> {
+                Fragment editUserFragment = new EditUserFragment();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(EditUserFragment.bundleUserKey, user);
+                editUserFragment.setArguments(bundle);
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .add(editUserFragment, "USER").commit();
+            });
+        } else {
+            editButton.setVisibility(View.GONE);
+        }
         fab = parentActivity.findViewById(R.id.fab_button);
         fab.setVisibility(View.GONE);
         return root;

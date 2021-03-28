@@ -77,8 +77,10 @@ public class MapUtility
          * Date of Publication: Unknown
          * Full Link: https://github.com/osmdroid/osmdroid
          */
-        if(!experiment.isRequireLocation())
+        if(!experiment.isRequireLocation()) {
             display.setVisibility(View.GONE);
+            revertBack.setVisibility(View.GONE);
+        }
         else {
             setupMap();
             marker.setTitle("Recorded Location");

@@ -438,6 +438,8 @@ public class NavigationActivity extends AppCompatActivity implements
     public void addLocationToTrial(Trial currentTrial) {
         if(canMakeLocationTrials)
         {
+
+            //TODO: Place location warning dialog here -- Display only once?
             LocationManager locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
             LocationListener locationListener = new com.example.experiment_automata.backend.Location.LocationServices();
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 1, locationListener);

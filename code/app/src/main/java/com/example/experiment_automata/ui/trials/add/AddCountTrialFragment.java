@@ -48,9 +48,8 @@ public class AddCountTrialFragment extends Fragment {
         description.setText(currentExperiment.getDescription());
         currentMapDisplay = root.findViewById(R.id.count_trial_map_view);
 
-
-        CountTrial trial = new CountTrial(parentActivity.loggedUser.getUserId());
-        utility = new MapUtility(currentExperiment, currentMapDisplay, getContext(), parentActivity, trial);
+        parentActivity.currentTrial = new CountTrial(parentActivity.loggedUser.getUserId());
+        utility = new MapUtility(currentExperiment, currentMapDisplay, getContext(), parentActivity, parentActivity.currentTrial);
         utility.setRevertBack(root.findViewById(R.id.add_count_trial_revert_loc_bttn));
         utility.mapSupport();
 

@@ -1,11 +1,18 @@
 package com.example.experiment_automata.ui.trials.MapDisplay;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+
+import com.example.experiment_automata.R;
 import com.example.experiment_automata.backend.experiments.Experiment;
 import com.example.experiment_automata.backend.trials.Trial;
 import com.example.experiment_automata.ui.NavigationActivity;
@@ -42,6 +49,7 @@ public class MapUtility
     private Marker marker;
     private NavigationActivity parentActivity;
     private Button revertBack;
+
 
     public MapUtility(Experiment experiment,
                       MapView display,
@@ -87,6 +95,55 @@ public class MapUtility
             marker.setSubDescription("This location is what is saved into the trial!");
 
             parentActivity.addLocationToTrial(trial);
+
+            if(trial.getLocation() == null){
+                // Ends the function
+                AlertDialog myDialog = new AlertDialog.Builder(context).create();
+
+                myDialog.setTitle("Location not enabled");
+
+                myDialog.setMessage("Please enable location on your device to add a new trial");
+
+                myDialog.show();
+
+                NavController navController = Navigation.findNavController(parentActivity, R.id.nav_host_fragment);
+
+                navController.popBackStack();
+                return;
+            }
+
+            // Used the following source from the documentation for help with using AlertDialog
+            // URL: https://developer.android.com/guide/topics/ui/dialogs
+            // Author: Google LLC
+            // Date: 2019-12-27
+            // License: Apache 2.0
+
+            // TODO: Change this location warning count to be a button that says (do not show again)
+            if(parentActivity.locationWarningCount<5) {
+                // Warns the user that their location is being used
+                AlertDialog.Builder myDialog = new AlertDialog.Builder(context)
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                parentActivity.locationWarningCount ++;
+                            }
+                        })
+                        .setNegativeButton("Refuse", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                trial.setLocation(null);
+
+                                NavController navController = Navigation.findNavController(parentActivity, R.id.nav_host_fragment);
+                                navController.popBackStack();
+                            }
+                        });
+
+                myDialog.setTitle("Warning");
+
+                myDialog.setMessage("Your location is being used. Please click OK to use location");
+
+                myDialog.create();
+
+                myDialog.show();
+            }
             GeoPoint oldLocation = new GeoPoint(trial.getLocation());
 
             if(revertBack != null)
@@ -141,8 +198,6 @@ public class MapUtility
             display.getOverlays().add(mapEventsOverlay);
             display.getOverlays().add(marker);
         }
-
-        parentActivity.addTrial(experiment, trial);
     }
 
     /**

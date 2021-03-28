@@ -3,8 +3,10 @@ package com.example.experiment_automata.ui;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -95,6 +97,8 @@ public class NavigationActivity extends AppCompatActivity implements
     public User loggedUser;
     public Trial currentTrial;
 
+    public int locationWarningCount;
+
     // Location and Map Flags and Request Codes
     public static final int PERMISSON_REQUEST_CODE = 10;
     private boolean canMakeLocationTrials = false;
@@ -113,6 +117,7 @@ public class NavigationActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestLocationResourcePermissions();
+        locationWarningCount = 0;
         currentActivity = this;
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         SharedPreferences preferences = getSharedPreferences("experiment_automata", MODE_PRIVATE);
@@ -167,24 +172,28 @@ public class NavigationActivity extends AppCompatActivity implements
                         try {
                             switch (experiment.getType()) {
                                 case Count:
-                                   // Something (Might no longer be needed)
+                                    addTrial(experiment, currentTrial);
+                                    currentTrial = null;
                                     break;
                                 case NaturalCount:
                                     EditText naturalCountInput = (EditText) findViewById(R.id.add_natural_count_value);
                                     final int naturalCount = Integer.parseInt(naturalCountInput.getText().toString());
                                     ((NaturalCountTrial)currentTrial).setResult(naturalCount);
+                                    addTrial(experiment, currentTrial);
                                     currentTrial = null;
                                     break;
                                 case Binomial:
                                     CheckBox passedInput = findViewById(R.id.add_binomial_value);
                                     final boolean passed = passedInput.isChecked();
                                     ((BinomialTrial)currentTrial).setResult(passed);
+                                    addTrial(experiment, currentTrial);
                                     currentTrial = null;
                                     break;
                                 case Measurement:
                                     EditText measurementInput = (EditText) findViewById(R.id.add_measurement_value);
                                     final float measurement = Float.parseFloat(measurementInput.getText().toString());
                                     ((MeasurementTrial)currentTrial).setResult(measurement);
+                                    addTrial(experiment, currentTrial);
                                     currentTrial = null;
                                     break;
                             }
@@ -402,9 +411,7 @@ public class NavigationActivity extends AppCompatActivity implements
     {
         if (experiment.isRequireLocation())
         {
-            //TODO: Make dialog or warning about this trail needed location details
-            addLocationToTrial(trial);
-            if(trial.getLocation() != null) {
+            if(trial.getLocation() != null ) {
                 experiment.recordTrial(trial);
             }
             else {

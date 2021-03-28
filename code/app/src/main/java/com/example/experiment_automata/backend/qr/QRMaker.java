@@ -67,6 +67,7 @@ public class QRMaker {
         }
         return qrCode;
     }
+
     /**
      * Checks a string for the custom Automata QR identifier
      * @param qrString

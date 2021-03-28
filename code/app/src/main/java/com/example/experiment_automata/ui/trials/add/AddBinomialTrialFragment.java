@@ -22,6 +22,7 @@ import com.example.experiment_automata.ui.qr.ScannerActivity;
  */
 public class AddBinomialTrialFragment extends Fragment {
     private ImageButton scanQRButton;
+    private ImageButton viewQRButton;
     public AddBinomialTrialFragment() {
         // Required empty public constructor
     }
@@ -46,6 +47,14 @@ public class AddBinomialTrialFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ScannerActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        viewQRButton = root.findViewById(R.id.binomial_trial_experiment_description_qr_generate_button);
+        viewQRButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // add content when done
             }
         });
         return root;

@@ -45,6 +45,7 @@ public class ViewQRFragment extends DialogFragment {
         backButton = view.findViewById(R.id.qr_code_back_button);
         qrImageView = view.findViewById(R.id.qr_code_imageView);
         qrValue = view.findViewById(R.id.qr_value_textView);
+        QRCode qrCode;
         // = new QRCodeManager();
 
         Bundle bundle = getArguments();

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -12,8 +13,10 @@ import androidx.fragment.app.Fragment;
 
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.backend.experiments.BinomialExperiment;
+import com.example.experiment_automata.backend.qr.QRType;
 import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.ui.qr.ScannerActivity;
+import com.example.experiment_automata.ui.qr.ViewQRFragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +26,7 @@ import com.example.experiment_automata.ui.qr.ScannerActivity;
 public class AddBinomialTrialFragment extends Fragment {
     private ImageButton scanQRButton;
     private ImageButton viewQRButton;
+    private CheckBox checkBox;
     public AddBinomialTrialFragment() {
         // Required empty public constructor
     }
@@ -39,6 +43,7 @@ public class AddBinomialTrialFragment extends Fragment {
         NavigationActivity parentActivity = ((NavigationActivity) getActivity());
         BinomialExperiment experiment = (BinomialExperiment) parentActivity.experimentManager.getCurrentExperiment();
         description.setText(experiment.getDescription());
+        checkBox = root.findViewById(R.id.add_binomial_value);//add_binomial_value
 
         scanQRButton = root.findViewById(R.id.binomial_trial_experiment_description_qr_button);
         scanQRButton.setOnClickListener(new View.OnClickListener(){
@@ -55,6 +60,14 @@ public class AddBinomialTrialFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // add content when done
+                Fragment viewQRFragment = new ViewQRFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("UUID", experiment.getExperimentId().toString());
+                bundle.putString("DESCRIPTION",experiment.getDescription());
+                bundle.putString("TYPE", QRType.BinomialTrial.toString());
+                bundle.putBoolean("BINVAL", checkBox.isChecked());//TEMP VALUE
+                viewQRFragment.setArguments(bundle);
+                getActivity().getSupportFragmentManager().beginTransaction().add(viewQRFragment,"QR").commit();
             }
         });
         return root;

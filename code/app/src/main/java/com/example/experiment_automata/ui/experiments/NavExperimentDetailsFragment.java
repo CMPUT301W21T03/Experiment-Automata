@@ -13,6 +13,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.experiment_automata.backend.experiments.Experiment;
+import com.example.experiment_automata.backend.qr.QRType;
 import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.ui.qr.ViewQRFragment;
 import com.example.experiment_automata.ui.question.QuestionDisplay;
@@ -156,10 +157,10 @@ public class NavExperimentDetailsFragment extends Fragment {
 
             Fragment viewQRFragment = new ViewQRFragment();
             Bundle bundle = new Bundle();
-            bundle.putString("UUID",CURRENT_EXPERIMENT_ID);
+            bundle.putString("UUID",UUID.randomUUID().toString());
             bundle.putString("DESCRIPTION",current.getDescription());
+            bundle.putString("TYPE", QRType.Experiment.toString());
             viewQRFragment.setArguments(bundle);
-            //getActivity().getSupportFragmentManager().beginTransaction().show(viewQRFragment);
             getActivity().getSupportFragmentManager().beginTransaction().add(viewQRFragment,"QR").commit();
         });
         return root;

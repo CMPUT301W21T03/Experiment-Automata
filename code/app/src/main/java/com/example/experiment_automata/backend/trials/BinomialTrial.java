@@ -43,4 +43,14 @@ public class BinomialTrial extends Trial {
     public String getType() {
         return "Binomial";
     }
+
+    /**
+     * sets the the result to a specified value
+     *
+     * @param result the new result that will be made
+     */
+    public void setResult(boolean result)
+    {
+        this.result = result;
+    }
 }

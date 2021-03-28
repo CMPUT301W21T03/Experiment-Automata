@@ -49,12 +49,8 @@ public class AddBinomialTrialFragment extends Fragment {
         description.setText(experiment.getDescription());
         currentMapDisplay = root.findViewById(R.id.add_binomial_trial_map_view);
 
-        // get value
-        CheckBox passedInput = root.findViewById(R.id.add_binomial_value);
-        final boolean passed = passedInput.isChecked();
-        BinomialTrial binomialTrial = new BinomialTrial(parentActivity.loggedUser.getUserId(), passed);
-
-        utility = new MapUtility(experiment, currentMapDisplay, getContext(), parentActivity, binomialTrial);
+        parentActivity.currentTrial = new BinomialTrial(parentActivity.loggedUser.getUserId(), false);
+        utility = new MapUtility(experiment, currentMapDisplay, getContext(), parentActivity, parentActivity.currentTrial);
         utility.setRevertBack(root.findViewById(R.id.add_binomial_trial_revert_loc_bttn));
         utility.mapSupport();
 

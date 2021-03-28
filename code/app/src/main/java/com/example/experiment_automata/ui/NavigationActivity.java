@@ -176,7 +176,10 @@ public class NavigationActivity extends AppCompatActivity implements
                                     currentTrial = null;
                                     break;
                                 case Binomial:
-                                    // // Something (Might no longer be needed)
+                                    CheckBox passedInput = findViewById(R.id.add_binomial_value);
+                                    final boolean passed = passedInput.isChecked();
+                                    ((BinomialTrial)currentTrial).setResult(passed);
+                                    currentTrial = null;
                                     break;
                                 case Measurement:
                                     EditText measurementInput = (EditText) findViewById(R.id.add_measurement_value);

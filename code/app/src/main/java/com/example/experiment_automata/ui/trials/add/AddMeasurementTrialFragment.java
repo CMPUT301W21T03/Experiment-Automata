@@ -93,7 +93,7 @@ public class AddMeasurementTrialFragment extends Fragment {
         QRCode qrCode;
         try{
             qrCode =qrMaker.decodeQRString(rawQRContent);
-            if (qrCode.getType() == QRType.BinomialTrial){
+            if (qrCode.getType() == QRType.MeasurementTrial){
                 measurementValue.setText(String.valueOf(((MeasurementQRCode)qrCode).getValue()));
                 Log.d("SCANNER","Scanned QR Successfully!");
                 Snackbar.make(root,"Scanned QR Successfully!",Snackbar.LENGTH_LONG).show();

@@ -55,12 +55,10 @@ public class QRMaker {
                 qrCode = new CountQRCode(experimentUUID);
                 break;
             case QRCode.MEASUREMENT_ID:
-                String resultM = rawContent.substring(43);
-                qrCode = new MeasurementQRCode(experimentUUID,Float.parseFloat(resultM));
+                qrCode = new MeasurementQRCode(experimentUUID,Float.parseFloat(content));
                 break;
             case QRCode.NATURALC_ID:
-                String resultN = rawContent.substring(43);
-                qrCode = new NaturalQRCode(experimentUUID, Integer.parseInt(resultN));
+                qrCode = new NaturalQRCode(experimentUUID, Integer.parseInt(content));
                 break;
             default://incorrect type specifier
                 qrCode = null;

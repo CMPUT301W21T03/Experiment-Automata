@@ -208,7 +208,6 @@ public class NavExperimentDetailsFragment extends Fragment {
         if (experimentStringId != null) {
             update(experimentStringId);
         }
-        return root;
     }
 
     /**

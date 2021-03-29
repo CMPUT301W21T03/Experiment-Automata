@@ -10,8 +10,11 @@ class User {
     -controller: SearchController
     -ownedExperiments: Collection<Experiment>
     -participatingExperiments: Collection<Experiment>
+    #updateFirestore()
+    #updateFromFirestore()
     +addGeoLocation(exp: Experiment): Location
     +seeGeoLocation(experiments: Collection<Experiment>): Map
+    +subscribeExperiment(experimentId: UUID)
 }
 
 

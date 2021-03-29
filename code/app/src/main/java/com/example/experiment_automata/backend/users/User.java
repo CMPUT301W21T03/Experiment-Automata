@@ -15,6 +15,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -49,6 +50,7 @@ public class User implements Serializable {
         this.info = new ContactInformation(preferences);
         this.ownedExperiments = new ArrayList<>();
         this.subscribedExperiments = new ArrayList<>();
+        updateFromFirestore();
         updateFirestore();
     }
 
@@ -58,20 +60,8 @@ public class User implements Serializable {
      *  The id of the user to get the firestore document
      */
     private User(UUID id) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference documentReference = db.collection("users").document(id.toString());
-        Task<DocumentSnapshot> task = documentReference.get();
-        // wait until the task is complete
-        while (!task.isComplete());
-        DocumentSnapshot document = task.getResult();
-        String name = document.get("name").toString();
-        String email = document.get("email").toString();
-        String phone = document.get("phone").toString();
-
         this.userId = id;
-        this.info = new ContactInformation(name, email, phone);
-        this.ownedExperiments = new ArrayList<>();
-        this.subscribedExperiments = new ArrayList<>();
+        updateFromFirestore();
     }
 
     /**
@@ -89,10 +79,21 @@ public class User implements Serializable {
      * Update the user information in the Firestore
      */
     protected void updateFirestore() {
-        Map<String, String> userInfo = new HashMap<String, String>();
+        // convert collection of UUIDs to collection of Strings
+        Collection<String> owned = new ArrayList<>();
+        for (UUID experimentId : this.ownedExperiments) {
+            owned.add(experimentId.toString());
+        }
+        Collection<String> subscriptions = new ArrayList<>();
+        for (UUID experimentId : this.subscribedExperiments) {
+            subscriptions.add(experimentId.toString());
+        }
+        Map<String, Object> userInfo = new HashMap<>();
         userInfo.put("name", this.info.getName());
         userInfo.put("email", this.info.getEmail());
         userInfo.put("phone", this.info.getPhone());
+        userInfo.put("owned", owned);
+        userInfo.put("subscriptions", subscriptions);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("users").document(this.userId.toString())
@@ -109,6 +110,36 @@ public class User implements Serializable {
                         Log.w(TAG, "Error writing document", e);
                     }
                 });
+    }
+
+    /**
+     * Update the user information from the Firestore.
+     */
+    protected void updateFromFirestore() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference documentReference = db.collection("users").document(this.userId.toString());
+        Task<DocumentSnapshot> task = documentReference.get();
+        // wait until the task is complete
+        while (!task.isComplete());
+        DocumentSnapshot document = task.getResult();
+        String name = document.get("name").toString();
+        String email = document.get("email").toString();
+        String phone = document.get("phone").toString();
+        Collection<String> ownedExperiments = (List<String>) document.get("owned");
+        if (ownedExperiments == null) ownedExperiments = new ArrayList<>();
+        Collection<String> subscribedExperiments = (List<String>) document.get("subscriptions");
+        if (subscribedExperiments == null) subscribedExperiments = new ArrayList<>();
+        // Convert Collection of String to Collection of UUIDs
+        this.ownedExperiments = new ArrayList<>();
+        for (String experimentId : ownedExperiments) {
+            this.ownedExperiments.add(UUID.fromString(experimentId));
+        }
+        this.subscribedExperiments = new ArrayList<>();
+        for (String experimentId : subscribedExperiments) {
+            this.subscribedExperiments.add(UUID.fromString(experimentId));
+        }
+
+        this.info = new ContactInformation(name, email, phone);
     }
 
     /**
@@ -147,6 +178,24 @@ public class User implements Serializable {
     /**
      * Add the experiment reference to the owned experiments
      * @param experimentId
+     *  the UUID of the experiment
      */
     public void addExperiment(UUID experimentId) { ownedExperiments.add(experimentId); }
+
+    /**
+     * Adds/removes the experiment reference to the subscribed experiments.
+     * Also updates the firestore.
+     * If already subscribed, unsubscribes
+     * If not subscribed, subscribes
+     * @param experimentId
+     *  the UUID of the experiment
+     */
+    public void subscribeExperiment(UUID experimentId) {
+        if (subscribedExperiments.contains(experimentId)) {
+            subscribedExperiments.remove(experimentId);
+        } else {
+            subscribedExperiments.add(experimentId);
+        }
+        updateFirestore();
+    }
 }

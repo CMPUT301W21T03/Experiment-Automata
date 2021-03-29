@@ -2,6 +2,7 @@ package com.example.experiment_automata.ui.experiments;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +12,15 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.example.experiment_automata.backend.experiments.Experiment;
 import com.example.experiment_automata.R;
+import com.example.experiment_automata.backend.users.User;
+import com.example.experiment_automata.ui.LinkView;
+import com.example.experiment_automata.ui.NavigationActivity;
+import com.example.experiment_automata.ui.profile.ProfileFragment;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -72,7 +79,7 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
 
         // Find the corresponding views from experiment_layout
         TextView name = view.findViewById(R.id.experimentName);
-        TextView owner = view.findViewById(R.id.experimentOwner);
+        LinkView owner = view.findViewById(R.id.experimentOwner);
         TextView active = view.findViewById(R.id.experimentActivity);
         TextView experimentID = view.findViewById(R.id.experiment__id);
         CheckBox publishedCheckbox = view.findViewById(R.id.publishedCheckbox);
@@ -80,6 +87,17 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
         // Set the name of the experiment accordingly
         UUID oid = exp.getOwnerId();
         name.setText(exp.getDescription());
+
+        // Set the name of the experiment owner
+        User user = User.getInstance(exp.getOwnerId());
+        owner.setText(user.getInfo().getName());
+        owner.setOnClickListener(v -> {
+            NavigationActivity parentActivity = (NavigationActivity) context;
+            Bundle args = new Bundle();
+            args.putSerializable(ProfileFragment.userKey, user);
+            NavController navController = Navigation.findNavController(parentActivity, R.id.nav_host_fragment);
+            navController.navigate(R.id.nav_profile, args);
+        });
 
         // Set the activity properly
         boolean isActive = exp.isActive();

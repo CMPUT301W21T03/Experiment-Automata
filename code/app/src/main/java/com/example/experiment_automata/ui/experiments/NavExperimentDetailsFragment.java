@@ -1,5 +1,6 @@
 package com.example.experiment_automata.ui.experiments;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -42,24 +43,23 @@ import java.util.UUID;
  */
 
 public class NavExperimentDetailsFragment extends Fragment {
-
     public static final String CURRENT_EXPERIMENT_ID = "FRAGMENT_CURRENT_FRAGMENT-ID";
 
-
     private String experimentStringId;
+    private Experiment experiment;
     private TextView descriptionView;
     private TextView typeView;
     private ImageButton editImageButton;
+    private ImageButton subscribeButton;
     private ImageButton questionsButton;
     private ImageButton qrButton;
-
     private TextView textViewQuartiles;
     private TextView textViewMean;
     private TextView textViewMedian;
     private TextView textViewStdev;
     private BarChart histogram;
     private LineChart resultsPlot;
-
+    private NavigationActivity parentActivity;
 
     public NavExperimentDetailsFragment() {
         // Required empty public constructor
@@ -93,6 +93,11 @@ public class NavExperimentDetailsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             experimentStringId = getArguments().getString(CURRENT_EXPERIMENT_ID);
+            parentActivity = (NavigationActivity) getActivity();
+            parentActivity.setCurrentFragment(this);
+            parentActivity.setCurrentScreen(Screen.ExperimentDetails);
+            experiment = parentActivity.getExperimentManager()
+                    .getAtUUIDDescription(UUID.fromString(experimentStringId));
         }
     }
 
@@ -111,13 +116,10 @@ public class NavExperimentDetailsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_nav_experiment_details, container, false);
 
-        NavigationActivity parentActivity = (NavigationActivity) getActivity();
-        parentActivity.setCurrentFragment(this);
-        parentActivity.setCurrentScreen(Screen.ExperimentDetails);
-
         descriptionView = root.findViewById(R.id.nav_experiment_details_description);
         typeView = root.findViewById(R.id.nav_experiment_details_experiment_type);
         editImageButton = root.findViewById(R.id.nav_fragment_experiment_detail_view_edit_button);
+        subscribeButton = root.findViewById(R.id.nav_fragment_experiment_view_subscribe_button);
         questionsButton = root.findViewById(R.id.nav_fragment_experiment_detail_view_qa_button);
         qrButton = root.findViewById(R.id.nav_fragment_experiment_detail_view_qr_button);
 
@@ -135,17 +137,40 @@ public class NavExperimentDetailsFragment extends Fragment {
             update(experimentStringId);
         }
 
-        editImageButton.setOnClickListener(v -> {
-            Fragment editExperiment = new AddExperimentFragment();
-            Bundle bundle = new Bundle();
-            bundle.putSerializable(AddExperimentFragment.ADD_EXPERIMENT_CURRENT_VALUE,
-                    (((NavigationActivity) getActivity())
-                    .getExperimentManager())
-                    .getAtUUIDDescription(UUID.fromString(experimentStringId)));
+        setButtons();
 
-            editExperiment.setArguments(bundle);
-            getActivity().getSupportFragmentManager().beginTransaction().add(editExperiment,"EDIT").commit();
-        });
+        return root;
+    }
+
+    /**
+     * Sets the onclick listeners and visibility for buttons.
+     */
+    private void setButtons() {
+        boolean isOwner = experiment.getOwnerId().equals(parentActivity.loggedUser.getUserId());
+        System.out.println(isOwner);
+
+        if (isOwner) {
+            editImageButton.setVisibility(View.GONE);
+            editImageButton.setOnClickListener(v -> {
+                Fragment editExperiment = new AddExperimentFragment();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(AddExperimentFragment.ADD_EXPERIMENT_CURRENT_VALUE,
+                        (((NavigationActivity) getActivity())
+                                .getExperimentManager())
+                                .getAtUUIDDescription(UUID.fromString(experimentStringId)));
+
+                editExperiment.setArguments(bundle);
+                getActivity().getSupportFragmentManager().beginTransaction().add(editExperiment, "EDIT").commit();
+            });
+            subscribeButton.setVisibility(View.VISIBLE);
+        } else {
+            subscribeButton.setVisibility(View.VISIBLE);
+            subscribeButton.setOnClickListener(v -> {
+                parentActivity.loggedUser.subscribeExperiment(experiment.getExperimentId());
+                toggleSubscribeButton();
+            });
+            editImageButton.setVisibility(View.GONE);
+        }
 
         questionsButton.setOnClickListener(v -> {
             launchQuestionView();
@@ -163,7 +188,6 @@ public class NavExperimentDetailsFragment extends Fragment {
             viewQRFragment.setArguments(bundle);
             getActivity().getSupportFragmentManager().beginTransaction().add(viewQRFragment,"QR").commit();
         });
-        return root;
     }
 
     /**
@@ -187,6 +211,9 @@ public class NavExperimentDetailsFragment extends Fragment {
         } else {
             fab.setVisibility(View.VISIBLE);
         }
+
+        toggleSubscribeButton();
+
 
         if (current.getSize() >= 3) {
             float[] quartiles = current.getQuartiles();
@@ -270,6 +297,15 @@ public class NavExperimentDetailsFragment extends Fragment {
         update(experimentStringId);
     }
 
+    private void toggleSubscribeButton() {
+        boolean subscribed = parentActivity.loggedUser.getSubscriptions()
+                .contains(experiment.getExperimentId());
+        if (subscribed) {
+            subscribeButton.setImageResource(R.drawable.ic_baseline_star);
+        } else {
+            subscribeButton.setImageResource(R.drawable.ic_baseline_star_border);
+        }
+    }
 
     /**
      * Set up and gets read to launch the questions display.

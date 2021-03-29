@@ -73,12 +73,22 @@ public class MeasurementExperiment extends Experiment {
      * @param trial
      *  the trail to add
      */
-    public void recordTrial(MeasurementTrial trial) {
+    public void recordTrial(Trial trial) {
         if (active) {
-            results.add(trial);
+            results.add((MeasurementTrial) trial);
         } else {
             throw new IllegalStateException("Experiment is not accepting new results.");
         }
+    }
+
+    /**
+     * gets all the recorded trials for an experiment
+     *
+     * @return the recorded trials
+     */
+    @Override
+    public ArrayList<Trial> getRecordedTrials() {
+        return new ArrayList<>(results);
     }
 
     /**

@@ -42,4 +42,24 @@ public class NaturalCountTrial extends Trial {
     public int getResult() {
         return result;
     }
+
+    /**
+     * get the the type of the current trial
+     *
+     * @return the type of the current trial
+     */
+    @Override
+    public String getType() {
+        return "Natural Count";
+    }
+
+    /**
+     * sets the result so something
+     * @param result
+     *  the result we want to set
+     */
+    public void setResult(int result)
+    {
+        this.result = result;
+    }
 }

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:backgroundTint="#FFFFFF"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/add_location_dialog_fragment_lat_display"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/add_location_dialog_latitude"
+        android:textSize="24dp" />
+
+    <EditText
+        android:id="@+id/add_dialog_frag_lati_input_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number" />
+
+    <TextView
+        android:id="@+id/add_location_dialog_longitude_display"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/add_location_dialog_longitude"
+        android:textSize="24dp" />
+
+    <EditText
+        android:id="@+id/add_dialog_frag_longi_input_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/add_dialog_revert_to_orginal_loc_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add_location_dialog_default_btn"
+        android:textColor="#000000"
+        android:background="@color/white"/>
+</LinearLayout>

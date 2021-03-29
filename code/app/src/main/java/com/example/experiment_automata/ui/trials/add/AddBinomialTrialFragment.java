@@ -10,8 +10,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.experiment_automata.backend.experiments.BinomialExperiment;
+import com.example.experiment_automata.backend.trials.BinomialTrial;
 import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.R;
+import com.example.experiment_automata.ui.trials.MapDisplay.MapUtility;
+
+import org.osmdroid.views.MapView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +23,11 @@ import com.example.experiment_automata.R;
  * create an instance of this fragment.
  */
 public class AddBinomialTrialFragment extends Fragment {
+
+    private MapView currentMapDisplay;
+    private MapUtility utility;
+
+
     public AddBinomialTrialFragment() {
         // Required empty public constructor
     }
@@ -37,6 +46,13 @@ public class AddBinomialTrialFragment extends Fragment {
         NavigationActivity parentActivity = ((NavigationActivity) getActivity());
         BinomialExperiment experiment = (BinomialExperiment) parentActivity.experimentManager.getCurrentExperiment();
         description.setText(experiment.getDescription());
+        currentMapDisplay = root.findViewById(R.id.add_binomial_trial_map_view);
+
+        parentActivity.currentTrial = new BinomialTrial(parentActivity.loggedUser.getUserId(), false);
+        utility = new MapUtility(experiment, currentMapDisplay, getContext(), parentActivity, parentActivity.currentTrial);
+        utility.setRevertBack(root.findViewById(R.id.add_binomial_trial_revert_loc_bttn));
+        utility.mapSupport();
+
         return root;
     }
 }

@@ -51,4 +51,13 @@
     <string name="no_trials">Not Enough Trials</string>
 
     <string name="profile_contact">Contact Information</string>
+
+    <string name="add_location_dialog_latitude">Latitude</string>
+    <string name="add_location_dialog_longitude">Longitude</string>
+    <string name="add_location_dialog_default_btn">Revert to Current</string>
+
+    <string name="map_point_view_experiment_no_loc_err">This Experiment Cannot Have Locations</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

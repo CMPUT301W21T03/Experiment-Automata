@@ -1,17 +1,21 @@
 package com.example.experiment_automata.ui.trials.add;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.experiment_automata.backend.experiments.CountExperiment;
-import com.example.experiment_automata.ui.NavigationActivity;
+import androidx.fragment.app.Fragment;
+
 import com.example.experiment_automata.R;
+import com.example.experiment_automata.backend.experiments.CountExperiment;
+import com.example.experiment_automata.backend.trials.CountTrial;
+import com.example.experiment_automata.ui.NavigationActivity;
+import com.example.experiment_automata.ui.trials.MapDisplay.MapUtility;
+
+import org.osmdroid.views.MapView;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +23,11 @@ import com.example.experiment_automata.R;
  * create an instance of this fragment.
  */
 public class AddCountTrialFragment extends Fragment {
+
+    private MapView currentMapDisplay;
+    private MapUtility utility;
+
+
     public AddCountTrialFragment() {
         // Required empty public constructor
     }
@@ -35,8 +44,17 @@ public class AddCountTrialFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_add_count_trial, container, false);
         TextView description = (TextView) root.findViewById(R.id.count_trial_experiment_description);
         NavigationActivity parentActivity = ((NavigationActivity) getActivity());
-        CountExperiment experiment = (CountExperiment) parentActivity.experimentManager.getCurrentExperiment();
-        description.setText(experiment.getDescription());
+        CountExperiment currentExperiment = (CountExperiment) parentActivity.experimentManager.getCurrentExperiment();
+        description.setText(currentExperiment.getDescription());
+        currentMapDisplay = root.findViewById(R.id.count_trial_map_view);
+
+        parentActivity.currentTrial = new CountTrial(parentActivity.loggedUser.getUserId());
+        utility = new MapUtility(currentExperiment, currentMapDisplay, getContext(), parentActivity, parentActivity.currentTrial);
+        utility.setRevertBack(root.findViewById(R.id.add_count_trial_revert_loc_bttn));
+        utility.mapSupport();
+
+
         return root;
     }
+
 }

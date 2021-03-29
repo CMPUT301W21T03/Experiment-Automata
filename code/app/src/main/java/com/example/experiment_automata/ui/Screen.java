@@ -8,5 +8,6 @@ public enum Screen {
     ExperimentList,
     ExperimentDetails,
     Questions,
-    Trial
+    Trial,
+    MAP
 }

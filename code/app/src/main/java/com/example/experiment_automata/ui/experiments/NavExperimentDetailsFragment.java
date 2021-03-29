@@ -19,6 +19,7 @@ import com.example.experiment_automata.ui.qr.ViewQRFragment;
 import com.example.experiment_automata.ui.question.QuestionDisplay;
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.ui.Screen;
+import com.example.experiment_automata.ui.trials.MapDisplay.MapDisplayFragment;
 import com.example.experiment_automata.ui.trials.TrialsFragment;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
@@ -52,6 +53,8 @@ public class NavExperimentDetailsFragment extends Fragment {
     private ImageButton subscribeButton;
     private ImageButton questionsButton;
     private ImageButton qrButton;
+    private ImageButton mapButton;
+
     private TextView textViewQuartiles;
     private TextView textViewMean;
     private TextView textViewMedian;
@@ -121,6 +124,7 @@ public class NavExperimentDetailsFragment extends Fragment {
         subscribeButton = root.findViewById(R.id.nav_fragment_experiment_view_subscribe_button);
         questionsButton = root.findViewById(R.id.nav_fragment_experiment_detail_view_qa_button);
         qrButton = root.findViewById(R.id.nav_fragment_experiment_detail_view_qr_button);
+        mapButton = root.findViewById(R.id.nav_fragment_experiment_detail_view_map_button);
 
         getActivity().findViewById(R.id.fab_button).setVisibility(View.GONE);
 
@@ -132,9 +136,7 @@ public class NavExperimentDetailsFragment extends Fragment {
         histogram = root.findViewById(R.id.histogram_chart);
         resultsPlot = root.findViewById(R.id.results_chart);
 
-        if (experimentStringId != null) {
-            update(experimentStringId);
-        }
+
 
         setButtons();
 
@@ -187,6 +189,25 @@ public class NavExperimentDetailsFragment extends Fragment {
             //getActivity().getSupportFragmentManager().beginTransaction().show(viewQRFragment);
             getActivity().getSupportFragmentManager().beginTransaction().add(viewQRFragment,"QR").commit();
         });
+
+
+        mapButton.setOnClickListener(v -> {
+            Bundle locArgs = new Bundle();
+            locArgs.putSerializable(MapDisplayFragment.CURRENT_EXPERIMENT,
+                    (((NavigationActivity) getActivity())
+                    .getExperimentManager())
+                    .getAtUUIDDescription(UUID.fromString(experimentStringId)));
+
+            NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+            navController.navigate(R.id.map_display_fragment, locArgs);
+            parentActivity.setCurrentScreen(Screen.MAP);
+            parentActivity.setCurrentFragment(this);
+            parentActivity.findViewById(R.id.fab_button).setVisibility(View.GONE);
+        });
+
+        if (experimentStringId != null) {
+            update(experimentStringId);
+        }
     }
 
     /**
@@ -283,8 +304,6 @@ public class NavExperimentDetailsFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        FloatingActionButton fab = getActivity().findViewById(R.id.fab_button);
-        fab.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -310,6 +329,8 @@ public class NavExperimentDetailsFragment extends Fragment {
      * Set up and gets read to launch the questions display.
      */
     private void launchQuestionView() {
+        (((NavigationActivity)getActivity()).findViewById(R.id.fab_button)).setVisibility(View.VISIBLE);
+
         NavigationActivity parentActivity = (NavigationActivity) getActivity();
         Bundle questionBundle = new Bundle();
         questionBundle.putSerializable(QuestionDisplay.QUESTION_EXPERIMENT,

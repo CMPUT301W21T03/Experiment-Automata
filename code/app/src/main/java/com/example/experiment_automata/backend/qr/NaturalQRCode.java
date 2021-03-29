@@ -30,4 +30,8 @@ public class NaturalQRCode extends QRCode{
         }
         this.setRawContentString(packedString);
     }
+
+    public int getValue() {
+        return value;
+    }
 }

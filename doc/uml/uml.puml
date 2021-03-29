@@ -170,15 +170,29 @@ class MeasurementTrial extends Trial {
     -result: Float
 }
 
-class QRCode {
+abstract class QRCode {
 	- rawContentString: String
 	- experimentID: UUID
 	- type: QRType
 	- qrCodeImage: Bitmap
-	
 	+ encodeStringToQR(encodedContent: String): Bitmap
 }
 
+class ExperimentQRCode extends QRCode {}
+
+class BinomialQRCode extends QRCode{
+    - result: Boolean
+}
+
+class CountQRCode extends QRCode{}
+
+class MeasurementQRCode extends QRCode{
+    -value: float
+}
+
+class NaturalQRCode extends QRCode{
+    -value: int
+}
 
 class Location {
   -latitude: double

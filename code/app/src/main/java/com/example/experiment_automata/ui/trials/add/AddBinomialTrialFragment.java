@@ -23,6 +23,7 @@ import com.example.experiment_automata.backend.qr.QRType;
 import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.ui.qr.ScannerActivity;
 import com.example.experiment_automata.ui.qr.ViewQRFragment;
+import com.google.android.material.snackbar.Snackbar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,6 +34,7 @@ public class AddBinomialTrialFragment extends Fragment {
     private ImageButton scanQRButton;
     private ImageButton viewQRButton;
     private CheckBox checkBox;
+    private View root;
     public AddBinomialTrialFragment() {
         // Required empty public constructor
     }
@@ -44,7 +46,7 @@ public class AddBinomialTrialFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_add_binomial_trial, container, false);
+        root = inflater.inflate(R.layout.fragment_add_binomial_trial, container, false);
         TextView description = (TextView) root.findViewById(R.id.binomial_trial_experiment_description);
         NavigationActivity parentActivity = ((NavigationActivity) getActivity());
         BinomialExperiment experiment = (BinomialExperiment) parentActivity.experimentManager.getCurrentExperiment();
@@ -94,10 +96,13 @@ public class AddBinomialTrialFragment extends Fragment {
             if (qrCode.getType() == QRType.BinomialTrial){
                 checkBox.setChecked(((BinomialQRCode)qrCode).getValue());
                 Log.d("SCANNER","Scanned QR Successfully!");
+                Snackbar.make(root,"Scanned QR Successfully!",Snackbar.LENGTH_LONG).show();
+
             }
             else{
                 //send error tray message
                 Log.d("SCANNER","Scanned QR was of incorrect type " + qrCode.getType().toString());
+                Snackbar.make(root,"Scanned QR was of incorrect type",Snackbar.LENGTH_LONG).show();
             }
         }
         catch (QRMalformattedException qrMalE){

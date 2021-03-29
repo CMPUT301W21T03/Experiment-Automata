@@ -75,7 +75,7 @@ public class AddBinomialTrialFragment extends Fragment {
                 bundle.putString("UUID", experiment.getExperimentId().toString());
                 bundle.putString("DESCRIPTION",experiment.getDescription());
                 bundle.putString("TYPE", QRType.BinomialTrial.toString());
-                bundle.putBoolean("BINVAL", checkBox.isChecked());//TEMP VALUE
+                bundle.putBoolean("BINVAL", checkBox.isChecked());
                 viewQRFragment.setArguments(bundle);
                 getActivity().getSupportFragmentManager().beginTransaction().add(viewQRFragment,"QR").commit();
             }
@@ -108,6 +108,8 @@ public class AddBinomialTrialFragment extends Fragment {
         catch (QRMalformattedException qrMalE){
             //malformatted QR
             qrCode = null;
+            Log.d("SCANNER","Scanned Malformatted QR");
+            Snackbar.make(root,"Scanned QR was not an Experiment-Automata QR Code",Snackbar.LENGTH_LONG).show();
         }
     }
 }

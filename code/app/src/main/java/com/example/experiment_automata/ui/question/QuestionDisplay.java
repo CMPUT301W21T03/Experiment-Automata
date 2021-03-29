@@ -139,4 +139,10 @@ public class QuestionDisplay extends Fragment {
                 .getExperimentQuestions(currentExperiment
                         .getExperimentId()), getActivity()));
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        (((NavigationActivity)getActivity()).findViewById(R.id.fab_button)).setVisibility(View.VISIBLE);
+    }
 }

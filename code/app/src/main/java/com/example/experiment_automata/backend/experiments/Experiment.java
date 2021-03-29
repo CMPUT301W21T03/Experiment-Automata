@@ -3,10 +3,10 @@ package com.example.experiment_automata.backend.experiments;
 import androidx.annotation.NonNull;
 
 import com.example.experiment_automata.backend.questions.Question;
+import com.example.experiment_automata.backend.trials.Trial;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -253,4 +253,16 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
      * @return size of the experiment
      */
     public abstract Integer getSize();
+
+    /**
+     * Add a trial to an experiment
+     * @param trial the trial we want to add
+     */
+    public abstract void recordTrial(Trial trial);
+
+    /**
+     * gets all the recorded trials for an experiment
+     * @return the recorded trials
+     */
+    public abstract ArrayList<Trial> getRecordedTrials();
 }

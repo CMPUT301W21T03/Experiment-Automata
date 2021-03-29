@@ -35,4 +35,24 @@ public class MeasurementTrial extends Trial {
     public float getResult() {
         return result;
     }
+
+    /**
+     * get the the type of the current trial
+     *
+     * @return the type of the current trial
+     */
+    @Override
+    public String getType() {
+        return "Measurement";
+    }
+
+    /**
+     * sets the result so something
+     * @param result
+     *  the result we want to set
+     */
+    public void setResult(float result)
+    {
+        this.result = result;
+    }
 }

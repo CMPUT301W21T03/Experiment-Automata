@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.backend.experiments.NaturalCountExperiment;
+
 import com.example.experiment_automata.backend.qr.NaturalQRCode;
 import com.example.experiment_automata.backend.qr.QRCode;
 import com.example.experiment_automata.backend.qr.QRMaker;
@@ -24,6 +25,14 @@ import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.ui.qr.ScannerActivity;
 import com.example.experiment_automata.ui.qr.ViewQRFragment;
 import com.google.android.material.snackbar.Snackbar;
+
+import com.example.experiment_automata.backend.trials.NaturalCountTrial;
+import com.example.experiment_automata.ui.NavigationActivity;
+import com.example.experiment_automata.R;
+import com.example.experiment_automata.ui.trials.MapDisplay.MapUtility;
+
+import org.osmdroid.views.MapView;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,6 +44,9 @@ public class AddNaturalCountTrialFragment extends Fragment {
     private ImageButton viewQRButton;
     private View root;
     private EditText countValue;
+    private MapView currentMapDisplay;
+    private MapUtility utility;
+
     public AddNaturalCountTrialFragment() {
         // Required empty public constructor
     }
@@ -81,13 +93,20 @@ public class AddNaturalCountTrialFragment extends Fragment {
                 getActivity().getSupportFragmentManager().beginTransaction().add(viewQRFragment,"QR").commit();
             }
         });
+        currentMapDisplay = root.findViewById(R.id.natural_count_trial_experiment_map_view);
 
+        parentActivity.currentTrial = new NaturalCountTrial(parentActivity.loggedUser.getUserId(), 0);
+        utility = new MapUtility(experiment, currentMapDisplay, getContext(), parentActivity, parentActivity.currentTrial);
+        utility.setRevertBack(root.findViewById(R.id.add_natural_trial_revert_loc_bttn));
+        utility.mapSupport();
         return root;
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        if (data == null){
+            return;
+        }
         String rawQRContent =  data.getStringExtra("QRCONTENTRAW");
         Log.d("ACTIVITYRESULT","val " + data.getStringExtra("QRCONTENTRAW"));
         QRMaker qrMaker = new QRMaker();
@@ -113,4 +132,5 @@ public class AddNaturalCountTrialFragment extends Fragment {
             Snackbar.make(root,"Scanned QR was not an Experiment-Automata QR Code",Snackbar.LENGTH_LONG).show();
         }
     }
+
 }

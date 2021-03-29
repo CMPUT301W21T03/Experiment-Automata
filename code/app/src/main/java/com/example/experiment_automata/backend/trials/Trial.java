@@ -2,6 +2,7 @@ package com.example.experiment_automata.backend.trials;
 
 import android.location.Location;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
@@ -14,7 +15,7 @@ import java.util.UUID;
  *
  *      1. None
  */
-public abstract class Trial {
+public abstract class Trial implements Serializable {
     private UUID collector;
     private Location location;
     private Date date;
@@ -62,4 +63,31 @@ public abstract class Trial {
      *  whether to ignore
      */
     public boolean isIgnored() { return ignore; }
+
+    /**
+     * Sets the current location of a trial.
+     *
+     * @param newLocation the new location we want to change to.
+     */
+    public void setLocation(Location newLocation)
+    {
+        this.location = newLocation;
+    }
+
+    /**
+     * get the currently set location for this particular trial.
+     * @return
+     *      the currently set location
+     */
+    public Location getLocation()
+    {
+        return location;
+    }
+
+    /**
+     * get the the type of the current trial
+     * @return
+     *  the type of the current trial
+     */
+    public abstract String getType();
 }

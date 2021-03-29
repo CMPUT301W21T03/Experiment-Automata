@@ -1,8 +1,17 @@
 package com.example.experiment_automata.ui;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,9 +19,12 @@ import android.view.Menu;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.example.experiment_automata.R;
+import com.example.experiment_automata.backend.trials.Trial;
 import com.example.experiment_automata.backend.users.ContactInformation;
+
 import com.example.experiment_automata.ui.experiments.AddExperimentFragment;
 import com.example.experiment_automata.backend.experiments.BinomialExperiment;
 import com.example.experiment_automata.backend.experiments.CountExperiment;
@@ -37,10 +49,15 @@ import com.example.experiment_automata.backend.trials.CountTrial;
 import com.example.experiment_automata.backend.trials.MeasurementTrial;
 import com.example.experiment_automata.backend.trials.NaturalCountTrial;
 import com.example.experiment_automata.ui.home.HomeFragment;
+import com.example.experiment_automata.ui.trials.MapDisplay.MapUtility;
+import com.example.experiment_automata.ui.trials.add.AddNaturalCountTrialFragment;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -50,6 +67,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import org.osmdroid.views.MapView;
+
+import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -75,7 +95,18 @@ public class NavigationActivity extends AppCompatActivity implements
     private Screen currentScreen;
     public Fragment currentFragment;
     public User loggedUser;
-    public Experiment currentExperiment;
+    public Trial currentTrial;
+
+    public int locationWarningCount;
+
+    // Location and Map Flags and Request Codes
+    public static final int PERMISSON_REQUEST_CODE = 10;
+    private boolean canMakeLocationTrials = false;
+    private FusedLocationProviderClient fusedLocationProviderClient;
+    public Location currentLocation;
+    private ArrayList<Trial> trials = new ArrayList<>();
+    public Activity currentActivity;
+    public FloatingActionButton addExperimentButton;
 
     /**
      * Method called when creating NavigationActivity
@@ -85,7 +116,11 @@ public class NavigationActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SharedPreferences preferences  = getSharedPreferences("experiment_automata", MODE_PRIVATE);
+        requestLocationResourcePermissions();
+        locationWarningCount = 0;
+        currentActivity = this;
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        SharedPreferences preferences = getSharedPreferences("experiment_automata", MODE_PRIVATE);
         loggedUser = new User(preferences);
         setContentView(R.layout.activity_navigation);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -101,7 +136,7 @@ public class NavigationActivity extends AppCompatActivity implements
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-        FloatingActionButton addExperimentButton = findViewById(R.id.fab_button);
+        addExperimentButton = findViewById(R.id.fab_button);
         addExperimentButton.setOnClickListener(new View.OnClickListener() {
             /**
              * Deal with the FAB when clicked
@@ -137,33 +172,29 @@ public class NavigationActivity extends AppCompatActivity implements
                         try {
                             switch (experiment.getType()) {
                                 case Count:
-                                    CountExperiment countExperiment = (CountExperiment) experiment;
-                                    CountTrial countTrial = new CountTrial(loggedUser.getUserId());
-                                    countExperiment.recordTrial(countTrial);
+                                    addTrial(experiment, currentTrial);
+                                    currentTrial = null;
                                     break;
                                 case NaturalCount:
-                                    NaturalCountExperiment naturalCountExperiment = (NaturalCountExperiment) experiment;
-                                    // get value
                                     EditText naturalCountInput = (EditText) findViewById(R.id.add_natural_count_value);
                                     final int naturalCount = Integer.parseInt(naturalCountInput.getText().toString());
-                                    NaturalCountTrial naturalCountTrial = new NaturalCountTrial(loggedUser.getUserId(), naturalCount);
-                                    naturalCountExperiment.recordTrial(naturalCountTrial);
+                                    ((NaturalCountTrial)currentTrial).setResult(naturalCount);
+                                    addTrial(experiment, currentTrial);
+                                    currentTrial = null;
                                     break;
                                 case Binomial:
-                                    BinomialExperiment binomialExperiment = (BinomialExperiment) experiment;
-                                    // get value
-                                    CheckBox passedInput = (CheckBox) findViewById(R.id.add_binomial_value);
+                                    CheckBox passedInput = findViewById(R.id.add_binomial_value);
                                     final boolean passed = passedInput.isChecked();
-                                    BinomialTrial binomialTrial = new BinomialTrial(loggedUser.getUserId(), passed);
-                                    binomialExperiment.recordTrial(binomialTrial);
+                                    ((BinomialTrial)currentTrial).setResult(passed);
+                                    addTrial(experiment, currentTrial);
+                                    currentTrial = null;
                                     break;
                                 case Measurement:
-                                    MeasurementExperiment measurementExperiment = (MeasurementExperiment) experiment;
-                                    // get value
                                     EditText measurementInput = (EditText) findViewById(R.id.add_measurement_value);
                                     final float measurement = Float.parseFloat(measurementInput.getText().toString());
-                                    MeasurementTrial measurementTrial = new MeasurementTrial(loggedUser.getUserId(), measurement);
-                                    measurementExperiment.recordTrial(measurementTrial);
+                                    ((MeasurementTrial)currentTrial).setResult(measurement);
+                                    addTrial(experiment, currentTrial);
+                                    currentTrial = null;
                                     break;
                             }
                             currentScreen = Screen.ExperimentDetails;
@@ -175,6 +206,10 @@ public class NavigationActivity extends AppCompatActivity implements
                         break;
                     case Questions:
                         ((QuestionDisplay) currentFragment).makeQuestion();
+                        break;
+
+                    case MAP:
+                        //// // Something (Might no longer be needed)
                         break;
                 }
             }
@@ -284,8 +319,8 @@ public class NavigationActivity extends AppCompatActivity implements
     @Override
     // todo: this functionality should be moved into something else in the future
     public void onOKPressedEdit(String experimentDescription, int experimentTrials,
-                         boolean experimentLocation, boolean experimentNewResults,
-                         Experiment currentExperiment) {
+                                boolean experimentLocation, boolean experimentNewResults,
+                                Experiment currentExperiment) {
         currentExperiment.setDescription(experimentDescription);
         currentExperiment.setMinTrials(experimentTrials);
         currentExperiment.setRequireLocation(experimentLocation);
@@ -339,7 +374,7 @@ public class NavigationActivity extends AppCompatActivity implements
         Log.d("question id", newQuestion.getExperimentId().toString());
         questionManager.addQuestion(experimentId, newQuestion);
 
-        ((QuestionDisplay)currentFragment).updateQuestionsList();
+        ((QuestionDisplay) currentFragment).updateQuestionsList();
 
         Log.d("current screen", currentScreen + "");
     }
@@ -359,6 +394,126 @@ public class NavigationActivity extends AppCompatActivity implements
         ((QuestionDisplay) currentFragment).updateQuestionsList();
         Log.d("Reply is ", reply);
         Log.d("current screen", currentScreen + "");
+    }
+
+    /**
+     * records a trial to an experiment while also dealing with location sensitive data.
+     * If we encounter an error the trial is not recorded and an error is prompted.
+     *
+     * Locations are asked for at the current insistence. Hopefully this will prevent
+     * massive battery spikes from asking for location from the gps.
+     *
+     * @param experiment the experiment we want to add the trial
+     * @param trial the trial we wish to add to the experiment
+     */
+    public void addTrial(Experiment experiment,  Trial trial)
+    {
+        if (experiment.isRequireLocation())
+        {
+            if(trial.getLocation() != null ) {
+                experiment.recordTrial(trial);
+            }
+            else {
+                Toast.makeText(getApplicationContext(),
+                        "Error: Trial recorded due to error: try again later",
+                        Toast.LENGTH_LONG).show();
+            }
+        }
+        else {
+            experiment.recordTrial(trial);
+        }
+        trials.add(trial);
+    }
+
+
+
+    /**
+     * Gets the current location that the user is in with 100 ms in wait time from the device
+     * then marks that trial with a location.
+     *
+     * @param currentTrial the trial we want to add to an experiment
+     *
+     *
+     * Source/Citation:
+     *        1.
+     *          Author: https://stackoverflow.com/users/1371853/swiftboy
+     *          Editor: https://stackoverflow.com/users/202311/ianb
+     *          Full Source: https://stackoverflow.com/questions/1513485/how-do-i-get-the-current-gps-location-programmatically-in-android
+     */
+    @SuppressLint("MissingPermission")
+    public void addLocationToTrial(Trial currentTrial) {
+        if(canMakeLocationTrials)
+        {
+
+            //TODO: Place location warning dialog here -- Display only once?
+            LocationManager locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+            LocationListener locationListener = new com.example.experiment_automata.backend.Location.LocationServices();
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 1, locationListener);
+            currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        }
+        else {
+            currentLocation = null;
+        }
+        currentTrial.setLocation(currentLocation);
+    }
+
+    /**
+     * Requests permissions from the device if the user does not currently allow for us to use the
+     * current users location.
+     *
+     * Source/Citation:
+     *      1.
+     *          Author: Alphabet LLC
+     *          Editor: Alphabet LLC
+     *          Full Source: https://developer.android.com/training/permissions/requesting#java
+     */
+    public void requestLocationResourcePermissions()
+    {
+        if(ContextCompat.checkSelfPermission(getApplicationContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
+            requestPermissions(new String[]
+                            {
+                                    Manifest.permission.ACCESS_FINE_LOCATION,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                    Manifest.permission.ACCESS_NETWORK_STATE,
+
+                            },
+                    PERMISSON_REQUEST_CODE);
+        }
+        else
+            canMakeLocationTrials = true;
+    }
+
+    /**
+     * Deals with the response to the user denying or allowing us to use the needed resources
+     * to complete needed tasks.
+     *
+     * @param requestCode The code the we set for the needed resource
+     * @param permissions What resource we're asking the system give us access to.
+     * @param grantResults The result from the system
+     *
+     *Source/Citation:
+     *      1.
+     *          Author: Alphabet LLC
+     *          Editor: Alphabet LLC
+     *          Full Source: https://developer.android.com/training/permissions/requesting#java
+    */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
+    {
+        switch (requestCode)
+        {
+            case PERMISSON_REQUEST_CODE:
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    canMakeLocationTrials = true;
+                else
+                {
+                    //TODO: Make dialog or warning windows of what these means for the project
+                }
+                return;
+
+        }
     }
 
     /**

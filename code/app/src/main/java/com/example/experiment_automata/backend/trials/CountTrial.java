@@ -21,4 +21,16 @@ public class CountTrial extends Trial {
     public CountTrial(UUID collector, Location location) {
         super(collector, location);
     }
+
+    /**
+     * get the the type of the current trial
+     *
+     * @return the type of the current trial
+     */
+    @Override
+    public String getType() {
+        return "Count Trial";
+    }
+
+
 }

@@ -20,10 +20,14 @@ import com.example.experiment_automata.backend.qr.QRCode;
 import com.example.experiment_automata.backend.qr.QRMaker;
 import com.example.experiment_automata.backend.qr.QRMalformattedException;
 import com.example.experiment_automata.backend.qr.QRType;
+import com.example.experiment_automata.backend.trials.BinomialTrial;
 import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.ui.qr.ScannerActivity;
 import com.example.experiment_automata.ui.qr.ViewQRFragment;
+import com.example.experiment_automata.ui.trials.MapDisplay.MapUtility;
 import com.google.android.material.snackbar.Snackbar;
+
+import org.osmdroid.views.MapView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,6 +39,10 @@ public class AddBinomialTrialFragment extends Fragment {
     private ImageButton viewQRButton;
     private CheckBox checkBox;
     private View root;
+    private MapView currentMapDisplay;
+    private MapUtility utility;
+
+
     public AddBinomialTrialFragment() {
         // Required empty public constructor
     }
@@ -80,13 +88,22 @@ public class AddBinomialTrialFragment extends Fragment {
                 getActivity().getSupportFragmentManager().beginTransaction().add(viewQRFragment,"QR").commit();
             }
         });
+        currentMapDisplay = root.findViewById(R.id.add_binomial_trial_map_view);
+
+        parentActivity.currentTrial = new BinomialTrial(parentActivity.loggedUser.getUserId(), false);
+        utility = new MapUtility(experiment, currentMapDisplay, getContext(), parentActivity, parentActivity.currentTrial);
+        utility.setRevertBack(root.findViewById(R.id.add_binomial_trial_revert_loc_bttn));
+        utility.mapSupport();
+
         return root;
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        if (data == null){
+            return;
+        }
         String rawQRContent =  data.getStringExtra("QRCONTENTRAW");
         Log.d("ACTIVITYRESULT","val " + data.getStringExtra("QRCONTENTRAW"));
         QRMaker qrMaker = new QRMaker();

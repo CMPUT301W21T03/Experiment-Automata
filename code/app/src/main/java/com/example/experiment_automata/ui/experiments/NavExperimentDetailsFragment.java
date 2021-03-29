@@ -1,6 +1,5 @@
 package com.example.experiment_automata.ui.experiments;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,12 +12,13 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.example.experiment_automata.R;
 import com.example.experiment_automata.backend.experiments.Experiment;
+import com.example.experiment_automata.backend.qr.QRType;
 import com.example.experiment_automata.ui.NavigationActivity;
+import com.example.experiment_automata.ui.Screen;
 import com.example.experiment_automata.ui.qr.ViewQRFragment;
 import com.example.experiment_automata.ui.question.QuestionDisplay;
-import com.example.experiment_automata.R;
-import com.example.experiment_automata.ui.Screen;
 import com.example.experiment_automata.ui.trials.MapDisplay.MapDisplayFragment;
 import com.example.experiment_automata.ui.trials.TrialsFragment;
 import com.github.mikephil.charting.charts.BarChart;
@@ -183,10 +183,10 @@ public class NavExperimentDetailsFragment extends Fragment {
 
             Fragment viewQRFragment = new ViewQRFragment();
             Bundle bundle = new Bundle();
-            bundle.putString("UUID",CURRENT_EXPERIMENT_ID);
+            bundle.putString("UUID",UUID.randomUUID().toString());
             bundle.putString("DESCRIPTION",current.getDescription());
+            bundle.putString("TYPE", QRType.Experiment.toString());
             viewQRFragment.setArguments(bundle);
-            //getActivity().getSupportFragmentManager().beginTransaction().show(viewQRFragment);
             getActivity().getSupportFragmentManager().beginTransaction().add(viewQRFragment,"QR").commit();
         });
 

@@ -19,6 +19,30 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+    <ImageButton
+        android:id="@+id/add_measurement_qr_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="76dp"
+        android:layout_marginEnd="28dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_baseline_qr_code_scanner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/add_measurement_qr_generate_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="76dp"
+        android:layout_marginEnd="32dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_baseline_qr_code_24"
+        app:layout_constraintBottom_toTopOf="@+id/add_measurment_trial_revert_loc_bttn"
+        app:layout_constraintEnd_toStartOf="@+id/add_measurement_qr_button"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        tools:src="@drawable/ic_baseline_qr_code_24" />
 
     <EditText
         android:id="@+id/add_measurement_value"
@@ -54,12 +78,14 @@
         android:id="@+id/add_measurment_trial_revert_loc_bttn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="130dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="7dp"
         android:backgroundTint="#FFFFFF"
         android:text="@string/add_location_dialog_default_btn"
         android:textColor="#000000"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/measurement_trial_experiment_description" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

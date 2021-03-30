@@ -527,5 +527,6 @@ public class NavigationActivity extends AppCompatActivity implements
         if (currentScreen == Screen.Profile) {
             ((ProfileFragment) currentFragment).update();
         }
+        user.updateFirestore();
     }
 }

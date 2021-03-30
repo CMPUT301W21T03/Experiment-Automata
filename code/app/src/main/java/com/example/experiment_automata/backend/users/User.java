@@ -180,7 +180,10 @@ public class User implements Serializable {
      * @param experimentId
      *  the UUID of the experiment
      */
-    public void addExperiment(UUID experimentId) { ownedExperiments.add(experimentId); }
+    public void addExperiment(UUID experimentId) {
+        ownedExperiments.add(experimentId);
+        updateFirestore();
+    }
 
     /**
      * Adds/removes the experiment reference to the subscribed experiments.

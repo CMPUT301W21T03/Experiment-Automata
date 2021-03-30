@@ -65,8 +65,7 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
         this.experimentId = UUID.randomUUID();
         this.type = type;
         this.questions = new ArrayList<>();
-        //un-comment this to enable firestore put
-        //postExperimentToFirestore();
+        postExperimentToFirestore();
     }
 
     /**

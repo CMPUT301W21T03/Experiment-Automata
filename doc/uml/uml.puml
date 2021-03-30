@@ -36,6 +36,7 @@ class ExperimentManager{
    + getAllExperiments(): ArrayList<Experiment> 
    + getAllFromFirestore()
    - queryMatch(query: String, source: String): Boolean
+   + {abstract} getRecordedTrials(): ArrayList<Trial>
 }
 
 ExperimentManager o-- "0..*" Experiment
@@ -228,6 +229,7 @@ class SearchController {
     -keyword: String
     +searchKeyWord(keyword: String): Collection<Experiment>
 }
+
 
 User "1" *-- "1" ContactInformation
 User "1" *-- "0...*" Experiment

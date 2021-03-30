@@ -16,6 +16,7 @@ import com.example.experiment_automata.R;
 import com.example.experiment_automata.backend.experiments.Experiment;
 import com.example.experiment_automata.backend.trials.Trial;
 import com.example.experiment_automata.ui.NavigationActivity;
+import com.example.experiment_automata.ui.Screen;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
@@ -63,6 +64,7 @@ public class MapUtility
         this.parentActivity = parentActivity;
         this.trial = trial;
         marker = new Marker(this.display);
+        parentActivity.setCurrentScreen(Screen.MAP);
     }
 
     public void setRevertBack(Button revertBack)
@@ -119,21 +121,20 @@ public class MapUtility
             // License: Apache 2.0
 
             // TODO: Change this location warning count to be a button that says (do not show again)
-            if(parentActivity.locationWarningCount<5) {
+            if(!parentActivity.stopRemindingMe) {
                 // Warns the user that their location is being used
                 AlertDialog.Builder myDialog = new AlertDialog.Builder(context)
-                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                parentActivity.locationWarningCount ++;
-                            }
+                        .setPositiveButton("Don't Show Again", (dialog, id) -> {
+                            parentActivity.stopRemindingMe = true;
+                            parentActivity.setCurrentScreen(Screen.Trial);
                         })
-                        .setNegativeButton("Refuse", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                trial.setLocation(null);
-
-                                NavController navController = Navigation.findNavController(parentActivity, R.id.nav_host_fragment);
-                                navController.popBackStack();
-                            }
+                        .setNegativeButton("Refuse", (dialog, id) -> {
+                            trial.setLocation(null);
+                            parentActivity.setCurrentScreen(Screen.ExperimentDetails);
+                            parentActivity.onBackPressed();
+                        })
+                        .setNeutralButton("Okay", (dialog, which) -> {
+                            parentActivity.setCurrentScreen(Screen.Trial);
                         });
 
                 myDialog.setTitle("Warning");

@@ -146,6 +146,10 @@
         android:id="@+id/map_display_fragment"
         android:name="com.example.experiment_automata.ui.trials.MapDisplay.MapDisplayFragment"
         android:label="Trial Map Plot"
-        tools:layout="@layout/fragment_map_display_fragment" />
+        tools:layout="@layout/fragment_map_display_fragment" >
+        <action
+            android:id="@+id/action_map_display_fragment_to_nav_experiment_details"
+            app:destination="@id/nav_experiment_details" />
+    </fragment>
 
 </navigation>

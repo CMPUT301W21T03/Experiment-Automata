@@ -97,16 +97,13 @@ public class NavigationActivity extends AppCompatActivity implements
     public User loggedUser;
     public Trial currentTrial;
 
-    public int locationWarningCount;
-
     // Location and Map Flags and Request Codes
     public static final int PERMISSON_REQUEST_CODE = 10;
     private boolean canMakeLocationTrials = false;
-    private FusedLocationProviderClient fusedLocationProviderClient;
     public Location currentLocation;
-    private ArrayList<Trial> trials = new ArrayList<>();
     public Activity currentActivity;
     public FloatingActionButton addExperimentButton;
+    public boolean stopRemindingMe;
 
     /**
      * Method called when creating NavigationActivity
@@ -117,9 +114,8 @@ public class NavigationActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestLocationResourcePermissions();
-        locationWarningCount = 0;
+        stopRemindingMe = false; 
         currentActivity = this;
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         SharedPreferences preferences = getSharedPreferences("experiment_automata", MODE_PRIVATE);
         loggedUser = new User(preferences);
         setContentView(R.layout.activity_navigation);
@@ -422,7 +418,6 @@ public class NavigationActivity extends AppCompatActivity implements
         else {
             experiment.recordTrial(trial);
         }
-        trials.add(trial);
     }
 
 

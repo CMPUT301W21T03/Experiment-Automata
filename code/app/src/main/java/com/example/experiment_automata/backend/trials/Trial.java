@@ -20,7 +20,7 @@ public abstract class Trial<T> implements Serializable {
     private Location location;
     private Date date;
     private boolean ignore;
-    private T result;
+    protected T result;
 //    TODO: uncomment qr line once qr support has been added
 //    private QRcode qr;
 

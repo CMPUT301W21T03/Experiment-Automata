@@ -15,21 +15,17 @@ import androidx.fragment.app.Fragment;
 
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.backend.experiments.NaturalCountExperiment;
-
 import com.example.experiment_automata.backend.qr.NaturalQRCode;
 import com.example.experiment_automata.backend.qr.QRCode;
 import com.example.experiment_automata.backend.qr.QRMaker;
 import com.example.experiment_automata.backend.qr.QRMalformattedException;
 import com.example.experiment_automata.backend.qr.QRType;
+import com.example.experiment_automata.backend.trials.NaturalCountTrial;
 import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.ui.qr.ScannerActivity;
 import com.example.experiment_automata.ui.qr.ViewQRFragment;
-import com.google.android.material.snackbar.Snackbar;
-
-import com.example.experiment_automata.backend.trials.NaturalCountTrial;
-import com.example.experiment_automata.ui.NavigationActivity;
-import com.example.experiment_automata.R;
 import com.example.experiment_automata.ui.trials.MapDisplay.MapUtility;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.osmdroid.views.MapView;
 
@@ -67,7 +63,7 @@ public class AddNaturalCountTrialFragment extends Fragment {
         description.setText(experiment.getDescription());
         countValue = root.findViewById(R.id.add_natural_count_value);
 
-        scanQRButton = root.findViewById(R.id.count_trial_qr_button);
+        scanQRButton = root.findViewById(R.id.add_natural_count_qr_button);
         scanQRButton.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -78,7 +74,7 @@ public class AddNaturalCountTrialFragment extends Fragment {
 
             }
         });
-        viewQRButton = root.findViewById(R.id.count_trial_qr_generate_button);
+        viewQRButton = root.findViewById(R.id.add_natural_count_qr_generate_button);
         viewQRButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {//display QR

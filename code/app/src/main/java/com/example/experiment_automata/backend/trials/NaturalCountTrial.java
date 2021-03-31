@@ -12,24 +12,17 @@ import java.util.UUID;
  *
  *      1. None
  */
-public class NaturalCountTrial extends Trial {
-
-    private int result;
-
+public class NaturalCountTrial extends Trial<Integer> {
     public NaturalCountTrial(UUID collector, int result) throws IllegalArgumentException {
-        super(collector);
-        if (result >= 0) {
-            this.result = result;
-        } else {
+        super(collector, result);
+        if (result < 0) {
             throw new IllegalArgumentException();
         }
     }
 
     public NaturalCountTrial(UUID collector, Location location, int result) throws IllegalArgumentException {
-        super(collector, location);
-        if (result >= 0) {
-            this.result = result;
-        } else {
+        super(collector, location, result);
+        if (result < 0) {
             throw new IllegalArgumentException();
         }
     }
@@ -39,7 +32,7 @@ public class NaturalCountTrial extends Trial {
      * @return
      *  The single trial result.
      */
-    public int getResult() {
+    public Integer getResult() {
         return result;
     }
 

@@ -64,7 +64,6 @@ public class MapUtility
         this.parentActivity = parentActivity;
         this.trial = trial;
         marker = new Marker(this.display);
-        parentActivity.setCurrentScreen(Screen.MAP);
     }
 
     public void setRevertBack(Button revertBack)
@@ -214,5 +213,11 @@ public class MapUtility
         display.setMultiTouchControls(true);
         IMapController mapController = display.getController();
         mapController.setZoom(2f);
+    }
+
+    public void makeMapItemsDisappear() {
+        if(revertBack != null)
+            revertBack.setVisibility(View.GONE);
+        display.setVisibility(View.GONE);
     }
 }

@@ -12,17 +12,13 @@ import java.util.UUID;
  *
  *      1. None
  */
-public class BinomialTrial extends Trial {
-    private boolean result;
-
+public class BinomialTrial extends Trial<Boolean> {
     public BinomialTrial(UUID collector, boolean result) {
-        super(collector);
-        this.result = result;
+        super(collector, result);
     }
 
     public BinomialTrial(UUID collector, Location location, boolean result) {
-        super(collector, location);
-        this.result = result;
+        super(collector, location, result);
     }
 
     /**
@@ -30,7 +26,7 @@ public class BinomialTrial extends Trial {
      * @return
      *  The result of the trial
      */
-    public boolean getResult() {
+    public Boolean getResult() {
         return result;
     }
 

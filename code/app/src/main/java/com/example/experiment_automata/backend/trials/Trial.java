@@ -102,4 +102,13 @@ public abstract class Trial<T> implements Serializable {
     public T getResult() {
         return result;
     }
+
+    /**
+     * Set the result of the trial.
+     * @param result
+     *  the result we want to set
+     */
+    public void setResult(T result) {
+        this.result = result;
+    }
 }

@@ -31,4 +31,12 @@ public class CountTrial extends Trial<Object> {
     public String getType() {
         return "Count Trial";
     }
+
+    /**
+     * Does not set the result of the trial.
+     * @param result
+     *  result to ignore
+     */
+    @Override
+    public void setResult(Object result) {}
 }

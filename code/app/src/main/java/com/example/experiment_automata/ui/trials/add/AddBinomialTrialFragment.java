@@ -93,8 +93,7 @@ public class AddBinomialTrialFragment extends Fragment {
         parentActivity.currentTrial = new BinomialTrial(parentActivity.loggedUser.getUserId(), false);
         utility = new MapUtility(experiment, currentMapDisplay, getContext(), parentActivity, parentActivity.currentTrial);
         utility.setRevertBack(root.findViewById(R.id.add_binomial_trial_revert_loc_bttn));
-        utility.mapSupport();
-
+        utility.run();
         return root;
     }
 

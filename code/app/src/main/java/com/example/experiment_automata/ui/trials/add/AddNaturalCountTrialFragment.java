@@ -94,7 +94,7 @@ public class AddNaturalCountTrialFragment extends Fragment {
         parentActivity.currentTrial = new NaturalCountTrial(parentActivity.loggedUser.getUserId(), 0);
         utility = new MapUtility(experiment, currentMapDisplay, getContext(), parentActivity, parentActivity.currentTrial);
         utility.setRevertBack(root.findViewById(R.id.add_natural_trial_revert_loc_bttn));
-        utility.mapSupport();
+        utility.run();
         return root;
     }
     @Override

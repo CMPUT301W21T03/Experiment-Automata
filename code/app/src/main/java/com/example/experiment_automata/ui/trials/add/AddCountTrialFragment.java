@@ -97,13 +97,7 @@ public class AddCountTrialFragment extends Fragment {
         parentActivity.currentTrial = new CountTrial(parentActivity.loggedUser.getUserId());
         utility = new MapUtility(currentExperiment, currentMapDisplay, getContext(), parentActivity, parentActivity.currentTrial);
         utility.setRevertBack(root.findViewById(R.id.add_count_trial_revert_loc_bttn));
-        if(experiment.isRequireLocation()) {
-            utility.mapSupport();
-        }
-        else
-        {
-            utility.makeMapItemsDisappear();
-        }
+        utility.run();
 
         return root;
     }

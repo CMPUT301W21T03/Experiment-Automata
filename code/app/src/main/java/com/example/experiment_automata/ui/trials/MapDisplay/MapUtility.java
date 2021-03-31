@@ -76,7 +76,7 @@ public class MapUtility
      * Where the user clicks is the location of that trial.
      *
      * */
-    public void mapSupport()
+    private void mapSupport()
     {
         setupMap();
         /**
@@ -215,9 +215,27 @@ public class MapUtility
         mapController.setZoom(2f);
     }
 
-    public void makeMapItemsDisappear() {
+
+    /**
+     * this class removes all maps assets
+     * so that we can remove assets when the map is not in use.
+     */
+    private void makeMapItemsDisappear() {
         if(revertBack != null)
             revertBack.setVisibility(View.GONE);
         display.setVisibility(View.GONE);
+    }
+
+    /**
+     * this method sets things to deal with the map
+     */
+    public void run() {
+        if(experiment.isRequireLocation()) {
+            mapSupport();
+        }
+        else
+        {
+            makeMapItemsDisappear();
+        }
     }
 }

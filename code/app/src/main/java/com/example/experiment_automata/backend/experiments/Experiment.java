@@ -9,6 +9,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -119,6 +120,11 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
         experimentData.put("owner",experiment.getOwnerId().toString());
         experimentData.put("type",experiment.getType().toString());//enum to string
         experimentData.put("published",experiment.isPublished());
+
+        Collection<String> savedQuestions = new ArrayList<>();
+        for (Question question: this.questions) {
+
+        }
 
         db.collection("experiments").document(experimentUUIDString)
                 .set(experimentData)

@@ -146,6 +146,7 @@ public class MapUtility
                 myDialog.show();
             }
             GeoPoint oldLocation = new GeoPoint(trial.getLocation());
+            parentActivity.setCurrentScreen(Screen.Trial);
 
             if(revertBack != null)
             {

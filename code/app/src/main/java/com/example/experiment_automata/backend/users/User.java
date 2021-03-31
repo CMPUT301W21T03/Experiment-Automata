@@ -48,9 +48,7 @@ public class User implements Serializable {
         editor.putString("userId", userId.toString());
         editor.apply();
         this.info = new ContactInformation(preferences);
-        this.ownedExperiments = new ArrayList<>();
-        this.subscribedExperiments = new ArrayList<>();
-        updateFromFirestore();
+        updateExperimentFromFirestore();
         updateFirestore();
     }
 
@@ -61,7 +59,7 @@ public class User implements Serializable {
      */
     private User(UUID id) {
         this.userId = id;
-        updateFromFirestore();
+        updateContactFromFirestore();
     }
 
     /**
@@ -78,7 +76,7 @@ public class User implements Serializable {
     /**
      * Update the user information in the Firestore
      */
-    protected void updateFirestore() {
+    public void updateFirestore() {
         // convert collection of UUIDs to collection of Strings
         Collection<String> owned = new ArrayList<>();
         for (UUID experimentId : this.ownedExperiments) {
@@ -122,9 +120,9 @@ public class User implements Serializable {
         // wait until the task is complete
         while (!task.isComplete());
         DocumentSnapshot document = task.getResult();
-        String name = document.get("name").toString();
-        String email = document.get("email").toString();
-        String phone = document.get("phone").toString();
+        String name = (String) document.get("name");
+        String email = (String) document.get("email");
+        String phone = (String) document.get("phone");
         Collection<String> ownedExperiments = (List<String>) document.get("owned");
         if (ownedExperiments == null) ownedExperiments = new ArrayList<>();
         Collection<String> subscribedExperiments = (List<String>) document.get("subscriptions");
@@ -139,6 +137,47 @@ public class User implements Serializable {
             this.subscribedExperiments.add(UUID.fromString(experimentId));
         }
 
+        this.info = new ContactInformation(name, email, phone);
+    }
+
+    /**
+     * Update the user experiments from the Firestore.
+     */
+    protected void updateExperimentFromFirestore() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference documentReference = db.collection("users").document(this.userId.toString());
+        Task<DocumentSnapshot> task = documentReference.get();
+        // wait until the task is complete
+        while (!task.isComplete());
+        DocumentSnapshot document = task.getResult();
+        Collection<String> ownedExperiments = (List<String>) document.get("owned");
+        if (ownedExperiments == null) ownedExperiments = new ArrayList<>();
+        Collection<String> subscribedExperiments = (List<String>) document.get("subscriptions");
+        if (subscribedExperiments == null) subscribedExperiments = new ArrayList<>();
+        // Convert Collection of String to Collection of UUIDs
+        this.ownedExperiments = new ArrayList<>();
+        for (String experimentId : ownedExperiments) {
+            this.ownedExperiments.add(UUID.fromString(experimentId));
+        }
+        this.subscribedExperiments = new ArrayList<>();
+        for (String experimentId : subscribedExperiments) {
+            this.subscribedExperiments.add(UUID.fromString(experimentId));
+        }
+    }
+
+    /**
+     * Update the user contact information from the Firestore.
+     */
+    protected void updateContactFromFirestore() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference documentReference = db.collection("users").document(this.userId.toString());
+        Task<DocumentSnapshot> task = documentReference.get();
+        // wait until the task is complete
+        while (!task.isComplete());
+        DocumentSnapshot document = task.getResult();
+        String name = (String) document.get("name");
+        String email = (String) document.get("email");
+        String phone = (String) document.get("phone");
         this.info = new ContactInformation(name, email, phone);
     }
 
@@ -180,7 +219,10 @@ public class User implements Serializable {
      * @param experimentId
      *  the UUID of the experiment
      */
-    public void addExperiment(UUID experimentId) { ownedExperiments.add(experimentId); }
+    public void addExperiment(UUID experimentId) {
+        ownedExperiments.add(experimentId);
+        updateFirestore();
+    }
 
     /**
      * Adds/removes the experiment reference to the subscribed experiments.

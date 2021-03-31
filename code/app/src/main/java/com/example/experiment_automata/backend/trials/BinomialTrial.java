@@ -22,15 +22,6 @@ public class BinomialTrial extends Trial<Boolean> {
     }
 
     /**
-     *  gets the result of the single binomial trial recorded.
-     * @return
-     *  The result of the trial
-     */
-    public Boolean getResult() {
-        return result;
-    }
-
-    /**
      * get the the type of the current trial
      *
      * @return the type of the current trial

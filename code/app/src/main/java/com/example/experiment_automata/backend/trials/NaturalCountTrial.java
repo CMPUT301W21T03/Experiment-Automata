@@ -28,15 +28,6 @@ public class NaturalCountTrial extends Trial<Integer> {
     }
 
     /**
-     *  gets the result of a single natural count trial that was taken.
-     * @return
-     *  The single trial result.
-     */
-    public Integer getResult() {
-        return result;
-    }
-
-    /**
      * get the the type of the current trial
      *
      * @return the type of the current trial

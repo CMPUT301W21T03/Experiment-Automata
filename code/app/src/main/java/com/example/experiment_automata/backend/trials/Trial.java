@@ -94,5 +94,12 @@ public abstract class Trial<T> implements Serializable {
      */
     public abstract String getType();
 
-    public abstract T getResult();
+    /**
+     *  Gets the result of the single trial recorded.
+     * @return
+     *  The result of the trial
+     */
+    public T getResult() {
+        return result;
+    }
 }

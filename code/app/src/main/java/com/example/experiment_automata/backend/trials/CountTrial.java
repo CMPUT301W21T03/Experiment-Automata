@@ -31,14 +31,4 @@ public class CountTrial extends Trial<Object> {
     public String getType() {
         return "Count Trial";
     }
-
-    @Override
-    /**
-     * Return null since CountTrials don't really hold a value
-     */
-    public Object getResult() {
-        return null;
-    }
-
-
 }

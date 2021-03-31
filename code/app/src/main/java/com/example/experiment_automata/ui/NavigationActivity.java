@@ -166,33 +166,26 @@ public class NavigationActivity extends AppCompatActivity implements
                         Experiment experiment = experimentManager.getCurrentExperiment();
                         Snackbar snackbar = Snackbar.make(view, "No value was given", Snackbar.LENGTH_SHORT);
                         try {
+                            Object result = null;
                             switch (experiment.getType()) {
                                 case Count:
-                                    addTrial(experiment, currentTrial);
-                                    currentTrial = null;
                                     break;
                                 case NaturalCount:
                                     EditText naturalCountInput = (EditText) findViewById(R.id.add_natural_count_value);
-                                    final int naturalCount = Integer.parseInt(naturalCountInput.getText().toString());
-                                    ((NaturalCountTrial)currentTrial).setResult(naturalCount);
-                                    addTrial(experiment, currentTrial);
-                                    currentTrial = null;
+                                    result = Integer.parseInt(naturalCountInput.getText().toString());
                                     break;
                                 case Binomial:
                                     CheckBox passedInput = findViewById(R.id.add_binomial_value);
-                                    final boolean passed = passedInput.isChecked();
-                                    ((BinomialTrial)currentTrial).setResult(passed);
-                                    addTrial(experiment, currentTrial);
-                                    currentTrial = null;
+                                    result = passedInput.isChecked();
                                     break;
                                 case Measurement:
                                     EditText measurementInput = (EditText) findViewById(R.id.add_measurement_value);
-                                    final float measurement = Float.parseFloat(measurementInput.getText().toString());
-                                    ((MeasurementTrial)currentTrial).setResult(measurement);
-                                    addTrial(experiment, currentTrial);
-                                    currentTrial = null;
+                                    result = Float.parseFloat(measurementInput.getText().toString());
                                     break;
                             }
+                            currentTrial.setResult(result);
+                            addTrial(experiment, currentTrial);
+                            currentTrial = null;
                             currentScreen = Screen.ExperimentDetails;
                             navController.navigateUp();
                         } catch (NumberFormatException ignored) {

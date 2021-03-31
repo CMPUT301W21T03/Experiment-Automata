@@ -47,7 +47,7 @@ public class TrialTest {
     public void naturalCount() {
         assertNotNull(new NaturalCountTrial(userId, 0));
         Location loc = new Location(LocationManager.NETWORK_PROVIDER);
-        int count = 420;
+        Integer count = 420;
         NaturalCountTrial trial = new NaturalCountTrial(userId, loc, count);
         assertEquals(count, trial.getResult());
         assertThrows(IllegalArgumentException.class, () -> new NaturalCountTrial(userId, -1));
@@ -65,7 +65,7 @@ public class TrialTest {
     public void measurement() {
         Location loc = new Location(LocationManager.NETWORK_PROVIDER);
         assertNotNull(new MeasurementTrial(userId, loc, 0));
-        float res = 6.9f;
+        Float res = 6.9f;
         MeasurementTrial trial = new MeasurementTrial(userId, res);
         assertEquals(res, trial.getResult());
         res = -Float.MIN_VALUE;

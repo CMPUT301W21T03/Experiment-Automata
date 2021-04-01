@@ -1,20 +1,26 @@
 package com.example.experiment_automata;
 
+import androidx.test.platform.app.InstrumentationRegistry;
+
 import com.example.experiment_automata.backend.experiments.BinomialExperiment;
+import com.example.experiment_automata.backend.experiments.ExperimentMaker;
+import com.example.experiment_automata.backend.experiments.ExperimentType;
 import com.example.experiment_automata.backend.trials.BinomialTrial;
+import com.google.firebase.FirebaseApp;
 
 import org.junit.Before;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-public class BinomialExperimentStatTest {
-
+public class BinomialStatsTests {
     UUID ownerId = UUID.randomUUID();
-    BinomialExperiment binomialExperiment=new BinomialExperiment("This is a test", 5, false, true, ownerId);
+    ExperimentMaker maker = new ExperimentMaker();
+    BinomialExperiment binomialExperiment;
+
     UUID id = UUID.randomUUID();
     UUID id2 = UUID.randomUUID();
     UUID id3 = UUID.randomUUID();
@@ -32,10 +38,18 @@ public class BinomialExperimentStatTest {
 
     @Before
     public void setup() {
+
+        FirebaseApp.initializeApp(InstrumentationRegistry.getInstrumentation().getTargetContext());
         // Reset the binomial experiment
         successTrial = new BinomialTrial(id, true);
         failureTrial = new BinomialTrial(id, false);
-        binomialExperiment = new BinomialExperiment("This is a test", 5, false, true, ownerId);
+        binomialExperiment =
+                (BinomialExperiment) maker.makeExperiment(ExperimentType.Binomial,
+                        "This is a test",
+                        5,
+                        false,
+                        true,
+                        ownerId);
     }
 
     /**
@@ -57,9 +71,9 @@ public class BinomialExperimentStatTest {
     @Test
     public void getMeanTest(){
         binomialExperiment.recordTrial(successTrial);
-        assertEquals(binomialExperiment.getMean(), 1.0);
+        assertEquals(binomialExperiment.getMean(), 1.0, 0.01);
         binomialExperiment.recordTrial(failureTrial);
-        assertEquals(binomialExperiment.getMean(), 0.5);
+        assertEquals(binomialExperiment.getMean(), 0.5, 0.01);
         binomialExperiment.recordTrial(successTrial);
         // Within a reasonable margin of error for this one with a non-terminating decimal expansion
         assertTrue(marginOfError(binomialExperiment.getMean(), (float) 0.6666667));
@@ -87,28 +101,28 @@ public class BinomialExperimentStatTest {
     @Test
     public void getMedianTest(){
         // No results recorded so far
-        assertEquals(binomialExperiment.getMedian(), 0.5);
+        assertEquals(binomialExperiment.getMedian(), 0.5, 0.01);
 
         // 1 success, 0 failures
         binomialExperiment.recordTrial(successTrial);
 
-        assertEquals(binomialExperiment.getMedian(), 1.0);
+        assertEquals(binomialExperiment.getMedian(), 1.0, 0.01);
 
         // 1 success, 2 failures
         binomialExperiment.recordTrial(failureTrial);
         binomialExperiment.recordTrial(failureTrial);
 
-        assertEquals(binomialExperiment.getMedian(), 0.0);
+        assertEquals(binomialExperiment.getMedian(), 0.0, 0.01);
 
         // 2 success, 2 failures
         binomialExperiment.recordTrial(successTrial);
 
-        assertEquals(binomialExperiment.getMedian(), 0.5);
+        assertEquals(binomialExperiment.getMedian(), 0.5, 0.01);
 
         // 3 success, 2 failures
         binomialExperiment.recordTrial(successTrial);
 
-        assertEquals(binomialExperiment.getMedian(), 1.0);
+        assertEquals(binomialExperiment.getMedian(), 1.0, 0.01);
     }
 
     @Test
@@ -117,13 +131,13 @@ public class BinomialExperimentStatTest {
         // 1 success, 0 failures
         binomialExperiment.recordTrial(successTrial);
 
-        assertEquals(binomialExperiment.getStdev(), 0.0);
+        assertEquals(binomialExperiment.getStdev(), 0.0, 0.01);
 
         // 1 success, 1 failure
 
         binomialExperiment.recordTrial(failureTrial);
 
-        assertEquals(binomialExperiment.getStdev(), 0.5);
+        assertEquals(binomialExperiment.getStdev(), 0.5, 0.01);
 
         // 1 success, 2 failures
 
@@ -133,7 +147,7 @@ public class BinomialExperimentStatTest {
 
         binomialExperiment.recordTrial(successTrial);
 
-        assertEquals(binomialExperiment.getStdev(), 0.5);
+        assertEquals(binomialExperiment.getStdev(), 0.5, 0.01);
 
         // 2 success, 3 failures
         binomialExperiment.recordTrial(failureTrial);
@@ -161,9 +175,9 @@ public class BinomialExperimentStatTest {
 
         float[] quartiles = binomialExperiment.getQuartiles();
 
-        assertEquals(quartiles[0], 0);
-        assertEquals(quartiles[1], 1);
-        assertEquals(quartiles[2], 1);
+        assertEquals(quartiles[0], 0, 0.01);
+        assertEquals(quartiles[1], 1, 0.01);
+        assertEquals(quartiles[2], 1, 0.01);
 
 
     }
@@ -183,9 +197,9 @@ public class BinomialExperimentStatTest {
         binomialExperiment.recordTrial(failureTrial);
 
         float[] quartiles = binomialExperiment.getQuartiles();
-        assertEquals(quartiles[0], 0) ;
-        assertEquals(quartiles[1], 0);
-        assertEquals(quartiles[2], 0.5);
+        assertEquals(quartiles[0], 0, 0.01) ;
+        assertEquals(quartiles[1], 0, 0.01);
+        assertEquals(quartiles[2], 0.5, 0.01);
 
     }
 
@@ -203,9 +217,9 @@ public class BinomialExperimentStatTest {
 
 
         float[] quartiles = binomialExperiment.getQuartiles();
-        assertEquals(quartiles[0], 0) ;
-        assertEquals(quartiles[1], 0);
-        assertEquals(quartiles[2], 0.5);
+        assertEquals(quartiles[0], 0, 0.01) ;
+        assertEquals(quartiles[1], 0, 0.01);
+        assertEquals(quartiles[2], 0.5, 0.01);
 
     }
 
@@ -222,9 +236,9 @@ public class BinomialExperimentStatTest {
 
 
         float[] quartiles = binomialExperiment.getQuartiles();
-        assertEquals(quartiles[0], 0) ;
-        assertEquals(quartiles[1], 0);
-        assertEquals(quartiles[2], 1);
+        assertEquals(quartiles[0], 0, 0.01) ;
+        assertEquals(quartiles[1], 0, 0.01);
+        assertEquals(quartiles[2], 1, 0.01);
 
     }
 
@@ -240,7 +254,7 @@ public class BinomialExperimentStatTest {
         binomialExperiment.recordTrial(ignoreSuccess);
 
         // Shouldn't have changed
-        assertEquals(binomialExperiment.getMean(), 0.5);
+        assertEquals(binomialExperiment.getMean(), 0.5, 0.01);
 
 
         binomialExperiment.recordTrial(successTrial);
@@ -304,9 +318,9 @@ public class BinomialExperimentStatTest {
 
         float[] quartiles = binomialExperiment.getQuartiles();
 
-        assertEquals(quartiles[0], 0);
-        assertEquals(quartiles[1], 1);
-        assertEquals(quartiles[2], 1);
+        assertEquals(quartiles[0], 0, 0.01);
+        assertEquals(quartiles[1], 1, 0.01);
+        assertEquals(quartiles[2], 1, 0.01);
 
 
     }

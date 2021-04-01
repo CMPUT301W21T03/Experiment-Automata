@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_owned_experiments">
+    app:startDestination="@id/nav_profile">
 
     <fragment
         android:id="@+id/nav_owned_experiments"
@@ -82,7 +82,11 @@
         android:id="@+id/nav_profile"
         android:name="com.example.experiment_automata.ui.profile.ProfileFragment"
         android:label="@string/menu_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_nav_profile_to_nav_owned_experiments2"
+            app:destination="@id/nav_owned_experiments" />
+    </fragment>
     <fragment
         android:id="@+id/nav_experiment_details"
         android:name="com.example.experiment_automata.ui.experiments.NavExperimentDetailsFragment"

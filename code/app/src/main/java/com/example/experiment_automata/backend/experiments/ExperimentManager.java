@@ -281,21 +281,44 @@ public class ExperimentManager
                 case Binomial:
                     boolean binResult = (boolean)currentTrialMap.get("result");
                     BinomialTrial binTrial = new BinomialTrial(ownerId,binResult);
-                    experiment.recordTrial(binTrial);
+                    if(experiment.isRequireLocation()){
+
+                    }
+                    else{
+                        experiment.recordTrial(binTrial);
+                    }
                     break;
                 case Count:
                     CountTrial countTrial = new CountTrial(ownerId);
-                    experiment.recordTrial(countTrial);
+
+                    if(experiment.isRequireLocation()){
+
+                    }
+                    else{
+                        experiment.recordTrial(countTrial);
+                    }
                     break;
                 case NaturalCount:
                     int natResult = (int)((long)currentTrialMap.get("result"));
                     NaturalCountTrial natTrial = new NaturalCountTrial(ownerId,natResult);//NaturalCountTrial(UUID collector, Location location, int result)
-                    experiment.recordTrial(natTrial);
+
+                    if(experiment.isRequireLocation()){
+
+                    }
+                    else{
+                        experiment.recordTrial(natTrial);
+                    }
                     break;
                 case Measurement:
                     float measResult = (float)((double)currentTrialMap.get("result"));
                     MeasurementTrial mesTrial = new MeasurementTrial(ownerId,measResult);
-                    experiment.recordTrial(mesTrial);
+
+                    if(experiment.isRequireLocation()){
+
+                    }
+                    else{
+                        experiment.recordTrial(mesTrial);
+                    }
                     break;
                 default:
                     //do nothing!

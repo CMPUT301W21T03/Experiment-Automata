@@ -1,28 +1,33 @@
 package com.example.experiment_automata;
 
-import com.example.experiment_automata.backend.experiments.ExperimentManager;
+import androidx.test.platform.app.InstrumentationRegistry;
+
 import com.example.experiment_automata.backend.experiments.Experiment;
 import com.example.experiment_automata.backend.experiments.ExperimentMaker;
+import com.example.experiment_automata.backend.experiments.ExperimentManager;
 import com.example.experiment_automata.backend.experiments.ExperimentType;
+import com.google.firebase.FirebaseApp;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.Assert.fail;
 
-public class ExperimentManagerTest {
-    ExperimentManager experimentManager;
-    ArrayList<Experiment> experiments;
-    ArrayList<UUID> experimentReferences;
-    UUID userId;
+public class ExperimentManagerTestsFireBase {
 
-    @BeforeEach
-    public void setup() {
+    private ExperimentManager experimentManager;
+    private ArrayList<Experiment> experiments;
+    private ArrayList<UUID> experimentReferences;
+    private UUID userId;
+
+
+    @Before
+    public void runningSetup()
+    {
         ExperimentMaker experimentMaker = new ExperimentMaker();
         experimentManager = new ExperimentManager();
         experiments = new ArrayList<>();
@@ -41,6 +46,8 @@ public class ExperimentManagerTest {
         experimentReferences.add(e.getExperimentId());
         experiments.add(e);
         experimentManager.add(id, e);
+
+        FirebaseApp.initializeApp(InstrumentationRegistry.getInstrumentation().getContext());
     }
 
     @Test
@@ -175,4 +182,5 @@ public class ExperimentManagerTest {
                 experimentManager.getAllExperiments().size()-2,
                 testValues.size());
     }
+
 }

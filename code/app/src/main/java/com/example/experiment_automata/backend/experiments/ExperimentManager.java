@@ -4,6 +4,9 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.experiment_automata.backend.trials.BinomialTrial;
+import com.example.experiment_automata.backend.trials.CountTrial;
+import com.example.experiment_automata.backend.trials.MeasurementTrial;
 import com.example.experiment_automata.backend.trials.NaturalCountTrial;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -261,28 +264,41 @@ public class ExperimentManager
             }
         });
     }
-
+    /**
+     * Populates experiment with trials found in trials
+     * @param experiment
+     *  Experiment you want to populate
+     * @param trialsObj
+     *  Hashmap containing other hashmaps as found in the results field in the given Experiment document
+     */
     public void buildTrials(Experiment experiment, Object trialsObj){
         HashMap<String,Object> trials = ( HashMap<String,Object> )trialsObj;
         for (String k : trials.keySet()){
-
+            HashMap<String,Object> currentTrialMap = (HashMap<String,Object>) trials.get(k);
+            UUID ownerId = UUID.fromString((String)currentTrialMap.get("owner-id"));
+            //Location location = ; NEED TO WRITE LOCATION HANDLING
             switch(experiment.getType()){
                 case Binomial:
+                    boolean binResult = (boolean)currentTrialMap.get("result");
+                    BinomialTrial binTrial = new BinomialTrial(ownerId,binResult);
+                    experiment.recordTrial(binTrial);
                     break;
                 case Count:
+                    CountTrial countTrial = new CountTrial(ownerId);
+                    experiment.recordTrial(countTrial);
                     break;
                 case NaturalCount:
-                    HashMap<String,Object> currentTrialMap = (HashMap<String,Object>) trials.get(k);
-                    UUID ownerId = UUID.fromString((String)currentTrialMap.get("owner-id"));
-                    int result = (int)((long)currentTrialMap.get("result"));
-                    //Location location = ;
-                    NaturalCountTrial trial = new NaturalCountTrial(ownerId,result);//NaturalCountTrial(UUID collector, Location location, int result)
-                    experiment.recordTrial(trial);
+                    int natResult = (int)((long)currentTrialMap.get("result"));
+                    NaturalCountTrial natTrial = new NaturalCountTrial(ownerId,natResult);//NaturalCountTrial(UUID collector, Location location, int result)
+                    experiment.recordTrial(natTrial);
                     break;
                 case Measurement:
+                    float measResult = (float)((long)currentTrialMap.get("result"));
+                    MeasurementTrial mesTrial = new MeasurementTrial(ownerId,measResult);
+                    experiment.recordTrial(mesTrial);
                     break;
                 default:
-                    //stuff
+                    //do nothing!
         }
 
 

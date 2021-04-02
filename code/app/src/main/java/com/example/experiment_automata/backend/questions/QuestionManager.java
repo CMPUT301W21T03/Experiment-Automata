@@ -3,6 +3,15 @@ package com.example.experiment_automata.backend.questions;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -24,6 +33,7 @@ public class QuestionManager {
     private static HashMap<UUID, Question> questionFromId;
     private static  HashMap<UUID, ArrayList<Reply>> replies;
     private static QuestionManager questionManager;
+    private static HashMap<UUID,Boolean> repliesFromId;
 
 
     /**
@@ -33,7 +43,9 @@ public class QuestionManager {
     {
         questions = new HashMap<>();
         replies = new HashMap<>();
+        repliesFromId = new HashMap<>();
         questionFromId = new HashMap<>();
+        getQuestionsFromFirestore();
     }
 
     public static QuestionManager getInstance()
@@ -54,33 +66,41 @@ public class QuestionManager {
      */
     public void addQuestion(UUID experimentId, Question question)
     {
-        ArrayList<Question> returnQuestions = new ArrayList<>();
-        returnQuestions.add(question);
+        if (!questionFromId.containsKey(question.getQuestionId())) {
+            ArrayList<Question> returnQuestions = new ArrayList<>();
+            returnQuestions.add(question);
 
-        if(questions.containsKey(experimentId))
-            returnQuestions.addAll(questions.get(experimentId));
+            if (questions.containsKey(experimentId))
+                returnQuestions.addAll(questions.get(experimentId));
 
-        questions.put(experimentId, returnQuestions);
-        Log.d("question", "" + question.getQuestionId().toString());
-        questionFromId.put(question.getQuestionId(), question);
+            questions.put(experimentId, returnQuestions);
+            Log.d("question", "" + question.getQuestionId().toString());
+            questionFromId.put(question.getQuestionId(), question);
+        }
     }
 
     /**
      * Adds the given replies that the user class/caller gives to this class.
-     * @param id
+     * @param questionId
      *  id corresponding to the question
      * @param reply
      *  reply to add to the manager
      */
-    public void addReply(UUID id, Reply reply)
+    public void addReply(UUID questionId, Reply reply)
     {
-        ArrayList<Reply> reps = replies.get(id);
-        ArrayList<Reply> allReplies = new ArrayList<>();
-        allReplies.add(reply);
-        if(reps != null)
-            allReplies.addAll(reps);
+        if (!repliesFromId.containsKey(reply.getReplyId())) {
+            ArrayList<Reply> reps = replies.get(questionId);
+            ArrayList<Reply> allReplies = new ArrayList<>();
+            allReplies.add(reply);
+            if (reps != null)
+                allReplies.addAll(reps);
 
-        replies.put(id, allReplies);
+            replies.put(questionId, allReplies);
+            repliesFromId.put(reply.getReplyId(), true);
+            Question questionToUpdate = getQuestion(questionId);
+            questionToUpdate.setReply(reply.getReplyId());
+            questionToUpdate.postQuestionToFirestore();
+        }
     }
 
     /**
@@ -157,5 +177,58 @@ public class QuestionManager {
     public Collection<ArrayList<Question>> getAllQuestions()
     {
         return questions.values();
+    }
+
+    /**
+     * Gets all questions from firestore
+     */
+
+    public void getQuestionsFromFirestore() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference questionsCollection = db.collection("questions");
+        questionsCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document :  task.getResult()) {
+                        UUID experimentId =  UUID.fromString((String) document.get("experiment-id"));
+                                Question currentQuestion = new Question(
+                                (String) document.get("question-text"),
+                                UUID.fromString((String) document.get("user-id")),
+                                experimentId,
+                                UUID.fromString((String) document.getId())
+                        );
+                        addQuestion(experimentId, currentQuestion);
+                    }
+                    getRepliesFromFirestore();
+                }
+            }
+        });
+    }
+
+    /**
+     * Gets all replies from firestore
+     */
+
+    private void getRepliesFromFirestore() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference questionsCollection = db.collection("replies");
+        questionsCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document :  task.getResult()) {
+                        UUID questionId = UUID.fromString((String) document.get("question-id"));
+                        Reply currentReply = new Reply(
+                                (String) document.get("reply-text"),
+                                questionId,
+                                UUID.fromString((String) document.get("user-id")),
+                                UUID.fromString((String) document.getId())
+                        );
+                        addReply(questionId, currentReply);
+                    }
+                }
+            }
+        });
     }
 }

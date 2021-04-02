@@ -32,9 +32,6 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
     private boolean published; // changed from UML for style
     private boolean requireLocation; // added to align with storyboard
     private ExperimentType type; // todo: do we need type here if an experiment has a type? (yes makes it easy)
-    private Collection<Object> results;
-
-
 
     /**
      * Default experiment constructor that only asks for a description
@@ -182,7 +179,10 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
      * @param p
      *  Boolean whether the experiment is published or not
      */
-    public void setPublished(boolean p) { published = p; }
+    public void setPublished(boolean p) {
+        published = p;
+        postExperimentToFirestore();
+    }
 
     /**
      * set the description of experiment
@@ -190,6 +190,7 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
      */
     public void setDescription(String description) {
         this.description = description;
+        postExperimentToFirestore();
     }
 
     /**
@@ -197,7 +198,9 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
      * @param minTrials value to be set
      */
     public void setMinTrials(int minTrials) {
+
         this.minTrials = minTrials;
+        postExperimentToFirestore();
     }
 
     /**
@@ -205,7 +208,9 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
      * @param active value to be set
      */
     public void setActive(boolean active) {
+
         this.active = active;
+        postExperimentToFirestore();
     }
 
     /**
@@ -214,6 +219,7 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
      */
     public void setRequireLocation(boolean requireLocation) {
         this.requireLocation = requireLocation;
+        postExperimentToFirestore();
     }
 
     /**

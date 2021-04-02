@@ -72,6 +72,7 @@ public class QuestionDisplay extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //((NavigationActivity)getActivity()).questionManager.getQuestionsFromFirestore();
         ((NavigationActivity)getActivity()).setCurrentFragment(this);
         if (getArguments() != null) {
             currentExperiment = (Experiment) getArguments().getSerializable(QUESTION_EXPERIMENT);
@@ -95,6 +96,7 @@ public class QuestionDisplay extends Fragment {
         questionsDisplayList = root.findViewById(R.id.frag_questions_display_list_view);
         //Getting all the questions
 
+        ((NavigationActivity)getActivity()).questionManager.getQuestionsFromFirestore();
         ((NavigationActivity)getActivity()).setCurrentFragment(this);
 
         try {

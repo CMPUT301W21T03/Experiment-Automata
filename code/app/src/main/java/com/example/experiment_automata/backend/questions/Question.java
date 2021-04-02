@@ -1,6 +1,14 @@
 package com.example.experiment_automata.backend.questions;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 
@@ -27,6 +35,7 @@ public class Question implements Serializable
         this.user = user;
         this.experimentId = experimentId;
         this.questionId = UUID.randomUUID();
+        postQuestionToFirestore();
     }
 
     public Question(Question question) {
@@ -35,6 +44,54 @@ public class Question implements Serializable
         this.reply = question.getReply();
         this.experimentId = question.getExperimentId();
         this.questionId = question.getQuestionId();
+    }
+
+    /**
+     * Constructor for Question when all values are received from firestore.
+     * Note that reply is not an argument because replies will be added by the
+     * Question manager later.
+     * @param questionText
+     * @param userId
+     * @param experimentId
+     * @param questionId
+     */
+    public Question(String questionText, UUID userId, UUID experimentId, UUID questionId) {
+        this.question = questionText;
+        this.user = userId;
+        this.experimentId = experimentId;
+        this.questionId = questionId;
+    }
+
+    /**
+     *  Post the current question to firestore
+     */
+
+    protected void postQuestionToFirestore() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String,Object> questionData = new HashMap<>();
+        String questionIdString = this.questionId.toString();
+
+        questionData.put("question-text",this.question);
+        questionData.put("user-id", this.user.toString());
+        questionData.put("experiment-id", this.experimentId.toString());
+        if (this.reply != null) {
+            questionData.put("reply-id", this.reply.toString());
+        }
+
+        db.collection("questions").document(questionIdString)
+                .set(questionData)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
     }
 
     public String getQuestion() {

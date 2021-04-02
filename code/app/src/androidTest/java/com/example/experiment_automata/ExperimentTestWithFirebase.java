@@ -1,5 +1,7 @@
 package com.example.experiment_automata;
 
+import androidx.test.platform.app.InstrumentationRegistry;
+
 import com.example.experiment_automata.backend.experiments.BinomialExperiment;
 import com.example.experiment_automata.backend.experiments.CountExperiment;
 import com.example.experiment_automata.backend.experiments.Experiment;
@@ -11,22 +13,27 @@ import com.example.experiment_automata.backend.trials.BinomialTrial;
 import com.example.experiment_automata.backend.trials.CountTrial;
 import com.example.experiment_automata.backend.trials.MeasurementTrial;
 import com.example.experiment_automata.backend.trials.NaturalCountTrial;
+import com.google.firebase.FirebaseApp;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 
-public class ExperimentTest {
+public class ExperimentTestWithFirebase {
     private ExperimentMaker maker;
     private UUID userId;
 
-    @BeforeEach
+    @Before
     public void setup() {
         maker = new ExperimentMaker();
         userId = UUID.randomUUID();
+        FirebaseApp.initializeApp(InstrumentationRegistry.getInstrumentation().getTargetContext());
     }
 
     @Test
@@ -35,7 +42,7 @@ public class ExperimentTest {
                 "Count Experiment", 0, false, true, userId);
         experiment.recordTrial(new CountTrial(userId));
         experiment.setActive(false);
-        assertThrows(IllegalStateException.class, () -> experiment.recordTrial(new CountTrial(userId)));
+        assertThrows(IllegalStateException.class, ()->experiment.recordTrial(new CountTrial(userId)));
     }
 
     @Test

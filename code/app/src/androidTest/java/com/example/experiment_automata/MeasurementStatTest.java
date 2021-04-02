@@ -4,16 +4,16 @@ import com.example.experiment_automata.backend.experiments.MeasurementExperiment
 import com.example.experiment_automata.backend.trials.MeasurementTrial;
 
 import org.junit.Before;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.util.UUID;
+import static org.junit.Assert.*;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 public class MeasurementStatTest {
 
     UUID ownerId = UUID.randomUUID();
-    MeasurementExperiment mesExperiment = new MeasurementExperiment("This is a test", 5, false, true, ownerId);
+    MeasurementExperiment mesExperiment;
     UUID id = UUID.randomUUID();
     UUID id2 = UUID.randomUUID();
     UUID id3 = UUID.randomUUID();
@@ -47,7 +47,7 @@ public class MeasurementStatTest {
     @Test
     public void getMeanTest(){
         mesExperiment.recordTrial(new MeasurementTrial(id, 2.4f));
-        assertEquals(mesExperiment.getMean(), 2.4f);
+        assertEquals(mesExperiment.getMean(), 2.4f, 0.01);
         mesExperiment.recordTrial(new MeasurementTrial(id, 3.1f));
         assertTrue(marginOfError(mesExperiment.getMean(), 2.75f));
 
@@ -68,7 +68,7 @@ public class MeasurementStatTest {
     @Test
     public void getMedianTest(){
         mesExperiment.recordTrial(new MeasurementTrial(id, 2.4f));
-        assertEquals(mesExperiment.getMedian(), 2.4f);
+        assertEquals(mesExperiment.getMedian(), 2.4f, 0.01);
         mesExperiment.recordTrial(new MeasurementTrial(id, 3.1f));
         assertTrue(marginOfError(mesExperiment.getMedian(), 2.75f));
 
@@ -89,7 +89,7 @@ public class MeasurementStatTest {
     public void getStdevTest(){
         // Numbers for verification were computed from https://www.calculator.net/standard-deviation-calculator.html
         mesExperiment.recordTrial(new MeasurementTrial(id, 2.4f));
-        assertEquals(mesExperiment.getStdev(), 0f);
+        assertEquals(mesExperiment.getStdev(), 0f, 0.01);
 
         mesExperiment.recordTrial(new MeasurementTrial(id, 3.1f));
         assertTrue(marginOfError(mesExperiment.getStdev(), 0.35f));
@@ -146,8 +146,8 @@ public class MeasurementStatTest {
         mesExperiment.recordTrial(new MeasurementTrial(id, 420f));
 
         float[] quartiles = mesExperiment.getQuartiles();
-        assertEquals(quartiles[0], 5.5);
-        assertEquals(quartiles[1], 8.0);
+        assertEquals(quartiles[0], 5.5,0.01);
+        assertEquals(quartiles[1], 8.0, 0.01);
         assertTrue(marginOfError(quartiles[2], 222.8f));
 
     }
@@ -239,7 +239,7 @@ public class MeasurementStatTest {
         mesExperiment.recordTrial(measurementIgnore2);
 
         mesExperiment.recordTrial(new MeasurementTrial(id, 2.4f));
-        assertEquals(mesExperiment.getStdev(), 0f);
+        assertEquals(mesExperiment.getStdev(), 0f, 0.01);
 
         mesExperiment.recordTrial(new MeasurementTrial(id, 3.1f));
         assertTrue(marginOfError(mesExperiment.getStdev(), 0.35f));

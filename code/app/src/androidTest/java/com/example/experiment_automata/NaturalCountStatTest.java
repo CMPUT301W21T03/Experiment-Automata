@@ -5,11 +5,13 @@ import com.example.experiment_automata.backend.trials.NaturalCountTrial;
 
 
 import org.junit.Before;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 
 public class NaturalCountStatTest {
 
@@ -48,15 +50,15 @@ public class NaturalCountStatTest {
     @Test
     public void getMeanTest(){
         natExperiment.recordTrial(new NaturalCountTrial(id, 2));
-        assertEquals(natExperiment.getMean(), 2.0);
+        assertEquals(natExperiment.getMean(), 2.0, 0.01);
         natExperiment.recordTrial(new NaturalCountTrial(id, 3));
-        assertEquals(natExperiment.getMean(), 2.5);
+        assertEquals(natExperiment.getMean(), 2.5, 0.01);
 
         natExperiment.recordTrial(new NaturalCountTrial(id, 4));
-        assertEquals(natExperiment.getMean(), 3);
+        assertEquals(natExperiment.getMean(), 3, 0.01);
 
         natExperiment.recordTrial(new NaturalCountTrial(id, 9));
-        assertEquals(natExperiment.getMean(), 4.5);
+        assertEquals(natExperiment.getMean(), 4.5, 0.01);
 
         natExperiment.recordTrial(new NaturalCountTrial(id, 3));
         assertTrue(marginOfError(natExperiment.getMean(),  4.2f));
@@ -69,32 +71,32 @@ public class NaturalCountStatTest {
     @Test
     public void getMedianTest(){
         natExperiment.recordTrial(new NaturalCountTrial(id, 2));
-        assertEquals(natExperiment.getMedian(), 2.0);
+        assertEquals(natExperiment.getMedian(), 2.0, 0.01);
         natExperiment.recordTrial(new NaturalCountTrial(id, 3));
-        assertEquals(natExperiment.getMedian(), 2.5);
+        assertEquals(natExperiment.getMedian(), 2.5, 0.01);
 
         natExperiment.recordTrial(new NaturalCountTrial(id, 4));
-        assertEquals(natExperiment.getMedian(), 3);
+        assertEquals(natExperiment.getMedian(), 3, 0.01);
 
         natExperiment.recordTrial(new NaturalCountTrial(id, 9));
-        assertEquals(natExperiment.getMedian(), 3.5);
+        assertEquals(natExperiment.getMedian(), 3.5, 0.01);
 
         natExperiment.recordTrial(new NaturalCountTrial(id, 3));
-        assertEquals(natExperiment.getMedian(),  3);
+        assertEquals(natExperiment.getMedian(),  3, 0.01);
 
 
         natExperiment.recordTrial(new NaturalCountTrial(id, 1));
         natExperiment.recordTrial(new NaturalCountTrial(id, 1));
         // 1, 1, 2, 3, 3, 4, 9
-        assertEquals(natExperiment.getMedian(), 3);
+        assertEquals(natExperiment.getMedian(), 3, 0.01);
 
         //  1, 1, 1, 2, 3, 3, 4, 9
         natExperiment.recordTrial(new NaturalCountTrial(id, 1));
-        assertEquals(natExperiment.getMedian(), 2.5);
+        assertEquals(natExperiment.getMedian(), 2.5, 0.01);
         // 1, 1, 1, 1, 2, 3, 3, 4, 9
         natExperiment.recordTrial(new NaturalCountTrial(id, 1));
 
-        assertEquals(natExperiment.getMedian(), 2);
+        assertEquals(natExperiment.getMedian(), 2, 0.01);
 
 
     }
@@ -103,9 +105,9 @@ public class NaturalCountStatTest {
     public void getStdevTest(){
         // Numbers for verification computed from https://www.calculator.net/standard-deviation-calculator.html
         natExperiment.recordTrial(new NaturalCountTrial(id, 2));
-        assertEquals(natExperiment.getStdev(), 0);
+        assertEquals(natExperiment.getStdev(), 0, 0.01);
         natExperiment.recordTrial(new NaturalCountTrial(id, 3));
-        assertEquals(natExperiment.getStdev(), 0.5);
+        assertEquals(natExperiment.getStdev(), 0.5,0.01);
 
         natExperiment.recordTrial(new NaturalCountTrial(id, 4));
         assertTrue(marginOfError(natExperiment.getStdev(), 0.81649658092773f));
@@ -157,9 +159,9 @@ public class NaturalCountStatTest {
         natExperiment.recordTrial(new NaturalCountTrial(id, 22));
 
         float[] quartiles = natExperiment.getQuartiles();
-        assertEquals(quartiles[0], 7);
+        assertEquals(quartiles[0], 7, 0.01);
         assertTrue(marginOfError(quartiles[1], 13.5f));
-        assertEquals(quartiles[2], 19);
+        assertEquals(quartiles[2], 19, 0.01);
 
     }
 
@@ -176,7 +178,7 @@ public class NaturalCountStatTest {
         natExperiment.recordTrial(new NaturalCountTrial(id, 16));
 
         float[] quartiles = natExperiment.getQuartiles();
-        assertEquals(quartiles[0], 5);
+        assertEquals(quartiles[0], 5, 0.01);
         assertTrue(marginOfError(quartiles[1], 9f));
         assertTrue(marginOfError(quartiles[2], 13.5f));
 
@@ -193,9 +195,9 @@ public class NaturalCountStatTest {
         natExperiment.recordTrial(new NaturalCountTrial(id, 11));
 
         float[] quartiles = natExperiment.getQuartiles();
-        assertEquals(quartiles[0], 3);
-        assertEquals(quartiles[1], 7);
-        assertEquals(quartiles[2], 11);
+        assertEquals(quartiles[0], 3, 0.01);
+        assertEquals(quartiles[1], 7, 0.01);
+        assertEquals(quartiles[2], 11, 0.01);
 
     }
 
@@ -225,9 +227,9 @@ public class NaturalCountStatTest {
         // These should be the same as in getQuartilesTest4
 
         float[] quartiles = natExperiment.getQuartiles();
-        assertEquals(quartiles[0], 3);
-        assertEquals(quartiles[1], 7);
-        assertEquals(quartiles[2], 11);
+        assertEquals(quartiles[0], 3, 0.01);
+        assertEquals(quartiles[1], 7, 0.01);
+        assertEquals(quartiles[2], 11, 0.01);
 
     }
 
@@ -249,9 +251,9 @@ public class NaturalCountStatTest {
         // Should be the same as in the median test since the above trials are ignored
 
         natExperiment.recordTrial(new NaturalCountTrial(id, 2));
-        assertEquals(natExperiment.getStdev(), 0);
+        assertEquals(natExperiment.getStdev(), 0, 0.01);
         natExperiment.recordTrial(new NaturalCountTrial(id, 3));
-        assertEquals(natExperiment.getStdev(), 0.5);
+        assertEquals(natExperiment.getStdev(), 0.5, 0.01);
 
         natExperiment.recordTrial(new NaturalCountTrial(id, 4));
         assertTrue(marginOfError(natExperiment.getStdev(), 0.81649658092773f));

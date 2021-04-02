@@ -50,6 +50,7 @@ public class ExperimentManagerTestsFireBase {
         FirebaseApp.initializeApp(InstrumentationRegistry.getInstrumentation().getContext());
     }
 
+    //Testing small change work as expected
     @Test
     public void appending() {
         assertEquals(experiments.get(0),

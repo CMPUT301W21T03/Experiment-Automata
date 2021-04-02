@@ -1,6 +1,14 @@
 package com.example.experiment_automata.backend.questions;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -16,11 +24,57 @@ public class Reply implements Serializable {
     private String reply;
     private UUID experimenter;
     private UUID replyId;
+    private UUID questionId;
 
-    public Reply(String reply, UUID experimenter) {
+    public Reply(String reply, UUID questionId, UUID experimenter) {
         this.reply = reply;
         this.experimenter = experimenter;
         this.replyId = UUID.randomUUID();
+        this.questionId = questionId;
+        postReplyToFirestore();
+    }
+
+    /**
+     * Constructor for replies generated from firestore data
+     * @param reply
+     * @param questionId
+     * @param experimenter
+     * @param replyId
+     */
+    public Reply(String reply, UUID questionId, UUID experimenter, UUID replyId) {
+        this.reply = reply;
+        this.experimenter = experimenter;
+        this.replyId = replyId;
+        this.questionId = questionId;
+    }
+
+    /**
+     *  Post the current question to firestore
+     */
+
+    private void postReplyToFirestore() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String,Object> questionData = new HashMap<>();
+        String replyIdString = this.replyId.toString();
+
+        questionData.put("reply-text",this.reply);
+        questionData.put("user-id", this.experimenter.toString());
+        questionData.put("question-id", this.questionId.toString());
+
+        db.collection("replies").document(replyIdString)
+                .set(questionData)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
     }
 
     public String getReply() {

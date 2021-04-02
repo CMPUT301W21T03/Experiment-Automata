@@ -2,13 +2,14 @@ package com.example.experiment_automata.backend.experiments;
 
 import androidx.annotation.NonNull;
 
-import com.example.experiment_automata.backend.questions.Question;
 import com.example.experiment_automata.backend.trials.Trial;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -31,7 +32,9 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
     private boolean published; // changed from UML for style
     private boolean requireLocation; // added to align with storyboard
     private ExperimentType type; // todo: do we need type here if an experiment has a type? (yes makes it easy)
-    private ArrayList<Question> questions;
+    private Collection<Object> results;
+
+
 
     /**
      * Default experiment constructor that only asks for a description
@@ -41,7 +44,6 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
     public Experiment(String description)
     {
         this.description = description;
-
     }
 
     /**
@@ -64,7 +66,6 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
         this.ownerId = ownerId;
         this.experimentId = UUID.randomUUID();
         this.type = type;
-        this.questions = new ArrayList<>();
         postExperimentToFirestore();
     }
 
@@ -88,7 +89,6 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
         this.ownerId = ownerId;
         this.experimentId = experimentId;
         this.type = type;
-        this.questions = new ArrayList<>();
     }
     /**
      * This method will check if an experiment has the same id as another
@@ -111,6 +111,7 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String,Object> experimentData = new HashMap<>();
         String experimentUUIDString = experiment.getExperimentId().toString();
+        HashMap<String,Object> resultsData = buildResultsmap();
 
         experimentData.put("accepting-new-results",experiment.isActive());
         experimentData.put("description",experiment.getDescription());
@@ -119,6 +120,7 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
         experimentData.put("owner",experiment.getOwnerId().toString());
         experimentData.put("type",experiment.getType().toString());//enum to string
         experimentData.put("published",experiment.isPublished());
+        experimentData.put("results",resultsData);
 
         db.collection("experiments").document(experimentUUIDString)
                 .set(experimentData)
@@ -135,6 +137,8 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
                     }
                 });
     }
+
+
 
     /**
      * Gets the description of an experiment
@@ -264,4 +268,7 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
      * @return the recorded trials
      */
     public abstract ArrayList<Trial> getRecordedTrials();
+
+    public abstract HashMap<String,Object> buildResultsmap();
+
 }

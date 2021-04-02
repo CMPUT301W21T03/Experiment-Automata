@@ -265,7 +265,7 @@ public class ExperimentManager
         });
     }
     /**
-     * Populates experiment with trials found in trials
+     * Populates given experiment with trials found in trials from firestore
      * @param experiment
      *  Experiment you want to populate
      * @param trialsObj
@@ -299,14 +299,8 @@ public class ExperimentManager
                     break;
                 default:
                     //do nothing!
+            }
         }
-
-
-        }
-
-
-        HashMap<String,Object> outer = ( HashMap<String,Object> )trialsObj;
-        //HashMap<String,Object> inner  = ( HashMap<String,Object> )outer;
     }
 
     /**

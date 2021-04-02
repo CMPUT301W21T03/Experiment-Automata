@@ -294,10 +294,10 @@ public class ExperimentManager
                     CountTrial countTrial;
 
                     if(experiment.isRequireLocation()){
-                        countTrial = new CountTrial(ownerId);
+                        countTrial = new CountTrial(ownerId,locationFromTrialHash(currentTrialMap));
                     }
                     else{
-                        countTrial = new CountTrial(ownerId,locationFromTrialHash(currentTrialMap));
+                        countTrial = new CountTrial(ownerId);
                     }
                     experiment.recordTrial(countTrial);
                     break;

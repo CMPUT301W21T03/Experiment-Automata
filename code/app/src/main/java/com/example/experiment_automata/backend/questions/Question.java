@@ -47,6 +47,22 @@ public class Question implements Serializable
     }
 
     /**
+     * Constructor for Question when all values are received from firestore.
+     * Note that reply is not an argument because replies will be added by the
+     * Question manager later.
+     * @param questionText
+     * @param userId
+     * @param experimentId
+     * @param questionId
+     */
+    public Question(String questionText, UUID userId, UUID experimentId, UUID questionId) {
+        this.question = questionText;
+        this.user = userId;
+        this.experimentId = experimentId;
+        this.questionId = questionId;
+    }
+
+    /**
      *  Post the current question to firestore
      */
 

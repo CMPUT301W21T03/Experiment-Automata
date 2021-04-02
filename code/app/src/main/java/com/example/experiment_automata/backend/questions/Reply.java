@@ -24,12 +24,28 @@ public class Reply implements Serializable {
     private String reply;
     private UUID experimenter;
     private UUID replyId;
+    private UUID questionId;
 
-    public Reply(String reply, UUID experimenter) {
+    public Reply(String reply, UUID questionId, UUID experimenter) {
         this.reply = reply;
         this.experimenter = experimenter;
         this.replyId = UUID.randomUUID();
+        this.questionId = questionId;
         postReplyToFirestore();
+    }
+
+    /**
+     * Constructor for replies generated from firestore data
+     * @param reply
+     * @param questionId
+     * @param experimenter
+     * @param replyId
+     */
+    public Reply(String reply, UUID questionId, UUID experimenter, UUID replyId) {
+        this.reply = reply;
+        this.experimenter = experimenter;
+        this.replyId = replyId;
+        this.questionId = questionId;
     }
 
     /**
@@ -43,6 +59,7 @@ public class Reply implements Serializable {
 
         questionData.put("reply-text",this.reply);
         questionData.put("user-id", this.experimenter.toString());
+        questionData.put("question-id", this.questionId.toString());
 
         db.collection("replies").document(replyIdString)
                 .set(questionData)

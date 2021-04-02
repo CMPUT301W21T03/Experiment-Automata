@@ -3,6 +3,15 @@ package com.example.experiment_automata.backend.questions;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -34,6 +43,8 @@ public class QuestionManager {
         questions = new HashMap<>();
         replies = new HashMap<>();
         questionFromId = new HashMap<>();
+        getQuesitonsFromFirestore();
+        //getRepliesFromFirestore();
     }
 
     public static QuestionManager getInstance()
@@ -160,5 +171,57 @@ public class QuestionManager {
     public Collection<ArrayList<Question>> getAllQuestions()
     {
         return questions.values();
+    }
+
+    /**
+     * Gets all questions from firestore
+     */
+
+    private void getQuesitonsFromFirestore() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference questionsCollection = db.collection("questions");
+        questionsCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document :  task.getResult()) {
+                        UUID experimentId =  UUID.fromString((String) document.get("experiment-id"));
+                                Question currentQuestion = new Question(
+                                (String) document.get("question-text"),
+                                UUID.fromString((String) document.get("user-id")),
+                                experimentId,
+                                UUID.fromString((String) document.getId())
+                        );
+                        addQuestion(experimentId, currentQuestion);
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * Gets all replies from firestore
+     */
+
+    private void getRepliesFromFirestore() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference questionsCollection = db.collection("replies");
+        questionsCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document :  task.getResult()) {
+                        UUID questionId = UUID.fromString((String) document.get("question-id"));
+                        Reply currentReply = new Reply(
+                                (String) document.get("reply-text"),
+                                questionId,
+                                UUID.fromString((String) document.get("user-id")),
+                                UUID.fromString((String) document.getId())
+                        );
+                        addReply(questionId, currentReply);
+                    }
+                }
+            }
+        });
     }
 }

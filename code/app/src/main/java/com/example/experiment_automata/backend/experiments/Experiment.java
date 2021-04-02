@@ -32,7 +32,6 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
     private boolean published; // changed from UML for style
     private boolean requireLocation; // added to align with storyboard
     private ExperimentType type; // todo: do we need type here if an experiment has a type? (yes makes it easy)
-    private ArrayList<Question> questions;
 
     /**
      * Default experiment constructor that only asks for a description
@@ -65,7 +64,6 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
         this.ownerId = ownerId;
         this.experimentId = UUID.randomUUID();
         this.type = type;
-        this.questions = new ArrayList<>();
         postExperimentToFirestore();
     }
 
@@ -89,7 +87,6 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
         this.ownerId = ownerId;
         this.experimentId = experimentId;
         this.type = type;
-        this.questions = new ArrayList<>();
     }
     /**
      * This method will check if an experiment has the same id as another

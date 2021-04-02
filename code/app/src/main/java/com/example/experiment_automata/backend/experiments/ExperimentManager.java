@@ -293,7 +293,7 @@ public class ExperimentManager
                     experiment.recordTrial(natTrial);
                     break;
                 case Measurement:
-                    float measResult = (float)((long)currentTrialMap.get("result"));
+                    float measResult = (float)((double)currentTrialMap.get("result"));
                     MeasurementTrial mesTrial = new MeasurementTrial(ownerId,measResult);
                     experiment.recordTrial(mesTrial);
                     break;

@@ -59,7 +59,7 @@ public class User implements Serializable {
      */
     private User(UUID id) {
         this.userId = id;
-        updateFromFirestore();
+        updateContactFromFirestore();
     }
 
     /**

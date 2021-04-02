@@ -64,7 +64,6 @@ public class MapUtility
         this.parentActivity = parentActivity;
         this.trial = trial;
         marker = new Marker(this.display);
-        parentActivity.setCurrentScreen(Screen.MAP);
     }
 
     public void setRevertBack(Button revertBack)
@@ -77,7 +76,7 @@ public class MapUtility
      * Where the user clicks is the location of that trial.
      *
      * */
-    public void mapSupport()
+    private void mapSupport()
     {
         setupMap();
         /**
@@ -146,6 +145,7 @@ public class MapUtility
                 myDialog.show();
             }
             GeoPoint oldLocation = new GeoPoint(trial.getLocation());
+            parentActivity.setCurrentScreen(Screen.Trial);
 
             if(revertBack != null)
             {
@@ -213,5 +213,29 @@ public class MapUtility
         display.setMultiTouchControls(true);
         IMapController mapController = display.getController();
         mapController.setZoom(2f);
+    }
+
+
+    /**
+     * this class removes all maps assets
+     * so that we can remove assets when the map is not in use.
+     */
+    private void makeMapItemsDisappear() {
+        if(revertBack != null)
+            revertBack.setVisibility(View.GONE);
+        display.setVisibility(View.GONE);
+    }
+
+    /**
+     * this method sets things to deal with the map
+     */
+    public void run() {
+        if(experiment.isRequireLocation()) {
+            mapSupport();
+        }
+        else
+        {
+            makeMapItemsDisappear();
+        }
     }
 }

@@ -12,9 +12,11 @@
         android:layout_height="wrap_content"
         android:text="@string/map_point_view_experiment_no_loc_err"
         android:textColor="#FF0000"
-        android:textSize="20dp"
-        app:layout_constraintStart_toStartOf="@+id/map_point_view_fragment_map_display"
-        app:layout_constraintTop_toTopOf="@+id/map_point_view_fragment_map_display" />
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <org.osmdroid.views.MapView
         android:id="@+id/map_point_view_fragment_map_display"
@@ -24,5 +26,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

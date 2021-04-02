@@ -13,27 +13,15 @@ import java.util.UUID;
  *      1. None
  */
 
-public class MeasurementTrial extends Trial {
-
-    private float result;
-
+public class MeasurementTrial extends Trial<Float> {
     public MeasurementTrial(UUID collector, float result) {
-        super(collector);
+        super(collector, result);
         this.result = result;
     }
 
     public MeasurementTrial(UUID collector, Location location, float result) {
-        super(collector, location);
+        super(collector, location, result);
         this.result = result;
-    }
-
-    /**
-     *  gets the result of a single measurement trial that was taken.
-     * @return
-     *  The single trial result.
-     */
-    public float getResult() {
-        return result;
     }
 
     /**
@@ -44,15 +32,5 @@ public class MeasurementTrial extends Trial {
     @Override
     public String getType() {
         return "Measurement";
-    }
-
-    /**
-     * sets the result so something
-     * @param result
-     *  the result we want to set
-     */
-    public void setResult(float result)
-    {
-        this.result = result;
     }
 }

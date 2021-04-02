@@ -151,7 +151,7 @@ public class NavExperimentDetailsFragment extends Fragment {
         System.out.println(isOwner);
 
         if (isOwner) {
-            editImageButton.setVisibility(View.GONE);
+            editImageButton.setVisibility(View.VISIBLE);
             editImageButton.setOnClickListener(v -> {
                 Fragment editExperiment = new AddExperimentFragment();
                 Bundle bundle = new Bundle();
@@ -163,7 +163,7 @@ public class NavExperimentDetailsFragment extends Fragment {
                 editExperiment.setArguments(bundle);
                 getActivity().getSupportFragmentManager().beginTransaction().add(editExperiment, "EDIT").commit();
             });
-            subscribeButton.setVisibility(View.VISIBLE);
+            subscribeButton.setVisibility(View.GONE);
         } else {
             subscribeButton.setVisibility(View.VISIBLE);
             subscribeButton.setOnClickListener(v -> {

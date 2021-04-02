@@ -15,25 +15,28 @@ import java.util.UUID;
  *
  *      1. None
  */
-public abstract class Trial implements Serializable {
+public abstract class Trial<T> implements Serializable {
     private UUID collector;
     private Location location;
     private Date date;
     private boolean ignore;
+    protected T result;
 //    TODO: uncomment qr line once qr support has been added
 //    private QRcode qr;
 
-    public Trial(UUID collector) {
+    public Trial(UUID collector, T result) {
         this.collector = collector;
         this.date = new Date();
         this.ignore = false;
+        this.result = result;
     }
 
-    public Trial(UUID collector, Location location) {
+    public Trial(UUID collector, Location location, T result) {
         this.collector = collector;
         this.location = location;
         this.date = new Date();
         this.ignore = false;
+        this.result = result;
     }
 
     /**
@@ -90,4 +93,22 @@ public abstract class Trial implements Serializable {
      *  the type of the current trial
      */
     public abstract String getType();
+
+    /**
+     *  Gets the result of the single trial recorded.
+     * @return
+     *  The result of the trial
+     */
+    public T getResult() {
+        return result;
+    }
+
+    /**
+     * Set the result of the trial.
+     * @param result
+     *  the result we want to set
+     */
+    public void setResult(T result) {
+        this.result = result;
+    }
 }

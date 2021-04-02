@@ -315,10 +315,13 @@ public class BinomialExperiment extends Experiment {
         if (results == null){
             return resultsData;
         }
-        for(Trial trial : results){
+        for(Trial trial : results){//this for loop cannot be in super class but its contents can
             HashMap<String,Object> singleResult = new HashMap<String, Object>();
             singleResult.put("owner-id",trial.getUserId().toString());
-            //singleResult.put("location",trial.getLocation().toString());   FIX location later
+            if (trial.getLocation() != null){//maybe move to a method in superclass
+                singleResult.put("latitude",trial.getLocation().getLatitude());
+                singleResult.put("longitude",trial.getLocation().getLongitude());
+            }
             singleResult.put("date",trial.getDate().toString());
             singleResult.put("ignore",trial.isIgnored());
             singleResult.put("result",trial.getResult());

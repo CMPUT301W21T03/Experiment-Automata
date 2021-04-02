@@ -132,7 +132,10 @@ public class CountExperiment extends Experiment {
         for(Trial trial : results){
             HashMap<String,Object> singleResult = new HashMap<String, Object>();
             singleResult.put("owner-id",trial.getUserId().toString());
-            //singleResult.put("location",trial.getLocation().toString());   FIX location later
+            if (trial.getLocation() != null){//maybe move to a method in superclass
+                singleResult.put("latitude",trial.getLocation().getLatitude());
+                singleResult.put("longitude",trial.getLocation().getLongitude());
+            }
             singleResult.put("date",trial.getDate().toString());
             singleResult.put("ignore",trial.isIgnored());
             singleResult.put("result",trial.getResult());

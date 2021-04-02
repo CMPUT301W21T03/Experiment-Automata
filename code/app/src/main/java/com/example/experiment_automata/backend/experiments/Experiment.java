@@ -139,7 +139,6 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
     }
 
 
-
     /**
      * Gets the description of an experiment
      * @return String with the description of an experiment

@@ -1,5 +1,6 @@
 package com.example.experiment_automata.backend.experiments;
 
+import android.location.Location;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -280,50 +281,69 @@ public class ExperimentManager
             switch(experiment.getType()){
                 case Binomial:
                     boolean binResult = (boolean)currentTrialMap.get("result");
-                    BinomialTrial binTrial = new BinomialTrial(ownerId,binResult);
+                    BinomialTrial binTrial;
                     if(experiment.isRequireLocation()){
-
+                        binTrial = new BinomialTrial(ownerId,locationFromTrialHash(currentTrialMap),binResult);
                     }
                     else{
-                        experiment.recordTrial(binTrial);
+                        binTrial = new BinomialTrial(ownerId,binResult);
                     }
+                    experiment.recordTrial(binTrial);
                     break;
                 case Count:
-                    CountTrial countTrial = new CountTrial(ownerId);
+                    CountTrial countTrial;
 
                     if(experiment.isRequireLocation()){
-
+                        countTrial = new CountTrial(ownerId);
                     }
                     else{
-                        experiment.recordTrial(countTrial);
+                        countTrial = new CountTrial(ownerId,locationFromTrialHash(currentTrialMap));
                     }
+                    experiment.recordTrial(countTrial);
                     break;
                 case NaturalCount:
                     int natResult = (int)((long)currentTrialMap.get("result"));
-                    NaturalCountTrial natTrial = new NaturalCountTrial(ownerId,natResult);//NaturalCountTrial(UUID collector, Location location, int result)
+                    NaturalCountTrial natTrial;
 
                     if(experiment.isRequireLocation()){
-
+                        natTrial = new NaturalCountTrial(ownerId,locationFromTrialHash(currentTrialMap),natResult);
                     }
                     else{
-                        experiment.recordTrial(natTrial);
+                        natTrial = new NaturalCountTrial(ownerId,natResult);
                     }
+                    experiment.recordTrial(natTrial);
                     break;
                 case Measurement:
                     float measResult = (float)((double)currentTrialMap.get("result"));
-                    MeasurementTrial mesTrial = new MeasurementTrial(ownerId,measResult);
-
+                    MeasurementTrial mesTrial;
                     if(experiment.isRequireLocation()){
-
+                        mesTrial = new MeasurementTrial(ownerId,locationFromTrialHash(currentTrialMap),measResult);
                     }
                     else{
-                        experiment.recordTrial(mesTrial);
+                        mesTrial = new MeasurementTrial(ownerId,measResult);
                     }
+                    experiment.recordTrial(mesTrial);
                     break;
                 default:
                     //do nothing!
             }
         }
+    }
+    /**
+     * Build a Location form trial hashmap taken from firestore
+     * @param trialHash
+     *  HashMap containing a specific Trial as represented in Firestore
+     * @return
+     *  The location in the given Trial
+     */
+    public Location locationFromTrialHash(HashMap<String,Object> trialHash){
+        //ENSURE THAT THE GIVEN TRIAL HAS LAT/LON
+        double latitude = (double) trialHash.get("latitude");
+        double longitude = (double) trialHash.get("longitude");
+        Location location = new Location("bad");
+        location.setLatitude(latitude);
+        location.setLongitude(longitude);
+        return  location;
     }
 
     /**

@@ -41,6 +41,8 @@ public abstract class Trial<T> implements Serializable {
         this.result = result;
         this.trialId = UUID.randomUUID();
     }
+
+
     /**
      * Returns the UUID of the trial
      * @return

@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.experiment_automata.backend.trials.NaturalCountTrial;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -244,6 +245,11 @@ public class ExperimentManager
                                 UUID.fromString(document.getId())
                         );
                         UUID currentDocId = UUID.fromString(document.getId());
+                        if ( document.get("results") != null){
+                            buildTrials(currentExperiment, document.get("results"));
+                        }
+
+
                         experiments.put(currentDocId,currentExperiment);
                         Log.d("FIRESTORE",(String) document.get("description"));
                     }
@@ -256,6 +262,36 @@ public class ExperimentManager
         });
     }
 
+    public void buildTrials(Experiment experiment, Object trialsObj){
+        HashMap<String,Object> trials = ( HashMap<String,Object> )trialsObj;
+        for (String k : trials.keySet()){
+
+            switch(experiment.getType()){
+                case Binomial:
+                    break;
+                case Count:
+                    break;
+                case NaturalCount:
+                    HashMap<String,Object> currentTrialMap = (HashMap<String,Object>) trials.get(k);
+                    UUID ownerId = UUID.fromString((String)currentTrialMap.get("owner-id"));
+                    int result = (int)((long)currentTrialMap.get("result"));
+                    //Location location = ;
+                    NaturalCountTrial trial = new NaturalCountTrial(ownerId,result);//NaturalCountTrial(UUID collector, Location location, int result)
+                    experiment.recordTrial(trial);
+                    break;
+                case Measurement:
+                    break;
+                default:
+                    //stuff
+        }
+
+
+        }
+
+
+        HashMap<String,Object> outer = ( HashMap<String,Object> )trialsObj;
+        //HashMap<String,Object> inner  = ( HashMap<String,Object> )outer;
+    }
 
     /**
      * Will query a specific experiment based on it's UUID

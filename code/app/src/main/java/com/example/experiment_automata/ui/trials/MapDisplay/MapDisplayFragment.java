@@ -85,39 +85,13 @@ public class MapDisplayFragment extends Fragment {
         currentMapDisplay = root.findViewById(R.id.map_point_view_fragment_map_display);
         FloatingActionButton fab = (getActivity().findViewById(R.id.fab_button));
         fab.setVisibility(View.GONE);
-        int x = fab.getVisibility();
         ((NavigationActivity)(getActivity())).setCurrentScreen(Screen.MAP);
 
         if(currentExperiment.isRequireLocation())
-        {
-            ((root.findViewById(R.id.map_point_view_experiment_loc_error_display))).setVisibility(View.GONE);
-            currentMapDisplay.setTileSource(TileSourceFactory.MAPNIK);
-            currentMapDisplay.setVerticalMapRepetitionEnabled(false);
-            currentMapDisplay.setHorizontalMapRepetitionEnabled(false);
-            currentMapDisplay.setMultiTouchControls(true);
-            IMapController mapController = currentMapDisplay.getController();
-            mapController.setZoom(2f);
-
-            ArrayList<Trial> experimentTrials = currentExperiment.getRecordedTrials();
-
-            for(Trial t: experimentTrials){
-                /** Code below inspired by Stack Overflow
-                 * Link: https://stackoverflow.com/questions/55705988/how-to-add-marker-in-osmdroid
-                 * Author: jignyasa tandel
-                 * Date: April 16th, 2019
-                 * License: Unknown
-                 */
-                Marker temp = new Marker(currentMapDisplay);
-                temp.setTitle("Trial for: " + currentExperiment.getDescription());
-                temp.setSubDescription("This is a: " + t.getType());
-                // Set location of marker to be the longitude and latitude of the point t
-                temp.setPosition(new GeoPoint(t.getLocation()));
-                currentMapDisplay.getOverlays().add(temp);
-            }
-        }
+            updateMap(root);
         else
         {
-            //TODO: Make change so that we don't need the experiment error. 
+            currentMapDisplay.setVisibility(View.GONE);
         }
 
         return root;
@@ -126,6 +100,38 @@ public class MapDisplayFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+
+    /**
+     * sets up the map markers for display
+     * @param root
+     */
+    private void updateMap(View root)
+    {
+        ((root.findViewById(R.id.map_point_view_experiment_loc_error_display))).setVisibility(View.GONE);
+        currentMapDisplay.setTileSource(TileSourceFactory.MAPNIK);
+        currentMapDisplay.setVerticalMapRepetitionEnabled(false);
+        currentMapDisplay.setHorizontalMapRepetitionEnabled(false);
+        currentMapDisplay.setMultiTouchControls(true);
+        IMapController mapController = currentMapDisplay.getController();
+        mapController.setZoom(2f);
+
+        ArrayList<Trial> experimentTrials = currentExperiment.getRecordedTrials();
+
+        for(Trial t: experimentTrials){
+            /** Code below inspired by Stack Overflow
+             * Link: https://stackoverflow.com/questions/55705988/how-to-add-marker-in-osmdroid
+             * Author: jignyasa tandel
+             * Date: April 16th, 2019
+             * License: Unknown
+             */
+            Marker temp = new Marker(currentMapDisplay);
+            temp.setTitle("Trial for: " + currentExperiment.getDescription());
+            temp.setSubDescription("This is a: " + t.getType());
+            // Set location of marker to be the longitude and latitude of the point t
+            temp.setPosition(new GeoPoint(t.getLocation()));
+            currentMapDisplay.getOverlays().add(temp);
+        }
     }
 
 }

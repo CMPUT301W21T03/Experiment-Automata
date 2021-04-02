@@ -1,9 +1,14 @@
 package com.example.experiment_automata.backend.experiments;
 
+import android.location.Location;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.experiment_automata.backend.trials.BinomialTrial;
+import com.example.experiment_automata.backend.trials.CountTrial;
+import com.example.experiment_automata.backend.trials.MeasurementTrial;
+import com.example.experiment_automata.backend.trials.NaturalCountTrial;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -244,6 +249,11 @@ public class ExperimentManager
                                 UUID.fromString(document.getId())
                         );
                         UUID currentDocId = UUID.fromString(document.getId());
+                        if ( document.get("results") != null){
+                            buildTrials(currentExperiment, document.get("results"));
+                        }
+
+
                         experiments.put(currentDocId,currentExperiment);
                         Log.d("FIRESTORE",(String) document.get("description"));
                     }
@@ -255,7 +265,86 @@ public class ExperimentManager
             }
         });
     }
+    /**
+     * Populates given experiment with trials found in trials from firestore
+     * @param experiment
+     *  Experiment you want to populate
+     * @param trialsObj
+     *  Hashmap containing other hashmaps as found in the results field in the given Experiment document
+     */
+    public void buildTrials(Experiment experiment, Object trialsObj){
+        HashMap<String,Object> trials = ( HashMap<String,Object> )trialsObj;
+        for (String k : trials.keySet()){
+            HashMap<String,Object> currentTrialMap = (HashMap<String,Object>) trials.get(k);
+            UUID ownerId = UUID.fromString((String)currentTrialMap.get("owner-id"));
+            //Location location = ; NEED TO WRITE LOCATION HANDLING
+            switch(experiment.getType()){
+                case Binomial:
+                    boolean binResult = (boolean)currentTrialMap.get("result");
+                    BinomialTrial binTrial;
+                    if(experiment.isRequireLocation()){
+                        binTrial = new BinomialTrial(ownerId,locationFromTrialHash(currentTrialMap),binResult);
+                    }
+                    else{
+                        binTrial = new BinomialTrial(ownerId,binResult);
+                    }
+                    experiment.recordTrial(binTrial);
+                    break;
+                case Count:
+                    CountTrial countTrial;
 
+                    if(experiment.isRequireLocation()){
+                        countTrial = new CountTrial(ownerId,locationFromTrialHash(currentTrialMap));
+                    }
+                    else{
+                        countTrial = new CountTrial(ownerId);
+                    }
+                    experiment.recordTrial(countTrial);
+                    break;
+                case NaturalCount:
+                    int natResult = (int)((long)currentTrialMap.get("result"));
+                    NaturalCountTrial natTrial;
+
+                    if(experiment.isRequireLocation()){
+                        natTrial = new NaturalCountTrial(ownerId,locationFromTrialHash(currentTrialMap),natResult);
+                    }
+                    else{
+                        natTrial = new NaturalCountTrial(ownerId,natResult);
+                    }
+                    experiment.recordTrial(natTrial);
+                    break;
+                case Measurement:
+                    float measResult = (float)((double)currentTrialMap.get("result"));
+                    MeasurementTrial mesTrial;
+                    if(experiment.isRequireLocation()){
+                        mesTrial = new MeasurementTrial(ownerId,locationFromTrialHash(currentTrialMap),measResult);
+                    }
+                    else{
+                        mesTrial = new MeasurementTrial(ownerId,measResult);
+                    }
+                    experiment.recordTrial(mesTrial);
+                    break;
+                default:
+                    //do nothing!
+            }
+        }
+    }
+    /**
+     * Build a Location form trial hashmap taken from firestore
+     * @param trialHash
+     *  HashMap containing a specific Trial as represented in Firestore
+     * @return
+     *  The location in the given Trial
+     */
+    public Location locationFromTrialHash(HashMap<String,Object> trialHash){
+        //ENSURE THAT THE GIVEN TRIAL HAS LAT/LON
+        double latitude = (double) trialHash.get("latitude");
+        double longitude = (double) trialHash.get("longitude");
+        Location location = new Location("bad");
+        location.setLatitude(latitude);
+        location.setLongitude(longitude);
+        return  location;
+    }
 
     /**
      * Will query a specific experiment based on it's UUID

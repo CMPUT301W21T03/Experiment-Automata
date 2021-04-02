@@ -81,7 +81,7 @@ public class TrialArrayAdapter extends ArrayAdapter<Trial> {
         Trial trial = trials.get(position);
 
         LinkView experimenterNameView = (LinkView) view.findViewById(R.id.trial_experimenter_name);
-        UUID userId = trial.getCollector();
+        UUID userId = trial.getUserId();
         experimenterNameView.setText(User.getInstance(userId).getInfo().getName());
         experimenterNameView.setOnClickListener(v -> {
             NavigationActivity parentActivity = (NavigationActivity) context;

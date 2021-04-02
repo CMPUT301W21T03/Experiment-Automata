@@ -8,6 +8,7 @@ import com.github.mikephil.charting.data.Entry;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -75,6 +76,7 @@ public class NaturalCountExperiment extends Experiment {
     public void recordTrial(Trial trial) {
         if (active) {
             results.add((NaturalCountTrial) trial);
+            postExperimentToFirestore();
         } else {
             throw new IllegalStateException("Experiment is not accepting new results.");
         }
@@ -278,7 +280,28 @@ public class NaturalCountExperiment extends Experiment {
         }
         return quartiles;
     }
-
+    /**
+     * Build hashmap for results
+     */
+    public HashMap<String,Object> buildResultsmap(){
+        HashMap<String,Object> resultsData = new HashMap<String, Object>();
+        if (results == null){
+            return resultsData;
+        }
+        for(Trial trial : results){
+            HashMap<String,Object> singleResult = new HashMap<String, Object>();
+            singleResult.put("owner-id",trial.getUserId().toString());
+            if (trial.getLocation() != null){//maybe move to a method in superclass
+                singleResult.put("latitude",trial.getLocation().getLatitude());
+                singleResult.put("longitude",trial.getLocation().getLongitude());
+            }
+            singleResult.put("date",trial.getDate().toString());
+            singleResult.put("ignore",trial.isIgnored());
+            singleResult.put("result",trial.getResult());
+            resultsData.put(trial.getTrialId().toString(),singleResult);
+        }
+        return resultsData;
+    }
     /**
      * Gets the size of the experiment
      * @return size of the experiment
@@ -291,6 +314,10 @@ public class NaturalCountExperiment extends Experiment {
             }
         }
         return size;
+    }
+
+    public Collection<NaturalCountTrial> getResults() {
+        return results;
     }
 
     /**

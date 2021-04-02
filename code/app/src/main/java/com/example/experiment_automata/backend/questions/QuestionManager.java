@@ -44,7 +44,6 @@ public class QuestionManager {
         replies = new HashMap<>();
         questionFromId = new HashMap<>();
         getQuesitonsFromFirestore();
-        //getRepliesFromFirestore();
     }
 
     public static QuestionManager getInstance()
@@ -194,6 +193,7 @@ public class QuestionManager {
                         );
                         addQuestion(experimentId, currentQuestion);
                     }
+                    getRepliesFromFirestore();
                 }
             }
         });

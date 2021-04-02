@@ -33,6 +33,7 @@ public class QuestionManager {
     private static HashMap<UUID, Question> questionFromId;
     private static  HashMap<UUID, ArrayList<Reply>> replies;
     private static QuestionManager questionManager;
+    private static HashMap<UUID,Boolean> repliesFromId;
 
 
     /**
@@ -42,8 +43,9 @@ public class QuestionManager {
     {
         questions = new HashMap<>();
         replies = new HashMap<>();
+        repliesFromId = new HashMap<>();
         questionFromId = new HashMap<>();
-        getQuesitonsFromFirestore();
+        getQuestionsFromFirestore();
     }
 
     public static QuestionManager getInstance()
@@ -64,36 +66,41 @@ public class QuestionManager {
      */
     public void addQuestion(UUID experimentId, Question question)
     {
-        ArrayList<Question> returnQuestions = new ArrayList<>();
-        returnQuestions.add(question);
+        if (!questionFromId.containsKey(question.getQuestionId())) {
+            ArrayList<Question> returnQuestions = new ArrayList<>();
+            returnQuestions.add(question);
 
-        if(questions.containsKey(experimentId))
-            returnQuestions.addAll(questions.get(experimentId));
+            if (questions.containsKey(experimentId))
+                returnQuestions.addAll(questions.get(experimentId));
 
-        questions.put(experimentId, returnQuestions);
-        Log.d("question", "" + question.getQuestionId().toString());
-        questionFromId.put(question.getQuestionId(), question);
+            questions.put(experimentId, returnQuestions);
+            Log.d("question", "" + question.getQuestionId().toString());
+            questionFromId.put(question.getQuestionId(), question);
+        }
     }
 
     /**
      * Adds the given replies that the user class/caller gives to this class.
-     * @param id
+     * @param questionId
      *  id corresponding to the question
      * @param reply
      *  reply to add to the manager
      */
     public void addReply(UUID questionId, Reply reply)
     {
-        ArrayList<Reply> reps = replies.get(questionId);
-        ArrayList<Reply> allReplies = new ArrayList<>();
-        allReplies.add(reply);
-        if(reps != null)
-            allReplies.addAll(reps);
+        if (!repliesFromId.containsKey(reply.getReplyId())) {
+            ArrayList<Reply> reps = replies.get(questionId);
+            ArrayList<Reply> allReplies = new ArrayList<>();
+            allReplies.add(reply);
+            if (reps != null)
+                allReplies.addAll(reps);
 
-        replies.put(questionId, allReplies);
-        Question questionToUpdate = getQuestion(questionId);
-        questionToUpdate.setReply(reply.getReplyId());
-        questionToUpdate.postQuestionToFirestore();
+            replies.put(questionId, allReplies);
+            repliesFromId.put(reply.getReplyId(), true);
+            Question questionToUpdate = getQuestion(questionId);
+            questionToUpdate.setReply(reply.getReplyId());
+            questionToUpdate.postQuestionToFirestore();
+        }
     }
 
     /**
@@ -176,7 +183,7 @@ public class QuestionManager {
      * Gets all questions from firestore
      */
 
-    private void getQuesitonsFromFirestore() {
+    public void getQuestionsFromFirestore() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference questionsCollection = db.collection("questions");
         questionsCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

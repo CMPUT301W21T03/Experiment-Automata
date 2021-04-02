@@ -72,15 +72,18 @@ public class QuestionManager {
      * @param reply
      *  reply to add to the manager
      */
-    public void addReply(UUID id, Reply reply)
+    public void addReply(UUID questionId, Reply reply)
     {
-        ArrayList<Reply> reps = replies.get(id);
+        ArrayList<Reply> reps = replies.get(questionId);
         ArrayList<Reply> allReplies = new ArrayList<>();
         allReplies.add(reply);
         if(reps != null)
             allReplies.addAll(reps);
 
-        replies.put(id, allReplies);
+        replies.put(questionId, allReplies);
+        Question questionToUpdate = getQuestion(questionId);
+        questionToUpdate.setReply(reply.getReplyId());
+        questionToUpdate.postQuestionToFirestore();
     }
 
     /**

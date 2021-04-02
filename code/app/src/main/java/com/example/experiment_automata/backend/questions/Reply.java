@@ -1,6 +1,14 @@
 package com.example.experiment_automata.backend.questions;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -21,6 +29,35 @@ public class Reply implements Serializable {
         this.reply = reply;
         this.experimenter = experimenter;
         this.replyId = UUID.randomUUID();
+        postReplyToFirestore();
+    }
+
+    /**
+     *  Post the current question to firestore
+     */
+
+    private void postReplyToFirestore() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String,Object> questionData = new HashMap<>();
+        String replyIdString = this.replyId.toString();
+
+        questionData.put("reply-text",this.reply);
+        questionData.put("user-id", this.experimenter.toString());
+
+        db.collection("replies").document(replyIdString)
+                .set(questionData)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
     }
 
     public String getReply() {

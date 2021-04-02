@@ -121,11 +121,6 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
         experimentData.put("type",experiment.getType().toString());//enum to string
         experimentData.put("published",experiment.isPublished());
 
-        Collection<String> savedQuestions = new ArrayList<>();
-        for (Question question: this.questions) {
-
-        }
-
         db.collection("experiments").document(experimentUUIDString)
                 .set(experimentData)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {

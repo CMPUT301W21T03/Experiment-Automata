@@ -18,6 +18,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -94,6 +95,7 @@ public class ExperimentManager
                 experimentsList.add(experiment);
             }
         }
+        Collections.sort(experimentsList);
         return experimentsList;
     }
 
@@ -111,6 +113,7 @@ public class ExperimentManager
                 experimentsList.add(experiments.get(id));
             }
         }
+        Collections.sort(experimentsList);
         return experimentsList;
     }
 
@@ -127,6 +130,7 @@ public class ExperimentManager
                 experimentsList.add(experiment);
             }
         }
+        Collections.sort(experimentsList);
         return experimentsList;
     }
 

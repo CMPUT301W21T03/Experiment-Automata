@@ -85,6 +85,10 @@ public class CountExperiment extends Experiment {
         }
     }
 
+    public void recordTrial(Trial trial, Boolean fromFirestore) {
+        if (fromFirestore) results.add((CountTrial) trial);
+    }
+
     /**
      * gets all the recorded trials for an experiment
      *

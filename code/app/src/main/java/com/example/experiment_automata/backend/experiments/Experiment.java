@@ -268,6 +268,8 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
      */
     public abstract void recordTrial(Trial trial);
 
+    public abstract void recordTrial(Trial trial, Boolean fromFirestore);
+
     /**
      * gets all the recorded trials for an experiment
      * @return the recorded trials

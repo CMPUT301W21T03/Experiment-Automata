@@ -288,7 +288,7 @@ public class ExperimentManager
                     else{
                         binTrial = new BinomialTrial(ownerId,binResult);
                     }
-                    experiment.recordTrial(binTrial);
+                    experiment.recordTrial(binTrial, true);
                     break;
                 case Count:
                     CountTrial countTrial;
@@ -299,7 +299,7 @@ public class ExperimentManager
                     else{
                         countTrial = new CountTrial(ownerId);
                     }
-                    experiment.recordTrial(countTrial);
+                    experiment.recordTrial(countTrial, true);
                     break;
                 case NaturalCount:
                     int natResult = (int)((long)currentTrialMap.get("result"));
@@ -311,7 +311,7 @@ public class ExperimentManager
                     else{
                         natTrial = new NaturalCountTrial(ownerId,natResult);
                     }
-                    experiment.recordTrial(natTrial);
+                    experiment.recordTrial(natTrial, true);
                     break;
                 case Measurement:
                     float measResult = (float)((double)currentTrialMap.get("result"));
@@ -322,7 +322,7 @@ public class ExperimentManager
                     else{
                         mesTrial = new MeasurementTrial(ownerId,measResult);
                     }
-                    experiment.recordTrial(mesTrial);
+                    experiment.recordTrial(mesTrial, true);
                     break;
                 default:
                     //do nothing!

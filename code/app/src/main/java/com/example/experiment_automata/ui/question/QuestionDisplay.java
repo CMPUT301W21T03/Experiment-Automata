@@ -14,6 +14,8 @@ import com.example.experiment_automata.backend.experiments.Experiment;
 import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.backend.questions.Question;
 import com.example.experiment_automata.R;
+import com.example.experiment_automata.ui.Screen;
+
 import java.util.ArrayList;
 
 /**
@@ -96,10 +98,11 @@ public class QuestionDisplay extends Fragment {
         questionsDisplayList = root.findViewById(R.id.frag_questions_display_list_view);
         //Getting all the questions
 
-        ((NavigationActivity)getActivity()).questionManager.getQuestionsFromFirestore();
         ((NavigationActivity)getActivity()).setCurrentFragment(this);
 
         try {
+            ((NavigationActivity)getActivity()).questionManager.getQuestionsFromFirestore();
+
             questionsList = ((NavigationActivity) (getActivity()))
                     .questionManager
                     .getExperimentQuestions(currentExperiment.getExperimentId());
@@ -147,4 +150,12 @@ public class QuestionDisplay extends Fragment {
         super.onStart();
         (((NavigationActivity)getActivity()).findViewById(R.id.fab_button)).setVisibility(View.VISIBLE);
     }
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        ((NavigationActivity)(getActivity())).setCurrentScreen(Screen.ExperimentDetails);
+    }
+
 }

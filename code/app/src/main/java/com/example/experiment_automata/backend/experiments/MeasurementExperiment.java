@@ -83,6 +83,9 @@ public class MeasurementExperiment extends Experiment {
         }
     }
 
+    public void recordTrial(Trial trial, Boolean fromFirestore) {
+        if (fromFirestore) results.add((MeasurementTrial) trial);
+    }
     /**
      * gets all the recorded trials for an experiment
      *

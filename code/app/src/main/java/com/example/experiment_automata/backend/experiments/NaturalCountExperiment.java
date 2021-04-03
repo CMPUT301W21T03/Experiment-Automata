@@ -82,6 +82,10 @@ public class NaturalCountExperiment extends Experiment {
         }
     }
 
+    public void recordTrial(Trial trial, Boolean fromFirestore) {
+        if (fromFirestore) results.add((NaturalCountTrial) trial);
+    }
+
     /**
      * gets all the recorded trials for an experiment
      *

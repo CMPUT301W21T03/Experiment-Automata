@@ -43,6 +43,7 @@ public class HomeFragment extends Fragment {
         Log.d("HomeFragment", "Entering home fragment: " + getArguments().getString("mode"));
         NavigationActivity parentActivity = ((NavigationActivity) getActivity());
 
+        parentActivity.experimentManager.getAllFromFirestore();
         getActivity().findViewById(R.id.fab_button).setVisibility(View.VISIBLE);
 
         View root = inflater.inflate(R.layout.fragment_home, container, false);

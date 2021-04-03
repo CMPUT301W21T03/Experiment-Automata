@@ -147,31 +147,28 @@ interface "StatSummary" as StatSummary <<Interface>> {
     +getQuartile(): Float[]
 }
 
-' each trial has a unique QRCode associated with it
-abstract class Trial {
-    ' just going to user User ID here
-    -collector: UUID
-    -location: Location
-    -date: Date
-    -ignore: Boolean
-}
+package trials {
+    ' each trial has a unique QRCode associated with it
+    abstract class Trial<T> {
+        ' just going to user User ID here
+        -collector: UUID
+        -location: Location
+        -date: Date
+        -ignore: Boolean
+        #result: T
+    }
 
-class CountTrial extends Trial {
-    ' essentially just a trial but it's own class since other types of trial aren't a count trial
-}
+    class CountTrial<Object> extends Trial {
+        ' essentially just a trial but it's own class since other types of trial aren't a count trial
+    }
 
-' no unsigned ints in java, not sure how to enforce natural numbers only
-class NaturalCountTrial extends Trial {
-    -result: Integer
-}
+    ' no unsigned ints in java, not sure how to enforce natural numbers only
+    class NaturalCountTrial<Integer> extends Trial
 
-' will likely specify true = pass, false = fail
-class BinomialTrial extends Trial {
-    -result: Boolean
-}
+    ' will likely specify true = pass, false = fail
+    class BinomialTrial<Boolean> extends Trial
 
-class MeasurementTrial extends Trial {
-    -result: Float
+    class MeasurementTrial<Float> extends Trial
 }
 
 abstract class QRCode {

@@ -22,8 +22,6 @@ public abstract class Trial<T> implements Serializable {
     private Date date;
     private boolean ignore;
     protected T result;
-//    TODO: uncomment qr line once qr support has been added
-//    private QRcode qr;
 
     public Trial(UUID userId, T result) {
         this.userId = userId;

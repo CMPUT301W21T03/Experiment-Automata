@@ -8,7 +8,6 @@ import com.github.mikephil.charting.data.Entry;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,9 +19,7 @@ import java.util.UUID;
  *
  *      1. None
  */
-public class NaturalCountExperiment extends Experiment {
-    private Collection<NaturalCountTrial> results;
-
+public class NaturalCountExperiment extends Experiment<NaturalCountTrial> {
     /**
      * Default constructor for Natural Count Experiment with just a description
      * @param description
@@ -66,34 +63,6 @@ public class NaturalCountExperiment extends Experiment {
     public NaturalCountExperiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId, Boolean published, UUID experimentId) {
         super(description, minTrials, requireLocation, acceptNewResults, ownerId, ExperimentType.NaturalCount, published, experimentId);
         results = new ArrayList<>();
-    }
-
-    /**
-     * Record a trial.
-     * @param trial
-     *  the trail to add
-     */
-    public void recordTrial(Trial trial) {
-        if (active) {
-            results.add((NaturalCountTrial) trial);
-            postExperimentToFirestore();
-        } else {
-            throw new IllegalStateException("Experiment is not accepting new results.");
-        }
-    }
-
-    public void recordTrial(Trial trial, Boolean fromFirestore) {
-        if (fromFirestore) results.add((NaturalCountTrial) trial);
-    }
-
-    /**
-     * gets all the recorded trials for an experiment
-     *
-     * @return the recorded trials
-     */
-    @Override
-    public ArrayList<Trial> getRecordedTrials() {
-        return new ArrayList<>(results);
     }
 
     /**
@@ -284,28 +253,7 @@ public class NaturalCountExperiment extends Experiment {
         }
         return quartiles;
     }
-    /**
-     * Build hashmap for results
-     */
-    public HashMap<String,Object> buildResultsmap(){
-        HashMap<String,Object> resultsData = new HashMap<String, Object>();
-        if (results == null){
-            return resultsData;
-        }
-        for(Trial trial : results){
-            HashMap<String,Object> singleResult = new HashMap<String, Object>();
-            singleResult.put("owner-id",trial.getUserId().toString());
-            if (trial.getLocation() != null){//maybe move to a method in superclass
-                singleResult.put("latitude",trial.getLocation().getLatitude());
-                singleResult.put("longitude",trial.getLocation().getLongitude());
-            }
-            singleResult.put("date",trial.getDate().toString());
-            singleResult.put("ignore",trial.isIgnored());
-            singleResult.put("result",trial.getResult());
-            resultsData.put(trial.getTrialId().toString(),singleResult);
-        }
-        return resultsData;
-    }
+
     /**
      * Gets the size of the experiment
      * @return size of the experiment

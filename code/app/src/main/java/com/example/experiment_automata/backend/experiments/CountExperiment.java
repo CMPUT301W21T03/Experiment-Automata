@@ -2,13 +2,11 @@ package com.example.experiment_automata.backend.experiments;
 
 
 import com.example.experiment_automata.backend.trials.CountTrial;
-import com.example.experiment_automata.backend.trials.Trial;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,9 +19,7 @@ import java.util.UUID;
  *      1. stat calculation implementation is not final awaiting input from customer on
  *         how count experiments should analyzed.
  */
-public class CountExperiment extends Experiment {
-    private Collection<CountTrial> results;
-
+public class CountExperiment extends Experiment<CountTrial> {
     /**
      * Default constructor for Count Experiment with just a description
      * @param description
@@ -31,7 +27,6 @@ public class CountExperiment extends Experiment {
      */
     public CountExperiment(String description) {
         super(description);
-        results = new ArrayList<>();
     }
 
     /**
@@ -47,7 +42,6 @@ public class CountExperiment extends Experiment {
      */
     public CountExperiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId) {
         super(description, minTrials, requireLocation, acceptNewResults, ownerId, ExperimentType.Count);
-        results = new ArrayList<>();
     }
 
     /**
@@ -67,36 +61,6 @@ public class CountExperiment extends Experiment {
      */
     public CountExperiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId, Boolean published, UUID experimentId) {
         super(description, minTrials, requireLocation, acceptNewResults, ownerId, ExperimentType.Count, published, experimentId);
-        results = new ArrayList<>();
-    }
-
-
-    /**
-     * Record a trial.
-     * @param trial
-     *  the trail to add
-     */
-    public void recordTrial(Trial trial) {
-        if (active) {
-            results.add((CountTrial) trial);
-            postExperimentToFirestore();
-        } else {
-            throw new IllegalStateException("Experiment is not accepting new results.");
-        }
-    }
-
-    public void recordTrial(Trial trial, Boolean fromFirestore) {
-        if (fromFirestore) results.add((CountTrial) trial);
-    }
-
-    /**
-     * gets all the recorded trials for an experiment
-     *
-     * @return the recorded trials
-     */
-    @Override
-    public ArrayList<Trial> getRecordedTrials() {
-        return new ArrayList<>(results);
     }
 
     /**
@@ -125,28 +89,7 @@ public class CountExperiment extends Experiment {
         }
         return data;
     }
-    /**
-     * Build hashmap for results
-     */
-    public HashMap<String,Object> buildResultsmap(){
-        HashMap<String,Object> resultsData = new HashMap<String, Object>();
-        if (results == null){
-            return resultsData;
-        }
-        for(Trial trial : results){
-            HashMap<String,Object> singleResult = new HashMap<String, Object>();
-            singleResult.put("owner-id",trial.getUserId().toString());
-            if (trial.getLocation() != null){//maybe move to a method in superclass
-                singleResult.put("latitude",trial.getLocation().getLatitude());
-                singleResult.put("longitude",trial.getLocation().getLongitude());
-            }
-            singleResult.put("date",trial.getDate().toString());
-            singleResult.put("ignore",trial.isIgnored());
-            singleResult.put("result",trial.getResult());
-            resultsData.put(trial.getTrialId().toString(),singleResult);
-        }
-        return resultsData;
-    }
+
     /**
      * Gets the mean value of the trials.
      * @return

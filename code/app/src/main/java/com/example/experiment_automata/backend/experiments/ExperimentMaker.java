@@ -27,6 +27,8 @@ public class ExperimentMaker {
      *   a boolean for whether this experiment requires location
      * @param acceptNewResults
      *   a boolean for whether this experiment is accepting new results
+     * @param ownerId
+     *   the UUID of the owner of the experiment
      * @return
      *   an experiment object of the requested type with information
      */
@@ -46,6 +48,7 @@ public class ExperimentMaker {
                 return null;
         }
     }
+
     /**
      * Will create an experiment with the selected type from Firestore
      * @param type
@@ -58,6 +61,8 @@ public class ExperimentMaker {
      *   a boolean for whether this experiment requires location
      * @param acceptNewResults
      *   a boolean for whether this experiment is accepting new results
+     * @param ownerId
+     *   the UUID of the owner of the experiment
      * @param published
      *   a boolean for whether this experiment is published
      * @param experimentId
@@ -81,6 +86,4 @@ public class ExperimentMaker {
                 return null;
         }
     }
-
-
 }

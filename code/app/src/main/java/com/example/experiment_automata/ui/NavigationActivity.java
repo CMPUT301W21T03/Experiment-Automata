@@ -78,7 +78,7 @@ public class NavigationActivity extends AppCompatActivity implements
     private Screen currentScreen;
     public Fragment currentFragment;
     public User loggedUser;
-    public Trial<Object> currentTrial;
+    public Trial currentTrial;
 
     // Location and Map Flags and Request Codes
     public static final int PERMISSON_REQUEST_CODE = 10;

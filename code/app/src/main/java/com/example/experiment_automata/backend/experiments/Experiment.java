@@ -38,16 +38,6 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
     protected Collection<T> results;
 
     /**
-     * Default experiment constructor that only asks for a description
-     * @param description
-     *   the description of the experiment
-     */
-    public Experiment(String description) {
-        this.description = description;
-        results = new ArrayList<>();
-    }
-
-    /**
      * Experiment constructor to be used by ExperimentMaker when creating an experiment from the AddExperimentFragment
      * @param description
      *   the description of the experiment
@@ -58,7 +48,7 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
      * @param acceptNewResults
      *   a boolean for whether this trial should be accepting new requests or not
      */
-    public Experiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId, ExperimentType type) {
+    protected Experiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId, ExperimentType type) {
         this.description = description;
         this.minTrials = minTrials;
         this.requireLocation = requireLocation;
@@ -82,7 +72,7 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
      * @param acceptNewResults
      *   a boolean for whether this trial should be accepting new requests or not
      */
-    public Experiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId, ExperimentType type, Boolean published, UUID experimentId) {//MAKE SURE WE ADD QUESTIONS TO THIS CONSTRUCTOR
+    protected Experiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId, ExperimentType type, Boolean published, UUID experimentId) {//MAKE SURE WE ADD QUESTIONS TO THIS CONSTRUCTOR
         this.description = description;
         this.minTrials = minTrials;
         this.requireLocation = requireLocation;

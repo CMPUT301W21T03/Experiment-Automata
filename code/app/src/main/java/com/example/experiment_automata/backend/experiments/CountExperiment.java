@@ -21,15 +21,6 @@ import java.util.UUID;
  */
 public class CountExperiment extends Experiment<CountTrial> {
     /**
-     * Default constructor for Count Experiment with just a description
-     * @param description
-     *   the description for this experiment
-     */
-    public CountExperiment(String description) {
-        super(description);
-    }
-
-    /**
      * Default constructor for Count Experiment from using the AddExperimentFragment
      * @param description
      *   the description for the experiment

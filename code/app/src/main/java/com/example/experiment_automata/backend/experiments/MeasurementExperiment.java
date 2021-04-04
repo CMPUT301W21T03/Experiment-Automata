@@ -21,16 +21,6 @@ import java.util.UUID;
  */
 public class MeasurementExperiment extends Experiment<MeasurementTrial> {
     /**
-     * Default constructor for Measurement Experiment with just a description
-     * @param description
-     *   the description for this experiment
-     */
-    public MeasurementExperiment(String description) {
-        super(description);
-        results = new ArrayList<>();
-    }
-
-    /**
      * Default constructor for Measurement Experiment from using the AddExperimentFragment
      * @param description
      *   the description for the experiment

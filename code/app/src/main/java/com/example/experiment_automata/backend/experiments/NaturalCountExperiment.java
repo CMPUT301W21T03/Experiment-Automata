@@ -21,16 +21,6 @@ import java.util.UUID;
  */
 public class NaturalCountExperiment extends Experiment<NaturalCountTrial> {
     /**
-     * Default constructor for Natural Count Experiment with just a description
-     * @param description
-     *   the description for this experiment
-     */
-    public NaturalCountExperiment(String description) {
-        super(description);
-        results = new ArrayList<>();
-    }
-
-    /**
      * Default constructor for Natural Count Experiment from using the AddExperimentFragment
      * @param description
      *   the description for the experiment

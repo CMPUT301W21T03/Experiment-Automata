@@ -19,6 +19,7 @@ import com.example.experiment_automata.backend.experiments.Experiment;
 import com.example.experiment_automata.backend.experiments.ExperimentMaker;
 import com.example.experiment_automata.backend.experiments.ExperimentType;
 import com.example.experiment_automata.ui.NavigationActivity;
+import com.google.firebase.FirebaseApp;
 import com.robotium.solo.Solo;
 
 import org.junit.Before;
@@ -71,10 +72,14 @@ public class BinomialTrialTests {
                 true,
                 true,
                 testUUID);
+        FirebaseApp.initializeApp(InstrumentationRegistry.getInstrumentation().getTargetContext());
 
     }
 
     private void makeExperiment(String des) {
+
+
+
         //Click from the home screen the + button to make an experiment
         solo.clickOnView(addExperimentButton);
         solo.waitForDialogToOpen();

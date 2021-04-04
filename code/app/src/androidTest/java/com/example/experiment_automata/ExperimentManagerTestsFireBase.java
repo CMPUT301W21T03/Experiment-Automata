@@ -8,9 +8,11 @@ import com.example.experiment_automata.backend.experiments.ExperimentManager;
 import com.example.experiment_automata.backend.experiments.ExperimentType;
 import com.google.firebase.FirebaseApp;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -29,7 +31,7 @@ public class ExperimentManagerTestsFireBase {
     public void runningSetup()
     {
         ExperimentMaker experimentMaker = new ExperimentMaker();
-        experimentManager = new ExperimentManager();
+        experimentManager = ExperimentManager.getInstance();
         experiments = new ArrayList<>();
         experimentReferences = new ArrayList<>();
         userId = UUID.randomUUID();
@@ -47,7 +49,23 @@ public class ExperimentManagerTestsFireBase {
         experiments.add(e);
         experimentManager.add(id, e);
 
+        experimentManager.enableTestMode();
         FirebaseApp.initializeApp(InstrumentationRegistry.getInstrumentation().getContext());
+    }
+
+    /**
+     *  resets the experiment manager instence
+     *  Source:
+     *      Author:https://stackoverflow.com/users/1230702/teded
+     *      Editor:https://stackoverflow.com/users/1230702/teded
+     *      Full URL:https://stackoverflow.com/questions/8256989/singleton-and-unit-testing
+     * @throws NoSuchFieldException
+     */
+    @After
+    public void cleanWorld() throws NoSuchFieldException, IllegalAccessException {
+        Field currentInstence = ExperimentManager.class.getDeclaredField("experimentManager");
+        currentInstence.setAccessible(true);
+        currentInstence.set(currentInstence, null);
     }
 
     //Testing small change work as expected

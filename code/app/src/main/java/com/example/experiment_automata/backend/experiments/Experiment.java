@@ -324,7 +324,7 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
      *                              from being compared to this object.
      */
     public int compareTo(Object o) {
-        Experiment<T> ec = (Experiment<T>) o;
+        Experiment<?> ec = (Experiment<?>) o;
         return this.getDescription().toLowerCase().compareTo(ec.getDescription().toLowerCase());
     }
 

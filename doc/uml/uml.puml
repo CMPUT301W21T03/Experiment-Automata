@@ -1,150 +1,171 @@
 @startuml UML
 skinparam classAttributeIconSize 0
 
-' generic class for an User
-' note that experiments will likely be stored by user id instead of by all experiment info
-' We could do hasing, but it's probably easier for now (for the UML sake) to represent this as a collection of experiments
-class User {
-    -userId: UUID
-    -info: ContactInformation
-    -controller: SearchController
-    -ownedExperiments: Collection<Experiment>
-    -participatingExperiments: Collection<Experiment>
-    #updateFirestore()
-    #updateFromFirestore()
-    +addGeoLocation(exp: Experiment): Location
-    +seeGeoLocation(experiments: Collection<Experiment>): Map
-    +subscribeExperiment(experimentId: UUID)
+package users {
+    ' generic class for an User
+    ' note that experiments will likely be stored by user id instead of by all experiment info
+    ' We could do hasing, but it's probably easier for now (for the UML sake) to represent this as a collection of experiments
+    class User {
+        -userId: UUID
+        -info: ContactInformation
+        -controller: SearchController
+        -ownedExperiments: Collection<Experiment>
+        -participatingExperiments: Collection<Experiment>
+        #updateFirestore()
+        #updateFromFirestore()
+        +addGeoLocation(exp: Experiment): Location
+        +seeGeoLocation(experiments: Collection<Experiment>): Map
+        +subscribeExperiment(experimentId: UUID)
+    }
+
+    class ContactInformation {
+        -name: String
+        -email: String
+        -phone: String
+        -editable: Boolean
+        -preferences: SharePreferences
+    }
 }
 
+package questions {
+    class Question {
+        -question: String
+        -user: UUID
+        -reply: UUID
+        -experimentId: UUID
+        -questionId: UUID
+    }
 
-class ExperimentManager{
-   - {static} experiments: HashMap<UUID, Experiment> 
-   - currentExperiment: Experiment 
+    class QuestionManager {
+        - {static} questions: HashMap<UUID, ArrayList<Question>>
+        - {static} questionFromID: HashMap<UUID, Question>
+        - {static} replies: hasMap<UUID, Reply>
+        - {static} questionManager: QuestionManager
 
-   + delete(id: UUID)
-   + add(id: UUID, experiment: Experiment)
-   + getOwnedExperiments(ownerID: UUID): ArrayList<Experiment> 
-   + query(experimentID: UUID): Experiment 
-   + queryExperiments(query: String): ArrayList<Experiment> 
-   + queryExperiments(experimentIds: Collection<UUID>): ArrayList<Experiment>
-   + queryExperiments(query: String, experimentIds: Collection<UUID>): ArrayList<Experiment>
-   + queryOwnedExperiments(query: String, ownerId: UUID): ArrayList<Experiment>
-   + queryPublishedExperiments(query: String): ArrayList<Experiment>
-   + getPublishedExperiments(): ArrayList<Experiment>
-   + getAtUUIDDescription(experimentUUID: UUID): Experiment
-   + getAllExperiments(): ArrayList<Experiment> 
-   + getAllFromFirestore()
-   - queryMatch(query: String, source: String): Boolean
-   + {abstract} getRecordedTrials(): ArrayList<Trial>
-}
+        + addQuestion(experimentID: UUID, question: Question)
+        + addReply(id: UUID, reply: Reply)
+        + getQuestion(questionId: UUID): Question
+        + getTotalQuestions(experimentId: UUID): Integer
+        + getQuestionReply(questionID: UUID): ArrayList<Reply>
+        + getExperimentQuestions(experimentID: UUID): ArrayList<Question>
+        + getAllQuestions(): Collection<ArrayList<Question>>
+    }
 
-ExperimentManager o-- "0..*" Experiment
-
-class Question {
-    -question: String
-    -user: UUID
-    -reply: UUID
-    -experimentId: UUID
-    -questionId: UUID
+    ' assume that anyone who can reply to a question is a type of User
+    class Reply {
+        -reply: String
+        -experimenter: UUID
+        -replyID: UUID
+    }
 }
 
 Question -- "1" User: Asks
 Question "1" -- "0..*" Reply: Answers
-Question "0..*" --o "1" Experiment
-
-' assume that anyone who can reply to a question is a type of User
-class Reply {
-    -reply: String
-    -experimenter: UUID
-    -replyID: UUID
-}
 
 Reply -- User: Answers
-
-class QuestionManager{
-    - {static} questions: HashMap<UUID, ArrayList<Question>>
-    - {static} questionFromID: HashMap<UUID, Question>
-    - {static} replies: hasMap<UUID, Reply>
-    - {static} questionManager: QuestionManager
-
-    + addQuestion(experimentID: UUID, question: Question)
-    + addReply(id: UUID, reply: Reply)
-    + getQuestion(questionId: UUID): Question
-    + getTotalQuestions(experimentId: UUID): Integer
-    + getQuestionReply(questionID: UUID): ArrayList<Reply>
-    + getExperimentQuestions(experimentID: UUID): ArrayList<Question>
-    + getAllQuestions(): Collection<ArrayList<Question>>
- 
-}
 
 QuestionManager "1" *-- "1" QuestionManager
 QuestionManager "1" *-- "0..*" Question: addQuestion
 QuestionManager "1" *-- "0..*" Reply: addReply
-QuestionManager -- Experiment
 
-' allows the experiment to enforce only one trial type
-enum ExperimentType {
-    Count
-    NaturalCount
-    Binomial
-    Measurement
-}
+package experiments {
+    ' allows the experiment to enforce only one trial type
+    enum ExperimentType {
+        Count
+        NaturalCount
+        Binomial
+        Measurement
+    }
 
-' right now will just look for owner based on their id
-' idea: make this 'experimentInfo' and give every type of experiment an experimentInfo instead
-' rational: for displaying info and searching we don't need the results, just the info
-' both are implemented so whichever we don't use can just be deleted
-abstract class Experiment implements StatSummary, Graphable {
-    -experimentId: UUID
-    -description: String
-    -minTrials: Integer
-    #active: Boolean
-    -published: Boolean
-    -requireLocation: Boolean
-    ' this is the userId of the owner
-    -ownerId: UUID
-    -type: ExperimentType
-    -questions: ArrayList<Question>
-    +getSize(): Integer
-    +makeNewUUID()
-	+postExperimentToFirestore()
-}
+    ' right now will just look for owner based on their id
+    ' idea: make this 'experimentInfo' and give every type of experiment an experimentInfo instead
+    ' rational: for displaying info and searching we don't need the results, just the info
+    ' both are implemented so whichever we don't use can just be deleted
+    abstract class Experiment<Trial> implements StatSummary, Graphable {
+        -experimentId: UUID
+        -description: String
+        -minTrials: Integer
+        #active: Boolean
+        -published: Boolean
+        -requireLocation: Boolean
+        ' this is the userId of the owner
+        -ownerId: UUID
+        -type: ExperimentType
+        -questions: ArrayList<Question>
+        #results: Collection<Trial>
+        +getSize(): Integer
+        +makeNewUUID()
+        +recordTrial(trial: Trial)
+        +recordTrial(trial: Trial, fromFirestore: Boolean)
+        +postExperimentToFirestore()
+    }
 
+    class ExperimentManager {
+        - {static} experiments: HashMap<UUID, Experiment> 
+        - currentExperiment: Experiment 
 
+        + delete(id: UUID)
+        + add(id: UUID, experiment: Experiment)
+        + getOwnedExperiments(ownerID: UUID): ArrayList<Experiment> 
+        + query(experimentID: UUID): Experiment 
+        + queryExperiments(query: String): ArrayList<Experiment> 
+        + queryExperiments(experimentIds: Collection<UUID>): ArrayList<Experiment>
+        + queryExperiments(query: String, experimentIds: Collection<UUID>): ArrayList<Experiment>
+        + queryOwnedExperiments(query: String, ownerId: UUID): ArrayList<Experiment>
+        + queryPublishedExperiments(query: String): ArrayList<Experiment>
+        + getPublishedExperiments(): ArrayList<Experiment>
+        + getAtUUIDDescription(experimentUUID: UUID): Experiment
+        + getAllExperiments(): ArrayList<Experiment> 
+        + getAllFromFirestore()
+        - queryMatch(query: String, source: String): Boolean
+        + {abstract} getRecordedTrials(): ArrayList<Trial>
+    }
 
-Experiment -- QRCode
+    class CountExperiment<CountTrial> extends Experiment {}
 
+    class NaturalCountExperiment<NaturalCountTrial> extends Experiment {
+        -getMedian(values: ArrayList<Integer>): Float
+    }
 
-class CountExperiment extends Experiment {
-    -results: Collection<CountTrial>
-    +recordTrial(trial: CountTrial)
-}
+    class BinomialExperiment<BinomialTrial> extends Experiment {
+        -getMedian(values: ArrayList<Integer>): Float
+    }
 
-class NaturalCountExperiment extends Experiment {
-    -results: Collection<NaturalCountTrial>
-    +recordTrial(trial: NaturalCountTrial)
-    -getMedian(values: ArrayList<Integer>): Float
-}
+    class MeasurementExperiment<MeasurementTrial> extends Experiment {
+        -getMedian(values: ArrayList<Integer>): Float
 
-class BinomialExperiment extends Experiment {
-    -results: Collection<BinomialTrial>
-    +recordTrial(trial: BinomialTrial)
-    -getMedian(values: ArrayList<Integer>): Float
-}
+    }
 
-class MeasurementExperiment extends Experiment {
-    -results: Collection<MeasurementTrial>
-    +recordTrial(trial: MeasurementTrial)
-    -getMedian(values: ArrayList<Integer>): Float
+    class ExperimentMaker {
+        -{static} makeExperiment(ExperimentType type, String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId): Experiment
+        -{static} makeExperiment(ExperimentType type, String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId, Boolean published, UUID experimentId): Experiment
+    }
 
-}
+    interface "StatSummary" as StatSummary <<Interface>> {
+        +getMean(): Float
+        +getMedian(): Float
+        +getStdev(): Float
+        +getQuartile(): Float[]
+    }
 
-interface "StatSummary" as StatSummary <<Interface>> {
-    +getMean(): Float
-    +getMedian(): Float
-    +getStdev(): Float
-    +getQuartile(): Float[]
+    interface "Graphable" as Graphable <<Interface>>> {
+        +generateHistogram(): List<BarEntry>
+        +generatePlot(): List<Entry>
+    }
+
+    ExperimentManager o-- "0..*" Experiment
+
+    Experiment *-- "1" ExperimentType
+
+    StatSummary -- Experiment
+
+    Experiment -- QRCode
+
+    User "1" *-- "0...*" Experiment
+
+    Question "0..*" --o "1" Experiment
+
+    QuestionManager -- Experiment
 }
 
 package trials {
@@ -171,69 +192,48 @@ package trials {
     class MeasurementTrial<Float> extends Trial
 }
 
-abstract class QRCode {
-	- rawContentString: String
-	- experimentID: UUID
-	- type: QRType
-	- qrCodeImage: Bitmap
-	+ encodeStringToQR(encodedContent: String): Bitmap
+package qr {
+    abstract class QRCode {
+        - rawContentString: String
+        - experimentID: UUID
+        - type: QRType
+        - qrCodeImage: Bitmap
+        + encodeStringToQR(encodedContent: String): Bitmap
+    }
+
+    class ExperimentQRCode extends QRCode {}
+
+    class BinomialQRCode extends QRCode{
+        - result: Boolean
+    }
+
+    class CountQRCode extends QRCode{}
+
+    class MeasurementQRCode extends QRCode{
+        -value: float
+    }
+
+    class NaturalQRCode extends QRCode{
+        -value: int
+    }
+
+    class QRMaker {
+        +decodeQRString(String rawContent): QRCode
+        +checkQRHeader(String qrString): Boolean
+    }
+
+    enum QRType {
+        Experiment
+        BinomialTrial
+        CountTrial
+        MeasurementTrial
+        NaturalCountTrial
+    }
 }
-
-class ExperimentQRCode extends QRCode {}
-
-class BinomialQRCode extends QRCode{
-    - result: Boolean
-}
-
-class CountQRCode extends QRCode{}
-
-class MeasurementQRCode extends QRCode{
-    -value: float
-}
-
-class NaturalQRCode extends QRCode{
-    -value: int
-}
-
-class Location {
-  -latitude: double
-  -longitude: double
-}
-
-class GeographicalMap{
- -Collection<Location>
- +generateMap(loc: Collection<Location): Image
-}
-
-GeographicalMap -- "1..*" Location
-
-
-interface "Graphable" as Graphable <<Interface>>> {
-    +generateHistogram(): List<BarEntry>
-    +generatePlot(): List<Entry>
-}
-
-class ContactInformation {
-    -name: String
-    -email: String
-    -phone: String
-    -editable: Boolean
-    -preferences: SharePreferences
-}
-
-class SearchController {
-    ' functionality here is searchbar functions required by Java so likely don't need to be specified in UML
-    -keyword: String
-    +searchKeyWord(keyword: String): Collection<Experiment>
-}
-
 
 User "1" *-- "1" ContactInformation
-User "1" *-- "0...*" Experiment
-
 
 CountExperiment "1" *-- "0...*" CountTrial
-
 
 NaturalCountExperiment "1" *-- "0...*" NaturalCountTrial
 
@@ -242,22 +242,7 @@ BinomialExperiment "1" *-- "0...*" BinomialTrial
 MeasurementExperiment "1" *-- "0...*" MeasurementTrial
 
 User -- Trial: Performs
-Trial "1" *-- "1" Location
-
-
-
-Experiment *-- "1" ExperimentType
-
-
-User "0..*" -- "1" SearchController
-
-
-
-StatSummary -- Experiment
-
 
 StatSummary o-- Trial
-
-
 
 @enduml

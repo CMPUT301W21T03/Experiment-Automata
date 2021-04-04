@@ -35,6 +35,18 @@ public class User implements Serializable {
     private Collection<UUID> ownedExperiments;
     private Collection<UUID> subscribedExperiments;
 
+
+    /**
+     * a public constructor that lets us make a user without providing information
+     * (Used for when making a user for firebase)
+     */
+    public User(ContactInformation ci, UUID userId)
+    {
+        this.info = ci;
+        this.userId = userId;
+    }
+
+
     /**
      * Creates the user. Assigns a user id automatically.
      * @param preferences
@@ -46,8 +58,6 @@ public class User implements Serializable {
         editor.putString("userId", userId.toString());
         editor.apply();
         this.info = new ContactInformation(preferences);
-        updateExperimentFromFirestore();
-        updateFirestore();
     }
 
     /**
@@ -57,7 +67,6 @@ public class User implements Serializable {
      */
     private User(UUID id) {
         this.userId = id;
-        updateContactFromFirestore();
     }
 
     /**
@@ -71,6 +80,97 @@ public class User implements Serializable {
         return new User(id);
     }
 
+    /**
+     * Get the user's id
+     * @return
+     *  The id
+     */
+    public UUID getUserId()
+    {
+        return this.userId;
+    }
+
+    /**
+     * Get the user's information
+     * @return
+     * The user's contact information object
+     */
+    public ContactInformation getInfo() {
+        return this.info;
+    }
+
+    /**
+     * Get a collection of all the owned experiment IDs.
+     * @return
+     *  The IDs of owned experiments
+     */
+    public Collection<UUID> getOwnedExperiments() { return ownedExperiments; }
+
+    /**
+     * Get a collection of the experiment IDs the user is subscribed to.
+     * @return
+     *  The IDs of experiments
+     */
+    public Collection<UUID> getSubscriptions() { return subscribedExperiments; }
+
+    /**
+     * Add the experiment reference to the owned experiments
+     * @param experimentId
+     *  the UUID of the experiment
+     */
+    public void addExperiment(UUID experimentId) {
+        ownedExperiments.add(experimentId);
+    }
+
+    /**
+     * Adds/removes the experiment reference to the subscribed experiments.
+     * Also updates the firestore.
+     * If already subscribed, unsubscribes
+     * If not subscribed, subscribes
+     * @param experimentId
+     *  the UUID of the experiment
+     */
+    public void subscribeExperiment(UUID experimentId) {
+        if (subscribedExperiments.contains(experimentId)) {
+            subscribedExperiments.remove(experimentId);
+        } else {
+            subscribedExperiments.add(experimentId);
+        }
+    }
+
+    /**
+     * set the subscribed experiments
+     * @param subs the new subs
+     */
+    public void setSubscribedExperiments(Collection<UUID> subs)
+    {
+        if(subs == null)
+            return;
+        this.subscribedExperiments.clear();
+        this.subscribedExperiments.addAll(subs);
+
+    }
+
+    /**
+     * sets the owned experiments
+     * @param owned the new owned experiments
+     */
+    public void setOwnedExperiments(Collection<UUID> owned)
+    {
+        if(owned == null)
+            return;
+        this.ownedExperiments.clear();
+        this.ownedExperiments.addAll(owned);
+    }
+
+    /**
+     * the the contact information
+     * @param info the new contact infromation
+     */
+    public void setContactInformation(ContactInformation info)
+    {
+        this.info = info;
+    }
     /**
      * Update the user information in the Firestore
      */
@@ -177,65 +277,5 @@ public class User implements Serializable {
         String email = (String) document.get("email");
         String phone = (String) document.get("phone");
         this.info = new ContactInformation(name, email, phone);
-    }
-
-    /**
-     * Get the user's id
-     * @return
-     *  The id
-     */
-    public UUID getUserId()
-    {
-        return this.userId;
-    }
-
-    /**
-     * Get the user's information
-     * @return
-     * The user's contact information object
-     */
-    public ContactInformation getInfo() {
-        return this.info;
-    }
-
-    /**
-     * Get a collection of all the owned experiment IDs.
-     * @return
-     *  The IDs of owned experiments
-     */
-    public Collection<UUID> getOwnedExperiments() { return ownedExperiments; }
-
-    /**
-     * Get a collection of the experiment IDs the user is subscribed to.
-     * @return
-     *  The IDs of experiments
-     */
-    public Collection<UUID> getSubscriptions() { return subscribedExperiments; }
-
-    /**
-     * Add the experiment reference to the owned experiments
-     * @param experimentId
-     *  the UUID of the experiment
-     */
-    public void addExperiment(UUID experimentId) {
-        ownedExperiments.add(experimentId);
-        updateFirestore();
-    }
-
-    /**
-     * Adds/removes the experiment reference to the subscribed experiments.
-     * Also updates the firestore.
-     * If already subscribed, unsubscribes
-     * If not subscribed, subscribes
-     * @param experimentId
-     *  the UUID of the experiment
-     */
-    public void subscribeExperiment(UUID experimentId) {
-        if (subscribedExperiments.contains(experimentId)) {
-            subscribedExperiments.remove(experimentId);
-        } else {
-            subscribedExperiments.add(experimentId);
-        }
-        updateFirestore();
     }
 }

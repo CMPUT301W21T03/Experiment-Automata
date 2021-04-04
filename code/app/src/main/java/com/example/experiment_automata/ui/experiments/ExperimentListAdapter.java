@@ -1,5 +1,6 @@
 package com.example.experiment_automata.ui.experiments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import androidx.navigation.Navigation;
 import com.example.experiment_automata.backend.experiments.Experiment;
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.backend.users.User;
+import com.example.experiment_automata.backend.users.UserManager;
 import com.example.experiment_automata.ui.LinkView;
 import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.ui.profile.ProfileFragment;
@@ -41,6 +43,7 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
     private ArrayList<Experiment> experiment;
     private Context context;
     private String mode;
+    private UserManager manager;
 
     /**
      * Constructor takes in an array list of experiments and a context to set the attributes properly
@@ -51,11 +54,12 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
      * @param mode
      *   the mode to determine what should be shown on each item
      */
-    public ExperimentListAdapter(Context context, ArrayList<Experiment> experiments, String mode){
+    public ExperimentListAdapter(Context context, ArrayList<Experiment> experiments, String mode, UserManager manager){
         super(context, 0, experiments);
         this.experiment=experiments;
         this.context=context;
         this.mode = mode;
+        this.manager = manager;
     }
 
     /**
@@ -89,7 +93,8 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
         name.setText(exp.getDescription());
 
         // Set the name of the experiment owner
-        User user = User.getInstance(exp.getOwnerId());
+        User user = manager.getSpecificUser(oid);
+
         owner.setText(user.getInfo().getName());
         owner.setOnClickListener(v -> {
             NavigationActivity parentActivity = (NavigationActivity) context;

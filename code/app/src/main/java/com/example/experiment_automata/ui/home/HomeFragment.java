@@ -53,7 +53,7 @@ public class HomeFragment extends Fragment {
         experimentsArrayList = new ArrayList<>();
         populateList();
         experimentArrayAdapter = new ExperimentListAdapter(getActivity(),
-                experimentsArrayList, getArguments().getString("mode"));
+                experimentsArrayList, getArguments().getString("mode"), ((NavigationActivity) getActivity()).userManager);
         experimentList.setAdapter(experimentArrayAdapter);
 
         Bundle bundle = new Bundle();

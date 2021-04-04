@@ -58,26 +58,9 @@ public class TrialsFragment extends Fragment {
     }
 
     public void updateView() {
-        Experiment e = ((NavigationActivity) getActivity()).experimentManager
+        Experiment<Trial> experiment = ((NavigationActivity) getActivity()).experimentManager
                 .getCurrentExperiment();
         trialsArrayList.clear();
-        switch (e.getType()) {
-            case Count:
-                CountExperiment countExperiment = (CountExperiment) e;
-                trialsArrayList.addAll(countExperiment.getTrials());
-                break;
-            case NaturalCount:
-                NaturalCountExperiment naturalCountExperiment = (NaturalCountExperiment) e;
-                trialsArrayList.addAll(naturalCountExperiment.getTrials());
-                break;
-            case Binomial:
-                BinomialExperiment binomialExperiment = (BinomialExperiment) e;
-                trialsArrayList.addAll(binomialExperiment.getTrials());
-                break;
-            case Measurement:
-                MeasurementExperiment measurementExperiment = (MeasurementExperiment) e;
-                trialsArrayList.addAll(measurementExperiment.getTrials());
-                break;
-        }
+        trialsArrayList.addAll(experiment.getTrials());
     }
 }

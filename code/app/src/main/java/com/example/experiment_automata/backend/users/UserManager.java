@@ -31,6 +31,7 @@ public class UserManager
 {
     private static HashMap<UUID, User> currentUsers;
     private static UserManager userManager;
+    private static boolean TEST_MODE = false;
 
     private UserManager()
     {
@@ -93,6 +94,8 @@ public class UserManager
      */
     public void getAllUsersFromFireStore()
     {
+        if(TEST_MODE)
+            return;
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference userCollection = db.collection("users");
         userCollection.get().addOnCompleteListener(task -> {
@@ -139,5 +142,20 @@ public class UserManager
         });
     }
 
+    /**
+     * enables test mode (Does not talk to firebase)
+     */
+    public void enableTestMode()
+    {
+        TEST_MODE = true;
+    }
+
+    /**
+     * disables test mode (Talks to firebase)
+     */
+    public void disableTestMode()
+    {
+        TEST_MODE = false;
+    }
 
 }

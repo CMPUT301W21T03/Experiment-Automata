@@ -37,7 +37,7 @@ public class ExperimentManager
 {
     private static ExperimentManager experimentManager;
     private static HashMap<UUID, Experiment> experiments;
-    public static int updateCalls = 0;
+    private static boolean TEST_MODE = false;
     private Experiment currentExperiment;
 
 
@@ -243,6 +243,8 @@ public class ExperimentManager
      * Populate experiments in Experiment manager with all experiments from Firestore
      */
     public void getAllFromFirestore(){
+        if(TEST_MODE)
+            return;
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference experimentCollection = db.collection("experiments");
         experimentCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -411,4 +413,19 @@ public class ExperimentManager
         return new ArrayList(experiments.values());
     }
 
+    /**
+     * enables test mode (Does not talk to firebase)
+     */
+    public void enableTestMode()
+    {
+        TEST_MODE = true;
+    }
+
+    /**
+     * disables test mode (Talks to firebase)
+     */
+    public void disableTestMode()
+    {
+        TEST_MODE = false;
+    }
 }

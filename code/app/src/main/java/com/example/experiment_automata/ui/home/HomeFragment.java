@@ -90,6 +90,7 @@ public class HomeFragment extends Fragment {
                         .queryExperiments(parentActivity.loggedUser.getOwnedExperiments()));
                 break;
             case "published":
+                ((NavigationActivity)getActivity()).userManager.getAllUsersFromFireStore();
                 experimentsArrayList.addAll(parentActivity.experimentManager
                         .getPublishedExperiments());
                 break;

@@ -278,10 +278,4 @@ public class BinomialExperiment extends Experiment<BinomialTrial> {
 
         return quartiles;
     }
-
-    public Collection<BinomialTrial> getResults() {
-        return results;
-    }
-
-    public Collection<BinomialTrial> getTrials() { return results; }
 }

@@ -127,10 +127,4 @@ public class CountExperiment extends Experiment<CountTrial> {
         quartiles[1] = getMedian();
         return quartiles;
     }
-
-    public Collection<CountTrial> getResults() {
-        return results;
-    }
-
-    public Collection<CountTrial> getTrials() { return results; }
 }

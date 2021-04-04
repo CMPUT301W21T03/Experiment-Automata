@@ -253,14 +253,4 @@ public class NaturalCountExperiment extends Experiment<NaturalCountTrial> {
         }
         return quartiles;
     }
-
-    public Collection<NaturalCountTrial> getResults() {
-        return results;
-    }
-
-    /**
-     * get the trials made about this experiment
-     * @return the trials
-     */
-    public Collection<NaturalCountTrial> getTrials() { return results; }
 }

@@ -2,6 +2,7 @@ package com.example.experiment_automata.backend.experiments;
 
 import androidx.annotation.NonNull;
 
+import com.example.experiment_automata.backend.trials.NaturalCountTrial;
 import com.example.experiment_automata.backend.trials.Trial;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -326,4 +327,10 @@ public abstract class Experiment<T extends Trial> implements Serializable, StatS
         Experiment<T> ec = (Experiment<T>) o;
         return this.getDescription().toLowerCase().compareTo(ec.getDescription().toLowerCase());
     }
+
+    /**
+     * Get the trials made about this experiment.
+     * @return the trials
+     */
+    public Collection<T> getTrials() { return results; }
 }

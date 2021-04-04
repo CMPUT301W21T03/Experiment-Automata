@@ -255,14 +255,4 @@ public class MeasurementExperiment extends Experiment<MeasurementTrial> {
         }
         return quartiles;
     }
-
-    public Collection<MeasurementTrial> getResults() {
-        return results;
-    }
-
-    /**
-     * get the trials made about this experiment
-     * @return the trials
-     */
-    public Collection<MeasurementTrial> getTrials() { return results; }
 }

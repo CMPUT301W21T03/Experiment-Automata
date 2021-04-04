@@ -24,7 +24,7 @@ import java.util.UUID;
  *
  *      1. None
  */
-public abstract class Experiment implements Serializable, StatSummary, Graphable, Comparable {
+public abstract class Experiment<Trial> implements Serializable, StatSummary, Graphable, Comparable {
     private String description;
     private int minTrials;
     private UUID experimentId; // changed from UML to better match project
@@ -33,15 +33,16 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
     private boolean published; // changed from UML for style
     private boolean requireLocation; // added to align with storyboard
     private ExperimentType type; // todo: do we need type here if an experiment has a type? (yes makes it easy)
+    private Collection<Trial> results;
 
     /**
      * Default experiment constructor that only asks for a description
      * @param description
      *   the description of the experiment
      */
-    public Experiment(String description)
-    {
+    public Experiment(String description) {
         this.description = description;
+        results = new ArrayList<>();
     }
 
     /**
@@ -64,6 +65,7 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
         this.ownerId = ownerId;
         this.experimentId = UUID.randomUUID();
         this.type = type;
+        results = new ArrayList<>();
         postExperimentToFirestore();
     }
 
@@ -87,6 +89,7 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
         this.ownerId = ownerId;
         this.experimentId = experimentId;
         this.type = type;
+        results = new ArrayList<>();
     }
     /**
      * This method will check if an experiment has the same id as another
@@ -95,7 +98,7 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
      * @return
      *   A boolean based on whether the ids are the same
      */
-    public boolean compare(Experiment experiment) {
+    public boolean compare(Experiment<Trial> experiment) {
         return experimentId.equals(experiment.experimentId);
     }
 
@@ -265,9 +268,16 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
 
     /**
      * Add a trial to an experiment
-     * @param trial the trial we want to add
+     * @param trial the trial to add
      */
-    public abstract void recordTrial(Trial trial);
+    public void recordTrial(Trial trial) {
+        if (active) {
+            results.add(trial);
+            postExperimentToFirestore();
+        } else {
+            throw new IllegalStateException("Experiment is not accepting new results.");
+        }
+    }
 
     public abstract void recordTrial(Trial trial, Boolean fromFirestore);
 

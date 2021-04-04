@@ -1,9 +1,11 @@
 package com.example.experiment_automata.backend.users;
+
 import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -171,14 +173,19 @@ public class User implements Serializable {
     protected void updateContactFromFirestore() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference documentReference = db.collection("users").document(this.userId.toString());
-        Task<DocumentSnapshot> task = documentReference.get();
-        // wait until the task is complete
-        while (!task.isComplete());
-        DocumentSnapshot document = task.getResult();
-        String name = (String) document.get("name");
-        String email = (String) document.get("email");
-        String phone = (String) document.get("phone");
-        this.info = new ContactInformation(name, email, phone);
+        User self = this;
+        // TODO: REMOVE LINE BELOW
+        self.info = new ContactInformation("username", "email", "phone");
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot document = task.getResult();
+                String name = (String) document.get("name");
+                String email = (String) document.get("email");
+                String phone = (String) document.get("phone");
+                self.info = new ContactInformation(name, email, phone);
+            }
+        });
     }
 
     /**

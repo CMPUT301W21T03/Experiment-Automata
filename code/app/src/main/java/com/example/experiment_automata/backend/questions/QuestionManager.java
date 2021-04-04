@@ -35,6 +35,7 @@ public class QuestionManager {
     private static  HashMap<UUID, ArrayList<Reply>> replies;
     private static QuestionManager questionManager;
     private static HashMap<UUID,Boolean> repliesFromId;
+    private static boolean TEST_MODE = false;
 
 
     /**
@@ -190,6 +191,9 @@ public class QuestionManager {
      */
 
     public void getQuestionsFromFirestore() {
+
+        if(TEST_MODE)
+            return;
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference questionsCollection = db.collection("questions");
         questionsCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -217,6 +221,9 @@ public class QuestionManager {
      */
 
     private void getRepliesFromFirestore() {
+
+        if(TEST_MODE)
+            return;
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference questionsCollection = db.collection("replies");
         questionsCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -236,5 +243,21 @@ public class QuestionManager {
                 }
             }
         });
+    }
+
+    /**
+     * enables test mode (Does not talk to firebase)
+     */
+    public void enableTestMode()
+    {
+        TEST_MODE = true;
+    }
+
+    /**
+     * disables test mode (Talks to firebase)
+     */
+    public void disableTestMode()
+    {
+        TEST_MODE = false;
     }
 }

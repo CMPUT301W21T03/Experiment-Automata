@@ -32,7 +32,7 @@ public class User implements Serializable {
     private static final String TAG = "User";
     private UUID userId;//changed from int to UUID
     private ContactInformation info;
-//    private SearchController controller;
+    //    private SearchController controller;
     private Collection<UUID> ownedExperiments;
     private Collection<UUID> subscribedExperiments;
 //    private Collection<Experiment> participatingExperiments;
@@ -50,6 +50,12 @@ public class User implements Serializable {
         this.info = new ContactInformation(preferences);
         updateExperimentFromFirestore();
         updateFirestore();
+    }
+
+    public User(ContactInformation ci, UUID userId)
+    {
+        this.info = ci;
+        this.userId = userId;
     }
 
     /**
@@ -239,5 +245,39 @@ public class User implements Serializable {
             subscribedExperiments.add(experimentId);
         }
         updateFirestore();
+    }
+
+    /**
+     * set the subscribed experiments
+     * @param subs the new subs
+     */
+    public void setSubscribedExperiments(Collection<UUID> subs)
+    {
+        if(subs == null)
+            return;
+        this.subscribedExperiments.clear();
+        this.subscribedExperiments.addAll(subs);
+
+    }
+
+    /**
+     * sets the owned experiments
+     * @param owned the new owned experiments
+     */
+    public void setOwnedExperiments(Collection<UUID> owned)
+    {
+        if(owned == null)
+            return;
+        this.ownedExperiments.clear();
+        this.ownedExperiments.addAll(owned);
+    }
+
+    /**
+     * the the contact information
+     * @param info the new contact infromation
+     */
+    public void setContactInformation(ContactInformation info)
+    {
+        this.info = info;
     }
 }

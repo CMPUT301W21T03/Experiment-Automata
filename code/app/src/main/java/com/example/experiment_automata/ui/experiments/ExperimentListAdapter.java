@@ -1,8 +1,10 @@
 package com.example.experiment_automata.ui.experiments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +19,9 @@ import androidx.navigation.Navigation;
 
 import com.example.experiment_automata.backend.experiments.Experiment;
 import com.example.experiment_automata.R;
+import com.example.experiment_automata.backend.users.ContactInformation;
 import com.example.experiment_automata.backend.users.User;
+import com.example.experiment_automata.backend.users.UserManager;
 import com.example.experiment_automata.ui.LinkView;
 import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.ui.profile.ProfileFragment;
@@ -41,6 +45,7 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
     private ArrayList<Experiment> experiment;
     private Context context;
     private String mode;
+    private UserManager manager;
 
     /**
      * Constructor takes in an array list of experiments and a context to set the attributes properly
@@ -51,11 +56,12 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
      * @param mode
      *   the mode to determine what should be shown on each item
      */
-    public ExperimentListAdapter(Context context, ArrayList<Experiment> experiments, String mode){
+    public ExperimentListAdapter(Context context, ArrayList<Experiment> experiments, String mode, UserManager manager){
         super(context, 0, experiments);
         this.experiment=experiments;
         this.context=context;
         this.mode = mode;
+        this.manager = manager;
     }
 
     /**
@@ -89,12 +95,21 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
         name.setText(exp.getDescription());
 
         // Set the name of the experiment owner
-        User user = User.getInstance(exp.getOwnerId());
+
+        User user = manager.getSpecificUser(oid);
+        if(user == null) {
+            ContactInformation ci = new ContactInformation("BAD-DATA", "BAD", "BAD");
+            user = new User(ci, null);
+
+        }
+
+
         owner.setText(user.getInfo().getName());
+        User finalUser = user;
         owner.setOnClickListener(v -> {
             NavigationActivity parentActivity = (NavigationActivity) context;
             Bundle args = new Bundle();
-            args.putSerializable(ProfileFragment.userKey, user);
+            args.putSerializable(ProfileFragment.userKey, finalUser);
             NavController navController = Navigation.findNavController(parentActivity, R.id.nav_host_fragment);
             navController.navigate(R.id.nav_profile, args);
         });

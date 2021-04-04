@@ -3,10 +3,8 @@ package com.example.experiment_automata.ui;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -22,12 +20,11 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.experiment_automata.R;
+import com.example.experiment_automata.backend.location.LocationServices;
 import com.example.experiment_automata.backend.trials.Trial;
 import com.example.experiment_automata.backend.users.ContactInformation;
 
 import com.example.experiment_automata.ui.experiments.AddExperimentFragment;
-import com.example.experiment_automata.backend.experiments.BinomialExperiment;
-import com.example.experiment_automata.backend.experiments.CountExperiment;
 import com.example.experiment_automata.backend.experiments.ExperimentManager;
 import com.example.experiment_automata.ui.experiments.NavExperimentDetailsFragment;
 import com.example.experiment_automata.backend.experiments.Experiment;
@@ -40,19 +37,8 @@ import com.example.experiment_automata.backend.questions.Question;
 import com.example.experiment_automata.backend.questions.QuestionManager;
 import com.example.experiment_automata.backend.questions.Reply;
 
-import com.example.experiment_automata.backend.experiments.MeasurementExperiment;
-import com.example.experiment_automata.backend.experiments.NaturalCountExperiment;
-
 import com.example.experiment_automata.backend.users.User;
-import com.example.experiment_automata.backend.trials.BinomialTrial;
-import com.example.experiment_automata.backend.trials.CountTrial;
-import com.example.experiment_automata.backend.trials.MeasurementTrial;
-import com.example.experiment_automata.backend.trials.NaturalCountTrial;
 import com.example.experiment_automata.ui.home.HomeFragment;
-import com.example.experiment_automata.ui.trials.MapDisplay.MapUtility;
-import com.example.experiment_automata.ui.trials.add.AddNaturalCountTrialFragment;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -67,9 +53,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import org.osmdroid.views.MapView;
-
-import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -429,7 +412,7 @@ public class NavigationActivity extends AppCompatActivity implements
 
             //TODO: Place location warning dialog here -- Display only once?
             LocationManager locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-            LocationListener locationListener = new com.example.experiment_automata.backend.Location.LocationServices();
+            LocationListener locationListener = new LocationServices();
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 1, locationListener);
             currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         } else {

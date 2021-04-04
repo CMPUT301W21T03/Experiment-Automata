@@ -1,4 +1,4 @@
-package com.example.experiment_automata.backend.Location;
+package com.example.experiment_automata.backend.location;
 
 import android.location.Location;
 import android.location.LocationListener;
@@ -19,8 +19,7 @@ import androidx.annotation.NonNull;
  *          Full Source: https://stackoverflow.com/questions/1513485/how-do-i-get-the-current-gps-location-programmatically-in-android
  */
 
-public class LocationServices implements LocationListener
-{
+public class LocationServices implements LocationListener {
     Location currentLocation;
 
     public LocationServices()

@@ -243,7 +243,6 @@ public class ExperimentManager
      * Populate experiments in Experiment manager with all experiments from Firestore
      */
     public void getAllFromFirestore(){
-        updateCalls++;
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference experimentCollection = db.collection("experiments");
         experimentCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

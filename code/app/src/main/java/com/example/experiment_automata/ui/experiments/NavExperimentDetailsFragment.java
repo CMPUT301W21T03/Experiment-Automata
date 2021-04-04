@@ -163,14 +163,12 @@ public class NavExperimentDetailsFragment extends Fragment {
                 editExperiment.setArguments(bundle);
                 getActivity().getSupportFragmentManager().beginTransaction().add(editExperiment, "EDIT").commit();
             });
-            //subscribeButton.setVisibility(View.GONE);
-
+            
             subscribeButton.setVisibility(View.VISIBLE);
             subscribeButton.setOnClickListener(v -> {
                 parentActivity.loggedUser.subscribeExperiment(experiment.getExperimentId());
                 toggleSubscribeButton();
             });
-            //editImageButton.setVisibility(View.GONE);
         
 
         questionsButton.setOnClickListener(v -> {

@@ -3,10 +3,8 @@ package com.example.experiment_automata.ui;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -26,8 +24,6 @@ import com.example.experiment_automata.backend.trials.Trial;
 import com.example.experiment_automata.backend.users.ContactInformation;
 
 import com.example.experiment_automata.ui.experiments.AddExperimentFragment;
-import com.example.experiment_automata.backend.experiments.BinomialExperiment;
-import com.example.experiment_automata.backend.experiments.CountExperiment;
 import com.example.experiment_automata.backend.experiments.ExperimentManager;
 import com.example.experiment_automata.ui.experiments.NavExperimentDetailsFragment;
 import com.example.experiment_automata.backend.experiments.Experiment;
@@ -40,19 +36,8 @@ import com.example.experiment_automata.backend.questions.Question;
 import com.example.experiment_automata.backend.questions.QuestionManager;
 import com.example.experiment_automata.backend.questions.Reply;
 
-import com.example.experiment_automata.backend.experiments.MeasurementExperiment;
-import com.example.experiment_automata.backend.experiments.NaturalCountExperiment;
-
 import com.example.experiment_automata.backend.users.User;
-import com.example.experiment_automata.backend.trials.BinomialTrial;
-import com.example.experiment_automata.backend.trials.CountTrial;
-import com.example.experiment_automata.backend.trials.MeasurementTrial;
-import com.example.experiment_automata.backend.trials.NaturalCountTrial;
 import com.example.experiment_automata.ui.home.HomeFragment;
-import com.example.experiment_automata.ui.trials.MapDisplay.MapUtility;
-import com.example.experiment_automata.ui.trials.add.AddNaturalCountTrialFragment;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -67,9 +52,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import org.osmdroid.views.MapView;
-
-import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -89,7 +71,7 @@ public class NavigationActivity extends AppCompatActivity implements
         EditUserFragment.OnFragmentInteractionListener {
 
     private AppBarConfiguration mAppBarConfiguration;
-    public final ExperimentManager experimentManager = new ExperimentManager();
+    public final ExperimentManager experimentManager = ExperimentManager.getInstance();
     public QuestionManager questionManager = QuestionManager.getInstance();
 
     private Screen currentScreen;

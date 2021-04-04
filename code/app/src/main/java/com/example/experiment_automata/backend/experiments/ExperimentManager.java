@@ -35,18 +35,27 @@ import java.util.UUID;
  */
 public class ExperimentManager
 {
+    private static ExperimentManager experimentManager;
     private static HashMap<UUID, Experiment> experiments;
+    public static int updateCalls = 0;
     private Experiment currentExperiment;
 
 
     /**
      * Initializes the experiment manager.
      */
-    public ExperimentManager()
+    private ExperimentManager()
     {
 
         experiments = new HashMap<UUID, Experiment>();
         getAllFromFirestore();
+    }
+
+    public static ExperimentManager getInstance()
+    {
+        if(experimentManager == null)
+            experimentManager = new ExperimentManager();
+        return experimentManager;
     }
 
     /**
@@ -234,6 +243,7 @@ public class ExperimentManager
      * Populate experiments in Experiment manager with all experiments from Firestore
      */
     public void getAllFromFirestore(){
+        updateCalls++;
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference experimentCollection = db.collection("experiments");
         experimentCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

@@ -279,20 +279,6 @@ public class BinomialExperiment extends Experiment<BinomialTrial> {
         return quartiles;
     }
 
-    /**
-     * Gets the size of the trials. Does not include ignored trials.
-     * @return size of the trials
-     */
-    public Integer getSize(){
-        int size = 0;
-        for (Trial trial : results) {
-            if (!trial.isIgnored()) {
-                size++;
-            }
-        }
-        return size;
-    }
-
     public Collection<BinomialTrial> getResults() {
         return results;
     }

@@ -246,10 +246,18 @@ public abstract class Experiment<T extends Trial> implements Serializable, StatS
     }
 
     /**
-     * Gets the size of the experiment
-     * @return size of the experiment
+     * Gets the size of the trials. Does not include ignored trials.
+     * @return size of the trials
      */
-    public abstract Integer getSize();
+    public Integer getSize(){
+        int size = 0;
+        for (T trial : results) {
+            if (!trial.isIgnored()) {
+                size++;
+            }
+        }
+        return size;
+    }
 
     /**
      * Add a trial to an experiment.

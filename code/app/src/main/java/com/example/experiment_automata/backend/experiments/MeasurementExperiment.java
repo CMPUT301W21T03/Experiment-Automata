@@ -256,20 +256,6 @@ public class MeasurementExperiment extends Experiment<MeasurementTrial> {
         return quartiles;
     }
 
-    /**
-     * Gets the size of the experiment
-     * @return size of the experiment
-     */
-    public Integer getSize(){
-        int size = 0;
-        for (Trial trial : results) {
-            if (!trial.isIgnored()) {
-                size++;
-            }
-        }
-        return size;
-    }
-
     public Collection<MeasurementTrial> getResults() {
         return results;
     }

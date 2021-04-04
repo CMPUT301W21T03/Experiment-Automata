@@ -128,14 +128,6 @@ public class CountExperiment extends Experiment<CountTrial> {
         return quartiles;
     }
 
-    /**
-     * Gets the size of the experiment
-     * @return size of the experiment
-     */
-    public Integer getSize(){
-        return results.size();
-    }
-
     public Collection<CountTrial> getResults() {
         return results;
     }

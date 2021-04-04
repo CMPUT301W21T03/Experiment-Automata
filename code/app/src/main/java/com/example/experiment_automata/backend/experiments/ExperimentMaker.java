@@ -15,31 +15,6 @@ import java.util.UUID;
  *      1. None
  */
 public class ExperimentMaker {
-
-    /**
-     * Will create a desired experiment type with a description
-     * @param type
-     *   the type of experiment that will be created
-     * @param description
-     *   the description of the experiment to be created
-     * @return
-     *   an experiment object of the requested type
-     */
-    public Experiment<?> makeExperiment(ExperimentType type, String description) {
-        switch (type) {
-            case NaturalCount:
-                return new NaturalCountExperiment(description);
-            case Binomial:
-                return new BinomialExperiment(description);
-            case Count:
-                return new CountExperiment(description);
-            case Measurement:
-                return new MeasurementExperiment(description);
-            default:
-                return null;
-        }
-    }
-
     /**
      * Will create an experiment with the selected type from the Add Experiment Fragment
      * @param type

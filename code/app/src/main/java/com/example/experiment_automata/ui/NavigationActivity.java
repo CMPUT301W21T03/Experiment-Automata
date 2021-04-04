@@ -24,6 +24,7 @@ import com.example.experiment_automata.backend.location.LocationServices;
 import com.example.experiment_automata.backend.trials.Trial;
 import com.example.experiment_automata.backend.users.ContactInformation;
 
+import com.example.experiment_automata.backend.users.UserManager;
 import com.example.experiment_automata.ui.experiments.AddExperimentFragment;
 import com.example.experiment_automata.backend.experiments.ExperimentManager;
 import com.example.experiment_automata.ui.experiments.NavExperimentDetailsFragment;
@@ -72,8 +73,9 @@ public class NavigationActivity extends AppCompatActivity implements
         EditUserFragment.OnFragmentInteractionListener {
 
     private AppBarConfiguration mAppBarConfiguration;
-    public final ExperimentManager experimentManager = new ExperimentManager();
+    public final ExperimentManager experimentManager = ExperimentManager.getInstance();
     public QuestionManager questionManager = QuestionManager.getInstance();
+    public UserManager userManager = UserManager.getInstance();
 
     private Screen currentScreen;
     public Fragment currentFragment;
@@ -101,6 +103,7 @@ public class NavigationActivity extends AppCompatActivity implements
         currentActivity = this;
         SharedPreferences preferences = getSharedPreferences("experiment_automata", MODE_PRIVATE);
         loggedUser = new User(preferences);
+        //userManager.setCurrentUser(loggedUser);
         setContentView(R.layout.activity_navigation);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -113,6 +116,7 @@ public class NavigationActivity extends AppCompatActivity implements
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
         addExperimentButton = findViewById(R.id.fab_button);

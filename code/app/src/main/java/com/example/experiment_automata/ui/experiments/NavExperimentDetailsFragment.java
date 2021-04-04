@@ -46,7 +46,7 @@ public class NavExperimentDetailsFragment extends Fragment {
     public static final String CURRENT_EXPERIMENT_ID = "FRAGMENT_CURRENT_FRAGMENT-ID";
 
     private String experimentStringId;
-    private Experiment experiment;
+    private Experiment<?> experiment;
     private TextView descriptionView;
     private TextView typeView;
     private ImageButton editImageButton;
@@ -176,7 +176,7 @@ public class NavExperimentDetailsFragment extends Fragment {
         });
 
         qrButton.setOnClickListener(v -> {
-            Experiment current = (((NavigationActivity)getActivity()).getExperimentManager())
+            Experiment<?> current = (((NavigationActivity)getActivity()).getExperimentManager())
                     .getAtUUIDDescription(UUID.fromString(experimentStringId));
 
             Fragment viewQRFragment = new ViewQRFragment();
@@ -217,10 +217,10 @@ public class NavExperimentDetailsFragment extends Fragment {
      */
     public void update(String experimentStringId) {
         Log.d("UPDATE", "Screen info updated");
-        Experiment current = (((NavigationActivity)getActivity()).getExperimentManager())
+        Experiment<?> current = (((NavigationActivity) getActivity()).getExperimentManager())
                 .getAtUUIDDescription(UUID.fromString(experimentStringId));
         descriptionView.setText(current.getDescription());
-        typeView.setText("" + current.getType());
+        typeView.setText(current.getType().toString());
 
         // Disable FAB if not accepting new trials
         FloatingActionButton fab = getActivity().findViewById(R.id.fab_button);

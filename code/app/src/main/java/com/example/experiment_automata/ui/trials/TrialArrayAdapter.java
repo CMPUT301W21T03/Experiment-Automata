@@ -54,7 +54,7 @@ public class TrialArrayAdapter extends ArrayAdapter<Trial> {
      * @param trialList
      *  the list of the trials to display
      */
-    public TrialArrayAdapter(Context context, ArrayList<Trial> trialList, NavExperimentDetailsFragment parentFragment){
+    public TrialArrayAdapter(Context context, ArrayList<Trial> trialList, NavExperimentDetailsFragment parentFragment) {
         super(context, 0, trialList);
         this.trials = trialList;
         this.context = context;

@@ -42,8 +42,7 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-public class ExperimentUserStoriesTests
-{
+public class ExperimentUserStoriesTests {
     private Solo solo;
     private NavigationActivity currentTestingActivity;
 
@@ -57,7 +56,7 @@ public class ExperimentUserStoriesTests
 
     //Needed Objects
     private ExperimentMaker maker;
-    private Experiment testExperiment;
+    private Experiment<?> testExperiment;
     private UUID testUUID;
 
     @Rule
@@ -66,8 +65,7 @@ public class ExperimentUserStoriesTests
 
 
     @Before
-    public void setup()
-    {
+    public void setup() {
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
         currentTestingActivity = (NavigationActivity) solo.getCurrentActivity();
         //Finding the buttons we need to press
@@ -83,8 +81,7 @@ public class ExperimentUserStoriesTests
 
     }
 
-    private void makeExperiment(String des)
-    {
+    private void makeExperiment(String des) {
         //Click from the home screen the + button to make an experiment
         solo.clickOnView(addExperimentButton);
         solo.waitForDialogToOpen();
@@ -124,8 +121,7 @@ public class ExperimentUserStoriesTests
      * (This test is following the golden path)
      */
     @Test
-    public void testMakeAnExperimentCount()
-    {
+    public void testMakeAnExperimentCount() {
         makeExperiment("GUI Test Experiment");
         //Clicking on publish button
         publishButton = solo.getView(R.id.publishedCheckbox);
@@ -147,8 +143,7 @@ public class ExperimentUserStoriesTests
      * per(us.01.01.01)
      */
     @Test
-    public void testMakeExperimentCancel()
-    {
+    public void testMakeExperimentCancel() {
         assertNotEquals("Can't find + button", null, addExperimentButton);
 
         //Click from the home screen the + button to make an experiment
@@ -186,8 +181,7 @@ public class ExperimentUserStoriesTests
      * per(us.01.01.01)
      */
     @Test
-    public void makeEmptyExperiment()
-    {
+    public void makeEmptyExperiment() {
         assertNotEquals("Can't find + button", null, addExperimentButton);
 
         //Click from the home screen the + button to make an experiment
@@ -233,8 +227,7 @@ public class ExperimentUserStoriesTests
      * per(us.01.02.01)
      */
     @Test
-    public void testingUnpublishedExperiment()
-    {
+    public void testingUnpublishedExperiment() {
         makeExperiment("GUI Test Experiment");
 
         //Clicking on publish button
@@ -264,8 +257,7 @@ public class ExperimentUserStoriesTests
      * As per (us.01.03.01)
      */
     @Test
-    public void testingIfWeCanEndAnExperiment()
-    {
+    public void testingIfWeCanEndAnExperiment() {
         View editButton = null;
         makeExperiment("GUI Test Experiment");
 
@@ -289,9 +281,8 @@ public class ExperimentUserStoriesTests
      * as per(us.01.05.01)
      */
     @Test
-    public void testingAddingTrials()
-    {
-        Experiment current = null;
+    public void testingAddingTrials() {
+        Experiment<?> current = null;
         makeExperiment("GUI Test Experiment");
         solo.sleep(2000);
         if(currentTestingActivity.experimentManager.getAllExperiments().size() > 0) {

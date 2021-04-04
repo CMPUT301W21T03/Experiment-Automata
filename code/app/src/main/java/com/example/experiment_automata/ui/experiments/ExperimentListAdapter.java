@@ -34,11 +34,11 @@ import java.util.UUID;
  *
  *      1. None
  */
-public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
+public class ExperimentListAdapter extends ArrayAdapter<Experiment<?>> {
     // Syntax inspired by Abdul Ali Bangash, "Lab 3 Instructions - Custom List",
     // 2021-02-04, Public Domain, https://eclass.srv.ualberta.ca/pluginfile.php/6713985/mod_resource/content/1/Lab%203%20instructions%20-%20CustomList.pdf
 
-    private ArrayList<Experiment> experiment;
+    private ArrayList<Experiment<?>> experiment;
     private Context context;
     private String mode;
 
@@ -51,9 +51,9 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
      * @param mode
      *   the mode to determine what should be shown on each item
      */
-    public ExperimentListAdapter(Context context, ArrayList<Experiment> experiments, String mode){
+    public ExperimentListAdapter(Context context, ArrayList<Experiment<?>> experiments, String mode){
         super(context, 0, experiments);
-        this.experiment=experiments;
+        this.experiment = experiments;
         this.context=context;
         this.mode = mode;
     }
@@ -75,7 +75,7 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment> {
             view = LayoutInflater.from(context).inflate(R.layout.experiment_layout, parent, false);
         }
         // The experiment we're going to set the XML file with
-        Experiment exp = experiment.get(position);
+        Experiment<?> exp = experiment.get(position);
 
         // Find the corresponding views from experiment_layout
         TextView name = view.findViewById(R.id.experimentName);

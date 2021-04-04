@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.example.experiment_automata.backend.experiments.Experiment;
 import com.example.experiment_automata.backend.experiments.ExperimentMaker;
 import com.example.experiment_automata.backend.experiments.ExperimentType;
+import com.example.experiment_automata.backend.trials.Trial;
 import com.example.experiment_automata.ui.NavigationActivity;
 import com.robotium.solo.Solo;
 
@@ -49,7 +50,7 @@ public class BinomialTrialTests {
 
     //Needed Objects
     private ExperimentMaker maker;
-    private Experiment testExperiment;
+    private Experiment<?> testExperiment;
     private UUID testUUID;
 
     @Rule
@@ -63,9 +64,8 @@ public class BinomialTrialTests {
         currentTestingActivity = (NavigationActivity) solo.getCurrentActivity();
         //Finding the buttons we need to press
         addExperimentButton = currentTestingActivity.findViewById(R.id.fab_button);
-        maker = new ExperimentMaker();
         testUUID = UUID.randomUUID();
-        testExperiment = maker.makeExperiment(ExperimentType.Count,
+        testExperiment = ExperimentMaker.makeExperiment(ExperimentType.Count,
                 "Test Experiment",
                 0,
                 true,
@@ -101,7 +101,7 @@ public class BinomialTrialTests {
         location = solo.getView(R.id.experiment_require_location_switch);
         acceptNewResults = solo.getView(R.id.experiment_accept_new_results_switch);
         solo.clickOnView(location);
-        if (des != "One")
+        if (!des.equals("One"))
             solo.clickOnView(acceptNewResults);
         solo.clickOnText("Ok");
     }
@@ -154,13 +154,13 @@ public class BinomialTrialTests {
         for (int i = 0; i < 4; i++) {
             addBinomialTrial(true);
         }
-        String quertile = ((TextView)solo.getView(R.id.quartiles_value)).getText().toString();
+        String quartile = ((TextView)solo.getView(R.id.quartiles_value)).getText().toString();
         Double median = new Double(((TextView)solo.getView(R.id.median_value)).getText().toString());
         Double mean = new Double(((TextView)solo.getView(R.id.mean_value)).getText().toString());
 
         assertEquals("Mean wrong", meanTestValue, mean, 0.00001);
         assertEquals("Median wrong", medianTestValue, median, 0.00001);
-        assertNotEquals("Quartile set wrong", null, quertile);
+        assertNotEquals("Quartile set wrong", null, quartile);
     }
 
     /**

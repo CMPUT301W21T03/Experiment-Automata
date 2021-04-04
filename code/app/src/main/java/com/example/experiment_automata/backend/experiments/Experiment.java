@@ -26,7 +26,7 @@ import java.util.UUID;
  *
  *      1. None
  */
-public abstract class Experiment<T extends Trial> implements Serializable, StatSummary, Graphable, Comparable {
+public abstract class Experiment<T extends Trial<?>> implements Serializable, StatSummary, Graphable, Comparable {
     private String description;
     private int minTrials;
     private UUID experimentId; // changed from UML to better match project
@@ -227,7 +227,7 @@ public abstract class Experiment<T extends Trial> implements Serializable, StatS
      * get the min trials
      * @return the int min trial value
      */
-    public int getMinTrials() {
+    public Integer getMinTrials() {
         return minTrials;
     }
 
@@ -278,8 +278,8 @@ public abstract class Experiment<T extends Trial> implements Serializable, StatS
      * @param trial the trial to add
      * @param fromFirestore whether to pull the trial from the firestore or not
      */
-    public void recordTrial(T trial, @NotNull Boolean fromFirestore) {
-        if (fromFirestore) results.add(trial);
+    public void recordTrial(Trial<?> trial, @NotNull Boolean fromFirestore) {
+        if (fromFirestore) results.add((T) trial);
     }
 
     /**

@@ -1,5 +1,7 @@
 package com.example.experiment_automata.backend.experiments;
 
+import com.example.experiment_automata.backend.trials.Trial;
+
 import java.util.UUID;
 
 /**
@@ -23,7 +25,7 @@ public class ExperimentMaker {
      * @return
      *   an experiment object of the requested type
      */
-    public Experiment makeExperiment(ExperimentType type, String description) {
+    public Experiment<?> makeExperiment(ExperimentType type, String description) {
         switch (type) {
             case NaturalCount:
                 return new NaturalCountExperiment(description);
@@ -53,9 +55,9 @@ public class ExperimentMaker {
      * @return
      *   an experiment object of the requested type with information
      */
-    public static Experiment makeExperiment(ExperimentType type, String description, int minTrials,
-                                     boolean requireLocation, boolean acceptNewResults,
-                                     UUID ownerId) {
+    public static Experiment<?> makeExperiment(ExperimentType type, String description, int minTrials,
+                                                   boolean requireLocation, boolean acceptNewResults,
+                                                   UUID ownerId) {
         switch (type) {
             case NaturalCount:
                 return new NaturalCountExperiment(description, minTrials, requireLocation, acceptNewResults, ownerId);
@@ -88,9 +90,9 @@ public class ExperimentMaker {
      * @return
      *   an experiment object of the requested type with information
      */
-    public static Experiment makeExperiment(ExperimentType type, String description, int minTrials,
-                                            boolean requireLocation, boolean acceptNewResults,
-                                            UUID ownerId, Boolean published, UUID experimentId) {
+    public static Experiment<?> makeExperiment(ExperimentType type, String description, int minTrials,
+                                                                boolean requireLocation, boolean acceptNewResults,
+                                                                UUID ownerId, Boolean published, UUID experimentId) {
         switch (type) {
             case NaturalCount:
                 return new NaturalCountExperiment(description, minTrials, requireLocation, acceptNewResults, ownerId, published, experimentId);

@@ -58,7 +58,7 @@ public class TrialsFragment extends Fragment {
     }
 
     public void updateView() {
-        Experiment<Trial> experiment = ((NavigationActivity) getActivity()).experimentManager
+        Experiment<?> experiment = ((NavigationActivity) getActivity()).experimentManager
                 .getCurrentExperiment();
         trialsArrayList.clear();
         trialsArrayList.addAll(experiment.getTrials());

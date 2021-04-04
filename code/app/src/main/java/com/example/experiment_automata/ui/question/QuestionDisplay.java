@@ -43,7 +43,7 @@ public class QuestionDisplay extends Fragment {
     public static final String EXPERIMENT = "EXPERIMENT-ID";
 
 
-    private Experiment currentExperiment;
+    private Experiment<?> currentExperiment;
     private ArrayAdapter<Question> questionDisplayAdapter;
     ListView questionsDisplayList;
     ArrayList<Question> questionsList = new ArrayList<>();
@@ -59,7 +59,7 @@ public class QuestionDisplay extends Fragment {
      * @param currentExperiment is the experiment that contains the needed questions
      * @return A new instance of fragment QuestionDisplay.
      */
-    public static QuestionDisplay newInstance(Experiment currentExperiment) {
+    public static QuestionDisplay newInstance(Experiment<?> currentExperiment) {
         QuestionDisplay fragment = new QuestionDisplay();
         Bundle args = new Bundle();
         args.putSerializable(QUESTION_EXPERIMENT, currentExperiment);
@@ -77,7 +77,7 @@ public class QuestionDisplay extends Fragment {
         //((NavigationActivity)getActivity()).questionManager.getQuestionsFromFirestore();
         ((NavigationActivity)getActivity()).setCurrentFragment(this);
         if (getArguments() != null) {
-            currentExperiment = (Experiment) getArguments().getSerializable(QUESTION_EXPERIMENT);
+            currentExperiment = (Experiment<?>) getArguments().getSerializable(QUESTION_EXPERIMENT);
         }
     }
 

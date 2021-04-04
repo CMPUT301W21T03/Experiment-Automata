@@ -29,11 +29,8 @@ import java.util.UUID;
 
 public class UserManager
 {
-    public static final String DB_USER_GET_ERR = "DB-USER-GET-ERR";
     private static HashMap<UUID, User> currentUsers;
     private static UserManager userManager;
-    private User currentUser;
-    private static final String TAG = "User";
 
     private UserManager()
     {
@@ -142,95 +139,5 @@ public class UserManager
         });
     }
 
-    public void setCurrentUser(User current)
-    {
-        this.currentUser = current;
-        addCurrentUser();
-    }
-
-
-    /**
-     * Update the user information in the Firestore
-     */
-    public void addCurrentUser()
-    {
-        Collection<UUID> ownedExperiments = currentUser.getOwnedExperiments();
-        Collection<UUID> subscribedExperiments = currentUser.getSubscriptions();
-        ContactInformation info = currentUser.getInfo();
-        UUID userId = currentUser.getUserId();
-        // convert collection of UUIDs to collection of Strings
-        Collection<String> owned = new ArrayList<>();
-        for (UUID experimentId : ownedExperiments) {
-            owned.add(experimentId.toString());
-        }
-        Collection<String> subscriptions = new ArrayList<>();
-        for (UUID experimentId : subscribedExperiments) {
-            subscriptions.add(experimentId.toString());
-        }
-        Map<String, Object> userInfo = new HashMap<>();
-        userInfo.put("name", info.getName());
-        userInfo.put("email", info.getEmail());
-        userInfo.put("phone", info.getPhone());
-        userInfo.put("owned", owned);
-        userInfo.put("subscriptions", subscriptions);
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("users").document(userId.toString())
-                .set(userInfo)
-                .addOnSuccessListener(aVoid -> Log.d(TAG, "User info successfully updated!"))
-                .addOnFailureListener(e -> Log.w(TAG, "Error writing document", e));
-    }
-
-    /**
-     * Update the user experiments from the Firestore.
-     */
-    public void updateExperimentFromFirestore() {
-
-        Collection<UUID> ownedExperimentsCurrent;
-        Collection<UUID> subscribedExperimentsCurrent;
-        UUID userId = currentUser.getUserId();
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference documentReference = db.collection("users").document(userId.toString());
-        Task<DocumentSnapshot> task = documentReference.get();
-        // wait until the task is complete
-        while (!task.isComplete());
-        DocumentSnapshot document = task.getResult();
-        Collection<String> ownedExperiments = (List<String>) document.get("owned");
-        if (ownedExperiments == null) ownedExperiments = new ArrayList<>();
-        Collection<String> subscribedExperiments = (List<String>) document.get("subscriptions");
-        if (subscribedExperiments == null) subscribedExperiments = new ArrayList<>();
-        // Convert Collection of String to Collection of UUIDs
-        ownedExperimentsCurrent = new ArrayList<>();
-        for (String experimentId : ownedExperiments) {
-            ownedExperimentsCurrent.add(UUID.fromString(experimentId));
-        }
-        subscribedExperimentsCurrent = new ArrayList<>();
-        for (String experimentId : subscribedExperiments) {
-            subscribedExperimentsCurrent.add(UUID.fromString(experimentId));
-        }
-        currentUser.setOwnedExperiments(ownedExperimentsCurrent);
-        currentUser.setSubscribedExperiments(subscribedExperimentsCurrent);
-    }
-
-    /**
-     * Update the user contact information from the Firestore.
-     */
-    public void updateContactFromFirestore() {
-        ContactInformation infoCurrent;
-        UUID userId = currentUser.getUserId();
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference documentReference = db.collection("users").document(userId.toString());
-        Task<DocumentSnapshot> task = documentReference.get();
-        // wait until the task is complete
-        while (!task.isComplete());
-        DocumentSnapshot document = task.getResult();
-        String name = (String) document.get("name");
-        String email = (String) document.get("email");
-        String phone = (String) document.get("phone");
-        infoCurrent = new ContactInformation(name, email, phone);
-        currentUser.setContactInformation(infoCurrent);
-    }
 
 }

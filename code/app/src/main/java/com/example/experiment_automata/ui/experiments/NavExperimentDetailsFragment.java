@@ -150,7 +150,7 @@ public class NavExperimentDetailsFragment extends Fragment {
         boolean isOwner = experiment.getOwnerId().equals(parentActivity.loggedUser.getUserId());
         System.out.println(isOwner);
 
-        if (isOwner) {
+
             editImageButton.setVisibility(View.VISIBLE);
             editImageButton.setOnClickListener(v -> {
                 Fragment editExperiment = new AddExperimentFragment();
@@ -163,15 +163,13 @@ public class NavExperimentDetailsFragment extends Fragment {
                 editExperiment.setArguments(bundle);
                 getActivity().getSupportFragmentManager().beginTransaction().add(editExperiment, "EDIT").commit();
             });
-            subscribeButton.setVisibility(View.GONE);
-        } else {
+            
             subscribeButton.setVisibility(View.VISIBLE);
             subscribeButton.setOnClickListener(v -> {
                 parentActivity.loggedUser.subscribeExperiment(experiment.getExperimentId());
                 toggleSubscribeButton();
             });
-            editImageButton.setVisibility(View.GONE);
-        }
+        
 
         questionsButton.setOnClickListener(v -> {
             launchQuestionView();

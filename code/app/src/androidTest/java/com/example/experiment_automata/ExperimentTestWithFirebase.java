@@ -72,7 +72,7 @@ public class ExperimentTestWithFirebase {
 
     @Test
     public void minTrials() {
-        int trials = 10;
+        Integer trials = 10;
         Experiment<?> experiment = ExperimentMaker.makeExperiment(ExperimentType.Count,
                 "Experiment", trials, false, false, userId);
         assertEquals(trials, experiment.getMinTrials());

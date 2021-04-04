@@ -10,6 +10,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -23,7 +24,7 @@ import java.util.UUID;
  *
  *      1. None
  */
-public abstract class Experiment implements Serializable, StatSummary, Graphable {
+public abstract class Experiment implements Serializable, StatSummary, Graphable, Comparable {
     private String description;
     private int minTrials;
     private UUID experimentId; // changed from UML to better match project
@@ -277,5 +278,6 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
     public abstract ArrayList<Trial> getRecordedTrials();
 
     public abstract HashMap<String,Object> buildResultsmap();
+
 
 }

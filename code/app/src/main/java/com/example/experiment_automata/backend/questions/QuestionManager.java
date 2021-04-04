@@ -14,6 +14,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -151,7 +152,9 @@ public class QuestionManager {
         if (!questions.containsKey(experimentId)) {
             throw new IllegalArgumentException();
         }
-        return questions.get(experimentId);
+        ArrayList<Question> sortedQuestions = new ArrayList<>(questions.get(experimentId));
+        Collections.sort(sortedQuestions);
+        return sortedQuestions;
     }
 
     /**
@@ -166,7 +169,10 @@ public class QuestionManager {
         if (!replies.containsKey(questionId)) {
             return new ArrayList<Reply>();
         }
-        return replies.get(questionId);
+
+        ArrayList<Reply> sortedReplies = new ArrayList<>(replies.get(questionId));
+        Collections.sort(sortedReplies);
+        return sortedReplies;
     }
 
     /**

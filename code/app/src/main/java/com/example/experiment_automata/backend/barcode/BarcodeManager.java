@@ -25,6 +25,7 @@ import java.util.UUID;
  */
 public class BarcodeManager {
     private HashMap<String,BarcodeReference> barcodes;
+    private static BarcodeManager barcodeManager;
 
     public BarcodeManager(){
         barcodes = new HashMap<String,BarcodeReference>();
@@ -124,7 +125,12 @@ public class BarcodeManager {
             }
         });
     }
-
+    public static BarcodeManager getInstance()
+    {
+        if(barcodeManager == null)
+            barcodeManager = new BarcodeManager();
+        return barcodeManager;
+    }
 
     public HashMap<String, BarcodeReference> getBarcodes() {
         return barcodes;

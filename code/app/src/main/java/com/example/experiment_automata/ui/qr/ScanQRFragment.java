@@ -18,7 +18,7 @@ import com.example.experiment_automata.backend.qr.QRMaker;
 import com.example.experiment_automata.backend.qr.QRMalformattedException;
 
 /**
- * Fragment for setting up scanning QR codes from the hamburger menu. It opens a ScannerActivity.
+ * Fragment for setting up scanning QR codes and barcodes from the hamburger menu. It opens a ScannerActivity.
  *
  * A simple {@link Fragment} subclass.
  * Use the {@link ScanQRFragment#newInstance} factory method to

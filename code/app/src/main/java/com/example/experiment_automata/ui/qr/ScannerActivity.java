@@ -16,7 +16,7 @@ import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 /**
  * Role/Pattern:
  *
- *       This class opens a camera viewport for scanner
+ *       This class opens a camera viewport for ZXing scanner
  *
  * Known Issue:
  *

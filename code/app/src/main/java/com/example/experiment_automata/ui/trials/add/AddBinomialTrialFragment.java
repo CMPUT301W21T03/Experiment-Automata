@@ -104,27 +104,34 @@ public class AddBinomialTrialFragment extends Fragment {
         }
         String rawQRContent =  data.getStringExtra("QRCONTENTRAW");
         Log.d("ACTIVITYRESULT","val " + data.getStringExtra("QRCONTENTRAW"));
-        QRMaker qrMaker = new QRMaker();
-        QRCode qrCode;
-        try{
-            qrCode =qrMaker.decodeQRString(rawQRContent);
-            if (qrCode.getType() == QRType.BinomialTrial){
-                checkBox.setChecked(((BinomialQRCode)qrCode).getValue());
-                Log.d("SCANNER","Scanned QR Successfully!");
-                Snackbar.make(root,"Scanned QR Successfully!",Snackbar.LENGTH_LONG).show();
+        if(data.getBooleanExtra("IS_QR",true)) {//if is QR
+            QRMaker qrMaker = new QRMaker();
+            QRCode qrCode;
+            try {
+                qrCode = qrMaker.decodeQRString(rawQRContent);
+                if (qrCode.getType() == QRType.BinomialTrial) {
+                    checkBox.setChecked(((BinomialQRCode) qrCode).getValue());
+                    Log.d("SCANNER", "Scanned QR Successfully!");
+                    Snackbar.make(root, "Scanned QR Successfully!", Snackbar.LENGTH_LONG).show();
 
-            }
-            else{
-                //send error tray message
-                Log.d("SCANNER","Scanned QR was of incorrect type " + qrCode.getType().toString());
-                Snackbar.make(root,"Scanned QR was of incorrect type",Snackbar.LENGTH_LONG).show();
+                } else {
+                    //send error tray message
+                    Log.d("SCANNER", "Scanned QR was of incorrect type " + qrCode.getType().toString());
+                    Snackbar.make(root, "Scanned QR was of incorrect type", Snackbar.LENGTH_LONG).show();
+                }
+            } catch (QRMalformattedException qrMalE) {
+                //malformatted QR
+                qrCode = null;
+                Log.d("SCANNER", "Scanned Malformatted QR");
+                Snackbar.make(root, "Scanned QR was not an Experiment-Automata QR Code", Snackbar.LENGTH_LONG).show();
             }
         }
-        catch (QRMalformattedException qrMalE){
-            //malformatted QR
-            qrCode = null;
-            Log.d("SCANNER","Scanned Malformatted QR");
-            Snackbar.make(root,"Scanned QR was not an Experiment-Automata QR Code",Snackbar.LENGTH_LONG).show();
+        else {
+            NavigationActivity parentActivity = ((NavigationActivity) getActivity());
+            BinomialExperiment experiment = (BinomialExperiment) parentActivity.experimentManager.getCurrentExperiment();
+            parentActivity.barcodeManager.addBarcode(rawQRContent,experiment.getExperimentId(),checkBox.isChecked());
+            Snackbar.make(root, "Scanned Barcode " + rawQRContent + " was associated with this Trials Value", Snackbar.LENGTH_LONG).show();
+
         }
     }
 }

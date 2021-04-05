@@ -30,6 +30,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.experiment_automata.R;
+import com.example.experiment_automata.backend.barcode.BarcodeManager;
 import com.example.experiment_automata.backend.experiments.Experiment;
 import com.example.experiment_automata.backend.experiments.ExperimentManager;
 import com.example.experiment_automata.backend.questions.Question;
@@ -72,6 +73,7 @@ public class NavigationActivity extends AppCompatActivity implements
 
     private AppBarConfiguration mAppBarConfiguration;
     public final ExperimentManager experimentManager = ExperimentManager.getInstance();
+    public final BarcodeManager barcodeManager = BarcodeManager.getInstance();
     public QuestionManager questionManager = QuestionManager.getInstance();
     public UserManager userManager = UserManager.getInstance();
 

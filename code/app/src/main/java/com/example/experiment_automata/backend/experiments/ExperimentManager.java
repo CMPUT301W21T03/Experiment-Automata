@@ -10,8 +10,6 @@ import com.example.experiment_automata.backend.trials.CountTrial;
 import com.example.experiment_automata.backend.trials.MeasurementTrial;
 import com.example.experiment_automata.backend.trials.NaturalCountTrial;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -24,6 +22,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Role/Pattern:
@@ -50,7 +49,7 @@ public class ExperimentManager
     private ExperimentManager()
     {
         experiments = new HashMap<>();
-        TEST_MODE = false;
+        TEST_MODE = true;
         getAllFromFirestore();
     }
 
@@ -250,7 +249,7 @@ public class ExperimentManager
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         if(TEST_MODE) {
             db.disableNetwork();
-
+            db.clearPersistence();
             return;
         }
         CollectionReference experimentCollection = db.collection("experiments");
@@ -445,21 +444,25 @@ public class ExperimentManager
      * delete the current test experiment
      * which is the experiment that was last added
      */
-    public void deleteCurrentExperiment()
-    {
+    public void deleteCurrentExperiment() throws InterruptedException {
         Experiment deleteMe = currentTestExperiment;
-        if(deleteMe == null)
-            return;
+        Log.d("TO_BE", deleteMe.getExperimentId().toString());
+        AtomicBoolean done = new AtomicBoolean(false);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("experiments").
-                document(deleteMe.getOwnerId().toString()).delete()
+                document(deleteMe.getExperimentId().toString()).delete()
                 .addOnSuccessListener(aVoid -> {
-                    Log.d("SOM", "DocumentSnapshot successfully deleted!");
+                    Log.d("SOM", "del + " + deleteMe.getExperimentId());
+                    done.set(true);
 
                 })
                 .addOnFailureListener(e -> {
-                    System.out.println("Failed");
+                    Log.d("SEM", "DocumentSnapshot successfully deleted!");
+                    done.set(true);
                 });
+        while(!done.get()) {
+            Thread.sleep((long) 1000.000);
+        }
     }
 
     public boolean isTestMode()

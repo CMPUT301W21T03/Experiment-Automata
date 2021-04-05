@@ -16,12 +16,11 @@ import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 /**
  * Role/Pattern:
  *
- *       This class opens a camera viewport for scanner qr codes
+ *       This class opens a camera viewport for scanner
  *
  * Known Issue:
  *
- *      1. no barcode/qr return functionality.
- *      2. Barcodes untested
+ *      1.
  */
 public class ScannerActivity extends AppCompatActivity {
     DecoratedBarcodeView barcodeView;

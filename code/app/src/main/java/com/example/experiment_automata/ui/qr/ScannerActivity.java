@@ -46,6 +46,14 @@ public class ScannerActivity extends AppCompatActivity {
                 Log.d("SCANNER","Scanned: " + result.getContents() + " of type " + result.getContents().getClass().getName());
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("QRCONTENTRAW",result.getContents());
+
+                if(result.getFormatName() == IntentIntegrator.QR_CODE){//qrCode
+                    resultIntent.putExtra("IS_QR",true);
+                }
+                else{//barcode
+                    resultIntent.putExtra("IS_QR",false);
+                }
+
                 setResult(1,resultIntent);
             }
         } else {

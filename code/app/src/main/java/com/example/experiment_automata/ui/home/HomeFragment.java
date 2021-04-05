@@ -35,8 +35,8 @@ import java.util.UUID;
  */
 
 public class HomeFragment extends Fragment {
-    private ArrayList<Experiment> experimentsArrayList;
-    private ArrayAdapter<Experiment> experimentArrayAdapter;
+    private ArrayList<Experiment<?>> experimentsArrayList;
+    private ArrayAdapter<Experiment<?>> experimentArrayAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -66,7 +66,7 @@ public class HomeFragment extends Fragment {
             bundle.putString(NavExperimentDetailsFragment.CURRENT_EXPERIMENT_ID, experimentID);
 
             // set current experiment
-            Experiment experiment = parentActivity.experimentManager.query(UUID.fromString(experimentID));
+            Experiment<?> experiment = parentActivity.experimentManager.query(UUID.fromString(experimentID));
             parentActivity.experimentManager.setCurrentExperiment(experiment);
 
             //nav_experiment_details

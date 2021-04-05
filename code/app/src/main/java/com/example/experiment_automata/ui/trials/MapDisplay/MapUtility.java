@@ -35,16 +35,15 @@ import org.osmdroid.views.overlay.Marker;
  *
  *      1. None
  */
-public class MapUtility
-{
+public class MapUtility {
     private static final double MIN_BOUND_SIZE_LAT = -85.05112877980658;
     private static final double MAX_BOUND_SIZE_LAT = 85.05112877980658;
     private static final double MIN_BOUND_SIZE_LONG = -180.0;
     private static final double MAX_BOUND_SIZE_LONG = 180.0;
 
 
-    private Experiment experiment;
-    private Trial trial;
+    private Experiment<?> experiment;
+    private Trial<?> trial;
     private MapView display;
     private Context context;
     private Marker marker;
@@ -52,12 +51,11 @@ public class MapUtility
     private Button revertBack;
 
 
-    public MapUtility(Experiment experiment,
+    public MapUtility(Experiment<?> experiment,
                       MapView display,
                       Context context,
                       NavigationActivity parentActivity,
-                      Trial trial)
-    {
+                      Trial<?> trial) {
         this.experiment = experiment;
         this.display = display;
         this.context = context;
@@ -76,8 +74,7 @@ public class MapUtility
      * Where the user clicks is the location of that trial.
      *
      * */
-    private void mapSupport()
-    {
+    private void mapSupport() {
         setupMap();
         /**
          * Authors: OSMDROID Contributors on Github (https://github.com/osmdroid/osmdroid/graphs/contributors)

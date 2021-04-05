@@ -54,11 +54,10 @@ public class AddExperimentFragment extends DialogFragment {
      * This is an interface for any activity using this fragment
      */
     public interface OnFragmentInteractionListener {
-
-        void onOkPressed(Experiment newExperiment);
+        void onOkPressed(Experiment<?> newExperiment);
         void onOKPressedEdit(String experimentDescription, int experimentTrials,
                              boolean experimentLocation, boolean experimentNewResults,
-                             Experiment currentExperiment);
+                             Experiment<?> currentExperiment);
     }
 
     /**
@@ -82,7 +81,7 @@ public class AddExperimentFragment extends DialogFragment {
      * @return
      *   a fragment to edit an experiment's information
      */
-    public static AddExperimentFragment newInstance(Experiment experiment) {
+    public static AddExperimentFragment newInstance(Experiment<?> experiment) {
         AddExperimentFragment fragment = new AddExperimentFragment();
         Bundle args = new Bundle();
         args.putSerializable("EXPERIMENT", experiment);
@@ -121,7 +120,7 @@ public class AddExperimentFragment extends DialogFragment {
         // prepare the UI elements if experiment has existing information
         Bundle args = getArguments();
         if (args != null) {
-            Experiment currentExperiment = (Experiment) args.getSerializable(ADD_EXPERIMENT_CURRENT_VALUE);
+        Experiment<?> currentExperiment = (Experiment<?>) args.getSerializable(ADD_EXPERIMENT_CURRENT_VALUE);
             (view.findViewById(R.id.add_experiment_fragment_trial_type_prompt)).setVisibility(View.GONE);
             (view.findViewById(R.id.experiment_type_spinner)).setVisibility(View.GONE);
             (view.findViewById(R.id.experiment_require_location_switch)).setVisibility(View.GONE);
@@ -129,7 +128,7 @@ public class AddExperimentFragment extends DialogFragment {
             description.setText(currentExperiment.getDescription());
             requireLocation.setChecked(currentExperiment.isRequireLocation());
             acceptNewResults.setChecked(currentExperiment.isActive());
-            minTrials.setText("" + currentExperiment.getMinTrials());
+            minTrials.setText(currentExperiment.getMinTrials().toString());
 
             return build.setView(view).setTitle("Edit Experiment")
                     .setNegativeButton("Cancel", null)
@@ -156,10 +155,8 @@ public class AddExperimentFragment extends DialogFragment {
                                     experimentLocation, experimentNewResults, currentExperiment);
                         }
                     }).create();
-        }
-        else {
+        } else {
             // build the dialog and give instructions for its dismissal
-
             return build.setView(view)
                     .setTitle("Add Experiment")
                     .setNegativeButton("Cancel", null)

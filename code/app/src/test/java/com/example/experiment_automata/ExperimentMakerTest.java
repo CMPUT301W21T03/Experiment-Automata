@@ -10,39 +10,44 @@ import com.example.experiment_automata.backend.experiments.NaturalCountExperimen
 
 import org.junit.jupiter.api.Test;
 
+import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ExperimentMakerTest {
-    private ExperimentMaker maker = new ExperimentMaker();
-
     @Test
     void makeErrorNullInput() {
         assertThrows(NullPointerException.class, () -> {
-            maker.makeExperiment(null, "funny guy eh!");
+            ExperimentMaker.makeExperiment(null, "funny guy eh!", 0,
+                    false, false, UUID.randomUUID());
         });
     }
 
     @Test
     void makeBinomialExperiment() {
-        Experiment x = maker.makeExperiment(ExperimentType.Binomial, "Should binomial");
+        Experiment<?> x = ExperimentMaker.makeExperiment(ExperimentType.Binomial, "Should binomial",
+                0, false, false, UUID.randomUUID());
         assertEquals(BinomialExperiment.class, x.getClass());
     }
 
     @Test
     void makeCountExperiment() {
-        Experiment x = maker.makeExperiment(ExperimentType.Count, "Should count");
+        Experiment<?> x = ExperimentMaker.makeExperiment(ExperimentType.Count, "Should count",
+                0, false, false, UUID.randomUUID());
         assertEquals(CountExperiment.class, x.getClass());
     }
 
     @Test
     void makeNaturalCountExperiment() {
-        Experiment x = maker.makeExperiment(ExperimentType.NaturalCount, "Should count");
+        Experiment<?> x = ExperimentMaker.makeExperiment(ExperimentType.NaturalCount, "Should count",
+                0, false, false, UUID.randomUUID());
         assertEquals(NaturalCountExperiment.class, x.getClass());
     }
 
     @Test
     void makeMeasurementExperiment() {
-        Experiment x = maker.makeExperiment(ExperimentType.Measurement, "Should count");
+        Experiment<?> x = ExperimentMaker.makeExperiment(ExperimentType.Measurement, "Should count",
+                0, false, false, UUID.randomUUID());
         assertEquals(MeasurementExperiment.class, x.getClass());
     }
 }

@@ -38,7 +38,7 @@ public class MapDisplayFragment extends Fragment {
     public static final String CURRENT_EXPERIMENT ="MAP_POINT_VIEW_EXPERIMENT";
 
     private MapView currentMapDisplay;
-    private Experiment currentExperiment;
+    private Experiment<?> currentExperiment;
 
     public MapDisplayFragment() {
         // Required empty public constructor
@@ -51,7 +51,7 @@ public class MapDisplayFragment extends Fragment {
      * @param currentExperiment the current experiment
      * @return A new instance of fragment map_display_fragment.
      */
-    public static MapDisplayFragment newInstance(Experiment currentExperiment) {
+    public static MapDisplayFragment newInstance(Experiment<?> currentExperiment) {
         MapDisplayFragment fragment = new MapDisplayFragment();
         Bundle args = new Bundle();
         args.putSerializable(CURRENT_EXPERIMENT, currentExperiment);
@@ -62,7 +62,7 @@ public class MapDisplayFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((NavigationActivity)(getActivity())).setCurrentScreen(Screen.MAP);
+        ((NavigationActivity) getActivity()).setCurrentScreen(Screen.MAP);
 
         if (getArguments() != null) {
             currentExperiment = (Experiment) getArguments().getSerializable(CURRENT_EXPERIMENT);
@@ -83,7 +83,7 @@ public class MapDisplayFragment extends Fragment {
         Configuration.getInstance().load(getContext(), PreferenceManager.getDefaultSharedPreferences(getContext()));
         View root = inflater.inflate(R.layout.fragment_map_display_fragment, container, false);
         currentMapDisplay = root.findViewById(R.id.map_point_view_fragment_map_display);
-        FloatingActionButton fab = (getActivity().findViewById(R.id.fab_button));
+        FloatingActionButton fab = getActivity().findViewById(R.id.fab_button);
         fab.setVisibility(View.GONE);
         ((NavigationActivity)(getActivity())).setCurrentScreen(Screen.MAP);
 
@@ -116,9 +116,9 @@ public class MapDisplayFragment extends Fragment {
         IMapController mapController = currentMapDisplay.getController();
         mapController.setZoom(2f);
 
-        ArrayList<Trial> experimentTrials = currentExperiment.getRecordedTrials();
+        ArrayList<Trial<?>> experimentTrials = (ArrayList<Trial<?>>) currentExperiment.getRecordedTrials();
 
-        for(Trial t: experimentTrials){
+        for(Trial<?> t: experimentTrials){
             /** Code below inspired by Stack Overflow
              * Link: https://stackoverflow.com/questions/55705988/how-to-add-marker-in-osmdroid
              * Author: jignyasa tandel
@@ -126,8 +126,8 @@ public class MapDisplayFragment extends Fragment {
              * License: Unknown
              */
             Marker temp = new Marker(currentMapDisplay);
-            temp.setTitle("Trial for: " + currentExperiment.getDescription());
-            temp.setSubDescription("This is a: " + t.getType());
+            temp.setTitle(String.format("Trial for: %s", currentExperiment.getDescription()));
+            temp.setSubDescription(String.format("This is a: %s", t.getType()));
             // Set location of marker to be the longitude and latitude of the point t
             temp.setPosition(new GeoPoint(t.getLocation()));
             currentMapDisplay.getOverlays().add(temp);

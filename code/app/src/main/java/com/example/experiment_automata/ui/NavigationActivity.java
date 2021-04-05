@@ -20,6 +20,7 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.experiment_automata.R;
+import com.example.experiment_automata.backend.location.LocationServices;
 import com.example.experiment_automata.backend.trials.Trial;
 import com.example.experiment_automata.backend.users.ContactInformation;
 
@@ -149,7 +150,7 @@ public class NavigationActivity extends AppCompatActivity implements
                         currentScreen = Screen.Trial;
                         break;
                     case Trial:
-                        Experiment experiment = experimentManager.getCurrentExperiment();
+                        Experiment<?> experiment = experimentManager.getCurrentExperiment();
                         Snackbar snackbar = Snackbar.make(view, "No value was given", Snackbar.LENGTH_SHORT);
                         try {
                             Object result = null;
@@ -170,7 +171,7 @@ public class NavigationActivity extends AppCompatActivity implements
                                     break;
                             }
                             currentTrial.setResult(result);
-                            addTrial(experiment, currentTrial);
+                            addTrial((Experiment<Trial<?>>) experiment, currentTrial);
                             currentTrial = null;
                             currentScreen = Screen.ExperimentDetails;
                             navController.navigateUp();
@@ -260,8 +261,7 @@ public class NavigationActivity extends AppCompatActivity implements
      *  Experiment to be added to the experiment manager
      */
     @Override
-    public void onOkPressed(Experiment experiment) {
-
+    public void onOkPressed(Experiment<?> experiment) {
         boolean added = false;
         while (!added) {
             try {
@@ -295,7 +295,7 @@ public class NavigationActivity extends AppCompatActivity implements
     // todo: this functionality should be moved into something else in the future
     public void onOKPressedEdit(String experimentDescription, int experimentTrials,
                                 boolean experimentLocation, boolean experimentNewResults,
-                                Experiment currentExperiment) {
+                                Experiment<?> currentExperiment) {
         currentExperiment.setDescription(experimentDescription);
         currentExperiment.setMinTrials(experimentTrials);
         currentExperiment.setRequireLocation(experimentLocation);
@@ -381,20 +381,16 @@ public class NavigationActivity extends AppCompatActivity implements
      * @param experiment the experiment we want to add the trial
      * @param trial the trial we wish to add to the experiment
      */
-    public void addTrial(Experiment experiment,  Trial trial)
-    {
-        if (experiment.isRequireLocation())
-        {
-            if(trial.getLocation() != null ) {
+    public void addTrial(Experiment<Trial<?>> experiment, Trial<?> trial) {
+        if (experiment.isRequireLocation()) {
+            if (trial.getLocation() != null ) {
                 experiment.recordTrial(trial);
-            }
-            else {
+            } else {
                 Toast.makeText(getApplicationContext(),
                         "Error: Trial recorded due to error: try again later",
                         Toast.LENGTH_LONG).show();
             }
-        }
-        else {
+        } else {
             experiment.recordTrial(trial);
         }
     }
@@ -415,17 +411,15 @@ public class NavigationActivity extends AppCompatActivity implements
      *          Full Source: https://stackoverflow.com/questions/1513485/how-do-i-get-the-current-gps-location-programmatically-in-android
      */
     @SuppressLint("MissingPermission")
-    public void addLocationToTrial(Trial currentTrial) {
-        if(canMakeLocationTrials)
-        {
+    public void addLocationToTrial(Trial<?> currentTrial) {
+        if(canMakeLocationTrials) {
 
             //TODO: Place location warning dialog here -- Display only once?
             LocationManager locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-            LocationListener locationListener = new com.example.experiment_automata.backend.Location.LocationServices();
+            LocationListener locationListener = new LocationServices();
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 1, locationListener);
             currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        }
-        else {
+        } else {
             currentLocation = null;
         }
         currentTrial.setLocation(currentLocation);
@@ -441,11 +435,9 @@ public class NavigationActivity extends AppCompatActivity implements
      *          Editor: Alphabet LLC
      *          Full Source: https://developer.android.com/training/permissions/requesting#java
      */
-    public void requestLocationResourcePermissions()
-    {
-        if(ContextCompat.checkSelfPermission(getApplicationContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-        {
+    public void requestLocationResourcePermissions() {
+        if (ContextCompat.checkSelfPermission(getApplicationContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]
                             {
                                     Manifest.permission.ACCESS_FINE_LOCATION,
@@ -454,9 +446,7 @@ public class NavigationActivity extends AppCompatActivity implements
 
                             },
                     PERMISSON_REQUEST_CODE);
-        }
-        else
-            canMakeLocationTrials = true;
+        } else canMakeLocationTrials = true;
     }
 
     /**
@@ -474,19 +464,14 @@ public class NavigationActivity extends AppCompatActivity implements
      *          Full Source: https://developer.android.com/training/permissions/requesting#java
     */
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
-    {
-        switch (requestCode)
-        {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
             case PERMISSON_REQUEST_CODE:
                 if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                     canMakeLocationTrials = true;
-                else
-                {
+                else {
                     //TODO: Make dialog or warning windows of what these means for the project
                 }
-                return;
-
         }
     }
 

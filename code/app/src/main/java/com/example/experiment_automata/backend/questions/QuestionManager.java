@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.experiment_automata.backend.DataBase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -192,9 +193,8 @@ public class QuestionManager {
 
     public void getQuestionsFromFirestore() {
 
-        if(TEST_MODE)
-            return;
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DataBase dataBase = DataBase.getInstanceTesting();
+        FirebaseFirestore db = dataBase.getFireStore();
         CollectionReference questionsCollection = db.collection("questions");
         questionsCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -224,7 +224,8 @@ public class QuestionManager {
 
         if(TEST_MODE)
             return;
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DataBase dataBase = DataBase.getInstanceTesting();
+        FirebaseFirestore db = dataBase.getFireStore();
         CollectionReference questionsCollection = db.collection("replies");
         questionsCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override

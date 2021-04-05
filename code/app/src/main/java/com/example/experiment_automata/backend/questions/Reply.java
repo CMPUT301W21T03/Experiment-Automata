@@ -2,6 +2,7 @@ package com.example.experiment_automata.backend.questions;
 
 import androidx.annotation.NonNull;
 
+import com.example.experiment_automata.backend.DataBase;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -53,7 +54,8 @@ public class Reply implements Serializable, Comparable {
      */
 
     private void postReplyToFirestore() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DataBase dataBase = DataBase.getInstanceTesting();
+        FirebaseFirestore db = dataBase.getFireStore();
         Map<String,Object> questionData = new HashMap<>();
         String replyIdString = this.replyId.toString();
 

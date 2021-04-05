@@ -11,14 +11,13 @@ package com.example.experiment_automata;
  *
  */
 
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.experiment_automata.backend.DataBase;
 import com.example.experiment_automata.backend.experiments.Experiment;
 import com.example.experiment_automata.backend.experiments.ExperimentMaker;
-import com.example.experiment_automata.backend.experiments.ExperimentManager;
 import com.example.experiment_automata.backend.experiments.ExperimentType;
 import com.example.experiment_automata.ui.NavigationActivity;
 import com.google.firebase.FirebaseApp;
@@ -55,6 +54,7 @@ public class BinomialTrialTests {
     private ExperimentMaker maker;
     private Experiment testExperiment;
     private UUID testUUID;
+    private DataBase dataBase;
 
     @Rule
     public ActivityTestRule<NavigationActivity> rule =
@@ -63,6 +63,8 @@ public class BinomialTrialTests {
 
     @Before
     public void setup() {
+
+        dataBase = DataBase.getInstanceTesting();
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
         currentTestingActivity = (NavigationActivity) solo.getCurrentActivity();
 
@@ -87,7 +89,7 @@ public class BinomialTrialTests {
     @After
     public void endTest()
     {
-        //Nothing
+        dataBase.getFireStore().clearPersistence();
     }
 
     private void makeExperiment(String des) {

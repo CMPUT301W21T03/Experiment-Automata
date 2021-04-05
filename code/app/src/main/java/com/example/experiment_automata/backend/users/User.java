@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.experiment_automata.backend.DataBase;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -99,7 +100,8 @@ public class User implements Serializable {
         userInfo.put("owned", owned);
         userInfo.put("subscriptions", subscriptions);
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DataBase dataBase = DataBase.getInstance();
+        FirebaseFirestore db = dataBase.getFireStore();
         db.collection("users").document(this.userId.toString())
                 .set(userInfo)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -120,7 +122,8 @@ public class User implements Serializable {
      * Update the user information from the Firestore.
      */
     protected void updateFromFirestore() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DataBase dataBase = DataBase.getInstance();
+        FirebaseFirestore db = dataBase.getFireStore();
         DocumentReference documentReference = db.collection("users").document(this.userId.toString());
         Task<DocumentSnapshot> task = documentReference.get();
         // wait until the task is complete
@@ -150,7 +153,8 @@ public class User implements Serializable {
      * Update the user experiments from the Firestore.
      */
     protected void updateExperimentFromFirestore() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DataBase dataBase = DataBase.getInstance();
+        FirebaseFirestore db = dataBase.getFireStore();
         DocumentReference documentReference = db.collection("users").document(this.userId.toString());
         Task<DocumentSnapshot> task = documentReference.get();
         // wait until the task is complete
@@ -175,7 +179,8 @@ public class User implements Serializable {
      * Update the user contact information from the Firestore.
      */
     protected void updateContactFromFirestore() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DataBase dataBase = DataBase.getInstance();
+        FirebaseFirestore db = dataBase.getFireStore();
         DocumentReference documentReference = db.collection("users").document(this.userId.toString());
         Task<DocumentSnapshot> task = documentReference.get();
         // wait until the task is complete

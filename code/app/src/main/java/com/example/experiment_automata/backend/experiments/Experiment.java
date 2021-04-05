@@ -2,6 +2,7 @@ package com.example.experiment_automata.backend.experiments;
 
 import androidx.annotation.NonNull;
 
+import com.example.experiment_automata.backend.DataBase;
 import com.example.experiment_automata.backend.trials.Trial;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -9,8 +10,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -106,7 +105,8 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
     public void postExperimentToFirestore(){
         //add key field?
         Experiment experiment = this;
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DataBase dataBase = DataBase.getInstanceTesting();
+        FirebaseFirestore db = dataBase.getFireStore();
         Map<String,Object> experimentData = new HashMap<>();
         String experimentUUIDString = experiment.getExperimentId().toString();
         HashMap<String,Object> resultsData = buildResultsmap();

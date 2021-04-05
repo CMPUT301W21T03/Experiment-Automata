@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.experiment_automata.backend.DataBase;
 import com.example.experiment_automata.backend.trials.BinomialTrial;
 import com.example.experiment_automata.backend.trials.CountTrial;
 import com.example.experiment_automata.backend.trials.MeasurementTrial;
@@ -246,12 +247,8 @@ public class ExperimentManager
      * Populate experiments in Experiment manager with all experiments from Firestore
      */
     public void getAllFromFirestore(){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        if(TEST_MODE) {
-            db.disableNetwork();
-            db.clearPersistence();
-            return;
-        }
+        DataBase data = DataBase.getInstanceTesting();
+        FirebaseFirestore db = data.getFireStore();
         CollectionReference experimentCollection = db.collection("experiments");
         experimentCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -448,7 +445,8 @@ public class ExperimentManager
         Experiment deleteMe = currentTestExperiment;
         Log.d("TO_BE", deleteMe.getExperimentId().toString());
         AtomicBoolean done = new AtomicBoolean(false);
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DataBase dataBase = DataBase.getInstanceTesting();
+        FirebaseFirestore db = dataBase.getFireStore();
         db.collection("experiments").
                 document(deleteMe.getExperimentId().toString()).delete()
                 .addOnSuccessListener(aVoid -> {

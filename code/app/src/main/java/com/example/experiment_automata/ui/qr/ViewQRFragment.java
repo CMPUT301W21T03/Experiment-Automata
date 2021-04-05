@@ -1,12 +1,16 @@
 package com.example.experiment_automata.ui.qr;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,25 +38,24 @@ import java.util.UUID;
  *      1. Doesn't generate a correct QR code. Generates one with a random Experiment ID. Will be fixed once parent activity has proper UUID implementation.
  */
 public class ViewQRFragment extends DialogFragment {
-
     private ImageView qrImageView;
     private TextView qrValue;
     private Button backButton;
+    private ImageButton shareButton;
     private CheckBox checkBox;
     private String experimentUUIDString;
     private QRCode qrCode;
     private Bitmap qrCodeImage;
-
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_display_qr,container, true);
         backButton = view.findViewById(R.id.qr_code_back_button);
+        shareButton = view.findViewById(R.id.qr_code_share);
         qrImageView = view.findViewById(R.id.qr_code_imageView);
         qrValue = view.findViewById(R.id.qr_value_textView);
         QRCode qrCode;
-        // = new QRCodeManager();
 
         Bundle bundle = getArguments();
         String description = bundle.getString("DESCRIPTION");
@@ -82,7 +85,7 @@ public class ViewQRFragment extends DialogFragment {
                 qrCode = null;
         }
 
-
+        assert qrCode != null;
         qrCodeImage = qrCode.getQrCodeImage();
         qrImageView.setImageBitmap(qrCodeImage);//qr_value_textView
         qrValue.setText(description);
@@ -91,6 +94,21 @@ public class ViewQRFragment extends DialogFragment {
             public void onClick(View v) {
                 dismiss();
             }
+        });
+        shareButton.setOnClickListener(v -> {
+            // Setup image uri
+            String url = MediaStore.Images.Media.insertImage(requireActivity().getContentResolver(),
+                    qrCodeImage, "Experiment Automata QR", "QR of an experiment and/or trial");
+            Uri uri = Uri.parse(url);
+
+            // Following tutorial from: https://developer.android.com/training/sharing/send
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_STREAM, uri);
+            sendIntent.setType("image/*");
+
+            Intent shareIntent = Intent.createChooser(sendIntent, null);
+            startActivity(shareIntent);
         });
 
         return view;

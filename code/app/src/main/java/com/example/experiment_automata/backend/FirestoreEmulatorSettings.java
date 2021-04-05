@@ -12,9 +12,9 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings;
  *      1. None
  */
 public class FirestoreEmulatorSettings {
-    static public final boolean USE_EMULATOR = true;// This value controls
-    static public final String HOST = "10.0.2.2";
-    static public final int PORT = 8080;
+    static public final boolean USE_EMULATOR = true;// This value controls if the emulator runs
+    static public final String HOST = "10.0.2.2";//This is the firebase emulator host ip address
+    static public final int PORT = 8080;//this is the firebase emulator host port
     /**
      * Setup firestore to use Firebase CLI firestore emulator if enabled
      * @return

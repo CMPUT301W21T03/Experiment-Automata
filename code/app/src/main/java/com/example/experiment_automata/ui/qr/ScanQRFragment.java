@@ -14,9 +14,12 @@ import androidx.navigation.Navigation;
 
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.backend.barcode.BarcodeReference;
+import com.example.experiment_automata.backend.experiments.ExperimentManager;
 import com.example.experiment_automata.backend.qr.QRCode;
 import com.example.experiment_automata.backend.qr.QRMaker;
 import com.example.experiment_automata.backend.qr.QRMalformattedException;
+import com.example.experiment_automata.backend.trials.Trial;
+import com.example.experiment_automata.backend.users.User;
 import com.example.experiment_automata.ui.NavigationActivity;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -28,7 +31,8 @@ import com.google.android.material.snackbar.Snackbar;
  * create an instance of this fragment.
  */
 public class ScanQRFragment extends Fragment {
-
+    private NavigationActivity parentActivity;
+    private ExperimentManager experimentManager;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -58,6 +62,8 @@ public class ScanQRFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        parentActivity = ((NavigationActivity) getActivity());
+        experimentManager = parentActivity.experimentManager;
         Intent intent = new Intent(getActivity(), ScannerActivity.class);
         startActivityForResult(intent,1);
 
@@ -83,6 +89,27 @@ public class ScanQRFragment extends Fragment {
             try{
                 qrCode = qrMaker.decodeQRString(rawScannedContrent);
                 //scanned valid QR
+                if (experimentManager.containsExperiment(qrCode.getExperimentID())){
+                    //add location ability later
+                    User user = parentActivity.loggedUser;
+                    Trial trial;
+                    switch (qrCode.getType()){
+                        case BinomialTrial:
+                            //trial = new BinomialTrial(user.getUserId(),qrCode.get);
+                            break;
+                        case CountTrial:
+                            break;
+                        case NaturalCountTrial:
+                            break;
+                        case MeasurementTrial:
+                            break;
+                    }
+
+
+                }
+                else{
+                    Snackbar.make(getView(),"Experiment in QR not found",Snackbar.LENGTH_LONG).show();
+                }
             }
             catch (QRMalformattedException qrMalE){
                 //malformatted QR
@@ -94,16 +121,19 @@ public class ScanQRFragment extends Fragment {
         }
         else{//scanned obj was barcode
             Log.d("SCANNER","Barcode was scanned");
-            NavigationActivity parentActivity = ((NavigationActivity) getActivity());
             BarcodeReference barcodeReference = parentActivity.barcodeManager.getBarcode(rawScannedContrent);
             if (barcodeReference == null) {
                 //barcode not associated
+                Snackbar.make(getView(),"Scanned barcode has not been associated with a valid Trial yet",Snackbar.LENGTH_LONG).show();
             }
             else{
                 //add given Trial to experiment
+                Snackbar.make(getView(),"Scanned barcode was found!",Snackbar.LENGTH_LONG).show();
             }
         }
         NavController navController = Navigation.findNavController(getView());
         navController.navigateUp();//return to parent
     }
+
+
 }

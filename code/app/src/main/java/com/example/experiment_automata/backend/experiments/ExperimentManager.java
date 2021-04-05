@@ -346,6 +346,16 @@ public class ExperimentManager {
         location.setLongitude(longitude);
         return  location;
     }
+    /**
+     * Checks if experimentManager contains a particular Experiment
+     * @param experimentID
+     *  experiment ID repersenting the experiment
+     * @return
+     *  if the experiment is in the app
+     */
+    public boolean containsExperiment(UUID experimentID){
+        return experiments.containsKey(experimentID);
+    }
 
     /**
      * Will query a specific experiment based on it's UUID
@@ -374,6 +384,7 @@ public class ExperimentManager {
         }
         return false;
     }
+
 
     /**
      * Get the current experiment being held in memory by the manager

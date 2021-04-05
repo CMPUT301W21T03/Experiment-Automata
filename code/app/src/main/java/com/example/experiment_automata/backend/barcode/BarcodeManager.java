@@ -125,6 +125,18 @@ public class BarcodeManager {
             }
         });
     }
+    /**
+     * Return the barcodeReference that is represented by the given barcode Value
+     * @param barcodeVal
+     *   String that is contained in the barcode
+     * @return
+     *  barcodeReference representing the given barcode value
+
+     */
+    public BarcodeReference getBarcode(String barcodeVal){
+        return barcodes.get(barcodeVal);
+    }
+
     public static BarcodeManager getInstance()
     {
         if(barcodeManager == null)
@@ -132,7 +144,4 @@ public class BarcodeManager {
         return barcodeManager;
     }
 
-    public HashMap<String, BarcodeReference> getBarcodes() {
-        return barcodes;
-    }
 }

@@ -13,9 +13,12 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.experiment_automata.R;
+import com.example.experiment_automata.backend.barcode.BarcodeReference;
 import com.example.experiment_automata.backend.qr.QRCode;
 import com.example.experiment_automata.backend.qr.QRMaker;
 import com.example.experiment_automata.backend.qr.QRMalformattedException;
+import com.example.experiment_automata.ui.NavigationActivity;
+import com.google.android.material.snackbar.Snackbar;
 
 /**
  * Fragment for setting up scanning QR codes and barcodes from the hamburger menu. It opens a ScannerActivity.
@@ -78,18 +81,27 @@ public class ScanQRFragment extends Fragment {
             QRCode qrCode;
             QRMaker qrMaker = new QRMaker();
             try{
-                qrCode =qrMaker.decodeQRString(rawScannedContrent);
-                //scanned
+                qrCode = qrMaker.decodeQRString(rawScannedContrent);
+                //scanned valid QR
             }
             catch (QRMalformattedException qrMalE){
                 //malformatted QR
                 qrCode = null;
                 Log.d("SCANNER","Scanned Malformatted QR");
-                //Snackbar.make(root,"Scanned QR was not an Experiment-Automata QR Code",Snackbar.LENGTH_LONG).show();
+                Snackbar.make(getView(),"Scanned QR was not an Experiment-Automata QR Code",Snackbar.LENGTH_LONG).show();
+
             }
         }
         else{//scanned obj was barcode
             Log.d("SCANNER","Barcode was scanned");
+            NavigationActivity parentActivity = ((NavigationActivity) getActivity());
+            BarcodeReference barcodeReference = parentActivity.barcodeManager.getBarcode(rawScannedContrent);
+            if (barcodeReference == null) {
+                //barcode not associated
+            }
+            else{
+                //add given Trial to experiment
+            }
         }
         NavController navController = Navigation.findNavController(getView());
         navController.navigateUp();//return to parent

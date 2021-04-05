@@ -156,8 +156,8 @@
             app:destination="@id/nav_experiment_details" />
     </fragment>
     <fragment
-        android:id="@+id/scanQR"
-        android:name="com.example.experiment_automata.ScanQR"
+        android:id="@+id/nav_qr_scan"
+        android:name="com.example.experiment_automata.ui.qr.ScanQR"
         android:label="fragment_scan_q_r"
         tools:layout="@layout/fragment_scan_q_r" />
 

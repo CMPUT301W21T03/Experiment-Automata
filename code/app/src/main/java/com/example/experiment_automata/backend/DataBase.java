@@ -17,6 +17,9 @@ public class DataBase
         {
             db.clearPersistence();
             db.disableNetwork();
+        } else {
+            db.disableNetwork();
+            db.enableNetwork();
         }
     }
 

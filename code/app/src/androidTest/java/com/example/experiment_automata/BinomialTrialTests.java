@@ -31,6 +31,7 @@ import org.junit.Test;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
+import java.lang.reflect.Field;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -87,16 +88,17 @@ public class BinomialTrialTests {
     }
 
     @After
-    public void endTest()
-    {
+    public void endTest() {
         dataBase.getFireStore().terminate();
-        dataBase = DataBase.getInstanceTesting();
         dataBase.getFireStore().clearPersistence();
     }
 
     private void makeExperiment(String des) {
 
-        currentTestingActivity.experimentManager.enableTestMode();
+        solo.clickOnActionBarHomeButton();
+        solo.clickOnText("My Experiments");
+        solo.sleep(2000);
+        addExperimentButton = solo.getView(R.id.fab_button);
 
         //Click from the home screen the + button to make an experiment
         solo.clickOnView(addExperimentButton);
@@ -130,13 +132,16 @@ public class BinomialTrialTests {
     }
 
     private void addBinomialTrial(boolean click) {
-        solo.clickOnView(addExperimentButton);
+        solo.sleep(2000);
+        solo.clickOnView(solo.getView(R.id.fab_button));
+        solo.sleep(2000);
         if(click) {
             solo.waitForText("Passed");
             solo.clickOnText("Passed");
         }
-        addExperimentButton = currentTestingActivity.findViewById(R.id.fab_button);
-        solo.clickOnView(addExperimentButton);
+        solo.sleep(2000);
+        solo.clickOnView(solo.getView(R.id.fab_button));
+        solo.sleep(2000);
     }
 
 
@@ -153,14 +158,8 @@ public class BinomialTrialTests {
         //currentTestingActivity.userManager.enableTestMode();
         //currentTestingActivity.stopRemindingMe = true;
 
-        //Running without the DB
-        solo.clickOnActionBarHomeButton();
-        solo.clickOnText("My Experiments");
-        addExperimentButton = solo.getView(R.id.fab_button);
-
         String testDes = "Testing Intent";
         makeExperiment(testDes);
-        /*
         solo.clickOnText(testDes);
         // Adding 3 trial
         for (int i = 0; i < 3; i++) {
@@ -171,9 +170,8 @@ public class BinomialTrialTests {
         solo.clickOnView(solo.getView(R.id.trial_ignore_checkbox));
         View qur2 = solo.getView(R.id.mean_value);
         String qur3 = ((TextView)qur2).getText().toString();
-        */
 
-        assertNotEquals("Mean is the same when it should not be", 1, 1);
+        assertNotEquals("Mean is the same when it should not be", qur1, qur3);
 
     }
 
@@ -189,11 +187,6 @@ public class BinomialTrialTests {
         //currentTestingActivity.questionManager.enableTestMode();
         //currentTestingActivity.userManager.enableTestMode();
         //currentTestingActivity.stopRemindingMe = true;
-
-        //Running without the DB
-        solo.clickOnActionBarHomeButton();
-        solo.clickOnText("My Experiments");
-        addExperimentButton = solo.getView(R.id.fab_button);
 
         Double medianTestValue = 1.000;
         Double meanTestValue = 1.000;
@@ -211,11 +204,6 @@ public class BinomialTrialTests {
         assertEquals("Mean wrong", meanTestValue, mean, 0.00001);
         assertEquals("Median wrong", medianTestValue, median, 0.00001);
         assertNotEquals("Quartile set wrong", null, quertile);
-
-        try {
-            ((NavigationActivity) solo.getCurrentActivity()).experimentManager.deleteCurrentExperiment();
-        }catch (Exception e)
-        {}
     }
 
     /**
@@ -224,16 +212,6 @@ public class BinomialTrialTests {
      */
     @Test
     public void testIntentChartHistogramDataDisplayed() {
-        //Running without the DB
-        currentTestingActivity.experimentManager.enableTestMode();
-        currentTestingActivity.questionManager.enableTestMode();
-        currentTestingActivity.userManager.enableTestMode();
-        currentTestingActivity.stopRemindingMe = true;
-
-        //Running without the DB
-        solo.clickOnActionBarHomeButton();
-        solo.clickOnText("My Experiments");
-        addExperimentButton = solo.getView(R.id.fab_button);
 
         String testDes = "Testing Intent";
         makeExperiment(testDes);
@@ -248,16 +226,6 @@ public class BinomialTrialTests {
      */
     @Test
     public void testIntentChartPlotDataDisplayed() {
-        //Running without the DB
-        currentTestingActivity.experimentManager.enableTestMode();
-        currentTestingActivity.questionManager.enableTestMode();
-        currentTestingActivity.userManager.enableTestMode();
-        currentTestingActivity.stopRemindingMe = true;
-
-        //Running without the DB
-        solo.clickOnActionBarHomeButton();
-        solo.clickOnText("My Experiments");
-        addExperimentButton = solo.getView(R.id.fab_button);
 
         String testDes = "Testing Intent";
         makeExperiment(testDes);

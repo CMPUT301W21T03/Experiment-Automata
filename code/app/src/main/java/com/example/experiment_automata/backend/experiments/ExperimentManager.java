@@ -39,10 +39,7 @@ public class ExperimentManager
 {
     private static ExperimentManager experimentManager;
     private static HashMap<UUID, Experiment> experiments;
-    private static boolean TEST_MODE;
     private Experiment currentExperiment;
-    private Experiment currentTestExperiment;
-
 
     /**
      * Initializes the experiment manager.
@@ -50,7 +47,6 @@ public class ExperimentManager
     private ExperimentManager()
     {
         experiments = new HashMap<>();
-        TEST_MODE = true;
         getAllFromFirestore();
     }
 
@@ -75,7 +71,6 @@ public class ExperimentManager
             throw new IllegalArgumentException();
         else {
             experiments.put(id, experiment);
-            currentTestExperiment = experiment;
         }
     }
 
@@ -293,10 +288,6 @@ public class ExperimentManager
      *  Hashmap containing other hashmaps as found in the results field in the given Experiment document
      */
     public void buildTrials(Experiment experiment, Object trialsObj){
-        if(TEST_MODE) {
-            return;
-        }
-
         HashMap<String,Object> trials = ( HashMap<String,Object> )trialsObj;
         for (String k : trials.keySet()){
             HashMap<String,Object> currentTrialMap = (HashMap<String,Object>) trials.get(k);
@@ -420,54 +411,6 @@ public class ExperimentManager
     public ArrayList<Experiment> getAllExperiments()
     {
         return new ArrayList(experiments.values());
-    }
-
-    /**
-     * enables test mode (Does not talk to firebase)
-     */
-    public void enableTestMode()
-    {
-        TEST_MODE = true;
-    }
-
-    /**
-     * disables test mode (Talks to firebase)
-     */
-    public void disableTestMode()
-    {
-        TEST_MODE = false;
-    }
-
-
-    /**
-     * delete the current test experiment
-     * which is the experiment that was last added
-     */
-    public void deleteCurrentExperiment() throws InterruptedException {
-        Experiment deleteMe = currentTestExperiment;
-        Log.d("TO_BE", deleteMe.getExperimentId().toString());
-        AtomicBoolean done = new AtomicBoolean(false);
-        DataBase dataBase = DataBase.getInstanceTesting();
-        FirebaseFirestore db = dataBase.getFireStore();
-        db.collection("experiments").
-                document(deleteMe.getExperimentId().toString()).delete()
-                .addOnSuccessListener(aVoid -> {
-                    Log.d("SOM", "del + " + deleteMe.getExperimentId());
-                    done.set(true);
-
-                })
-                .addOnFailureListener(e -> {
-                    Log.d("SEM", "DocumentSnapshot successfully deleted!");
-                    done.set(true);
-                });
-        while(!done.get()) {
-            Thread.sleep((long) 1000.000);
-        }
-    }
-
-    public boolean isTestMode()
-    {
-        return TEST_MODE;
     }
 
 }

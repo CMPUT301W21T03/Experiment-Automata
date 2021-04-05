@@ -49,7 +49,6 @@ public class ExperimentManagerTestsFireBase {
         experiments.add(e);
         experimentManager.add(id, e);
 
-        experimentManager.enableTestMode();
         FirebaseApp.initializeApp(InstrumentationRegistry.getInstrumentation().getContext());
     }
 

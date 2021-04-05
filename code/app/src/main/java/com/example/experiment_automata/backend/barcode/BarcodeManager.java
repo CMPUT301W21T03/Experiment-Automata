@@ -90,7 +90,31 @@ public class BarcodeManager {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()){
                     for (QueryDocumentSnapshot document : task.getResult()){
-
+                        BarcodeReference currentBarcodeRef;
+                        UUID experimentId = UUID.fromString((String)document.get("experiment-id"));
+                        String barcode = document.getId();
+                        ExperimentType type = ExperimentType.valueOf((String)document.get("type"));
+                        switch(type){
+                            case Binomial:
+                                boolean boolVal = (boolean)document.get("value");
+                                currentBarcodeRef = new BinomialBarcodeReference(barcode,experimentId,ExperimentType.Binomial,boolVal);
+                                break;
+                            case Count:
+                                currentBarcodeRef = new CountBarcodeReference(barcode,experimentId,ExperimentType.Count);
+                                break;
+                            case Measurement:
+                                float measVal = (float)document.get("value");
+                                currentBarcodeRef = new MeasurementBarcodeReference(barcode,experimentId,ExperimentType.Measurement,measVal);
+                                break;
+                            case NaturalCount:
+                                int natVal = (int)document.get("value");
+                                currentBarcodeRef = new NaturalBarcodeReference(barcode,experimentId,ExperimentType.NaturalCount,natVal);
+                                break;
+                            default:
+                                //something went wrong when filling the database!
+                                currentBarcodeRef = null;
+                        }
+                        barcodes.put(barcode,currentBarcodeRef);
                     }
                 }
                 else{
@@ -99,8 +123,8 @@ public class BarcodeManager {
                 }
             }
         });
-
     }
+
 
     public HashMap<String, BarcodeReference> getBarcodes() {
         return barcodes;

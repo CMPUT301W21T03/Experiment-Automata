@@ -1,5 +1,6 @@
 package com.example.experiment_automata.ui.qr;
 
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -35,16 +36,13 @@ import java.util.UUID;
  *
  * Known Issue:
  *
- *      1. Doesn't generate a correct QR code. Generates one with a random Experiment ID. Will be fixed once parent activity has proper UUID implementation.
+ *      1. None
  */
 public class ViewQRFragment extends DialogFragment {
     private ImageView qrImageView;
     private TextView qrValue;
     private Button backButton;
     private ImageButton shareButton;
-    private CheckBox checkBox;
-    private String experimentUUIDString;
-    private QRCode qrCode;
     private Bitmap qrCodeImage;
 
     @Nullable
@@ -60,6 +58,7 @@ public class ViewQRFragment extends DialogFragment {
         Bundle bundle = getArguments();
         String description = bundle.getString("DESCRIPTION");
         UUID experimentUUID = UUID.fromString(bundle.getString("UUID"));
+        android.util.Log.d("QR EXPERIMENT ID", experimentUUID.toString());
         String typeString = bundle.getString("TYPE");
         //use switch case and string bundles instead of serializing QR
         switch (typeString){
@@ -68,18 +67,18 @@ public class ViewQRFragment extends DialogFragment {
                 break;
             case "BinomialTrial":
                 boolean binomialVal = bundle.getBoolean("BINVAL");
-                qrCode = new BinomialQRCode(experimentUUID,binomialVal);
+                qrCode = new BinomialQRCode(experimentUUID, binomialVal);
                 break;
             case "CountTrial":
                 qrCode = new CountQRCode(experimentUUID);
                 break;
             case "MeasurementTrial":
                 float measurementVal = bundle.getFloat("MEASVAL");
-                qrCode = new MeasurementQRCode(experimentUUID,measurementVal);
+                qrCode = new MeasurementQRCode(experimentUUID, measurementVal);
                 break;
             case "NaturalCountTrial":
                 int naturalCount = bundle.getInt("NATVAL");
-                qrCode = new NaturalQRCode(experimentUUID,naturalCount);
+                qrCode = new NaturalQRCode(experimentUUID, naturalCount);
                 break;
             default:
                 qrCode = null;
@@ -87,7 +86,7 @@ public class ViewQRFragment extends DialogFragment {
 
         assert qrCode != null;
         qrCodeImage = qrCode.getQrCodeImage();
-        qrImageView.setImageBitmap(qrCodeImage);//qr_value_textView
+        qrImageView.setImageBitmap(qrCodeImage);
         qrValue.setText(description);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,8 +96,9 @@ public class ViewQRFragment extends DialogFragment {
         });
         shareButton.setOnClickListener(v -> {
             // Setup image uri
-            String url = MediaStore.Images.Media.insertImage(requireActivity().getContentResolver(),
-                    qrCodeImage, "Experiment Automata QR", "QR of an experiment and/or trial");
+            ContentResolver cr = requireActivity().getContentResolver();
+            String url = MediaStore.Images.Media.insertImage(cr, qrCodeImage,
+                    experimentUUID.toString(), "Experiment Automata QR code");
             Uri uri = Uri.parse(url);
 
             // Following tutorial from: https://developer.android.com/training/sharing/send
@@ -113,7 +113,5 @@ public class ViewQRFragment extends DialogFragment {
 
         return view;
     }
-
-
 }
 

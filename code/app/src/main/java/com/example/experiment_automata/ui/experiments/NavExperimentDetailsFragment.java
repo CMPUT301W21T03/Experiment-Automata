@@ -148,9 +148,8 @@ public class NavExperimentDetailsFragment extends Fragment {
      */
     private void setButtons() {
         boolean isOwner = experiment.getOwnerId().equals(parentActivity.loggedUser.getUserId());
-        System.out.println(isOwner);
 
-
+        if (isOwner) {
             editImageButton.setVisibility(View.VISIBLE);
             editImageButton.setOnClickListener(v -> {
                 Fragment editExperiment = new AddExperimentFragment();
@@ -163,13 +162,15 @@ public class NavExperimentDetailsFragment extends Fragment {
                 editExperiment.setArguments(bundle);
                 getActivity().getSupportFragmentManager().beginTransaction().add(editExperiment, "EDIT").commit();
             });
-            
-            subscribeButton.setVisibility(View.VISIBLE);
-            subscribeButton.setOnClickListener(v -> {
-                parentActivity.loggedUser.subscribeExperiment(experiment.getExperimentId());
-                toggleSubscribeButton();
-            });
-        
+        } else {
+            editImageButton.setVisibility(View.GONE);
+        }
+
+        subscribeButton.setVisibility(View.VISIBLE);
+        subscribeButton.setOnClickListener(v -> {
+            parentActivity.loggedUser.subscribeExperiment(experiment.getExperimentId());
+            toggleSubscribeButton();
+        });
 
         questionsButton.setOnClickListener(v -> {
             launchQuestionView();
@@ -181,13 +182,12 @@ public class NavExperimentDetailsFragment extends Fragment {
 
             Fragment viewQRFragment = new ViewQRFragment();
             Bundle bundle = new Bundle();
-            bundle.putString("UUID",UUID.randomUUID().toString());
-            bundle.putString("DESCRIPTION",current.getDescription());
+            bundle.putString("UUID", current.getExperimentId().toString());
+            bundle.putString("DESCRIPTION", current.getDescription());
             bundle.putString("TYPE", QRType.Experiment.toString());
             viewQRFragment.setArguments(bundle);
             getActivity().getSupportFragmentManager().beginTransaction().add(viewQRFragment,"QR").commit();
         });
-
 
         mapButton.setOnClickListener(v -> {
             Bundle locArgs = new Bundle();

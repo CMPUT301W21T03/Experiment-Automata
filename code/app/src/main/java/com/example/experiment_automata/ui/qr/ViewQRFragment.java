@@ -36,7 +36,7 @@ import java.util.UUID;
  *
  * Known Issue:
  *
- *      1. None
+ *      1. Saves an image of the QR code anytime the share button is pressed, regardless if it's cancelled
  */
 public class ViewQRFragment extends DialogFragment {
     private ImageView qrImageView;

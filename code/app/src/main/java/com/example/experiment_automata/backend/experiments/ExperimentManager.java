@@ -10,6 +10,8 @@ import com.example.experiment_automata.backend.trials.CountTrial;
 import com.example.experiment_automata.backend.trials.MeasurementTrial;
 import com.example.experiment_automata.backend.trials.NaturalCountTrial;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -37,8 +39,9 @@ public class ExperimentManager
 {
     private static ExperimentManager experimentManager;
     private static HashMap<UUID, Experiment> experiments;
-    private static boolean TEST_MODE = false;
+    private static boolean TEST_MODE;
     private Experiment currentExperiment;
+    private Experiment currentTestExperiment;
 
 
     /**
@@ -46,8 +49,8 @@ public class ExperimentManager
      */
     private ExperimentManager()
     {
-
-        experiments = new HashMap<UUID, Experiment>();
+        experiments = new HashMap<>();
+        TEST_MODE = false;
         getAllFromFirestore();
     }
 
@@ -72,6 +75,7 @@ public class ExperimentManager
             throw new IllegalArgumentException();
         else {
             experiments.put(id, experiment);
+            currentTestExperiment = experiment;
         }
     }
 
@@ -243,9 +247,11 @@ public class ExperimentManager
      * Populate experiments in Experiment manager with all experiments from Firestore
      */
     public void getAllFromFirestore(){
-        if(TEST_MODE)
-            return;
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        if(TEST_MODE) {
+            db.disableNetwork();
+            return;
+        }
         CollectionReference experimentCollection = db.collection("experiments");
         experimentCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -288,6 +294,11 @@ public class ExperimentManager
      *  Hashmap containing other hashmaps as found in the results field in the given Experiment document
      */
     public void buildTrials(Experiment experiment, Object trialsObj){
+        if(TEST_MODE) {
+
+            return;
+        }
+
         HashMap<String,Object> trials = ( HashMap<String,Object> )trialsObj;
         for (String k : trials.keySet()){
             HashMap<String,Object> currentTrialMap = (HashMap<String,Object>) trials.get(k);
@@ -428,4 +439,27 @@ public class ExperimentManager
     {
         TEST_MODE = false;
     }
+
+
+    /**
+     * delete the current test experiment
+     * which is the experiment that was last added
+     */
+    public void deleteCurrentExperiment()
+    {
+        Experiment deleteMe = currentTestExperiment;
+        if(deleteMe == null)
+            return;
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("experiments").
+                document(deleteMe.getOwnerId().toString()).delete()
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("SOM", "DocumentSnapshot successfully deleted!");
+
+                })
+                .addOnFailureListener(e -> {
+                    System.out.println("Failed");
+                });
+    }
+
 }

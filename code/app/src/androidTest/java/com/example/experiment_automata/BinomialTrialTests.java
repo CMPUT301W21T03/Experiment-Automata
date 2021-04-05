@@ -11,6 +11,7 @@ package com.example.experiment_automata;
  *
  */
 
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -62,8 +63,13 @@ public class BinomialTrialTests {
     public void setup() {
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
         currentTestingActivity = (NavigationActivity) solo.getCurrentActivity();
-        //Finding the buttons we need to press
-        addExperimentButton = currentTestingActivity.findViewById(R.id.fab_button);
+
+        //Running without the DB
+        currentTestingActivity.experimentManager.enableTestMode();
+        currentTestingActivity.questionManager.enableTestMode();
+        currentTestingActivity.userManager.enableTestMode();
+        currentTestingActivity.stopRemindingMe = true;
+
         maker = new ExperimentMaker();
         testUUID = UUID.randomUUID();
         testExperiment = maker.makeExperiment(ExperimentType.Count,
@@ -72,14 +78,20 @@ public class BinomialTrialTests {
                 true,
                 true,
                 testUUID);
-        FirebaseApp.initializeApp(InstrumentationRegistry.getInstrumentation().getTargetContext());
+
+        /**
+         * Sources
+         * Author:https://stackoverflow.com/users/7699270/nur-el-din
+         * Editor:https://stackoverflow.com/users/6463791/satan-pandeya
+         * Full:https://stackoverflow.com/questions/15993314/clicking-on-action-bar-menu-items-in-robotium
+         */
+        //FirebaseApp.initializeApp(InstrumentationRegistry.getInstrumentation().getTargetContext());
 
     }
 
     private void makeExperiment(String des) {
 
-
-
+        addExperimentButton = solo.getView(R.id.fab_button);
         //Click from the home screen the + button to make an experiment
         solo.clickOnView(addExperimentButton);
         solo.waitForDialogToOpen();
@@ -128,6 +140,17 @@ public class BinomialTrialTests {
      */
     @Test
     public void testIntentIgnoringTrials() {
+
+
+        //Running without the DB
+        currentTestingActivity.experimentManager.enableTestMode();
+        currentTestingActivity.questionManager.enableTestMode();
+        currentTestingActivity.userManager.enableTestMode();
+        currentTestingActivity.stopRemindingMe = true;
+        solo.clickOnActionBarHomeButton();
+        solo.clickOnText("My Experiments");
+        addExperimentButton = solo.getView(R.id.fab_button);
+
         String testDes = "Testing Intent";
         makeExperiment(testDes);
         solo.clickOnText(testDes);
@@ -142,6 +165,7 @@ public class BinomialTrialTests {
         String qur3 = ((TextView)qur2).getText().toString();
 
         assertNotEquals("Mean is the same when it should not be", qur1, qur3);
+
     }
 
     /**
@@ -150,6 +174,10 @@ public class BinomialTrialTests {
      */
     @Test
     public void testIntentIQRNumbersAppear() {
+
+        solo.clickOnActionBarHomeButton();
+        solo.clickOnText("My Experiments");
+
         Double medianTestValue = 1.000;
         Double meanTestValue = 1.000;
         String testDes = "Testing Intent";
@@ -166,6 +194,9 @@ public class BinomialTrialTests {
         assertEquals("Mean wrong", meanTestValue, mean, 0.00001);
         assertEquals("Median wrong", medianTestValue, median, 0.00001);
         assertNotEquals("Quartile set wrong", null, quertile);
+
+
+        ((NavigationActivity)solo.getCurrentActivity()).experimentManager.deleteCurrentExperiment();
     }
 
     /**
@@ -174,6 +205,10 @@ public class BinomialTrialTests {
      */
     @Test
     public void testIntentChartHistogramDataDisplayed() {
+        solo.clickOnActionBarHomeButton();
+
+        solo.clickOnText("My Experiments");
+
         String testDes = "Testing Intent";
         makeExperiment(testDes);
         solo.clickOnText(testDes);
@@ -187,6 +222,10 @@ public class BinomialTrialTests {
      */
     @Test
     public void testIntentChartPlotDataDisplayed() {
+        solo.clickOnActionBarHomeButton();
+
+        solo.clickOnText("My Experiments");
+
         String testDes = "Testing Intent";
         makeExperiment(testDes);
         solo.clickOnText(testDes);

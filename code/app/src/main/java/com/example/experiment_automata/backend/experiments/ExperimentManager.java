@@ -121,12 +121,14 @@ public class ExperimentManager
      */
     public ArrayList<Experiment> queryExperiments(Collection<UUID> experimentIds) {
         ArrayList<Experiment> experimentsList = new ArrayList<>();
-        for (UUID id : experimentIds) {
-            if (experiments.containsKey(id)) {
-                experimentsList.add(experiments.get(id));
+        if (experimentIds != null) {
+            for (UUID id : experimentIds) {
+                if (experiments.containsKey(id)) {
+                    experimentsList.add(experiments.get(id));
+                }
             }
+            Collections.sort(experimentsList);
         }
-        Collections.sort(experimentsList);
         return experimentsList;
     }
 

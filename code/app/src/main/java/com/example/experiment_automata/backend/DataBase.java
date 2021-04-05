@@ -15,8 +15,8 @@ public class DataBase
         db = FirebaseFirestore.getInstance();
         if(test_mode)
         {
-            db.disableNetwork();
             db.clearPersistence();
+            db.disableNetwork();
         }
     }
 
@@ -45,7 +45,6 @@ public class DataBase
     {
         return db;
     }
-
 
 
 }

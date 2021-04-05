@@ -89,6 +89,8 @@ public class BinomialTrialTests {
     @After
     public void endTest()
     {
+        dataBase.getFireStore().terminate();
+        dataBase = DataBase.getInstanceTesting();
         dataBase.getFireStore().clearPersistence();
     }
 

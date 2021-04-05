@@ -1,6 +1,16 @@
 package com.example.experiment_automata.backend.barcode;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 import com.example.experiment_automata.backend.experiments.ExperimentType;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -71,6 +81,26 @@ public class BarcodeManager {
     }
 
     //add firestore here
+    public void getAllFromFirestore(){
+        //checkTestMode?
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference barcodeCollection = db.collection("barcodes");
+        barcodeCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    for (QueryDocumentSnapshot document : task.getResult()){
+
+                    }
+                }
+                else{
+                    //not able to query firestore
+                    Log.d("FIRESTORE","Unable to pull barcodes from firestore");
+                }
+            }
+        });
+
+    }
 
     public HashMap<String, BarcodeReference> getBarcodes() {
         return barcodes;

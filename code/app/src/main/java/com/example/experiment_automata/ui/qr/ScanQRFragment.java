@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.backend.qr.QRCode;
@@ -16,21 +18,19 @@ import com.example.experiment_automata.backend.qr.QRMaker;
 import com.example.experiment_automata.backend.qr.QRMalformattedException;
 
 /**
- * Fragment for setting up scanning QR codes from the hamburger menu
+ * Fragment for setting up scanning QR codes from the hamburger menu. It opens a ScannerActivity.
  *
  * A simple {@link Fragment} subclass.
- * Use the {@link ScanQR#newInstance} factory method to
+ * Use the {@link ScanQRFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ScanQR extends Fragment {
-
-
+public class ScanQRFragment extends Fragment {
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    public ScanQR() {
+    public ScanQRFragment() {
         // Required empty public constructor
     }
 
@@ -43,8 +43,8 @@ public class ScanQR extends Fragment {
      * @return A new instance of fragment ScanQR.
      */
     // TODO: Rename and change types and number of parameters
-    public static ScanQR newInstance(String param1, String param2) {
-        ScanQR fragment = new ScanQR();
+    public static ScanQRFragment newInstance(String param1, String param2) {
+        ScanQRFragment fragment = new ScanQRFragment();
         Bundle args = new Bundle();
         //args.putString(ARG_PARAM1, param1);
         //args.putString(ARG_PARAM2, param2);
@@ -68,7 +68,7 @@ public class ScanQR extends Fragment {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {//when the ScannerActivity is finished
         super.onActivityResult(requestCode, resultCode, data);
         if (data == null) {
             return;
@@ -91,5 +91,7 @@ public class ScanQR extends Fragment {
         else{//scanned obj was barcode
             Log.d("SCANNER","Barcode was scanned");
         }
+        NavController navController = Navigation.findNavController(getView());
+        navController.navigateUp();//return to parent
     }
 }

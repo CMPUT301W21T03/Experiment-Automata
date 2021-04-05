@@ -356,6 +356,16 @@ public class ExperimentManager {
     public boolean containsExperiment(UUID experimentID){
         return experiments.containsKey(experimentID);
     }
+    /**
+     * Gets a specific Experiment
+     * @param experimentID
+     *  experiment ID repersenting the experiment
+     * @return
+     *  the requested experiment
+     */
+    public Experiment getExperiment(UUID experimentID){
+        return experiments.get(experimentID);
+    }
 
     /**
      * Will query a specific experiment based on it's UUID

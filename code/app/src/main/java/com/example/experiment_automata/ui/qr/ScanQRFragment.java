@@ -14,10 +14,12 @@ import androidx.navigation.Navigation;
 
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.backend.barcode.BarcodeReference;
+import com.example.experiment_automata.backend.experiments.Experiment;
 import com.example.experiment_automata.backend.experiments.ExperimentManager;
 import com.example.experiment_automata.backend.qr.QRCode;
 import com.example.experiment_automata.backend.qr.QRMaker;
 import com.example.experiment_automata.backend.qr.QRMalformattedException;
+import com.example.experiment_automata.backend.trials.BinomialTrial;
 import com.example.experiment_automata.backend.trials.Trial;
 import com.example.experiment_automata.backend.users.User;
 import com.example.experiment_automata.ui.NavigationActivity;
@@ -89,13 +91,15 @@ public class ScanQRFragment extends Fragment {
             try{
                 qrCode = qrMaker.decodeQRString(rawScannedContrent);
                 //scanned valid QR
-                if (experimentManager.containsExperiment(qrCode.getExperimentID())){
+                if (experimentManager.containsExperiment(qrCode.getExperimentID())){//change this to check subscribed experiments
                     //add location ability later
                     User user = parentActivity.loggedUser;
                     Trial trial;
                     switch (qrCode.getType()){
-                        case BinomialTrial:
-                            //trial = new BinomialTrial(user.getUserId(),qrCode.get);
+                        case BinomialTrial: //temp test implementation ONLY FOR BINOMIAL TRIALS
+                            trial = new BinomialTrial(user.getUserId(),(Boolean) qrCode.getValue());
+                            Experiment binExperiment =  experimentManager.getExperiment(qrCode.getExperimentID());//don't think this will work
+                            parentActivity.addTrial(binExperiment,trial);
                             break;
                         case CountTrial:
                             break;

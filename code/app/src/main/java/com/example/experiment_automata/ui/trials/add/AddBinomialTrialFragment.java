@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.experiment_automata.R;
+import com.example.experiment_automata.backend.barcode.BarcodeManager;
 import com.example.experiment_automata.backend.experiments.BinomialExperiment;
 import com.example.experiment_automata.backend.qr.BinomialQRCode;
 import com.example.experiment_automata.backend.qr.QRCode;
@@ -126,12 +127,12 @@ public class AddBinomialTrialFragment extends Fragment {
                 Snackbar.make(root, "Scanned QR was not an Experiment-Automata QR Code", Snackbar.LENGTH_LONG).show();
             }
         }
-        else {
+        else {//if scanned was barcode
             NavigationActivity parentActivity = ((NavigationActivity) getActivity());
+            BarcodeManager testBC = parentActivity.barcodeManager;
             BinomialExperiment experiment = (BinomialExperiment) parentActivity.experimentManager.getCurrentExperiment();
             parentActivity.barcodeManager.addBarcode(rawQRContent,experiment.getExperimentId(),checkBox.isChecked());
             Snackbar.make(root, "Scanned Barcode " + rawQRContent + " was associated with this Trials Value", Snackbar.LENGTH_LONG).show();
-
         }
     }
 }

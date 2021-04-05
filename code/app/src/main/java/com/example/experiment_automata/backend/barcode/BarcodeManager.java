@@ -29,6 +29,7 @@ public class BarcodeManager {
 
     public BarcodeManager(){
         barcodes = new HashMap<String,BarcodeReference>();
+        getAllFromFirestore();
     }
     /**
      * Add a barcode reference to the barcode manager for a NaturalCount Trial
@@ -95,20 +96,21 @@ public class BarcodeManager {
                         UUID experimentId = UUID.fromString((String)document.get("experiment-id"));
                         String barcode = document.getId();
                         ExperimentType type = ExperimentType.valueOf((String)document.get("type"));
+
                         switch(type){
                             case Binomial:
-                                boolean boolVal = (boolean)document.get("value");
+                                boolean boolVal = (boolean)document.get("result");
                                 currentBarcodeRef = new BinomialBarcodeReference(barcode,experimentId,ExperimentType.Binomial,boolVal);
                                 break;
                             case Count:
                                 currentBarcodeRef = new CountBarcodeReference(barcode,experimentId,ExperimentType.Count);
                                 break;
                             case Measurement:
-                                float measVal = (float)document.get("value");
+                                float measVal = (float)document.get("result");
                                 currentBarcodeRef = new MeasurementBarcodeReference(barcode,experimentId,ExperimentType.Measurement,measVal);
                                 break;
                             case NaturalCount:
-                                int natVal = (int)document.get("value");
+                                int natVal = (int)document.get("result");
                                 currentBarcodeRef = new NaturalBarcodeReference(barcode,experimentId,ExperimentType.NaturalCount,natVal);
                                 break;
                             default:

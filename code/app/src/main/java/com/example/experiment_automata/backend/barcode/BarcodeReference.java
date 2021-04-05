@@ -25,6 +25,7 @@ public abstract class BarcodeReference<T> {
         this.experimentId = experimentId;
         this.type = type;
         this.result = result;
+        postBarcodeToFirestore();
     }
     /**
      * Post the current BarcodeReference to firestore

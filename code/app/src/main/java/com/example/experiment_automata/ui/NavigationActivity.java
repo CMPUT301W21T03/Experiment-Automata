@@ -12,46 +12,44 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.example.experiment_automata.R;
-import com.example.experiment_automata.backend.trials.Trial;
-import com.example.experiment_automata.backend.users.ContactInformation;
-
-import com.example.experiment_automata.backend.users.UserManager;
-import com.example.experiment_automata.ui.experiments.AddExperimentFragment;
-import com.example.experiment_automata.backend.experiments.ExperimentManager;
-import com.example.experiment_automata.ui.experiments.NavExperimentDetailsFragment;
-import com.example.experiment_automata.backend.experiments.Experiment;
-
-import com.example.experiment_automata.ui.profile.EditUserFragment;
-import com.example.experiment_automata.ui.profile.ProfileFragment;
-import com.example.experiment_automata.ui.question.AddQuestionFragment;
-import com.example.experiment_automata.ui.question.QuestionDisplay;
-import com.example.experiment_automata.backend.questions.Question;
-import com.example.experiment_automata.backend.questions.QuestionManager;
-import com.example.experiment_automata.backend.questions.Reply;
-
-import com.example.experiment_automata.backend.users.User;
-import com.example.experiment_automata.ui.home.HomeFragment;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
-
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+
+import com.example.experiment_automata.R;
+import com.example.experiment_automata.backend.experiments.Experiment;
+import com.example.experiment_automata.backend.experiments.ExperimentManager;
+import com.example.experiment_automata.backend.questions.Question;
+import com.example.experiment_automata.backend.questions.QuestionManager;
+import com.example.experiment_automata.backend.questions.Reply;
+import com.example.experiment_automata.backend.trials.Trial;
+import com.example.experiment_automata.backend.users.ContactInformation;
+import com.example.experiment_automata.backend.users.User;
+import com.example.experiment_automata.backend.users.UserManager;
+import com.example.experiment_automata.ui.experiments.AddExperimentFragment;
+import com.example.experiment_automata.ui.experiments.NavExperimentDetailsFragment;
+import com.example.experiment_automata.ui.home.HomeFragment;
+import com.example.experiment_automata.ui.profile.EditUserFragment;
+import com.example.experiment_automata.ui.profile.ProfileFragment;
+import com.example.experiment_automata.ui.question.AddQuestionFragment;
+import com.example.experiment_automata.ui.question.QuestionDisplay;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.UUID;
 
@@ -111,7 +109,7 @@ public class NavigationActivity extends AppCompatActivity implements
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_owned_experiments, R.id.nav_subscriptions, R.id.nav_published, R.id.nav_profile)
+                R.id.nav_owned_experiments, R.id.nav_subscriptions, R.id.nav_published, R.id.nav_profile, R.id.nav_qr_scan)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -191,6 +189,7 @@ public class NavigationActivity extends AppCompatActivity implements
         });
     }
 
+
     /**
      * Prepare search bar functionality
      * @param menu
@@ -239,7 +238,7 @@ public class NavigationActivity extends AppCompatActivity implements
                 return false;
             }
         });
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     /**
@@ -507,5 +506,19 @@ public class NavigationActivity extends AppCompatActivity implements
             ((ProfileFragment) currentFragment).update();
         }
         user.updateFirestore();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId())
+        {
+            case R.id.nav_qr_scan:
+                Log.d("NAVDEBUG","THIS RAN");
+                return true;
+            default:
+                Log.d("NAVDEBUG","Default");
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 }

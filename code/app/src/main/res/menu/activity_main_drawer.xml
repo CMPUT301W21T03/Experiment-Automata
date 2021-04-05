@@ -20,5 +20,9 @@
             android:id="@+id/nav_published"
             android:icon="@drawable/ic_baseline_assessment"
             android:title="@string/menu_published" />
+        <item
+            android:id="@+id/nav_qr_scan"
+            android:icon="@drawable/ic_baseline_assessment"
+            android:title="Scan QR" />
     </group>
 </menu>

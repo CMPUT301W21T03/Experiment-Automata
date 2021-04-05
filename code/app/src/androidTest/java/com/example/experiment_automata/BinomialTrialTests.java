@@ -23,6 +23,7 @@ import com.example.experiment_automata.ui.NavigationActivity;
 import com.google.firebase.FirebaseApp;
 import com.robotium.solo.Solo;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -64,12 +65,6 @@ public class BinomialTrialTests {
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
         currentTestingActivity = (NavigationActivity) solo.getCurrentActivity();
 
-        //Running without the DB
-        currentTestingActivity.experimentManager.enableTestMode();
-        currentTestingActivity.questionManager.enableTestMode();
-        currentTestingActivity.userManager.enableTestMode();
-        currentTestingActivity.stopRemindingMe = true;
-
         maker = new ExperimentMaker();
         testUUID = UUID.randomUUID();
         testExperiment = maker.makeExperiment(ExperimentType.Count,
@@ -85,13 +80,16 @@ public class BinomialTrialTests {
          * Editor:https://stackoverflow.com/users/6463791/satan-pandeya
          * Full:https://stackoverflow.com/questions/15993314/clicking-on-action-bar-menu-items-in-robotium
          */
-        //FirebaseApp.initializeApp(InstrumentationRegistry.getInstrumentation().getTargetContext());
+        FirebaseApp.initializeApp(InstrumentationRegistry.getInstrumentation().getTargetContext());
 
     }
 
-    private void makeExperiment(String des) {
+    @After
+    public void clearCache()
+    {
+    }
 
-        addExperimentButton = solo.getView(R.id.fab_button);
+    private void makeExperiment(String des) {
         //Click from the home screen the + button to make an experiment
         solo.clickOnView(addExperimentButton);
         solo.waitForDialogToOpen();
@@ -141,12 +139,13 @@ public class BinomialTrialTests {
     @Test
     public void testIntentIgnoringTrials() {
 
-
         //Running without the DB
         currentTestingActivity.experimentManager.enableTestMode();
         currentTestingActivity.questionManager.enableTestMode();
         currentTestingActivity.userManager.enableTestMode();
         currentTestingActivity.stopRemindingMe = true;
+
+        //Running without the DB
         solo.clickOnActionBarHomeButton();
         solo.clickOnText("My Experiments");
         addExperimentButton = solo.getView(R.id.fab_button);
@@ -175,8 +174,16 @@ public class BinomialTrialTests {
     @Test
     public void testIntentIQRNumbersAppear() {
 
+        //Running without the DB
+        currentTestingActivity.experimentManager.enableTestMode();
+        currentTestingActivity.questionManager.enableTestMode();
+        currentTestingActivity.userManager.enableTestMode();
+        currentTestingActivity.stopRemindingMe = true;
+
+        //Running without the DB
         solo.clickOnActionBarHomeButton();
         solo.clickOnText("My Experiments");
+        addExperimentButton = solo.getView(R.id.fab_button);
 
         Double medianTestValue = 1.000;
         Double meanTestValue = 1.000;
@@ -205,9 +212,16 @@ public class BinomialTrialTests {
      */
     @Test
     public void testIntentChartHistogramDataDisplayed() {
-        solo.clickOnActionBarHomeButton();
+        //Running without the DB
+        currentTestingActivity.experimentManager.enableTestMode();
+        currentTestingActivity.questionManager.enableTestMode();
+        currentTestingActivity.userManager.enableTestMode();
+        currentTestingActivity.stopRemindingMe = true;
 
+        //Running without the DB
+        solo.clickOnActionBarHomeButton();
         solo.clickOnText("My Experiments");
+        addExperimentButton = solo.getView(R.id.fab_button);
 
         String testDes = "Testing Intent";
         makeExperiment(testDes);
@@ -222,9 +236,16 @@ public class BinomialTrialTests {
      */
     @Test
     public void testIntentChartPlotDataDisplayed() {
-        solo.clickOnActionBarHomeButton();
+        //Running without the DB
+        currentTestingActivity.experimentManager.enableTestMode();
+        currentTestingActivity.questionManager.enableTestMode();
+        currentTestingActivity.userManager.enableTestMode();
+        currentTestingActivity.stopRemindingMe = true;
 
+        //Running without the DB
+        solo.clickOnActionBarHomeButton();
         solo.clickOnText("My Experiments");
+        addExperimentButton = solo.getView(R.id.fab_button);
 
         String testDes = "Testing Intent";
         makeExperiment(testDes);

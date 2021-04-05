@@ -250,6 +250,7 @@ public class ExperimentManager
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         if(TEST_MODE) {
             db.disableNetwork();
+
             return;
         }
         CollectionReference experimentCollection = db.collection("experiments");
@@ -295,7 +296,6 @@ public class ExperimentManager
      */
     public void buildTrials(Experiment experiment, Object trialsObj){
         if(TEST_MODE) {
-
             return;
         }
 
@@ -460,6 +460,11 @@ public class ExperimentManager
                 .addOnFailureListener(e -> {
                     System.out.println("Failed");
                 });
+    }
+
+    public boolean isTestMode()
+    {
+        return TEST_MODE;
     }
 
 }

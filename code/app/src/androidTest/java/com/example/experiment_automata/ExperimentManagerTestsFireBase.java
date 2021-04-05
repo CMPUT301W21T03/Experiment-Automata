@@ -29,6 +29,7 @@ public class ExperimentManagerTestsFireBase {
     @Before
     public void runningSetup() {
         ExperimentMaker experimentMaker = new ExperimentMaker();
+        experimentManager = new ExperimentManager();
         experiments = new ArrayList<>();
         experimentReferences = new ArrayList<>();
         userId = UUID.randomUUID();

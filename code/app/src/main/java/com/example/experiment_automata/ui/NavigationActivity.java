@@ -13,7 +13,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -109,7 +108,7 @@ public class NavigationActivity extends AppCompatActivity implements
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_owned_experiments, R.id.nav_subscriptions, R.id.nav_published, R.id.nav_profile, R.id.nav_qr_scan)
+                R.id.nav_owned_experiments, R.id.nav_subscriptions, R.id.nav_published, R.id.nav_profile)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -187,6 +186,8 @@ public class NavigationActivity extends AppCompatActivity implements
                 }
             }
         });
+
+
     }
 
 
@@ -238,7 +239,8 @@ public class NavigationActivity extends AppCompatActivity implements
                 return false;
             }
         });
-        return super.onCreateOptionsMenu(menu);
+        return true;
+
     }
 
     /**
@@ -508,17 +510,4 @@ public class NavigationActivity extends AppCompatActivity implements
         user.updateFirestore();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId())
-        {
-            case R.id.nav_qr_scan:
-                Log.d("NAVDEBUG","THIS RAN");
-                return true;
-            default:
-                Log.d("NAVDEBUG","Default");
-                return super.onOptionsItemSelected(item);
-
-        }
-    }
 }

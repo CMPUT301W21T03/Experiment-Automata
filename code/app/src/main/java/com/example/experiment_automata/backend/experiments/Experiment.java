@@ -120,20 +120,22 @@ public abstract class Experiment implements Serializable, StatSummary, Graphable
         experimentData.put("published",experiment.isPublished());
         experimentData.put("results",resultsData);
 
-        db.collection("experiments").document(experimentUUIDString)
-                .set(experimentData)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
+        if(!dataBase.isTestMode()) {
+            db.collection("experiments").document(experimentUUIDString)
+                    .set(experimentData)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
 
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
 
-                    }
-                });
+                        }
+                    });
+        }
     }
 
 

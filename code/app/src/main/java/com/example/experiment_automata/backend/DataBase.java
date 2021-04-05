@@ -9,11 +9,13 @@ public class DataBase
 {
     private static DataBase current;
     private static FirebaseFirestore db;
+    private boolean testMode;
 
-    private DataBase(boolean test_mode)
+    private DataBase(boolean testMode)
     {
+        this.testMode = testMode;
         db = FirebaseFirestore.getInstance();
-        if(test_mode)
+        if(testMode)
         {
             db.clearPersistence();
             db.disableNetwork();
@@ -30,6 +32,7 @@ public class DataBase
             current = new DataBase(true);
             Log.d("called_test", "test should've been called");
         }
+        current.disableTest();
         return current;
     }
 
@@ -49,5 +52,13 @@ public class DataBase
         return db;
     }
 
+    public void disableTest()
+    {
+        this.testMode = false;
+    }
 
+    public boolean isTestMode()
+    {
+        return this.testMode;
+    }
 }

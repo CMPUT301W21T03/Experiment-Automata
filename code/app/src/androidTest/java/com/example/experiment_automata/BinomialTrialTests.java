@@ -55,7 +55,7 @@ public class BinomialTrialTests {
     private ExperimentMaker maker;
     private Experiment testExperiment;
     private UUID testUUID;
-    private DataBase dataBase;
+    private static DataBase dataBase;
 
     @Rule
     public ActivityTestRule<NavigationActivity> rule =
@@ -88,10 +88,22 @@ public class BinomialTrialTests {
     }
 
     @After
-    public void endTest() {
+    public void endTest() throws NoSuchFieldException, IllegalAccessException {
         dataBase.getFireStore().terminate();
         dataBase.getFireStore().clearPersistence();
+        solo.finishOpenedActivities();
+        Field testMode = DataBase.class.getDeclaredField("testMode");
+        Field currentInstence = DataBase.class.getDeclaredField("current");
+        Field dbInstence = DataBase.class.getDeclaredField("db");
+        testMode.setAccessible(true);
+        currentInstence.setAccessible(true);
+        dbInstence.setAccessible(true);
+        testMode.setBoolean(dataBase, true);
+        currentInstence.set(currentInstence, null);
+        dbInstence.set(dbInstence, null);
+        dataBase = DataBase.getInstanceTesting();
     }
+
 
     private void makeExperiment(String des) {
 
@@ -125,7 +137,6 @@ public class BinomialTrialTests {
         //Setting the boxes
         location = solo.getView(R.id.experiment_require_location_switch);
         acceptNewResults = solo.getView(R.id.experiment_accept_new_results_switch);
-        solo.clickOnView(location);
         if (des != "One")
             solo.clickOnView(acceptNewResults);
         solo.clickOnText("Ok");
@@ -162,7 +173,7 @@ public class BinomialTrialTests {
         makeExperiment(testDes);
         solo.clickOnText(testDes);
         // Adding 3 trial
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             addBinomialTrial(i % 2 == 0);
         }
         View qur = solo.getView(R.id.quartiles_text);

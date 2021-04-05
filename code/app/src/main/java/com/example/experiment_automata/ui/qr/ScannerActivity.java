@@ -46,7 +46,7 @@ public class ScannerActivity extends AppCompatActivity {
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("QRCONTENTRAW",result.getContents());
 
-                if(result.getFormatName() == IntentIntegrator.QR_CODE){//qrCode
+                if(result.getFormatName().equals(IntentIntegrator.QR_CODE)){//qrCode
                     resultIntent.putExtra("IS_QR",true);
                 }
                 else{//barcode

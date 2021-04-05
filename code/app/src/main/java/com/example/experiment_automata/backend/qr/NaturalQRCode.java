@@ -13,6 +13,7 @@ import java.util.UUID;
  */
 public class NaturalQRCode extends QRCode{
     private int value;
+
     public NaturalQRCode(UUID experimentID, int value) {
         super(experimentID, QRType.NaturalCountTrial);
         String packedString = "";
@@ -23,8 +24,7 @@ public class NaturalQRCode extends QRCode{
         //create QR image
         try {
             this.setQrCodeImage(encodeStringToQR(packedString));
-        }
-        catch (WriterException wException){
+        } catch (WriterException wException) {
             //return special bitmap maybe?
             wException.printStackTrace();
         }

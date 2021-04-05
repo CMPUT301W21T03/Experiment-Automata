@@ -13,6 +13,7 @@ import java.util.UUID;
  */
 public class MeasurementQRCode extends QRCode{
     private float value;
+
     public MeasurementQRCode(UUID experimentID, float value) {
         super(experimentID, QRType.MeasurementTrial);
         this.value = value;
@@ -24,8 +25,7 @@ public class MeasurementQRCode extends QRCode{
         //create QR image
         try {
             this.setQrCodeImage(encodeStringToQR(packedString));
-        }
-        catch (WriterException wException){
+        } catch (WriterException wException) {
             //return special bitmap maybe?
             wException.printStackTrace();
         }

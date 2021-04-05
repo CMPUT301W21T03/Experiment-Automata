@@ -16,7 +16,7 @@ public class BinomialQRCode extends QRCode{
     static final String BINOMIAL_FALSE = "f";
     private Boolean result;
 
-    public BinomialQRCode(UUID experimentID,Boolean result) {
+    public BinomialQRCode(UUID experimentID, Boolean result) {
         super(experimentID, QRType.BinomialTrial);
         this.result = result;
         //pack header
@@ -37,8 +37,7 @@ public class BinomialQRCode extends QRCode{
         //create QR image
         try {
             this.setQrCodeImage(encodeStringToQR(packedString));
-        }
-        catch (WriterException wException){
+        } catch (WriterException wException){
             //return special bitmap maybe?
             wException.printStackTrace();
         }
@@ -60,8 +59,7 @@ public class BinomialQRCode extends QRCode{
         }
         try {
             this.setQrCodeImage(encodeStringToQR(rawContent));
-        }
-        catch (WriterException wException){
+        } catch (WriterException wException) {
             //return special bitmap maybe?
             wException.printStackTrace();
         }
@@ -69,6 +67,5 @@ public class BinomialQRCode extends QRCode{
     public boolean getValue() {
         return result;
     }
-
 }
 

@@ -13,6 +13,8 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings;
  */
 public class FirestoreEmulatorSettings {
     static public final boolean USE_EMULATOR = true;// This value controls
+    static public final String HOST = "10.0.2.2";
+    static public final int PORT = 8080;
     /**
      * Setup firestore to use Firebase CLI firestore emulator if enabled
      * @return
@@ -23,7 +25,7 @@ public class FirestoreEmulatorSettings {
             // 10.0.2.2 is the special IP address to connect to the 'localhost' of
             // the host computer from an Android emulator.
             FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-            firestore.useEmulator("10.0.2.2", 8080);
+            firestore.useEmulator(HOST, PORT);
 
 
             FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()

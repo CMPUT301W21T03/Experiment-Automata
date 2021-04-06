@@ -1,9 +1,14 @@
 package com.example.experiment_automata.backend;
 
-import android.util.Log;
-
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+/**
+ * Role:
+ *  maintain a single instance of the firebase context
+ *
+ *  Issues:
+ *      None:
+ */
 
 public class DataBase
 {

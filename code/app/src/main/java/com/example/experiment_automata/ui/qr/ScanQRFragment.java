@@ -25,6 +25,9 @@ import com.example.experiment_automata.backend.users.User;
 import com.example.experiment_automata.ui.NavigationActivity;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.Collection;
+import java.util.UUID;
+
 /**
  * Fragment for setting up scanning QR codes and barcodes from the hamburger menu. It opens a ScannerActivity.
  *
@@ -89,11 +92,12 @@ public class ScanQRFragment extends Fragment {
             QRCode qrCode;
             QRMaker qrMaker = new QRMaker();
             try{
+                User user = parentActivity.loggedUser;
+                Collection<UUID> subscriptions = user.getSubscriptions();
                 qrCode = qrMaker.decodeQRString(rawScannedContrent);
                 //scanned valid QR
-                if (experimentManager.containsExperiment(qrCode.getExperimentID())){//change this to check subscribed experiments
+                if (subscriptions.contains(qrCode.getExperimentID())){//experimentManager.containsExperiment(qrCode.getExperimentID())
                     //add location ability later
-                    User user = parentActivity.loggedUser;
                     Trial trial;
                     switch (qrCode.getType()){
                         case BinomialTrial: //temp test implementation ONLY FOR BINOMIAL TRIALS

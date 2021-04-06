@@ -42,7 +42,19 @@ public abstract class BarcodeReference<T> {
         db.collection("barcodes").document(barcodeVal).set(barcodeRefData);
     }
 
+    public ExperimentType getType() {
+        return type;
+    }
+
+    public UUID getExperimentId() {
+        return experimentId;
+    }
+
     public String getBarcodeVal() {
         return barcodeVal;
+    }
+
+    public T getResult() {
+        return result;
     }
 }

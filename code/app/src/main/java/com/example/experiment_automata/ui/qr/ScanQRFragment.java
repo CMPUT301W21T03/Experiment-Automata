@@ -90,18 +90,18 @@ public class ScanQRFragment extends Fragment {
         if (data == null) {
             return;
         }
+        Trial trial;
+        User user = parentActivity.loggedUser;
         String rawScannedContrent = data.getStringExtra("QRCONTENTRAW");
         if (data.getBooleanExtra("IS_QR",true)){//Scanned obj was QR
             QRCode qrCode;
             QRMaker qrMaker = new QRMaker();
             try{
-                User user = parentActivity.loggedUser;
                 Collection<UUID> subscriptions = user.getSubscriptions();
                 qrCode = qrMaker.decodeQRString(rawScannedContrent);
                 //scanned valid QR
                 if (subscriptions.contains(qrCode.getExperimentID())){//experimentManager.containsExperiment(qrCode.getExperimentID())
                     //add location ability later
-                    Trial trial;
                     switch (qrCode.getType()){
                         case BinomialTrial:
                             trial = new BinomialTrial(user.getUserId(),(Boolean) qrCode.getValue());
@@ -135,7 +135,7 @@ public class ScanQRFragment extends Fragment {
 
                 }
                 else{
-                    Snackbar.make(getView(),"Experiment in QR not found",Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(getView(),"You are not subscribed to the Experiment contained in the scanned QR code",Snackbar.LENGTH_LONG).show();
                 }
             }
             catch (QRMalformattedException qrMalE){
@@ -156,17 +156,44 @@ public class ScanQRFragment extends Fragment {
             else{
                 //add given Trial to experiment
                 Snackbar.make(getView(),"Scanned barcode was found!",Snackbar.LENGTH_LONG).show();
-                if(parentActivity.experimentManager.containsExperiment(barcodeReference.)){
-
+                UUID barcodeExperimentID = barcodeReference.getExperimentId();
+                if(parentActivity.experimentManager.isExperimentPublished(barcodeExperimentID)){
+                    switch (barcodeReference.getType()){
+                        case Binomial:
+                            trial = new BinomialTrial(user.getUserId(),(Boolean) barcodeReference.getResult());
+                            Experiment binExperiment =  experimentManager.getExperiment(barcodeExperimentID);//don't think this will work
+                            parentActivity.addTrial(binExperiment,trial);
+                            Snackbar.make(getView(),"Binomial Trial with value " + barcodeReference.getResult() + " scanned successfully in "+ binExperiment.getDescription(),Snackbar.LENGTH_LONG).show();
+                            break;
+                        case Count:
+                            trial = new CountTrial(user.getUserId());
+                            Experiment countExperiment =  experimentManager.getExperiment(barcodeExperimentID);//don't think this will work
+                            parentActivity.addTrial(countExperiment,trial);
+                            Snackbar.make(getView(),"Count Trial with value " + barcodeReference.getResult() + " scanned successfully in "+ countExperiment.getDescription(),Snackbar.LENGTH_LONG).show();
+                            break;
+                        case NaturalCount:
+                            trial = new NaturalCountTrial(user.getUserId(),(int) barcodeReference.getResult());
+                            Experiment natExperiment =  experimentManager.getExperiment(barcodeExperimentID);//don't think this will work
+                            parentActivity.addTrial(natExperiment,trial);
+                            Snackbar.make(getView(),"NaturalCount Trial with value " + barcodeReference.getResult() + " scanned successfully in "+ natExperiment.getDescription(),Snackbar.LENGTH_LONG).show();
+                            break;
+                        case Measurement:
+                        trial = new MeasurementTrial(user.getUserId(),(float) barcodeReference.getResult());
+                            Experiment mesExperiment =  experimentManager.getExperiment(barcodeExperimentID);//don't think this will work
+                            parentActivity.addTrial(mesExperiment,trial);
+                            Snackbar.make(getView(),"Measurement Trial with value " + barcodeReference.getResult() + " scanned successfully in "+ mesExperiment.getDescription(),Snackbar.LENGTH_LONG).show();
+                            break;
+                    }
                 }
                 else{
-
+                    Snackbar.make(getView(),"The scanned barcode is not published",Snackbar.LENGTH_LONG).show();
                 }
             }
         }
         NavController navController = Navigation.findNavController(getView());
         navController.navigateUp();//return to parent
     }
+
 
 
 }

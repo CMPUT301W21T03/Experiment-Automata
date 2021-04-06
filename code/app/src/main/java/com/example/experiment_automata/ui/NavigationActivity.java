@@ -12,47 +12,47 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.example.experiment_automata.R;
-import com.example.experiment_automata.backend.location.LocationServices;
-import com.example.experiment_automata.backend.trials.Trial;
-import com.example.experiment_automata.backend.users.ContactInformation;
-
-import com.example.experiment_automata.backend.users.UserManager;
-import com.example.experiment_automata.ui.experiments.AddExperimentFragment;
-import com.example.experiment_automata.backend.experiments.ExperimentManager;
-import com.example.experiment_automata.ui.experiments.NavExperimentDetailsFragment;
-import com.example.experiment_automata.backend.experiments.Experiment;
-
-import com.example.experiment_automata.ui.profile.EditUserFragment;
-import com.example.experiment_automata.ui.profile.ProfileFragment;
-import com.example.experiment_automata.ui.question.AddQuestionFragment;
-import com.example.experiment_automata.ui.question.QuestionDisplay;
-import com.example.experiment_automata.backend.questions.Question;
-import com.example.experiment_automata.backend.questions.QuestionManager;
-import com.example.experiment_automata.backend.questions.Reply;
-
-import com.example.experiment_automata.backend.users.User;
-import com.example.experiment_automata.ui.home.HomeFragment;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
-
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+
+import com.example.experiment_automata.R;
+import com.example.experiment_automata.backend.DataBase;
+import com.example.experiment_automata.backend.barcode.BarcodeManager;
+import com.example.experiment_automata.backend.experiments.Experiment;
+import com.example.experiment_automata.backend.experiments.ExperimentManager;
+import com.example.experiment_automata.backend.questions.Question;
+import com.example.experiment_automata.backend.questions.QuestionManager;
+import com.example.experiment_automata.backend.questions.Reply;
+import com.example.experiment_automata.backend.location.LocationServices;
+
+import com.example.experiment_automata.backend.trials.Trial;
+import com.example.experiment_automata.backend.users.ContactInformation;
+import com.example.experiment_automata.backend.users.User;
+import com.example.experiment_automata.backend.users.UserManager;
+import com.example.experiment_automata.ui.experiments.AddExperimentFragment;
+import com.example.experiment_automata.ui.experiments.NavExperimentDetailsFragment;
+import com.example.experiment_automata.ui.home.HomeFragment;
+import com.example.experiment_automata.ui.profile.EditUserFragment;
+import com.example.experiment_automata.ui.profile.ProfileFragment;
+import com.example.experiment_automata.ui.question.AddQuestionFragment;
+import com.example.experiment_automata.ui.question.QuestionDisplay;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.UUID;
 
@@ -72,8 +72,10 @@ public class NavigationActivity extends AppCompatActivity implements
         AddQuestionFragment.OnFragmentInteractionListener,
         EditUserFragment.OnFragmentInteractionListener {
 
+    private DataBase dataBase = DataBase.getInstance();
     private AppBarConfiguration mAppBarConfiguration;
     public final ExperimentManager experimentManager = ExperimentManager.getInstance();
+    public final BarcodeManager barcodeManager = BarcodeManager.getInstance();
     public QuestionManager questionManager = QuestionManager.getInstance();
     public UserManager userManager = UserManager.getInstance();
 
@@ -103,7 +105,6 @@ public class NavigationActivity extends AppCompatActivity implements
         currentActivity = this;
         SharedPreferences preferences = getSharedPreferences("experiment_automata", MODE_PRIVATE);
         loggedUser = new User(preferences);
-        //userManager.setCurrentUser(loggedUser);
         setContentView(R.layout.activity_navigation);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -190,7 +191,10 @@ public class NavigationActivity extends AppCompatActivity implements
                 }
             }
         });
+
+
     }
+
 
     /**
      * Prepare search bar functionality
@@ -241,6 +245,7 @@ public class NavigationActivity extends AppCompatActivity implements
             }
         });
         return true;
+
     }
 
     /**
@@ -493,4 +498,5 @@ public class NavigationActivity extends AppCompatActivity implements
         }
         user.updateFirestore();
     }
+
 }

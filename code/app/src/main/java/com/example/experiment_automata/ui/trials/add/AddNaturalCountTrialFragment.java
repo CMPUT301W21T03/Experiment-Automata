@@ -1,6 +1,7 @@
 package com.example.experiment_automata.ui.trials.add;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.experiment_automata.R;
+import com.example.experiment_automata.backend.barcode.BarcodeManager;
 import com.example.experiment_automata.backend.experiments.NaturalCountExperiment;
 import com.example.experiment_automata.backend.qr.NaturalQRCode;
 import com.example.experiment_automata.backend.qr.QRCode;
@@ -105,27 +107,38 @@ public class AddNaturalCountTrialFragment extends Fragment {
         }
         String rawQRContent =  data.getStringExtra("QRCONTENTRAW");
         Log.d("ACTIVITYRESULT","val " + data.getStringExtra("QRCONTENTRAW"));
-        QRMaker qrMaker = new QRMaker();
-        QRCode qrCode;
-        try{
-            qrCode =qrMaker.decodeQRString(rawQRContent);
-            if (qrCode.getType() == QRType.NaturalCountTrial){
-                countValue.setText(String.valueOf(((NaturalQRCode)qrCode).getValue()));
-                Log.d("SCANNER","Scanned QR Successfully!");
-                Snackbar.make(root,"Scanned QR Successfully!",Snackbar.LENGTH_LONG).show();
+        if(data.getBooleanExtra("IS_QR",true)) {//if is QR
+            QRMaker qrMaker = new QRMaker();
+            QRCode qrCode;
+            try{
+                qrCode =qrMaker.decodeQRString(rawQRContent);
+                if (qrCode.getType() == QRType.NaturalCountTrial){
+                    countValue.setText(String.valueOf(((NaturalQRCode)qrCode).getValue()));
+                    Log.d("SCANNER","Scanned QR Successfully!");
+                    Snackbar.make(root,"Scanned QR Successfully!",Snackbar.LENGTH_LONG).show();
 
+                }
+                else{
+                    //send error tray message
+                    Log.d("SCANNER","Scanned QR was of incorrect type " + qrCode.getType().toString());
+                    Snackbar.make(root,"Scanned QR was of incorrect type",Snackbar.LENGTH_LONG).show();
+                }
             }
-            else{
-                //send error tray message
-                Log.d("SCANNER","Scanned QR was of incorrect type " + qrCode.getType().toString());
-                Snackbar.make(root,"Scanned QR was of incorrect type",Snackbar.LENGTH_LONG).show();
+            catch (QRMalformattedException qrMalE){
+                //malformatted QR
+                qrCode = null;
+                Log.d("SCANNER","Scanned Malformatted QR");
+                Snackbar.make(root,"Scanned QR was not an Experiment-Automata QR Code",Snackbar.LENGTH_LONG).show();
             }
         }
-        catch (QRMalformattedException qrMalE){
-            //malformatted QR
-            qrCode = null;
-            Log.d("SCANNER","Scanned Malformatted QR");
-            Snackbar.make(root,"Scanned QR was not an Experiment-Automata QR Code",Snackbar.LENGTH_LONG).show();
+        else {//if scanned was barcode
+            NavigationActivity parentActivity = ((NavigationActivity) getActivity());
+            Location location = parentActivity.currentTrial.getLocation();
+            BarcodeManager testBC = parentActivity.barcodeManager;
+            NaturalCountExperiment experiment = (NaturalCountExperiment) parentActivity.experimentManager.getCurrentExperiment();
+            int trialValue = Integer.valueOf(countValue.getText().toString());
+            parentActivity.barcodeManager.addBarcode(rawQRContent,experiment.getExperimentId(),trialValue,location);
+            Snackbar.make(root, "Scanned Barcode " + rawQRContent + " was associated with this Trials Value", Snackbar.LENGTH_LONG).show();
         }
     }
 

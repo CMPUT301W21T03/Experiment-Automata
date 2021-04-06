@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.experiment_automata.backend.DataBase;
 import com.example.experiment_automata.backend.trials.BinomialTrial;
 import com.example.experiment_automata.backend.trials.CountTrial;
 import com.example.experiment_automata.backend.trials.MeasurementTrial;
@@ -25,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Role/Pattern:
@@ -41,7 +43,6 @@ public class ExperimentManager {
     private static HashMap<UUID, Experiment<?>> experiments;
     private static boolean TEST_MODE = false;
     private Experiment<?> currentExperiment;
-
 
     /**
      * Initializes the experiment manager.
@@ -117,12 +118,14 @@ public class ExperimentManager {
      */
     public ArrayList<Experiment<?>> queryExperiments(Collection<UUID> experimentIds) {
         ArrayList<Experiment<?>> experimentsList = new ArrayList<>();
-        for (UUID id : experimentIds) {
-            if (experiments.containsKey(id)) {
-                experimentsList.add(experiments.get(id));
+            if (experimentIds != null) {
+                for (UUID id : experimentIds) {
+                    if (experiments.containsKey(id)) {
+                        experimentsList.add(experiments.get(id));
+                    }
             }
+            Collections.sort(experimentsList);
         }
-        Collections.sort(experimentsList);
         return experimentsList;
     }
 
@@ -141,6 +144,23 @@ public class ExperimentManager {
         }
         Collections.sort(experimentsList);
         return experimentsList;
+    }
+    /**
+     * Check if a given experiment ID is published
+     * @param experimentID
+     * experiment ID to check
+     * @return
+     * if the experiment is published
+     */
+    public boolean isExperimentPublished(UUID experimentID){
+        ArrayList<Experiment<?>> experiments = getPublishedExperiments();
+        for(Experiment experiment : experiments){
+            //if(experiment.getExperimentId() == experimentID){
+            if(experimentID.compareTo(experiment.getExperimentId()) == 0){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -243,8 +263,8 @@ public class ExperimentManager {
      * Populate experiments in Experiment manager with all experiments from Firestore
      */
     public void getAllFromFirestore() {
-        if(TEST_MODE) return;
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DataBase data = DataBase.getInstanceTesting();
+        FirebaseFirestore db = data.getFireStore();
         CollectionReference experimentCollection = db.collection("experiments");
         getFromFirestoreFromQuery(experimentCollection.get());
     }
@@ -405,7 +425,7 @@ public class ExperimentManager {
      * @return
      *  The location in the given Trial
      */
-    public Location locationFromTrialHash(HashMap<String,Object> trialHash){
+        public Location locationFromTrialHash(HashMap<String,Object> trialHash){
         //ENSURE THAT THE GIVEN TRIAL HAS LAT/LON
         double latitude = (double) trialHash.get("latitude");
         double longitude = (double) trialHash.get("longitude");
@@ -413,6 +433,26 @@ public class ExperimentManager {
         location.setLatitude(latitude);
         location.setLongitude(longitude);
         return  location;
+    }
+    /**
+     * Checks if experimentManager contains a particular Experiment
+     * @param experimentID
+     *  experiment ID repersenting the experiment
+     * @return
+     *  if the experiment is in the app
+     */
+    public boolean containsExperiment(UUID experimentID){
+        return experiments.containsKey(experimentID);
+    }
+    /**
+     * Gets a specific Experiment
+     * @param experimentID
+     *  experiment ID repersenting the experiment
+     * @return
+     *  the requested experiment
+     */
+    public Experiment getExperiment(UUID experimentID){
+        return experiments.get(experimentID);
     }
 
     /**
@@ -465,14 +505,4 @@ public class ExperimentManager {
     public ArrayList<Experiment<?>> getAllExperiments() {
         return new ArrayList<>(experiments.values());
     }
-
-    /**
-     * enables test mode (Does not talk to firebase)
-     */
-    public void enableTestMode() { TEST_MODE = true; }
-
-    /**
-     * disables test mode (Talks to firebase)
-     */
-    public void disableTestMode() { TEST_MODE = false; }
 }

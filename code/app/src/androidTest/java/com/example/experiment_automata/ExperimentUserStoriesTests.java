@@ -20,14 +20,17 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.experiment_automata.backend.DataBase;
 import com.example.experiment_automata.backend.experiments.Experiment;
 import com.example.experiment_automata.backend.experiments.ExperimentMaker;
 import com.example.experiment_automata.backend.experiments.ExperimentType;
 import com.example.experiment_automata.backend.users.User;
 import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.ui.Screen;
+import com.google.firebase.FirebaseApp;
 import com.robotium.solo.Solo;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -35,6 +38,7 @@ import org.junit.Test;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
+import java.lang.reflect.Field;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -42,7 +46,9 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-public class ExperimentUserStoriesTests {
+public class ExperimentUserStoriesTests
+{
+    DataBase dataBase = DataBase.getInstanceTesting();;
     private Solo solo;
     private NavigationActivity currentTestingActivity;
 
@@ -68,8 +74,7 @@ public class ExperimentUserStoriesTests {
     public void setup() {
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
         currentTestingActivity = (NavigationActivity) solo.getCurrentActivity();
-        //Finding the buttons we need to press
-        addExperimentButton = currentTestingActivity.findViewById(R.id.fab_button);
+
         maker = new ExperimentMaker();
         testUUID = UUID.randomUUID();
         testExperiment = maker.makeExperiment(ExperimentType.Count,
@@ -79,9 +84,39 @@ public class ExperimentUserStoriesTests {
                 true,
                 testUUID);
 
+        /**
+         * Sources
+         * Author:https://stackoverflow.com/users/7699270/nur-el-din
+         * Editor:https://stackoverflow.com/users/6463791/satan-pandeya
+         * Full:https://stackoverflow.com/questions/15993314/clicking-on-action-bar-menu-items-in-robotium
+         */
+        FirebaseApp.initializeApp(InstrumentationRegistry.getInstrumentation().getTargetContext());
     }
 
-    private void makeExperiment(String des) {
+    @After
+    public void endTest() throws NoSuchFieldException, IllegalAccessException {
+        dataBase.getFireStore().disableNetwork();
+        dataBase.getFireStore().terminate();
+        dataBase.getFireStore().clearPersistence();
+        solo.finishOpenedActivities();
+        Field testMode = DataBase.class.getDeclaredField("testMode");
+        Field currentInstence = DataBase.class.getDeclaredField("current");
+        Field dbInstence = DataBase.class.getDeclaredField("db");
+        testMode.setAccessible(true);
+        currentInstence.setAccessible(true);
+        dbInstence.setAccessible(true);
+        testMode.setBoolean(dataBase, true);
+        currentInstence.set(currentInstence, null);
+        dbInstence.set(dbInstence, null);
+        dataBase = DataBase.getInstanceTesting();
+    }
+
+    private void makeExperiment(String des)
+    {
+        solo.clickOnActionBarHomeButton();
+        solo.clickOnText("My Experiments");
+        solo.sleep(2000);
+        addExperimentButton = solo.getView(R.id.fab_button);
         //Click from the home screen the + button to make an experiment
         solo.clickOnView(addExperimentButton);
         solo.waitForDialogToOpen();
@@ -102,7 +137,7 @@ public class ExperimentUserStoriesTests {
         //Setting the boxes
         location = solo.getView(R.id.experiment_require_location_switch);
         acceptNewResults = solo.getView(R.id.experiment_accept_new_results_switch);
-        solo.clickOnView(location);
+        //solo.clickOnView(location);
         if(des != "One")
             solo.clickOnView(acceptNewResults);
         solo.clickOnText("Ok");
@@ -121,12 +156,22 @@ public class ExperimentUserStoriesTests {
      * (This test is following the golden path)
      */
     @Test
-    public void testMakeAnExperimentCount() {
+    public void testMakeAnExperimentCount()
+    {
+
+        solo.clickOnActionBarHomeButton();
+        solo.clickOnText("My Experiments");
+        solo.sleep(2000);
+        addExperimentButton = solo.getView(R.id.fab_button);
+        solo.sleep(1000);
+
         makeExperiment("GUI Test Experiment");
         //Clicking on publish button
+        solo.sleep(1000);
         publishButton = solo.getView(R.id.publishedCheckbox);
-        solo.clickOnView(publishButton);
 
+        solo.clickOnView(publishButton);
+        solo.sleep(1000);
         solo.clickOnActionBarHomeButton();
         solo.clickOnText("Published Experiments");
 
@@ -143,7 +188,13 @@ public class ExperimentUserStoriesTests {
      * per(us.01.01.01)
      */
     @Test
-    public void testMakeExperimentCancel() {
+    public void testMakeExperimentCancel()
+    {
+        solo.clickOnActionBarHomeButton();
+        solo.clickOnText("My Experiments");
+        solo.sleep(2000);
+        addExperimentButton = solo.getView(R.id.fab_button);
+
         assertNotEquals("Can't find + button", null, addExperimentButton);
 
         //Click from the home screen the + button to make an experiment
@@ -181,7 +232,12 @@ public class ExperimentUserStoriesTests {
      * per(us.01.01.01)
      */
     @Test
-    public void makeEmptyExperiment() {
+    public void makeEmptyExperiment()
+    {
+        solo.clickOnActionBarHomeButton();
+        solo.clickOnText("My Experiments");
+        solo.sleep(2000);
+        addExperimentButton = solo.getView(R.id.fab_button);
         assertNotEquals("Can't find + button", null, addExperimentButton);
 
         //Click from the home screen the + button to make an experiment
@@ -218,7 +274,7 @@ public class ExperimentUserStoriesTests {
 
         assertEquals("Empty experiment not displayed",
                 true,
-                solo.searchText("Experiment Owner"));
+                solo.searchText("BAD"));
     }
 
     /**
@@ -230,21 +286,26 @@ public class ExperimentUserStoriesTests {
     public void testingUnpublishedExperiment() {
         makeExperiment("GUI Test Experiment");
 
+
         //Clicking on publish button
         publishButton = solo.getView(R.id.publishedCheckbox);
         solo.clickOnView(publishButton);
+        solo.sleep(2000);
 
         solo.clickOnActionBarHomeButton();
         solo.clickOnText("Published Experiments");
-
+        solo.sleep(2000);
 
         solo.clickOnActionBarHomeButton();
         solo.clickOnText("My Experiments");
+        solo.sleep(2000);
         solo.clickOnView(publishButton);
 
 
+        solo.sleep(2000);
         solo.clickOnActionBarHomeButton();
         solo.clickOnText("Published Experiments");
+        solo.sleep(2000);
 
         assertEquals("Failed un-publish functionality still displays unpublished experiment",
                 false,
@@ -290,11 +351,17 @@ public class ExperimentUserStoriesTests {
 
             int trialSizeBefore = current.getSize();
             solo.clickOnText(current.getDescription());
+            solo.sleep(2000);
             solo.clickOnView(addExperimentButton);
+            solo.sleep(2000);
+
             solo.clickOnView(addExperimentButton);
+            solo.sleep(2000);
+
             solo.clickOnActionBarHomeButton();
             solo.sleep(2000);
             int trialSizeAfter = current.getSize();
+            solo.sendKey(2000);
 
             assertEquals("Trials not added", true, trialSizeAfter > trialSizeBefore);
         }

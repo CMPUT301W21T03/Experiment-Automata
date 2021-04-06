@@ -11,14 +11,13 @@ import java.util.UUID;
  *
  *      1. None
  */
-public class BinomialQRCode extends QRCode{
+public class BinomialQRCode extends QRCode<Boolean>{
     static final String BINOMIAL_TRUE = "t";
     static final String BINOMIAL_FALSE = "f";
-    private Boolean result;
 
     public BinomialQRCode(UUID experimentID,Boolean result) {
         super(experimentID, QRType.BinomialTrial);
-        this.result = result;
+        setValue(result);
         //pack header
         String packedString = "";
         packedString += AUTOMATA_QR_HEADER;
@@ -26,7 +25,7 @@ public class BinomialQRCode extends QRCode{
         packedString += BINOMIAL_ID;
         this.setRawContentString(packedString);
         //pack content
-        this.result = result;
+        setValue(result);
         if(result){
             packedString += BINOMIAL_TRUE;
         }
@@ -52,10 +51,10 @@ public class BinomialQRCode extends QRCode{
         String content = rawContent.substring(42);
         switch (content) {
             case BinomialQRCode.BINOMIAL_TRUE:
-                result = true;
+                setValue(true);
                 break;
             case BinomialQRCode.BINOMIAL_FALSE:
-                result = false;
+                setValue(false);
                 break;
         }
         try {
@@ -66,9 +65,7 @@ public class BinomialQRCode extends QRCode{
             wException.printStackTrace();
         }
     }
-    public boolean getValue() {
-        return result;
-    }
+
 
 }
 

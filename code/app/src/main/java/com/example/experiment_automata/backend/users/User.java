@@ -4,6 +4,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.experiment_automata.backend.DataBase;
+import com.example.experiment_automata.backend.experiments.Experiment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -85,12 +87,16 @@ public class User implements Serializable {
     public void updateFirestore() {
         // convert collection of UUIDs to collection of Strings
         Collection<String> owned = new ArrayList<>();
-        for (UUID experimentId : this.ownedExperiments) {
-            owned.add(experimentId.toString());
+        if (this.ownedExperiments != null) {
+            for (UUID experimentId : this.ownedExperiments) {
+                owned.add(experimentId.toString());
+            }
         }
         Collection<String> subscriptions = new ArrayList<>();
-        for (UUID experimentId : this.subscribedExperiments) {
-            subscriptions.add(experimentId.toString());
+        if (this.subscribedExperiments != null) {
+            for (UUID experimentId : this.subscribedExperiments) {
+                subscriptions.add(experimentId.toString());
+            }
         }
         Map<String, Object> userInfo = new HashMap<>();
         userInfo.put("name", this.info.getName());
@@ -99,92 +105,109 @@ public class User implements Serializable {
         userInfo.put("owned", owned);
         userInfo.put("subscriptions", subscriptions);
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("users").document(this.userId.toString())
-                .set(userInfo)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "User info successfully updated!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error writing document", e);
-                    }
-                });
+        DataBase dataBase = DataBase.getInstance();
+        FirebaseFirestore db = dataBase.getFireStore();
+        if(!dataBase.isTestMode()) {
+            db.collection("users").document(this.userId.toString())
+                    .set(userInfo)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d(TAG, "User info successfully updated!");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(TAG, "Error writing document", e);
+                        }
+                    });
+        }
     }
 
     /**
      * Update the user information from the Firestore.
      */
     protected void updateFromFirestore() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference documentReference = db.collection("users").document(this.userId.toString());
-        Task<DocumentSnapshot> task = documentReference.get();
-        // wait until the task is complete
-        while (!task.isComplete());
-        DocumentSnapshot document = task.getResult();
-        String name = (String) document.get("name");
-        String email = (String) document.get("email");
-        String phone = (String) document.get("phone");
-        Collection<String> ownedExperiments = (List<String>) document.get("owned");
-        if (ownedExperiments == null) ownedExperiments = new ArrayList<>();
-        Collection<String> subscribedExperiments = (List<String>) document.get("subscriptions");
-        if (subscribedExperiments == null) subscribedExperiments = new ArrayList<>();
-        // Convert Collection of String to Collection of UUIDs
+        DataBase dataBase = DataBase.getInstance();
+        FirebaseFirestore db = dataBase.getFireStore();
         this.ownedExperiments = new ArrayList<>();
-        for (String experimentId : ownedExperiments) {
-            this.ownedExperiments.add(UUID.fromString(experimentId));
-        }
         this.subscribedExperiments = new ArrayList<>();
-        for (String experimentId : subscribedExperiments) {
-            this.subscribedExperiments.add(UUID.fromString(experimentId));
-        }
+        try {
+            DocumentReference documentReference = db.collection("users").document(this.userId.toString());
+            if (documentReference != null) {
+                Task<DocumentSnapshot> task = documentReference.get();
+                // wait until the task is complete
+                while (!task.isComplete()) ;
+                DocumentSnapshot document = task.getResult();
+                String name = (String) document.get("name");
+                String email = (String) document.get("email");
+                String phone = (String) document.get("phone");
+                Collection<String> owned = (List<String>) document.get("owned");
+                if (owned == null) owned = new ArrayList<>();
+                Collection<String> subscribed = (List<String>) document.get("subscriptions");
+                if (subscribed == null) subscribed = new ArrayList<>();
+                // Convert Collection of String to Collection of UUIDs
+                for (String experimentId : owned) {
+                    this.ownedExperiments.add(UUID.fromString(experimentId));
+                }
+                for (String experimentId : subscribed) {
+                    this.subscribedExperiments.add(UUID.fromString(experimentId));
+                }
 
-        this.info = new ContactInformation(name, email, phone);
+                this.info = new ContactInformation(name, email, phone);
+            }
+        }
+        catch (Exception e) {}
     }
 
     /**
      * Update the user experiments from the Firestore.
      */
     protected void updateExperimentFromFirestore() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference documentReference = db.collection("users").document(this.userId.toString());
-        Task<DocumentSnapshot> task = documentReference.get();
-        // wait until the task is complete
-        while (!task.isComplete());
-        DocumentSnapshot document = task.getResult();
-        Collection<String> ownedExperiments = (List<String>) document.get("owned");
-        if (ownedExperiments == null) ownedExperiments = new ArrayList<>();
-        Collection<String> subscribedExperiments = (List<String>) document.get("subscriptions");
-        if (subscribedExperiments == null) subscribedExperiments = new ArrayList<>();
-        // Convert Collection of String to Collection of UUIDs
+        DataBase dataBase = DataBase.getInstance();
+        FirebaseFirestore db = dataBase.getFireStore();
         this.ownedExperiments = new ArrayList<>();
-        for (String experimentId : ownedExperiments) {
-            this.ownedExperiments.add(UUID.fromString(experimentId));
-        }
         this.subscribedExperiments = new ArrayList<>();
-        for (String experimentId : subscribedExperiments) {
-            this.subscribedExperiments.add(UUID.fromString(experimentId));
+        try {
+            DocumentReference documentReference = db.collection("users").document(this.userId.toString());
+            Task<DocumentSnapshot> task = documentReference.get();
+            // wait until the task is complete
+            while (!task.isComplete()) ;
+            DocumentSnapshot document = task.getResult();
+            Collection<String> ownedExperiments = (List<String>) document.get("owned");
+            if (ownedExperiments == null) ownedExperiments = new ArrayList<>();
+            Collection<String> subscribedExperiments = (List<String>) document.get("subscriptions");
+            if (subscribedExperiments == null) subscribedExperiments = new ArrayList<>();
+            // Convert Collection of String to Collection of UUIDs
+            for (String experimentId : ownedExperiments) {
+                this.ownedExperiments.add(UUID.fromString(experimentId));
+            }
+            for (String experimentId : subscribedExperiments) {
+                this.subscribedExperiments.add(UUID.fromString(experimentId));
+            }
         }
+        catch (Exception e) {}
     }
 
     /**
      * Update the user contact information from the Firestore.
      */
     protected void updateContactFromFirestore() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference documentReference = db.collection("users").document(this.userId.toString());
-        Task<DocumentSnapshot> task = documentReference.get();
-        // wait until the task is complete
-        while (!task.isComplete());
-        DocumentSnapshot document = task.getResult();
-        String name = (String) document.get("name");
-        String email = (String) document.get("email");
-        String phone = (String) document.get("phone");
-        this.info = new ContactInformation(name, email, phone);
+        DataBase dataBase = DataBase.getInstance();
+        FirebaseFirestore db = dataBase.getFireStore();
+        try {
+            DocumentReference documentReference = db.collection("users").document(this.userId.toString());
+            Task<DocumentSnapshot> task = documentReference.get();
+            // wait until the task is complete
+            while (!task.isComplete()) ;
+            DocumentSnapshot document = task.getResult();
+            String name = (String) document.get("name");
+            String email = (String) document.get("email");
+            String phone = (String) document.get("phone");
+            this.info = new ContactInformation(name, email, phone);
+        }catch (Exception e)
+        {}
     }
 
     /**
@@ -226,7 +249,7 @@ public class User implements Serializable {
      *  the UUID of the experiment
      */
     public void addExperiment(UUID experimentId) {
-        ownedExperiments.add(experimentId);
+        this.ownedExperiments.add(experimentId);
         updateFirestore();
     }
 

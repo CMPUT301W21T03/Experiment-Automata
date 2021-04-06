@@ -18,7 +18,7 @@ import java.util.UUID;
  *
  *      1. None
  */
-public abstract class QRCode {
+public abstract class QRCode<T> {
     //Header for custom QR codes
     static final String AUTOMATA_QR_HEADER = "ATMA";
     static final int DEAFULT_QR_HEIGHT = 600;
@@ -32,6 +32,7 @@ public abstract class QRCode {
     private UUID experimentID;
     private QRType type;
     private Bitmap qrCodeImage;
+    private T value;
 
     public QRCode(UUID experimentID, QRType type){//For creating QRCode image from data
         this.experimentID = experimentID;
@@ -66,6 +67,7 @@ public abstract class QRCode {
             return null;
         }
         //convert BitMatrix to Bitmap
+        //Bitmap conversion from ρяσѕρєя K,https://stackoverflow.com/questions/19337448/generate-qr-code-directly-into-imageview
         int width = qrCodeBitMatrix.getWidth();
         int height = qrCodeBitMatrix.getHeight();
         qrCodeBitmap = Bitmap.createBitmap(width,height, Bitmap.Config.RGB_565);
@@ -117,5 +119,13 @@ public abstract class QRCode {
 
     public Bitmap getQrCodeImage() {
         return qrCodeImage;
+    }
+
+    public void setValue(T value) {
+        this.value = value;
+    }
+
+    public T getValue() {
+        return value;
     }
 }

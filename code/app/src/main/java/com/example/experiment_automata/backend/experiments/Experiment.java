@@ -2,7 +2,7 @@ package com.example.experiment_automata.backend.experiments;
 
 import androidx.annotation.NonNull;
 
-import com.example.experiment_automata.backend.trials.NaturalCountTrial;
+import com.example.experiment_automata.backend.DataBase;
 import com.example.experiment_automata.backend.trials.Trial;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -100,8 +101,9 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
      */
     public void postExperimentToFirestore(){
         //add key field?
+        DataBase dataBase = DataBase.getInstance();
         Experiment<T> experiment = this;
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = dataBase.getFireStore();
         Map<String, Object> experimentData = new HashMap<>();
         String experimentUUIDString = experiment.getExperimentId().toString();
         HashMap<String, Object> resultsData = buildResultsmap();
@@ -115,8 +117,22 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
         experimentData.put("published", experiment.isPublished());
         experimentData.put("results", resultsData);
 
-        db.collection("experiments").document(experimentUUIDString)
-                .set(experimentData);
+        if(!dataBase.isTestMode()) {
+            db.collection("experiments").document(experimentUUIDString)
+                    .set(experimentData)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                        }
+                    });
+        }
     }
 
     /**

@@ -1,12 +1,22 @@
 package com.example.experiment_automata;
 
+import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.rule.ActivityTestRule;
+
+import com.example.experiment_automata.backend.DataBase;
 import com.example.experiment_automata.backend.experiments.NaturalCountExperiment;
 import com.example.experiment_automata.backend.trials.NaturalCountTrial;
+import com.example.experiment_automata.ui.NavigationActivity;
+import com.google.firebase.FirebaseApp;
+import com.robotium.solo.Solo;
 
 
+import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
+import java.lang.reflect.Field;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -15,6 +25,9 @@ import static org.junit.Assert.assertTrue;
 
 public class NaturalCountStatTest {
 
+    private Solo solo;
+
+    DataBase dataBase = DataBase.getInstanceTesting();;
     UUID ownerId = UUID.randomUUID();
     NaturalCountExperiment natExperiment=new NaturalCountExperiment("This is a test", 5, false, true, ownerId);
     UUID id = UUID.randomUUID();
@@ -25,10 +38,41 @@ public class NaturalCountStatTest {
     NaturalCountTrial ignoreNatural = new NaturalCountTrial(id3, 3);
     NaturalCountTrial ignoreNatural2 = new NaturalCountTrial(id4, 5);
 
+    @Rule
+    public ActivityTestRule<NavigationActivity> rule =
+            new ActivityTestRule<>(NavigationActivity.class, true, true);
+
     @Before
     public void setup() {
+        solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
         // Reset the binomial experiment
         natExperiment = new NaturalCountExperiment("This is a test", 5, false, true, ownerId);
+        /**
+         * Sources
+         * Author:https://stackoverflow.com/users/7699270/nur-el-din
+         * Editor:https://stackoverflow.com/users/6463791/satan-pandeya
+         * Full:https://stackoverflow.com/questions/15993314/clicking-on-action-bar-menu-items-in-robotium
+         */
+        FirebaseApp.initializeApp(InstrumentationRegistry.getInstrumentation().getTargetContext());
+    }
+
+
+    @After
+    public void endTest() throws NoSuchFieldException, IllegalAccessException {
+        dataBase.getFireStore().disableNetwork();
+        dataBase.getFireStore().terminate();
+        dataBase.getFireStore().clearPersistence();
+        solo.finishOpenedActivities();
+        Field testMode = DataBase.class.getDeclaredField("testMode");
+        Field currentInstence = DataBase.class.getDeclaredField("current");
+        Field dbInstence = DataBase.class.getDeclaredField("db");
+        testMode.setAccessible(true);
+        currentInstence.setAccessible(true);
+        dbInstence.setAccessible(true);
+        testMode.setBoolean(dataBase, true);
+        currentInstence.set(currentInstence, null);
+        dbInstence.set(dbInstence, null);
+        dataBase = DataBase.getInstanceTesting();
     }
 
     /**

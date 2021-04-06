@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.experiment_automata.backend.DataBase;
 import com.example.experiment_automata.backend.trials.BinomialTrial;
 import com.example.experiment_automata.backend.trials.CountTrial;
 import com.example.experiment_automata.backend.trials.MeasurementTrial;
@@ -23,6 +24,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Role/Pattern:
@@ -39,7 +41,6 @@ public class ExperimentManager {
     private static HashMap<UUID, Experiment<?>> experiments;
     private static boolean TEST_MODE = false;
     private Experiment<?> currentExperiment;
-
 
     /**
      * Initializes the experiment manager.
@@ -115,12 +116,14 @@ public class ExperimentManager {
      */
     public ArrayList<Experiment<?>> queryExperiments(Collection<UUID> experimentIds) {
         ArrayList<Experiment<?>> experimentsList = new ArrayList<>();
-        for (UUID id : experimentIds) {
-            if (experiments.containsKey(id)) {
-                experimentsList.add(experiments.get(id));
+            if (experimentIds != null) {
+                for (UUID id : experimentIds) {
+                    if (experiments.containsKey(id)) {
+                        experimentsList.add(experiments.get(id));
+                    }
             }
+            Collections.sort(experimentsList);
         }
-        Collections.sort(experimentsList);
         return experimentsList;
     }
 
@@ -258,9 +261,8 @@ public class ExperimentManager {
      * Populate experiments in Experiment manager with all experiments from Firestore
      */
     public void getAllFromFirestore(){
-        if(TEST_MODE)
-            return;
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DataBase data = DataBase.getInstanceTesting();
+        FirebaseFirestore db = data.getFireStore();
         CollectionReference experimentCollection = db.collection("experiments");
         experimentCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -437,19 +439,4 @@ public class ExperimentManager {
         return new ArrayList<>(experiments.values());
     }
 
-    /**
-     * enables test mode (Does not talk to firebase)
-     */
-    public void enableTestMode()
-    {
-        TEST_MODE = true;
-    }
-
-    /**
-     * disables test mode (Talks to firebase)
-     */
-    public void disableTestMode()
-    {
-        TEST_MODE = false;
-    }
 }

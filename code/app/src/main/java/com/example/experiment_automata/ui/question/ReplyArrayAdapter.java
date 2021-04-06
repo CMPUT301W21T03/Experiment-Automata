@@ -73,14 +73,18 @@ public class ReplyArrayAdapter extends ArrayAdapter<Reply> {
         LinkView replyUserView = (LinkView) view.findViewById(R.id.reply_user);
 
         replyTextView.setText(reply.getReply());
-        replyUserView.setText(user.getInfo().getName());
-        replyUserView.setOnClickListener(v -> {
-            NavigationActivity parentActivity = (NavigationActivity) context;
-            Bundle args = new Bundle();
-            args.putSerializable(ProfileFragment.userKey, user);
-            NavController navController = Navigation.findNavController(parentActivity, R.id.nav_host_fragment);
-            navController.navigate(R.id.nav_profile, args);
-        });
+        if(user.getInfo() != null) {
+            replyUserView.setText(user.getInfo().getName());
+            replyUserView.setOnClickListener(v -> {
+                NavigationActivity parentActivity = (NavigationActivity) context;
+                Bundle args = new Bundle();
+                args.putSerializable(ProfileFragment.userKey, user);
+                NavController navController = Navigation.findNavController(parentActivity, R.id.nav_host_fragment);
+                navController.navigate(R.id.nav_profile, args);
+            });
+        }
+        else
+            replyUserView.setText("BAD=DATA");
 
         return view;
     }

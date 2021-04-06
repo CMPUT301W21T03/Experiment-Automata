@@ -1,22 +1,30 @@
 package com.example.experiment_automata;
 
 import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.rule.ActivityTestRule;
 
+import com.example.experiment_automata.backend.DataBase;
 import com.example.experiment_automata.backend.experiments.BinomialExperiment;
 import com.example.experiment_automata.backend.experiments.ExperimentMaker;
 import com.example.experiment_automata.backend.experiments.ExperimentType;
 import com.example.experiment_automata.backend.trials.BinomialTrial;
+import com.example.experiment_automata.ui.NavigationActivity;
 import com.google.firebase.FirebaseApp;
+import com.robotium.solo.Solo;
 
+import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.lang.reflect.Field;
 import java.util.UUID;
 
 public class BinomialStatsTestsWithFirebase
 {
+    DataBase dataBase = DataBase.getInstanceTesting();;
     private UUID ownerId = UUID.randomUUID();
     private BinomialExperiment binomialExperiment;
     private ExperimentMaker maker;
@@ -28,7 +36,12 @@ public class BinomialStatsTestsWithFirebase
     private BinomialTrial failureTrial;
     private BinomialTrial ignoreSuccess;
     private BinomialTrial ignoreFailure;
+    private Solo solo;
 
+
+    @Rule
+    public ActivityTestRule<NavigationActivity> rule =
+            new ActivityTestRule<>(NavigationActivity.class, true, true);
 
     @Before
     public void environmentSetup() {
@@ -42,7 +55,27 @@ public class BinomialStatsTestsWithFirebase
         failureTrial = new BinomialTrial(id2, false);
         ignoreSuccess = new BinomialTrial(id3, true);
         ignoreFailure = new BinomialTrial(id4, false);
+        solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
         FirebaseApp.initializeApp(InstrumentationRegistry.getInstrumentation().getTargetContext());
+    }
+
+
+    @After
+    public void endTest() throws NoSuchFieldException, IllegalAccessException {
+        dataBase.getFireStore().disableNetwork();
+        dataBase.getFireStore().terminate();
+        dataBase.getFireStore().clearPersistence();
+        solo.finishOpenedActivities();
+        Field testMode = DataBase.class.getDeclaredField("testMode");
+        Field currentInstence = DataBase.class.getDeclaredField("current");
+        Field dbInstence = DataBase.class.getDeclaredField("db");
+        testMode.setAccessible(true);
+        currentInstence.setAccessible(true);
+        dbInstence.setAccessible(true);
+        testMode.setBoolean(dataBase, true);
+        currentInstence.set(currentInstence, null);
+        dbInstence.set(dbInstence, null);
+        dataBase = DataBase.getInstanceTesting();
     }
 
     /**

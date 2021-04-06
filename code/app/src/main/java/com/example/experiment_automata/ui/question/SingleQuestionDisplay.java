@@ -124,7 +124,10 @@ public class SingleQuestionDisplay extends ArrayAdapter {
             NavController navController = Navigation.findNavController(parentActivity, R.id.nav_host_fragment);
             navController.navigate(R.id.nav_profile, args);
         });
-        questionUser.setText(user.getInfo().getName());
+        if(user.getInfo() != null)
+            questionUser.setText(user.getInfo().getName());
+        else
+            questionUser.setText("BAD-DATA");
         update(root);
     }
 

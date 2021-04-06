@@ -1,17 +1,29 @@
 package com.example.experiment_automata;
 
+import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.rule.ActivityTestRule;
+
+import com.example.experiment_automata.backend.DataBase;
 import com.example.experiment_automata.backend.experiments.MeasurementExperiment;
 import com.example.experiment_automata.backend.trials.MeasurementTrial;
+import com.example.experiment_automata.ui.NavigationActivity;
+import com.google.firebase.FirebaseApp;
+import com.robotium.solo.Solo;
 
+import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
+import java.lang.reflect.Field;
 import java.util.UUID;
 import static org.junit.Assert.*;
 
 
 public class MeasurementStatTest {
 
+    DataBase dataBase = DataBase.getInstanceTesting();;
+    Solo solo;
     UUID ownerId = UUID.randomUUID();
     MeasurementExperiment mesExperiment;
     UUID id = UUID.randomUUID();
@@ -22,10 +34,34 @@ public class MeasurementStatTest {
     MeasurementTrial measurementIgnore = new MeasurementTrial(id3, 13.7f);
     MeasurementTrial measurementIgnore2 = new MeasurementTrial(id4, 17.1f);
 
+    @Rule
+    public ActivityTestRule<NavigationActivity> rule =
+            new ActivityTestRule<>(NavigationActivity.class, true, true);
+
     @Before
     public void setup() {
+        solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
+        FirebaseApp.initializeApp(InstrumentationRegistry.getInstrumentation().getTargetContext());
         // Reset the binomial experiment
         mesExperiment = new MeasurementExperiment("This is a test", 5, false, true, ownerId);
+    }
+
+    @After
+    public void endTest() throws NoSuchFieldException, IllegalAccessException {
+        dataBase.getFireStore().disableNetwork();
+        dataBase.getFireStore().terminate();
+        dataBase.getFireStore().clearPersistence();
+        solo.finishOpenedActivities();
+        Field testMode = DataBase.class.getDeclaredField("testMode");
+        Field currentInstence = DataBase.class.getDeclaredField("current");
+        Field dbInstence = DataBase.class.getDeclaredField("db");
+        testMode.setAccessible(true);
+        currentInstence.setAccessible(true);
+        dbInstence.setAccessible(true);
+        testMode.setBoolean(dataBase, true);
+        currentInstence.set(currentInstence, null);
+        dbInstence.set(dbInstence, null);
+        dataBase = DataBase.getInstanceTesting();
     }
 
     /**

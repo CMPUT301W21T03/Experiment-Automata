@@ -2,6 +2,7 @@ package com.example.experiment_automata.backend.questions;
 
 import androidx.annotation.NonNull;
 
+import com.example.experiment_automata.backend.DataBase;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -53,7 +54,8 @@ public class Reply implements Serializable, Comparable {
      */
 
     private void postReplyToFirestore() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DataBase dataBase = DataBase.getInstanceTesting();
+        FirebaseFirestore db = dataBase.getFireStore();
         Map<String,Object> questionData = new HashMap<>();
         String replyIdString = this.replyId.toString();
 
@@ -61,20 +63,23 @@ public class Reply implements Serializable, Comparable {
         questionData.put("user-id", this.experimenter.toString());
         questionData.put("question-id", this.questionId.toString());
 
-        db.collection("replies").document(replyIdString)
-                .set(questionData)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
+        try {
+            db.collection("replies").document(replyIdString)
+                    .set(questionData)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
 
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
 
-                    }
-                });
+                        }
+                    });
+        }catch (Exception e)
+        {}
     }
 
     public String getReply() {

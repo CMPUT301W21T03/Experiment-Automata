@@ -1,21 +1,33 @@
 package com.example.experiment_automata;
 
+import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.rule.ActivityTestRule;
+
+import com.example.experiment_automata.backend.DataBase;
 import com.example.experiment_automata.backend.questions.Question;
 import com.example.experiment_automata.backend.questions.QuestionManager;
 import com.example.experiment_automata.backend.questions.Reply;
+import com.example.experiment_automata.ui.NavigationActivity;
+import com.robotium.solo.Solo;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.jupiter.api.Assertions.fail;
 
-public class QuestionManagerTest {
+public class QuestionManagerTestsFirebase {
+    DataBase dataBase = DataBase.getInstanceTesting();;
+    private Solo solo;
+    private NavigationActivity currentTestingActivity;
+
+
     QuestionManager questionManager;
     ArrayList<Question> questions;
     ArrayList<Reply> replies;
@@ -28,9 +40,17 @@ public class QuestionManagerTest {
     Question q1, q2, q3;
     Reply r1, r3;
 
-    @BeforeEach
+    @Rule
+    public ActivityTestRule<NavigationActivity> rule =
+            new ActivityTestRule<>(NavigationActivity.class, true, true);
+
+    @Before
     public void setup() {
-        questionManager = QuestionManager.getInstance();
+
+        solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
+        currentTestingActivity = (NavigationActivity) solo.getCurrentActivity();
+
+        questionManager = currentTestingActivity.questionManager;
         questions = new ArrayList<>();
         replies = new ArrayList<>();
         experimentReferences = new ArrayList<>();
@@ -53,6 +73,25 @@ public class QuestionManagerTest {
         userReferences.add(userId2);
     }
 
+
+    @After
+    public void endTest() throws NoSuchFieldException, IllegalAccessException {
+        dataBase.getFireStore().disableNetwork();
+        dataBase.getFireStore().terminate();
+        dataBase.getFireStore().clearPersistence();
+        solo.finishOpenedActivities();
+        Field testMode = DataBase.class.getDeclaredField("testMode");
+        Field currentInstence = DataBase.class.getDeclaredField("current");
+        Field dbInstence = DataBase.class.getDeclaredField("db");
+        testMode.setAccessible(true);
+        currentInstence.setAccessible(true);
+        dbInstence.setAccessible(true);
+        testMode.setBoolean(dataBase, true);
+        currentInstence.set(currentInstence, null);
+        dbInstence.set(dbInstence, null);
+        dataBase = DataBase.getInstanceTesting();
+    }
+
     @Test
     public void addQuestion()
     {
@@ -60,7 +99,7 @@ public class QuestionManagerTest {
         int questionCountAfter;
 
         if(experimentId1 == null || q1 == null)
-            fail("Bad set up");
+            assertEquals("BAD TEST", 1, 2);
 
         questionCountBefore = questionManager.getTotalQuestions(experimentId1);
         questionManager.addQuestion(experimentId1, q1);

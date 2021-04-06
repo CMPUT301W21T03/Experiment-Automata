@@ -30,6 +30,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.experiment_automata.R;
+import com.example.experiment_automata.backend.DataBase;
 import com.example.experiment_automata.backend.barcode.BarcodeManager;
 import com.example.experiment_automata.backend.experiments.Experiment;
 import com.example.experiment_automata.backend.experiments.ExperimentManager;
@@ -71,6 +72,7 @@ public class NavigationActivity extends AppCompatActivity implements
         AddQuestionFragment.OnFragmentInteractionListener,
         EditUserFragment.OnFragmentInteractionListener {
 
+    private DataBase dataBase = DataBase.getInstance();
     private AppBarConfiguration mAppBarConfiguration;
     public final ExperimentManager experimentManager = ExperimentManager.getInstance();
     public final BarcodeManager barcodeManager = BarcodeManager.getInstance();
@@ -103,7 +105,6 @@ public class NavigationActivity extends AppCompatActivity implements
         currentActivity = this;
         SharedPreferences preferences = getSharedPreferences("experiment_automata", MODE_PRIVATE);
         loggedUser = new User(preferences);
-        //userManager.setCurrentUser(loggedUser);
         setContentView(R.layout.activity_navigation);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

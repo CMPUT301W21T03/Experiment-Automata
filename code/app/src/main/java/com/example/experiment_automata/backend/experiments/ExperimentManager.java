@@ -263,7 +263,7 @@ public class ExperimentManager {
      * Populate experiments in Experiment manager with all experiments from Firestore
      */
     public void getAllFromFirestore() {
-        DataBase data = DataBase.getInstanceTesting();
+        DataBase data = DataBase.getInstance();
         FirebaseFirestore db = data.getFireStore();
         CollectionReference experimentCollection = db.collection("experiments");
         getFromFirestoreFromQuery(experimentCollection.get());
@@ -275,8 +275,8 @@ public class ExperimentManager {
      * @param value the value to filter
      */
     public void filterFromFirestore(@NonNull String key, @NonNull Object value) {
-        if(TEST_MODE) return;
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DataBase data = DataBase.getInstance();
+        FirebaseFirestore db = data.getFireStore();
         CollectionReference experimentCollection = db.collection("experiments");
         getFromFirestoreFromQuery(experimentCollection.whereEqualTo(key, value).get());
     }
@@ -286,8 +286,8 @@ public class ExperimentManager {
      * @param values the document IDs to filter
      */
     public void filterFromFirestore(@NonNull List<String> values) {
-        if(TEST_MODE) return;
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DataBase data = DataBase.getInstance();
+        FirebaseFirestore db = data.getFireStore();
         CollectionReference experimentCollection = db.collection("experiments");
         for (String experiment : values) {
             getFromFirestoreFromDocument(experimentCollection.document(experiment).get());

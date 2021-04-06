@@ -134,12 +134,12 @@ public class ExperimentManagerTestsFireBase {
 
     @Test
     public void queryExperimentsUUID() {
-        ArrayList<Experiment> foundExperiments = experimentManager.queryExperiments(experimentReferences);
+        ArrayList<Experiment<?>> foundExperiments = experimentManager.queryExperiments(experimentReferences);
         assertEquals(experiments, foundExperiments);
 
         ArrayList<UUID> fakeUUID = new ArrayList<>();
         fakeUUID.add(UUID.randomUUID());
-        ArrayList<Experiment> fakeExperiments = experimentManager.queryExperiments(fakeUUID);
+        ArrayList<Experiment<?>> fakeExperiments = experimentManager.queryExperiments(fakeUUID);
         assertEquals(0, fakeExperiments.size());
         assertEquals(0, fakeExperiments.size());
     }

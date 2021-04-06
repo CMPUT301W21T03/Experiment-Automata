@@ -160,11 +160,6 @@ public class ExperimentUserStoriesTests
     public void testMakeAnExperimentCount()
     {
 
-        solo.clickOnActionBarHomeButton();
-        solo.clickOnText("My Experiments");
-        solo.sleep(2000);
-        addExperimentButton = solo.getView(R.id.fab_button);
-        solo.sleep(1000);
         makeExperiment("GUI Test Experiment");
         //Clicking on publish button
         solo.sleep(1000);
@@ -304,6 +299,10 @@ public class ExperimentUserStoriesTests
         solo.sleep(2000);
         solo.clickOnActionBarHomeButton();
         solo.clickOnText("Published Experiments");
+        solo.clickOnActionBarHomeButton();
+        solo.clickOnText("My Experiments");
+        solo.clickOnActionBarHomeButton();
+        solo.clickOnText("Published Experiments");
         solo.sleep(2000);
 
         assertEquals("Failed un-publish functionality still displays unpublished experiment",
@@ -357,8 +356,7 @@ public class ExperimentUserStoriesTests
             solo.clickOnView(addExperimentButton);
             solo.sleep(2000);
 
-            solo.clickOnActionBarHomeButton();
-            solo.sleep(2000);
+            solo.sleep(4000);
             int trialSizeAfter = current.getSize();
             solo.sendKey(2000);
 

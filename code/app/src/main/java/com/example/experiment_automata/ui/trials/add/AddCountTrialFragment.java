@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment;
 
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.backend.barcode.BarcodeManager;
-import com.example.experiment_automata.backend.experiments.BinomialExperiment;
 import com.example.experiment_automata.backend.experiments.CountExperiment;
 import com.example.experiment_automata.backend.qr.QRCode;
 import com.example.experiment_automata.backend.qr.QRMaker;
@@ -131,7 +130,7 @@ public class AddCountTrialFragment extends Fragment {
         else {//if scanned was barcode
             NavigationActivity parentActivity = ((NavigationActivity) getActivity());
             BarcodeManager testBC = parentActivity.barcodeManager;
-            BinomialExperiment experiment = (BinomialExperiment) parentActivity.experimentManager.getCurrentExperiment();
+            CountExperiment experiment = (CountExperiment) parentActivity.experimentManager.getCurrentExperiment();
             parentActivity.barcodeManager.addBarcode(rawQRContent,experiment.getExperimentId());
             Snackbar.make(root, "Scanned Barcode " + rawQRContent + " was associated with this Trials Value", Snackbar.LENGTH_LONG).show();
         }

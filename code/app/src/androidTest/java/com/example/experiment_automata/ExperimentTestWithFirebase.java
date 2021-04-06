@@ -33,7 +33,6 @@ import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 public class ExperimentTestWithFirebase {
-
     DataBase dataBase = DataBase.getInstanceTesting();;
 
     private ExperimentMaker maker;

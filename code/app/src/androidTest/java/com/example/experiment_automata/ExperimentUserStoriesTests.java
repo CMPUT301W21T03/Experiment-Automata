@@ -48,7 +48,7 @@ import static org.junit.Assert.fail;
 
 public class ExperimentUserStoriesTests
 {
-    DataBase dataBase = DataBase.getInstanceTesting();;
+    DataBase dataBase = DataBase.getInstanceTesting();
     private Solo solo;
     private NavigationActivity currentTestingActivity;
 
@@ -111,6 +111,7 @@ public class ExperimentUserStoriesTests
         dataBase = DataBase.getInstanceTesting();
     }
 
+
     private void makeExperiment(String des)
     {
         solo.clickOnActionBarHomeButton();
@@ -164,7 +165,6 @@ public class ExperimentUserStoriesTests
         solo.sleep(2000);
         addExperimentButton = solo.getView(R.id.fab_button);
         solo.sleep(1000);
-
         makeExperiment("GUI Test Experiment");
         //Clicking on publish button
         solo.sleep(1000);
@@ -194,7 +194,6 @@ public class ExperimentUserStoriesTests
         solo.clickOnText("My Experiments");
         solo.sleep(2000);
         addExperimentButton = solo.getView(R.id.fab_button);
-
         assertNotEquals("Can't find + button", null, addExperimentButton);
 
         //Click from the home screen the + button to make an experiment

@@ -100,6 +100,7 @@ public class MapDisplayFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        ((NavigationActivity)getActivity()).setCurrentScreen(Screen.ExperimentDetails);
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.example.experiment_automata.ui.trials.add;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -129,9 +130,11 @@ public class AddBinomialTrialFragment extends Fragment {
         }
         else {//if scanned was barcode
             NavigationActivity parentActivity = ((NavigationActivity) getActivity());
+            Location location = parentActivity.currentTrial.getLocation();
+
             BarcodeManager testBC = parentActivity.barcodeManager;
             BinomialExperiment experiment = (BinomialExperiment) parentActivity.experimentManager.getCurrentExperiment();
-            parentActivity.barcodeManager.addBarcode(rawQRContent,experiment.getExperimentId(),checkBox.isChecked());
+            parentActivity.barcodeManager.addBarcode(rawQRContent,experiment.getExperimentId(),checkBox.isChecked(),location);
             Snackbar.make(root, "Scanned Barcode " + rawQRContent + " was associated with this Trials Value", Snackbar.LENGTH_LONG).show();
         }
     }

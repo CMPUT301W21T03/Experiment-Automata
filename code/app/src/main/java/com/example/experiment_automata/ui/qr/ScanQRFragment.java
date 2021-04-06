@@ -1,6 +1,7 @@
 package com.example.experiment_automata.ui.qr;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -157,29 +158,30 @@ public class ScanQRFragment extends Fragment {
                 //add given Trial to experiment
                 Snackbar.make(getView(),"Scanned barcode was found!",Snackbar.LENGTH_LONG).show();
                 UUID barcodeExperimentID = barcodeReference.getExperimentId();
+                Location barcodeLocation = barcodeReference.getLocation();
                 if(parentActivity.experimentManager.isExperimentPublished(barcodeExperimentID)){
                     switch (barcodeReference.getType()){
                         case Binomial:
-                            trial = new BinomialTrial(user.getUserId(),(Boolean) barcodeReference.getResult());
-                            Experiment binExperiment =  experimentManager.getExperiment(barcodeExperimentID);//don't think this will work
+                            trial = new BinomialTrial(user.getUserId(),barcodeLocation,(Boolean) barcodeReference.getResult());
+                            Experiment binExperiment =  experimentManager.getExperiment(barcodeExperimentID);
                             parentActivity.addTrial(binExperiment,trial);
                             Snackbar.make(getView(),"Binomial Trial with value " + barcodeReference.getResult() + " scanned successfully in "+ binExperiment.getDescription(),Snackbar.LENGTH_LONG).show();
                             break;
                         case Count:
-                            trial = new CountTrial(user.getUserId());
-                            Experiment countExperiment =  experimentManager.getExperiment(barcodeExperimentID);//don't think this will work
+                            trial = new CountTrial(user.getUserId(),barcodeLocation);
+                            Experiment countExperiment =  experimentManager.getExperiment(barcodeExperimentID);
                             parentActivity.addTrial(countExperiment,trial);
                             Snackbar.make(getView(),"Count Trial with value " + barcodeReference.getResult() + " scanned successfully in "+ countExperiment.getDescription(),Snackbar.LENGTH_LONG).show();
                             break;
                         case NaturalCount:
-                            trial = new NaturalCountTrial(user.getUserId(),(int) barcodeReference.getResult());
-                            Experiment natExperiment =  experimentManager.getExperiment(barcodeExperimentID);//don't think this will work
+                            trial = new NaturalCountTrial(user.getUserId(),barcodeLocation,(int) barcodeReference.getResult());
+                            Experiment natExperiment =  experimentManager.getExperiment(barcodeExperimentID);
                             parentActivity.addTrial(natExperiment,trial);
                             Snackbar.make(getView(),"NaturalCount Trial with value " + barcodeReference.getResult() + " scanned successfully in "+ natExperiment.getDescription(),Snackbar.LENGTH_LONG).show();
                             break;
                         case Measurement:
-                        trial = new MeasurementTrial(user.getUserId(),(float) barcodeReference.getResult());
-                            Experiment mesExperiment =  experimentManager.getExperiment(barcodeExperimentID);//don't think this will work
+                            trial = new MeasurementTrial(user.getUserId(),barcodeLocation,(float) barcodeReference.getResult());
+                            Experiment mesExperiment =  experimentManager.getExperiment(barcodeExperimentID);
                             parentActivity.addTrial(mesExperiment,trial);
                             Snackbar.make(getView(),"Measurement Trial with value " + barcodeReference.getResult() + " scanned successfully in "+ mesExperiment.getDescription(),Snackbar.LENGTH_LONG).show();
                             break;

@@ -1,6 +1,7 @@
 package com.example.experiment_automata.ui.trials.add;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -132,10 +133,11 @@ public class AddNaturalCountTrialFragment extends Fragment {
         }
         else {//if scanned was barcode
             NavigationActivity parentActivity = ((NavigationActivity) getActivity());
+            Location location = parentActivity.currentTrial.getLocation();
             BarcodeManager testBC = parentActivity.barcodeManager;
             NaturalCountExperiment experiment = (NaturalCountExperiment) parentActivity.experimentManager.getCurrentExperiment();
             int trialValue = Integer.valueOf(countValue.getText().toString());
-            parentActivity.barcodeManager.addBarcode(rawQRContent,experiment.getExperimentId(),trialValue);
+            parentActivity.barcodeManager.addBarcode(rawQRContent,experiment.getExperimentId(),trialValue,location);
             Snackbar.make(root, "Scanned Barcode " + rawQRContent + " was associated with this Trials Value", Snackbar.LENGTH_LONG).show();
         }
     }

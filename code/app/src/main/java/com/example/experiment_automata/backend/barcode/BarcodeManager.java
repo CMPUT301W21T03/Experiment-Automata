@@ -1,5 +1,6 @@
 package com.example.experiment_automata.backend.barcode;
 
+import android.location.Location;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -40,8 +41,8 @@ public class BarcodeManager {
      * @param result
      *   the given trial result
      */
-    public void addBarcode(String barcodeVal, UUID experimentId, int result){
-        NaturalBarcodeReference barcodeRef = new NaturalBarcodeReference(barcodeVal,experimentId,ExperimentType.NaturalCount,result);
+    public void addBarcode(String barcodeVal, UUID experimentId, int result, Location location){
+        NaturalBarcodeReference barcodeRef = new NaturalBarcodeReference(barcodeVal,experimentId,ExperimentType.NaturalCount,result,location);
         barcodes.put(barcodeVal,barcodeRef);
     }
     /**
@@ -53,8 +54,8 @@ public class BarcodeManager {
      * @param result
      *   the given trial result
      */
-    public void addBarcode(String barcodeVal, UUID experimentId, float result){
-        MeasurementBarcodeReference barcodeRef = new MeasurementBarcodeReference(barcodeVal,experimentId,ExperimentType.Measurement,result);
+    public void addBarcode(String barcodeVal, UUID experimentId, float result, Location location){
+        MeasurementBarcodeReference barcodeRef = new MeasurementBarcodeReference(barcodeVal,experimentId,ExperimentType.Measurement,result,location);
         barcodes.put(barcodeVal,barcodeRef);
     }
     /**
@@ -66,8 +67,8 @@ public class BarcodeManager {
      * @param result
      *   the given trial result
      */
-    public void addBarcode(String barcodeVal, UUID experimentId, boolean result){
-       BinomialBarcodeReference barcodeRef = new BinomialBarcodeReference(barcodeVal,experimentId,ExperimentType.Binomial,result);
+    public void addBarcode(String barcodeVal, UUID experimentId, boolean result, Location location){
+       BinomialBarcodeReference barcodeRef = new BinomialBarcodeReference(barcodeVal,experimentId,ExperimentType.Binomial,result,location);
        barcodes.put(barcodeVal,barcodeRef);
     }
     /**
@@ -77,8 +78,8 @@ public class BarcodeManager {
      * @param experimentId
      *   UUID of the experiment that the represented trial is a part of
      */
-    public void addBarcode(String barcodeVal, UUID experimentId){
-        CountBarcodeReference barcodeRef = new  CountBarcodeReference(barcodeVal,experimentId,ExperimentType.Count);
+    public void addBarcode(String barcodeVal, UUID experimentId, Location location){
+        CountBarcodeReference barcodeRef = new  CountBarcodeReference(barcodeVal,experimentId,ExperimentType.Count,location);
         barcodes.put(barcodeVal,barcodeRef);
     }
 
@@ -106,11 +107,11 @@ public class BarcodeManager {
                                 currentBarcodeRef = new CountBarcodeReference(barcode,experimentId,ExperimentType.Count);
                                 break;
                             case Measurement:
-                                float measVal = (float)document.get("result");
+                                float measVal = (float)((double)document.get("result"));
                                 currentBarcodeRef = new MeasurementBarcodeReference(barcode,experimentId,ExperimentType.Measurement,measVal);
                                 break;
                             case NaturalCount:
-                                int natVal = (int)document.get("result");
+                                int natVal = (int)((long)document.get("result"));
                                 currentBarcodeRef = new NaturalBarcodeReference(barcode,experimentId,ExperimentType.NaturalCount,natVal);
                                 break;
                             default:

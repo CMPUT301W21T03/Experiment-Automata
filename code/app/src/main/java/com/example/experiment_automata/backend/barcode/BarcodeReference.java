@@ -1,5 +1,7 @@
 package com.example.experiment_automata.backend.barcode;
 
+import android.location.Location;
+
 import com.example.experiment_automata.backend.experiments.ExperimentType;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -18,13 +20,17 @@ public abstract class BarcodeReference<T> {
     private String barcodeVal;
     private UUID experimentId;
     private ExperimentType type;
+    private Location location;
     private T result;
 
-    public BarcodeReference(String barcodeVal, UUID experimentId, ExperimentType type, T result)   {
+
+    public BarcodeReference(String barcodeVal, UUID experimentId, ExperimentType type, T result, Location location)   {
         this.barcodeVal = barcodeVal;
         this.experimentId = experimentId;
         this.type = type;
         this.result = result;
+        this.location = location;
+
         postBarcodeToFirestore();
     }
     /**
@@ -56,5 +62,9 @@ public abstract class BarcodeReference<T> {
 
     public T getResult() {
         return result;
+    }
+
+    public Location getLocation() {
+        return location;
     }
 }

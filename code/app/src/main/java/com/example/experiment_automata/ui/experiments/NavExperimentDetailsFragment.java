@@ -46,9 +46,10 @@ public class NavExperimentDetailsFragment extends Fragment {
     public static final String CURRENT_EXPERIMENT_ID = "FRAGMENT_CURRENT_FRAGMENT-ID";
 
     private String experimentStringId;
-    private Experiment experiment;
+    private Experiment<?> experiment;
     private TextView descriptionView;
     private TextView typeView;
+    private TextView minTrials;
     private ImageButton editImageButton;
     private ImageButton subscribeButton;
     private ImageButton questionsButton;
@@ -120,6 +121,7 @@ public class NavExperimentDetailsFragment extends Fragment {
 
         descriptionView = root.findViewById(R.id.nav_experiment_details_description);
         typeView = root.findViewById(R.id.nav_experiment_details_experiment_type);
+        minTrials = root.findViewById(R.id.nav_experiment_details_min_trials);
         editImageButton = root.findViewById(R.id.nav_fragment_experiment_detail_view_edit_button);
         subscribeButton = root.findViewById(R.id.nav_fragment_experiment_view_subscribe_button);
         questionsButton = root.findViewById(R.id.nav_fragment_experiment_detail_view_qa_button);
@@ -176,7 +178,7 @@ public class NavExperimentDetailsFragment extends Fragment {
         });
 
         qrButton.setOnClickListener(v -> {
-            Experiment current = (((NavigationActivity)getActivity()).getExperimentManager())
+            Experiment<?> current = (((NavigationActivity)getActivity()).getExperimentManager())
                     .getAtUUIDDescription(UUID.fromString(experimentStringId));
 
             Fragment viewQRFragment = new ViewQRFragment();
@@ -217,10 +219,11 @@ public class NavExperimentDetailsFragment extends Fragment {
      */
     public void update(String experimentStringId) {
         Log.d("UPDATE", "Screen info updated");
-        Experiment current = (((NavigationActivity)getActivity()).getExperimentManager())
+        Experiment<?> current = (((NavigationActivity) getActivity()).getExperimentManager())
                 .getAtUUIDDescription(UUID.fromString(experimentStringId));
         descriptionView.setText(current.getDescription());
-        typeView.setText("" + current.getType());
+        typeView.setText(current.getType().toString());
+        minTrials.setText(String.format("Minimum Trials: %d", current.getMinTrials()));
 
         // Disable FAB if not accepting new trials
         FloatingActionButton fab = getActivity().findViewById(R.id.fab_button);

@@ -16,12 +16,11 @@ import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 /**
  * Role/Pattern:
  *
- *       This class opens a camera viewport for scanner qr codes
+ *       This class opens a camera viewport for ZXing scanner
  *
  * Known Issue:
  *
- *      1. no barcode/qr return functionality.
- *      2. Barcodes untested
+ *      1.
  */
 public class ScannerActivity extends AppCompatActivity {
     DecoratedBarcodeView barcodeView;
@@ -46,6 +45,14 @@ public class ScannerActivity extends AppCompatActivity {
                 Log.d("SCANNER","Scanned: " + result.getContents() + " of type " + result.getContents().getClass().getName());
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("QRCONTENTRAW",result.getContents());
+
+                if(result.getFormatName().equals(IntentIntegrator.QR_CODE)){//qrCode
+                    resultIntent.putExtra("IS_QR",true);
+                }
+                else{//barcode
+                    resultIntent.putExtra("IS_QR",false);
+                }
+
                 setResult(1,resultIntent);
             }
         } else {

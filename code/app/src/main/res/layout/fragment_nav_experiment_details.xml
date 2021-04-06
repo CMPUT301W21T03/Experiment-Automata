@@ -33,13 +33,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="9dp"
+        android:layout_marginTop="16dp"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="?android:attr/textColorSecondary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nav_experiment_details_description" />
+
+    <TextView
+        android:id="@+id/nav_experiment_details_min_trials"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:textColor="@color/teal_700"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/nav_experiment_details_experiment_type"
+        app:layout_constraintStart_toEndOf="@+id/nav_experiment_details_experiment_type" />
 
     <ImageButton
         android:id="@+id/nav_fragment_experiment_detail_view_edit_button"

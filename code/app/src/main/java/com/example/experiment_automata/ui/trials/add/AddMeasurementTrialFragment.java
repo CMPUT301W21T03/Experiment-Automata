@@ -1,6 +1,7 @@
 package com.example.experiment_automata.ui.trials.add;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,20 +15,19 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.experiment_automata.R;
+import com.example.experiment_automata.backend.barcode.BarcodeManager;
 import com.example.experiment_automata.backend.experiments.MeasurementExperiment;
 import com.example.experiment_automata.backend.qr.MeasurementQRCode;
 import com.example.experiment_automata.backend.qr.QRCode;
 import com.example.experiment_automata.backend.qr.QRMaker;
 import com.example.experiment_automata.backend.qr.QRMalformattedException;
 import com.example.experiment_automata.backend.qr.QRType;
+import com.example.experiment_automata.backend.trials.MeasurementTrial;
 import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.ui.qr.ScannerActivity;
 import com.example.experiment_automata.ui.qr.ViewQRFragment;
-import com.google.android.material.snackbar.Snackbar;
-import com.example.experiment_automata.backend.trials.MeasurementTrial;
-import com.example.experiment_automata.ui.NavigationActivity;
-import com.example.experiment_automata.R;
 import com.example.experiment_automata.ui.trials.MapDisplay.MapUtility;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.osmdroid.views.MapView;
 
@@ -108,27 +108,38 @@ public class AddMeasurementTrialFragment extends Fragment {
         }
         String rawQRContent =  data.getStringExtra("QRCONTENTRAW");
         Log.d("ACTIVITYRESULT","val " + data.getStringExtra("QRCONTENTRAW"));
-        QRMaker qrMaker = new QRMaker();
-        QRCode qrCode;
-        try{
-            qrCode =qrMaker.decodeQRString(rawQRContent);
-            if (qrCode.getType() == QRType.MeasurementTrial){
-                measurementValue.setText(String.valueOf(((MeasurementQRCode)qrCode).getValue()));
-                Log.d("SCANNER","Scanned QR Successfully!");
-                Snackbar.make(root,"Scanned QR Successfully!",Snackbar.LENGTH_LONG).show();
+        if(data.getBooleanExtra("IS_QR",true)) {//if is QR
+            QRMaker qrMaker = new QRMaker();
+            QRCode qrCode;
+            try{
+                qrCode =qrMaker.decodeQRString(rawQRContent);
+                if (qrCode.getType() == QRType.MeasurementTrial){
+                    measurementValue.setText(String.valueOf(((MeasurementQRCode)qrCode).getValue()));
+                    Log.d("SCANNER","Scanned QR Successfully!");
+                    Snackbar.make(root,"Scanned QR Successfully!",Snackbar.LENGTH_LONG).show();
 
+                }
+                else{
+                    //send error tray message
+                    Log.d("SCANNER","Scanned QR was of incorrect type " + qrCode.getType().toString());
+                    Snackbar.make(root,"Scanned QR was of incorrect type",Snackbar.LENGTH_LONG).show();
+                }
             }
-            else{
-                //send error tray message
-                Log.d("SCANNER","Scanned QR was of incorrect type " + qrCode.getType().toString());
-                Snackbar.make(root,"Scanned QR was of incorrect type",Snackbar.LENGTH_LONG).show();
+            catch (QRMalformattedException qrMalE){
+                //malformatted QR
+                qrCode = null;
+                Log.d("SCANNER","Scanned Malformatted QR");
+                Snackbar.make(root,"Scanned QR was not an Experiment-Automata QR Code",Snackbar.LENGTH_LONG).show();
             }
         }
-        catch (QRMalformattedException qrMalE){
-            //malformatted QR
-            qrCode = null;
-            Log.d("SCANNER","Scanned Malformatted QR");
-            Snackbar.make(root,"Scanned QR was not an Experiment-Automata QR Code",Snackbar.LENGTH_LONG).show();
+        else {//if scanned was barcode
+            NavigationActivity parentActivity = ((NavigationActivity) getActivity());
+            Location location = parentActivity.currentTrial.getLocation();
+            BarcodeManager testBC = parentActivity.barcodeManager;
+            MeasurementExperiment experiment = (MeasurementExperiment) parentActivity.experimentManager.getCurrentExperiment();
+            float trialValue = Float.parseFloat(measurementValue.getText().toString());
+            parentActivity.barcodeManager.addBarcode(rawQRContent,experiment.getExperimentId(),trialValue,location);
+            Snackbar.make(root, "Scanned Barcode " + rawQRContent + " was associated with this Trials Value", Snackbar.LENGTH_LONG).show();
         }
     }
 

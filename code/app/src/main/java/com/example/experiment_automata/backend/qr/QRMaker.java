@@ -11,9 +11,8 @@ import java.util.UUID;
  *      1. None
  */
 public class QRMaker {
-    public QRMaker(){
+    public QRMaker() {}
 
-    }
     /**
      * Decodes a raw string that has been scanned from a custom QR code
      * @param rawContent

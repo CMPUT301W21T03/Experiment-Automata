@@ -48,7 +48,7 @@ import static org.junit.Assert.fail;
 
 public class ExperimentUserStoriesTests
 {
-    DataBase dataBase = DataBase.getInstanceTesting();;
+    DataBase dataBase = DataBase.getInstanceTesting();
     private Solo solo;
     private NavigationActivity currentTestingActivity;
 
@@ -62,7 +62,7 @@ public class ExperimentUserStoriesTests
 
     //Needed Objects
     private ExperimentMaker maker;
-    private Experiment testExperiment;
+    private Experiment<?> testExperiment;
     private UUID testUUID;
 
     @Rule
@@ -72,7 +72,6 @@ public class ExperimentUserStoriesTests
 
     @Before
     public void setup() {
-
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
         currentTestingActivity = (NavigationActivity) solo.getCurrentActivity();
 
@@ -111,6 +110,7 @@ public class ExperimentUserStoriesTests
         dbInstence.set(dbInstence, null);
         dataBase = DataBase.getInstanceTesting();
     }
+
 
     private void makeExperiment(String des)
     {
@@ -282,8 +282,7 @@ public class ExperimentUserStoriesTests
      * per(us.01.02.01)
      */
     @Test
-    public void testingUnpublishedExperiment()
-    {
+    public void testingUnpublishedExperiment() {
         makeExperiment("GUI Test Experiment");
 
 
@@ -318,8 +317,7 @@ public class ExperimentUserStoriesTests
      * As per (us.01.03.01)
      */
     @Test
-    public void testingIfWeCanEndAnExperiment()
-    {
+    public void testingIfWeCanEndAnExperiment() {
         View editButton = null;
         makeExperiment("GUI Test Experiment");
 
@@ -343,9 +341,8 @@ public class ExperimentUserStoriesTests
      * as per(us.01.05.01)
      */
     @Test
-    public void testingAddingTrials()
-    {
-        Experiment current = null;
+    public void testingAddingTrials() {
+        Experiment<?> current = null;
         makeExperiment("GUI Test Experiment");
         solo.sleep(2000);
         if(currentTestingActivity.experimentManager.getAllExperiments().size() > 0) {

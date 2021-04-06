@@ -7,14 +7,17 @@ import android.widget.TextView;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
+import com.example.experiment_automata.backend.DataBase;
 import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.ui.Screen;
 import com.robotium.solo.Solo;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.lang.reflect.Field;
 import java.util.Random;
 
 import static org.junit.Assert.*;
@@ -27,6 +30,7 @@ import static org.junit.Assert.*;
  *
  */
 public class UserTests {
+    DataBase dataBase = DataBase.getInstanceTesting();;
     private Solo solo;
     private NavigationActivity currentTestingActivity;
 
@@ -43,6 +47,24 @@ public class UserTests {
         solo.waitForText(solo.getString(R.string.menu_profile));
         // Navigate to profile
         solo.clickOnView(solo.getView(R.id.nav_profile));
+    }
+
+    @After
+    public void endTest() throws NoSuchFieldException, IllegalAccessException {
+        dataBase.getFireStore().disableNetwork();
+        dataBase.getFireStore().terminate();
+        dataBase.getFireStore().clearPersistence();
+        solo.finishOpenedActivities();
+        Field testMode = DataBase.class.getDeclaredField("testMode");
+        Field currentInstence = DataBase.class.getDeclaredField("current");
+        Field dbInstence = DataBase.class.getDeclaredField("db");
+        testMode.setAccessible(true);
+        currentInstence.setAccessible(true);
+        dbInstence.setAccessible(true);
+        testMode.setBoolean(dataBase, true);
+        currentInstence.set(currentInstence, null);
+        dbInstence.set(dbInstence, null);
+        dataBase = DataBase.getInstanceTesting();
     }
 
     @Test

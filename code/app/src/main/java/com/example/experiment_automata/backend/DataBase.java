@@ -19,9 +19,6 @@ public class DataBase
         {
             db.clearPersistence();
             db.disableNetwork();
-        } else {
-            db.disableNetwork();
-            db.enableNetwork();
         }
     }
 
@@ -30,7 +27,6 @@ public class DataBase
         if(current == null)
         {
             current = new DataBase(true);
-            Log.d("called_test", "test should've been called");
         }
         current.disableTest();
         return current;
@@ -41,7 +37,6 @@ public class DataBase
 
         if(current == null) {
             current = new DataBase(false);
-            Log.d("called_test_END", "test should've been called");
         }
 
         return current;

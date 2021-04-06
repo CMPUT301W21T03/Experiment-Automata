@@ -72,6 +72,7 @@ public class NavigationActivity extends AppCompatActivity implements
         AddQuestionFragment.OnFragmentInteractionListener,
         EditUserFragment.OnFragmentInteractionListener {
 
+    private DataBase dataBase = DataBase.getInstance();
     private AppBarConfiguration mAppBarConfiguration;
     public final ExperimentManager experimentManager = ExperimentManager.getInstance();
     public QuestionManager questionManager = QuestionManager.getInstance();
@@ -103,7 +104,6 @@ public class NavigationActivity extends AppCompatActivity implements
         currentActivity = this;
         SharedPreferences preferences = getSharedPreferences("experiment_automata", MODE_PRIVATE);
         loggedUser = new User(preferences);
-        //userManager.setCurrentUser(loggedUser);
         setContentView(R.layout.activity_navigation);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

@@ -80,20 +80,23 @@ public class Question implements Serializable, Comparable
             questionData.put("reply-id", this.reply.toString());
         }
 
-        db.collection("questions").document(questionIdString)
-                .set(questionData)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
+        try {
+            db.collection("questions").document(questionIdString)
+                    .set(questionData)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
 
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
 
-                    }
-                });
+                        }
+                    });
+        }catch (Exception e)
+        {}
     }
 
     public String getQuestion() {

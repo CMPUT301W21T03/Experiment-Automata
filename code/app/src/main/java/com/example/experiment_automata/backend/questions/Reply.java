@@ -63,20 +63,23 @@ public class Reply implements Serializable, Comparable {
         questionData.put("user-id", this.experimenter.toString());
         questionData.put("question-id", this.questionId.toString());
 
-        db.collection("replies").document(replyIdString)
-                .set(questionData)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
+        try {
+            db.collection("replies").document(replyIdString)
+                    .set(questionData)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
 
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
 
-                    }
-                });
+                        }
+                    });
+        }catch (Exception e)
+        {}
     }
 
     public String getReply() {

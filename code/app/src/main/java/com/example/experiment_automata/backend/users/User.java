@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.experiment_automata.backend.DataBase;
+import com.example.experiment_automata.backend.experiments.Experiment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -195,15 +196,18 @@ public class User implements Serializable {
     protected void updateContactFromFirestore() {
         DataBase dataBase = DataBase.getInstance();
         FirebaseFirestore db = dataBase.getFireStore();
-        DocumentReference documentReference = db.collection("users").document(this.userId.toString());
-        Task<DocumentSnapshot> task = documentReference.get();
-        // wait until the task is complete
-        while (!task.isComplete());
-        DocumentSnapshot document = task.getResult();
-        String name = (String) document.get("name");
-        String email = (String) document.get("email");
-        String phone = (String) document.get("phone");
-        this.info = new ContactInformation(name, email, phone);
+        try {
+            DocumentReference documentReference = db.collection("users").document(this.userId.toString());
+            Task<DocumentSnapshot> task = documentReference.get();
+            // wait until the task is complete
+            while (!task.isComplete()) ;
+            DocumentSnapshot document = task.getResult();
+            String name = (String) document.get("name");
+            String email = (String) document.get("email");
+            String phone = (String) document.get("phone");
+            this.info = new ContactInformation(name, email, phone);
+        }catch (Exception e)
+        {}
     }
 
     /**

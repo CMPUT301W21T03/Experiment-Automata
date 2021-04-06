@@ -40,6 +40,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class BinomialTrialTests {
+    DataBase dataBase = DataBase.getInstanceTesting();;
     private Solo solo;
     private NavigationActivity currentTestingActivity;
 
@@ -55,7 +56,6 @@ public class BinomialTrialTests {
     private ExperimentMaker maker;
     private Experiment testExperiment;
     private UUID testUUID;
-    private static DataBase dataBase;
 
     @Rule
     public ActivityTestRule<NavigationActivity> rule =
@@ -65,7 +65,7 @@ public class BinomialTrialTests {
     @Before
     public void setup() {
 
-        dataBase = DataBase.getInstanceTesting();
+
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
         currentTestingActivity = (NavigationActivity) solo.getCurrentActivity();
 
@@ -89,6 +89,7 @@ public class BinomialTrialTests {
 
     @After
     public void endTest() throws NoSuchFieldException, IllegalAccessException {
+        dataBase.getFireStore().disableNetwork();
         dataBase.getFireStore().terminate();
         dataBase.getFireStore().clearPersistence();
         solo.finishOpenedActivities();

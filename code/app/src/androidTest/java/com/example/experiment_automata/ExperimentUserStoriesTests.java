@@ -48,6 +48,7 @@ import static org.junit.Assert.fail;
 
 public class ExperimentUserStoriesTests
 {
+    DataBase dataBase = DataBase.getInstanceTesting();;
     private Solo solo;
     private NavigationActivity currentTestingActivity;
 
@@ -63,7 +64,6 @@ public class ExperimentUserStoriesTests
     private ExperimentMaker maker;
     private Experiment testExperiment;
     private UUID testUUID;
-    private DataBase dataBase;
 
     @Rule
     public ActivityTestRule<NavigationActivity> rule =
@@ -73,7 +73,6 @@ public class ExperimentUserStoriesTests
     @Before
     public void setup() {
 
-        dataBase = DataBase.getInstanceTesting();
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
         currentTestingActivity = (NavigationActivity) solo.getCurrentActivity();
 
@@ -97,6 +96,7 @@ public class ExperimentUserStoriesTests
 
     @After
     public void endTest() throws NoSuchFieldException, IllegalAccessException {
+        dataBase.getFireStore().disableNetwork();
         dataBase.getFireStore().terminate();
         dataBase.getFireStore().clearPersistence();
         solo.finishOpenedActivities();
@@ -164,11 +164,14 @@ public class ExperimentUserStoriesTests
         solo.clickOnText("My Experiments");
         solo.sleep(2000);
         addExperimentButton = solo.getView(R.id.fab_button);
+        solo.sleep(1000);
         makeExperiment("GUI Test Experiment");
         //Clicking on publish button
+        solo.sleep(1000);
         publishButton = solo.getView(R.id.publishedCheckbox);
-        solo.clickOnView(publishButton);
 
+        solo.clickOnView(publishButton);
+        solo.sleep(1000);
         solo.clickOnActionBarHomeButton();
         solo.clickOnText("Published Experiments");
 
@@ -360,6 +363,7 @@ public class ExperimentUserStoriesTests
             solo.clickOnActionBarHomeButton();
             solo.sleep(2000);
             int trialSizeAfter = current.getSize();
+            solo.sendKey(2000);
 
             assertEquals("Trials not added", true, trialSizeAfter > trialSizeBefore);
         }

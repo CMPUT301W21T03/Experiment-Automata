@@ -62,7 +62,7 @@ public class ExperimentUserStoriesTests
 
     //Needed Objects
     private ExperimentMaker maker;
-    private Experiment testExperiment;
+    private Experiment<?> testExperiment;
     private UUID testUUID;
 
     @Rule
@@ -72,7 +72,10 @@ public class ExperimentUserStoriesTests
 
     @Before
     public void setup() {
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
         currentTestingActivity = (NavigationActivity) solo.getCurrentActivity();
 
@@ -112,12 +115,16 @@ public class ExperimentUserStoriesTests
         dataBase = DataBase.getInstanceTesting();
     }
 
+<<<<<<< HEAD
     private void makeExperiment(String des)
     {
         solo.clickOnActionBarHomeButton();
         solo.clickOnText("My Experiments");
         solo.sleep(2000);
         addExperimentButton = solo.getView(R.id.fab_button);
+=======
+    private void makeExperiment(String des) {
+>>>>>>> main
         //Click from the home screen the + button to make an experiment
         solo.clickOnView(addExperimentButton);
         solo.waitForDialogToOpen();
@@ -157,6 +164,7 @@ public class ExperimentUserStoriesTests
      * (This test is following the golden path)
      */
     @Test
+<<<<<<< HEAD
     public void testMakeAnExperimentCount()
     {
 
@@ -165,6 +173,9 @@ public class ExperimentUserStoriesTests
         solo.sleep(2000);
         addExperimentButton = solo.getView(R.id.fab_button);
         solo.sleep(1000);
+=======
+    public void testMakeAnExperimentCount() {
+>>>>>>> main
         makeExperiment("GUI Test Experiment");
         //Clicking on publish button
         solo.sleep(1000);
@@ -188,12 +199,16 @@ public class ExperimentUserStoriesTests
      * per(us.01.01.01)
      */
     @Test
+<<<<<<< HEAD
     public void testMakeExperimentCancel()
     {
         solo.clickOnActionBarHomeButton();
         solo.clickOnText("My Experiments");
         solo.sleep(2000);
         addExperimentButton = solo.getView(R.id.fab_button);
+=======
+    public void testMakeExperimentCancel() {
+>>>>>>> main
         assertNotEquals("Can't find + button", null, addExperimentButton);
 
         //Click from the home screen the + button to make an experiment
@@ -231,12 +246,16 @@ public class ExperimentUserStoriesTests
      * per(us.01.01.01)
      */
     @Test
+<<<<<<< HEAD
     public void makeEmptyExperiment()
     {
         solo.clickOnActionBarHomeButton();
         solo.clickOnText("My Experiments");
         solo.sleep(2000);
         addExperimentButton = solo.getView(R.id.fab_button);
+=======
+    public void makeEmptyExperiment() {
+>>>>>>> main
         assertNotEquals("Can't find + button", null, addExperimentButton);
 
         //Click from the home screen the + button to make an experiment
@@ -282,8 +301,7 @@ public class ExperimentUserStoriesTests
      * per(us.01.02.01)
      */
     @Test
-    public void testingUnpublishedExperiment()
-    {
+    public void testingUnpublishedExperiment() {
         makeExperiment("GUI Test Experiment");
 
 
@@ -318,8 +336,7 @@ public class ExperimentUserStoriesTests
      * As per (us.01.03.01)
      */
     @Test
-    public void testingIfWeCanEndAnExperiment()
-    {
+    public void testingIfWeCanEndAnExperiment() {
         View editButton = null;
         makeExperiment("GUI Test Experiment");
 
@@ -343,9 +360,8 @@ public class ExperimentUserStoriesTests
      * as per(us.01.05.01)
      */
     @Test
-    public void testingAddingTrials()
-    {
-        Experiment current = null;
+    public void testingAddingTrials() {
+        Experiment<?> current = null;
         makeExperiment("GUI Test Experiment");
         solo.sleep(2000);
         if(currentTestingActivity.experimentManager.getAllExperiments().size() > 0) {

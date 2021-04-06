@@ -12,47 +12,47 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.example.experiment_automata.R;
-import com.example.experiment_automata.backend.DataBase;
-import com.example.experiment_automata.backend.trials.Trial;
-import com.example.experiment_automata.backend.users.ContactInformation;
-
-import com.example.experiment_automata.backend.users.UserManager;
-import com.example.experiment_automata.ui.experiments.AddExperimentFragment;
-import com.example.experiment_automata.backend.experiments.ExperimentManager;
-import com.example.experiment_automata.ui.experiments.NavExperimentDetailsFragment;
-import com.example.experiment_automata.backend.experiments.Experiment;
-
-import com.example.experiment_automata.ui.profile.EditUserFragment;
-import com.example.experiment_automata.ui.profile.ProfileFragment;
-import com.example.experiment_automata.ui.question.AddQuestionFragment;
-import com.example.experiment_automata.ui.question.QuestionDisplay;
-import com.example.experiment_automata.backend.questions.Question;
-import com.example.experiment_automata.backend.questions.QuestionManager;
-import com.example.experiment_automata.backend.questions.Reply;
-
-import com.example.experiment_automata.backend.users.User;
-import com.example.experiment_automata.ui.home.HomeFragment;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
-
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+
+import com.example.experiment_automata.R;
+import com.example.experiment_automata.backend.DataBase;
+import com.example.experiment_automata.backend.barcode.BarcodeManager;
+import com.example.experiment_automata.backend.experiments.Experiment;
+import com.example.experiment_automata.backend.experiments.ExperimentManager;
+import com.example.experiment_automata.backend.questions.Question;
+import com.example.experiment_automata.backend.questions.QuestionManager;
+import com.example.experiment_automata.backend.questions.Reply;
+import com.example.experiment_automata.backend.location.LocationServices;
+
+import com.example.experiment_automata.backend.trials.Trial;
+import com.example.experiment_automata.backend.users.ContactInformation;
+import com.example.experiment_automata.backend.users.User;
+import com.example.experiment_automata.backend.users.UserManager;
+import com.example.experiment_automata.ui.experiments.AddExperimentFragment;
+import com.example.experiment_automata.ui.experiments.NavExperimentDetailsFragment;
+import com.example.experiment_automata.ui.home.HomeFragment;
+import com.example.experiment_automata.ui.profile.EditUserFragment;
+import com.example.experiment_automata.ui.profile.ProfileFragment;
+import com.example.experiment_automata.ui.question.AddQuestionFragment;
+import com.example.experiment_automata.ui.question.QuestionDisplay;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.UUID;
 
@@ -75,6 +75,7 @@ public class NavigationActivity extends AppCompatActivity implements
     private DataBase dataBase = DataBase.getInstance();
     private AppBarConfiguration mAppBarConfiguration;
     public final ExperimentManager experimentManager = ExperimentManager.getInstance();
+    public final BarcodeManager barcodeManager = BarcodeManager.getInstance();
     public QuestionManager questionManager = QuestionManager.getInstance();
     public UserManager userManager = UserManager.getInstance();
 
@@ -150,7 +151,7 @@ public class NavigationActivity extends AppCompatActivity implements
                         currentScreen = Screen.Trial;
                         break;
                     case Trial:
-                        Experiment experiment = experimentManager.getCurrentExperiment();
+                        Experiment<?> experiment = experimentManager.getCurrentExperiment();
                         Snackbar snackbar = Snackbar.make(view, "No value was given", Snackbar.LENGTH_SHORT);
                         try {
                             Object result = null;
@@ -171,7 +172,7 @@ public class NavigationActivity extends AppCompatActivity implements
                                     break;
                             }
                             currentTrial.setResult(result);
-                            addTrial(experiment, currentTrial);
+                            addTrial((Experiment<Trial<?>>) experiment, currentTrial);
                             currentTrial = null;
                             currentScreen = Screen.ExperimentDetails;
                             navController.navigateUp();
@@ -190,7 +191,10 @@ public class NavigationActivity extends AppCompatActivity implements
                 }
             }
         });
+
+
     }
+
 
     /**
      * Prepare search bar functionality
@@ -241,6 +245,7 @@ public class NavigationActivity extends AppCompatActivity implements
             }
         });
         return true;
+
     }
 
     /**
@@ -261,8 +266,7 @@ public class NavigationActivity extends AppCompatActivity implements
      *  Experiment to be added to the experiment manager
      */
     @Override
-    public void onOkPressed(Experiment experiment) {
-
+    public void onOkPressed(Experiment<?> experiment) {
         boolean added = false;
         while (!added) {
             try {
@@ -296,7 +300,7 @@ public class NavigationActivity extends AppCompatActivity implements
     // todo: this functionality should be moved into something else in the future
     public void onOKPressedEdit(String experimentDescription, int experimentTrials,
                                 boolean experimentLocation, boolean experimentNewResults,
-                                Experiment currentExperiment) {
+                                Experiment<?> currentExperiment) {
         currentExperiment.setDescription(experimentDescription);
         currentExperiment.setMinTrials(experimentTrials);
         currentExperiment.setRequireLocation(experimentLocation);
@@ -382,20 +386,16 @@ public class NavigationActivity extends AppCompatActivity implements
      * @param experiment the experiment we want to add the trial
      * @param trial the trial we wish to add to the experiment
      */
-    public void addTrial(Experiment experiment,  Trial trial)
-    {
-        if (experiment.isRequireLocation())
-        {
-            if(trial.getLocation() != null ) {
+    public void addTrial(Experiment<Trial<?>> experiment, Trial<?> trial) {
+        if (experiment.isRequireLocation()) {
+            if (trial.getLocation() != null ) {
                 experiment.recordTrial(trial);
-            }
-            else {
+            } else {
                 Toast.makeText(getApplicationContext(),
                         "Error: Trial recorded due to error: try again later",
                         Toast.LENGTH_LONG).show();
             }
-        }
-        else {
+        } else {
             experiment.recordTrial(trial);
         }
     }
@@ -416,17 +416,15 @@ public class NavigationActivity extends AppCompatActivity implements
      *          Full Source: https://stackoverflow.com/questions/1513485/how-do-i-get-the-current-gps-location-programmatically-in-android
      */
     @SuppressLint("MissingPermission")
-    public void addLocationToTrial(Trial currentTrial) {
-        if(canMakeLocationTrials)
-        {
+    public void addLocationToTrial(Trial<?> currentTrial) {
+        if(canMakeLocationTrials) {
 
             //TODO: Place location warning dialog here -- Display only once?
             LocationManager locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-            LocationListener locationListener = new com.example.experiment_automata.backend.Location.LocationServices();
+            LocationListener locationListener = new LocationServices();
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 1, locationListener);
             currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        }
-        else {
+        } else {
             currentLocation = null;
         }
         currentTrial.setLocation(currentLocation);
@@ -442,11 +440,9 @@ public class NavigationActivity extends AppCompatActivity implements
      *          Editor: Alphabet LLC
      *          Full Source: https://developer.android.com/training/permissions/requesting#java
      */
-    public void requestLocationResourcePermissions()
-    {
-        if(ContextCompat.checkSelfPermission(getApplicationContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-        {
+    public void requestLocationResourcePermissions() {
+        if (ContextCompat.checkSelfPermission(getApplicationContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]
                             {
                                     Manifest.permission.ACCESS_FINE_LOCATION,
@@ -455,9 +451,7 @@ public class NavigationActivity extends AppCompatActivity implements
 
                             },
                     PERMISSON_REQUEST_CODE);
-        }
-        else
-            canMakeLocationTrials = true;
+        } else canMakeLocationTrials = true;
     }
 
     /**
@@ -475,19 +469,14 @@ public class NavigationActivity extends AppCompatActivity implements
      *          Full Source: https://developer.android.com/training/permissions/requesting#java
     */
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
-    {
-        switch (requestCode)
-        {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
             case PERMISSON_REQUEST_CODE:
                 if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                     canMakeLocationTrials = true;
-                else
-                {
+                else {
                     //TODO: Make dialog or warning windows of what these means for the project
                 }
-                return;
-
         }
     }
 
@@ -509,4 +498,5 @@ public class NavigationActivity extends AppCompatActivity implements
         }
         user.updateFirestore();
     }
+
 }

@@ -73,16 +73,16 @@ public class ExperimentTestWithFirebase {
 
     @Test
     public void countAdd() {
-        CountExperiment experiment = (CountExperiment) maker.makeExperiment(ExperimentType.Count,
+        CountExperiment experiment = (CountExperiment) ExperimentMaker.makeExperiment(ExperimentType.Count,
                 "Count Experiment", 0, false, true, userId);
         experiment.recordTrial(new CountTrial(userId));
         experiment.setActive(false);
-        assertThrows(IllegalStateException.class, ()->experiment.recordTrial(new CountTrial(userId)));
+        assertThrows(IllegalStateException.class, () -> experiment.recordTrial(new CountTrial(userId)));
     }
 
     @Test
     public void naturalCountAdd() {
-        NaturalCountExperiment experiment = (NaturalCountExperiment) maker.makeExperiment(ExperimentType.NaturalCount,
+        NaturalCountExperiment experiment = (NaturalCountExperiment) ExperimentMaker.makeExperiment(ExperimentType.NaturalCount,
                 "Count Experiment", 0, false, true, userId);
         experiment.recordTrial(new NaturalCountTrial(userId, 1));
         experiment.setActive(false);
@@ -91,7 +91,7 @@ public class ExperimentTestWithFirebase {
 
     @Test
     public void binomialAdd() {
-        BinomialExperiment experiment = (BinomialExperiment) maker.makeExperiment(ExperimentType.Binomial,
+        BinomialExperiment experiment = (BinomialExperiment) ExperimentMaker.makeExperiment(ExperimentType.Binomial,
                 "Count Experiment", 0, false, true, userId);
         experiment.recordTrial(new BinomialTrial(userId, true));
         experiment.setActive(false);
@@ -100,7 +100,7 @@ public class ExperimentTestWithFirebase {
 
     @Test
     public void measurementAdd() {
-        MeasurementExperiment experiment = (MeasurementExperiment) maker.makeExperiment(ExperimentType.Measurement,
+        MeasurementExperiment experiment = (MeasurementExperiment) ExperimentMaker.makeExperiment(ExperimentType.Measurement,
                 "Count Experiment", 0, false, true, userId);
         experiment.recordTrial(new MeasurementTrial(userId, 3));
         experiment.setActive(false);
@@ -109,8 +109,8 @@ public class ExperimentTestWithFirebase {
 
     @Test
     public void minTrials() {
-        int trials = 10;
-        Experiment experiment = maker.makeExperiment(ExperimentType.Count,
+        Integer trials = 10;
+        Experiment<?> experiment = ExperimentMaker.makeExperiment(ExperimentType.Count,
                 "Experiment", trials, false, false, userId);
         assertEquals(trials, experiment.getMinTrials());
         trials++;
@@ -120,7 +120,7 @@ public class ExperimentTestWithFirebase {
 
     @Test
     public void publishing() {
-        Experiment experiment = maker.makeExperiment(ExperimentType.Count,
+        Experiment<?> experiment = ExperimentMaker.makeExperiment(ExperimentType.Count,
                 "Experiment", 0, false, false, userId);
         assertFalse(experiment.isPublished());
         experiment.setPublished(true);
@@ -130,7 +130,7 @@ public class ExperimentTestWithFirebase {
     @Test
     public void description() {
         String description = "The cake is a lie";
-        Experiment experiment = maker.makeExperiment(ExperimentType.Count,
+        Experiment<?> experiment = ExperimentMaker.makeExperiment(ExperimentType.Count,
                 description, 0, false, false, userId);
         assertEquals(description, experiment.getDescription());
         description = "Return to monke";
@@ -140,7 +140,7 @@ public class ExperimentTestWithFirebase {
 
     @Test
     public void requireLocation() {
-        Experiment experiment = maker.makeExperiment(ExperimentType.Count,
+        Experiment<?> experiment = ExperimentMaker.makeExperiment(ExperimentType.Count,
                 "Experiment", 0, false, false, userId);
         assertFalse(experiment.isRequireLocation());
         experiment.setRequireLocation(true);

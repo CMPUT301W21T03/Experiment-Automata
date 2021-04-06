@@ -28,7 +28,7 @@ public class ExperimentManagerTestsFireBase {
 
     DataBase dataBase = DataBase.getInstanceTesting();;
     private ExperimentManager experimentManager;
-    private ArrayList<Experiment> experiments;
+    private ArrayList<Experiment<?>> experiments;
     private ArrayList<UUID> experimentReferences;
     private UUID userId;
     private Solo solo;
@@ -49,19 +49,20 @@ public class ExperimentManagerTestsFireBase {
          * Full:https://stackoverflow.com/questions/15993314/clicking-on-action-bar-menu-items-in-robotium
          */
         FirebaseApp.initializeApp(InstrumentationRegistry.getInstrumentation().getTargetContext());
+
         ExperimentMaker experimentMaker = new ExperimentMaker();
         experimentManager = ExperimentManager.getInstance();
         experiments = new ArrayList<>();
         experimentReferences = new ArrayList<>();
         userId = UUID.randomUUID();
-        Experiment e = experimentMaker.makeExperiment(ExperimentType.Binomial,
+        Experiment<?> e = ExperimentMaker.makeExperiment(ExperimentType.Binomial,
                 "Test Experiment First", 0, false, true, userId);
         UUID id = e.getExperimentId();
         experimentReferences.add(id);
         experiments.add(e);
         experimentManager.add(id, e);
 
-        e = experimentMaker.makeExperiment(ExperimentType.Binomial,
+        e = ExperimentMaker.makeExperiment(ExperimentType.Binomial,
                 "Test Experiment Second", 0, true, false, UUID.randomUUID());
         id = e.getExperimentId();
         experimentReferences.add(e.getExperimentId());
@@ -89,20 +90,6 @@ public class ExperimentManagerTestsFireBase {
         dataBase = DataBase.getInstanceTesting();
     }
 
-    /**
-     *  resets the experiment manager instence
-     *  Source:
-     *      Author:https://stackoverflow.com/users/1230702/teded
-     *      Editor:https://stackoverflow.com/users/1230702/teded
-     *      Full URL:https://stackoverflow.com/questions/8256989/singleton-and-unit-testing
-     * @throws NoSuchFieldException
-     */
-    @After
-    public void cleanWorld() throws NoSuchFieldException, IllegalAccessException {
-        Field currentInstence = ExperimentManager.class.getDeclaredField("experimentManager");
-        currentInstence.setAccessible(true);
-        currentInstence.set(currentInstence, null);
-    }
 
     //Testing small change work as expected
     @Test
@@ -112,7 +99,7 @@ public class ExperimentManagerTestsFireBase {
         assertEquals(experiments.get(1),
                 experimentManager.queryExperiments(experimentReferences).get(1));
         assertEquals(2, experimentManager.getSize());
-        Experiment experiment = experiments.get(0);
+        Experiment<?> experiment = experiments.get(0);
         try {
             experimentManager.add(experiment.getExperimentId(), experiment);
             fail("Duplicate Experiment ID was not detected as a duplicate");
@@ -128,18 +115,18 @@ public class ExperimentManagerTestsFireBase {
 
     @Test
     public void ownedExperiments() {
-        ArrayList<Experiment> ownedExperiments = experimentManager.getOwnedExperiments(userId);
+        ArrayList<Experiment<?>> ownedExperiments = experimentManager.getOwnedExperiments(userId);
         assertEquals(experiments.get(0), ownedExperiments.get(0));
     }
 
     @Test
     public void queryExperimentsUUID() {
-        ArrayList<Experiment> foundExperiments = experimentManager.queryExperiments(experimentReferences);
+        ArrayList<Experiment<?>> foundExperiments = experimentManager.queryExperiments(experimentReferences);
         assertEquals(experiments, foundExperiments);
 
         ArrayList<UUID> fakeUUID = new ArrayList<>();
         fakeUUID.add(UUID.randomUUID());
-        ArrayList<Experiment> fakeExperiments = experimentManager.queryExperiments(fakeUUID);
+        ArrayList<Experiment<?>> fakeExperiments = experimentManager.queryExperiments(fakeUUID);
         assertEquals(0, fakeExperiments.size());
         assertEquals(0, fakeExperiments.size());
     }
@@ -156,11 +143,11 @@ public class ExperimentManagerTestsFireBase {
 
     @Test
     public void publishedExperiments() {
-        ArrayList<Experiment> publishedExperiments = experimentManager.getPublishedExperiments();
+        ArrayList<Experiment<?>> publishedExperiments = experimentManager.getPublishedExperiments();
         // None of the experiments have been published
         assertEquals(0, publishedExperiments.size());
         // Publish all the experiments
-        for (Experiment e : experiments) {
+        for (Experiment<?> e : experiments) {
             e.setPublished(true);
         }
         publishedExperiments = experimentManager.getPublishedExperiments();
@@ -189,7 +176,7 @@ public class ExperimentManagerTestsFireBase {
     public void queryPublishedExperiments() {
         assertEquals(0, experimentManager.queryPublishedExperiments("First").size());
         assertEquals(0, experimentManager.queryPublishedExperiments("Garbage").size());
-        for (Experiment e : experiments) {
+        for (Experiment<?> e : experiments) {
             e.setPublished(true);
         }
         assertEquals(1, experimentManager.queryPublishedExperiments("First").size());
@@ -216,10 +203,8 @@ public class ExperimentManagerTestsFireBase {
     }
 
     @Test
-    public void testingAllExperimentsReturned()
-    {
-        ExperimentMaker maker = new ExperimentMaker();
-        ArrayList<Experiment> testValues = new ArrayList<>();
+    public void testingAllExperimentsReturned() {
+        ArrayList<Experiment<?>> testValues = new ArrayList<>();
         for(int i = 0; i < 10; i++)
         {
             String des = "" + i;
@@ -227,7 +212,7 @@ public class ExperimentManagerTestsFireBase {
             boolean active = (i % 2) == 0;
             boolean location = (i % 3) == 0;
             UUID random = UUID.randomUUID();
-            Experiment ex = maker.makeExperiment(ExperimentType.Count, des, minTrials, active, location, random);
+            Experiment<?> ex = ExperimentMaker.makeExperiment(ExperimentType.Count, des, minTrials, active, location, random);
             testValues.add(ex);
             experimentManager.add(random, ex);
         }

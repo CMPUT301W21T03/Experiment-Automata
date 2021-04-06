@@ -10,7 +10,7 @@
         android:id="@+id/map_point_view_experiment_loc_error_display"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/map_point_view_experiment_no_loc_err"
+        android:text="This Expression Does Not Have Location Trials"
         android:textColor="#FF0000"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"

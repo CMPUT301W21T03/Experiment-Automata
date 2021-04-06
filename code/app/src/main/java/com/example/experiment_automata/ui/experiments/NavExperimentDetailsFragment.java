@@ -49,6 +49,7 @@ public class NavExperimentDetailsFragment extends Fragment {
     private Experiment<?> experiment;
     private TextView descriptionView;
     private TextView typeView;
+    private TextView minTrials;
     private ImageButton editImageButton;
     private ImageButton subscribeButton;
     private ImageButton questionsButton;
@@ -120,6 +121,7 @@ public class NavExperimentDetailsFragment extends Fragment {
 
         descriptionView = root.findViewById(R.id.nav_experiment_details_description);
         typeView = root.findViewById(R.id.nav_experiment_details_experiment_type);
+        minTrials = root.findViewById(R.id.nav_experiment_details_min_trials);
         editImageButton = root.findViewById(R.id.nav_fragment_experiment_detail_view_edit_button);
         subscribeButton = root.findViewById(R.id.nav_fragment_experiment_view_subscribe_button);
         questionsButton = root.findViewById(R.id.nav_fragment_experiment_detail_view_qa_button);
@@ -221,6 +223,7 @@ public class NavExperimentDetailsFragment extends Fragment {
                 .getAtUUIDDescription(UUID.fromString(experimentStringId));
         descriptionView.setText(current.getDescription());
         typeView.setText(current.getType().toString());
+        minTrials.setText(String.format("Minimum Trials: %d", current.getMinTrials()));
 
         // Disable FAB if not accepting new trials
         FloatingActionButton fab = getActivity().findViewById(R.id.fab_button);

@@ -11,12 +11,11 @@ import java.util.UUID;
  *
  *      1. None
  */
-public class MeasurementQRCode extends QRCode{
-    private float value;
+public class MeasurementQRCode extends QRCode<Float>{
 
     public MeasurementQRCode(UUID experimentID, float value) {
         super(experimentID, QRType.MeasurementTrial);
-        this.value = value;
+        setValue(value);
         String packedString = "";
         packedString += AUTOMATA_QR_HEADER;
         packedString += experimentID.toString();
@@ -25,14 +24,12 @@ public class MeasurementQRCode extends QRCode{
         //create QR image
         try {
             this.setQrCodeImage(encodeStringToQR(packedString));
-        } catch (WriterException wException) {
+        }
+        catch (WriterException wException){
             //return special bitmap maybe?
             wException.printStackTrace();
         }
         this.setRawContentString(packedString);
     }
 
-    public float getValue() {
-        return value;
-    }
 }

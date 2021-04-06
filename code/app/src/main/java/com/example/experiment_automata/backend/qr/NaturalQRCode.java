@@ -11,11 +11,10 @@ import java.util.UUID;
  *
  *      1. None
  */
-public class NaturalQRCode extends QRCode{
-    private int value;
-
+public class NaturalQRCode extends QRCode<Integer>{
     public NaturalQRCode(UUID experimentID, int value) {
         super(experimentID, QRType.NaturalCountTrial);
+        setValue(value);
         String packedString = "";
         packedString += AUTOMATA_QR_HEADER;
         packedString += experimentID.toString();
@@ -24,14 +23,12 @@ public class NaturalQRCode extends QRCode{
         //create QR image
         try {
             this.setQrCodeImage(encodeStringToQR(packedString));
-        } catch (WriterException wException) {
+        }
+        catch (WriterException wException){
             //return special bitmap maybe?
             wException.printStackTrace();
         }
         this.setRawContentString(packedString);
     }
 
-    public int getValue() {
-        return value;
-    }
 }

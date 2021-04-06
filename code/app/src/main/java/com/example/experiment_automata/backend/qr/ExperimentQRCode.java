@@ -11,8 +11,8 @@ import java.util.UUID;
  *
  *      1. None
  */
-public class ExperimentQRCode extends QRCode{
-    public ExperimentQRCode(UUID experimentID) {
+public class ExperimentQRCode extends QRCode<Object>{
+    public ExperimentQRCode(UUID experimentID){//build a Binomial QR code
         super(experimentID,QRType.Experiment);
         //pack header
         String packedString = "";

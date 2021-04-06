@@ -12,7 +12,7 @@ import java.util.UUID;
  *
  *      1. None
  */
-public class CountQRCode extends QRCode{
+public class CountQRCode extends QRCode<Object>{
     public CountQRCode(UUID experimentID) {
         super(experimentID, QRType.CountTrial);
         //pack header

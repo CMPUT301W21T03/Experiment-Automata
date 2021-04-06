@@ -103,7 +103,6 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment<?>> {
 
         }
 
-
         owner.setText(user.getInfo().getName());
         User finalUser = user;
         owner.setOnClickListener(v -> {

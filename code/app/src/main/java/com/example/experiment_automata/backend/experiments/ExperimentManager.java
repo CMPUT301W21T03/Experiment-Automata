@@ -243,8 +243,7 @@ public class ExperimentManager {
      * Populate experiments in Experiment manager with all experiments from Firestore
      */
     public void getAllFromFirestore() {
-        if(TEST_MODE)
-            return;
+        if(TEST_MODE) return;
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference experimentCollection = db.collection("experiments");
         getFromFirestoreFromQuery(experimentCollection.get());
@@ -256,8 +255,7 @@ public class ExperimentManager {
      * @param value the value to filter
      */
     public void filterFromFirestore(@NonNull String key, @NonNull Object value) {
-        if(TEST_MODE)
-            return;
+        if(TEST_MODE) return;
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference experimentCollection = db.collection("experiments");
         getFromFirestoreFromQuery(experimentCollection.whereEqualTo(key, value).get());
@@ -268,8 +266,7 @@ public class ExperimentManager {
      * @param values the document IDs to filter
      */
     public void filterFromFirestore(@NonNull List<String> values) {
-        if(TEST_MODE)
-            return;
+        if(TEST_MODE) return;
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference experimentCollection = db.collection("experiments");
         for (String experiment : values) {
@@ -301,12 +298,12 @@ public class ExperimentManager {
                         if (document.get("results") != null) {
                             buildTrials(currentExperiment, document.get("results"));
                         }
-                        experiments.put(currentDocId,currentExperiment);
-                        Log.d("FIRESTORE",(String) document.get("description"));
+                        experiments.put(currentDocId, currentExperiment);
+                        Log.d("FIRESTORE", (String) document.get("description"));
                     }
                 } else {
                     //not able to query all from firestore
-                    Log.d("FIRESTORE","Unable to pull experiments from firestore");
+                    Log.d("FIRESTORE", "Unable to pull experiments from firestore");
                 }
             }
         });
@@ -336,11 +333,11 @@ public class ExperimentManager {
                     if (document.get("results") != null) {
                         buildTrials(currentExperiment, document.get("results"));
                     }
-                    experiments.put(currentDocId,currentExperiment);
-                    Log.d("FIRESTORE",(String) document.get("description"));
+                    experiments.put(currentDocId, currentExperiment);
+                    Log.d("FIRESTORE", (String) document.get("description"));
                 } else {
                     //not able to query all from firestore
-                    Log.d("FIRESTORE","Unable to pull experiments from firestore");
+                    Log.d("FIRESTORE", "Unable to pull experiments from firestore");
                 }
             }
         });
@@ -349,11 +346,11 @@ public class ExperimentManager {
     /**
      * Populates given experiment with trials found in trials from firestore
      * @param experiment
-     *  Experiment you want to populate
+     *  Experiment ID you want to populate
      * @param trialsObj
      *  Hashmap containing other hashmaps as found in the results field in the given Experiment document
      */
-    public void buildTrials(Experiment<?> experiment, Object trialsObj){
+    private void buildTrials(Experiment<?> experiment, Object trialsObj){
         HashMap<String, Object> trials = (HashMap<String, Object>) trialsObj;
         for (String k : trials.keySet()){
             HashMap<String, Object> currentTrialMap = (HashMap<String, Object>) trials.get(k);
@@ -363,6 +360,7 @@ public class ExperimentManager {
             switch(experiment.getType()){
                 case Binomial:
                     boolean binResult = (boolean) currentTrialMap.get("result");
+
                     if (experiment.isRequireLocation()) {
                         trial = new BinomialTrial(ownerId, locationFromTrialHash(currentTrialMap), binResult);
                     } else {
@@ -377,7 +375,7 @@ public class ExperimentManager {
                     }
                     break;
                 case NaturalCount:
-                    int natResult = (int)((long) currentTrialMap.get("result"));
+                    int natResult = (int) ((long) currentTrialMap.get("result"));
 
                     if (experiment.isRequireLocation()) {
                         trial = new NaturalCountTrial(ownerId, locationFromTrialHash(currentTrialMap), natResult);
@@ -386,7 +384,7 @@ public class ExperimentManager {
                     }
                     break;
                 case Measurement:
-                    float measResult = (float)((double)currentTrialMap.get("result"));
+                    float measResult = (float) ((double) currentTrialMap.get("result"));
 
                     if (experiment.isRequireLocation()) {
                         trial = new MeasurementTrial(ownerId, locationFromTrialHash(currentTrialMap), measResult);
@@ -395,9 +393,11 @@ public class ExperimentManager {
                     }
                     break;
             }
+            Log.d("FIRESTORE", experiment.toString());
             experiment.recordTrial(trial, true);
         }
     }
+
     /**
      * Build a Location form trial hashmap taken from firestore
      * @param trialHash
@@ -462,24 +462,17 @@ public class ExperimentManager {
      * @return
      *  The list of all made experiments
      */
-    public ArrayList<Experiment<?>> getAllExperiments()
-    {
+    public ArrayList<Experiment<?>> getAllExperiments() {
         return new ArrayList<>(experiments.values());
     }
 
     /**
      * enables test mode (Does not talk to firebase)
      */
-    public void enableTestMode()
-    {
-        TEST_MODE = true;
-    }
+    public void enableTestMode() { TEST_MODE = true; }
 
     /**
      * disables test mode (Talks to firebase)
      */
-    public void disableTestMode()
-    {
-        TEST_MODE = false;
-    }
+    public void disableTestMode() { TEST_MODE = false; }
 }

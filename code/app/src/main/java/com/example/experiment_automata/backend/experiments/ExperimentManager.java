@@ -13,6 +13,7 @@ import com.example.experiment_automata.backend.trials.Trial;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -240,18 +242,52 @@ public class ExperimentManager {
     /**
      * Populate experiments in Experiment manager with all experiments from Firestore
      */
-    public void getAllFromFirestore(){
+    public void getAllFromFirestore() {
         if(TEST_MODE)
             return;
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference experimentCollection = db.collection("experiments");
-        experimentCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        getFromFirestoreFromQuery(experimentCollection.get());
+    }
+
+    /**
+     * Populate experiments in Experiment manager with some experiments from Firestore according to the filter
+     * @param key the key to filter
+     * @param value the value to filter
+     */
+    public void filterFromFirestore(@NonNull String key, @NonNull Object value) {
+        if(TEST_MODE)
+            return;
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference experimentCollection = db.collection("experiments");
+        getFromFirestoreFromQuery(experimentCollection.whereEqualTo(key, value).get());
+    }
+
+    /**
+     * Populate experiments in Experiment manager with some experiments from Firestore according to the filter
+     * @param values the document IDs to filter
+     */
+    public void filterFromFirestore(@NonNull List<String> values) {
+        if(TEST_MODE)
+            return;
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference experimentCollection = db.collection("experiments");
+        for (String experiment : values) {
+            getFromFirestoreFromDocument(experimentCollection.document(experiment).get());
+        }
+    }
+
+    /**
+     * Update the experiment manager based on a firestore query.
+     * @param querySnapshotTask The task of the query
+     */
+    private void getFromFirestoreFromQuery(Task<QuerySnapshot> querySnapshotTask) {
+        querySnapshotTask.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                ExperimentMaker maker = new ExperimentMaker();
                 if (task.isSuccessful()){
-                    for (QueryDocumentSnapshot document : task.getResult()){
-                        Experiment<?> currentExperiment = maker.makeExperiment(
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Experiment<?> currentExperiment = ExperimentMaker.makeExperiment(
                                 ExperimentType.valueOf((String) document.get("type")),
                                 (String) document.get("description"),
                                 ((Long) document.get("min-trials")).intValue(),
@@ -262,22 +298,54 @@ public class ExperimentManager {
                                 UUID.fromString(document.getId())
                         );
                         UUID currentDocId = UUID.fromString(document.getId());
-                        if ( document.get("results") != null){
+                        if (document.get("results") != null) {
                             buildTrials(currentExperiment, document.get("results"));
                         }
-
-
                         experiments.put(currentDocId,currentExperiment);
                         Log.d("FIRESTORE",(String) document.get("description"));
                     }
-                }
-                else{
+                } else {
                     //not able to query all from firestore
                     Log.d("FIRESTORE","Unable to pull experiments from firestore");
                 }
             }
         });
     }
+
+    /**
+     * Update the experiment manager from one document ID.
+     * @param documentSnapshotTask The task of the document
+     */
+    private void getFromFirestoreFromDocument(Task<DocumentSnapshot> documentSnapshotTask) {
+        documentSnapshotTask.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()){
+                    DocumentSnapshot document = task.getResult();
+                    Experiment<?> currentExperiment = ExperimentMaker.makeExperiment(
+                            ExperimentType.valueOf((String) document.get("type")),
+                            (String) document.get("description"),
+                            ((Long) document.get("min-trials")).intValue(),
+                            (boolean) document.get("location-required"),
+                            (boolean) document.get("accepting-new-results"),
+                            UUID.fromString((String) document.get("owner")),
+                            (boolean) document.get("published"),
+                            UUID.fromString(document.getId())
+                    );
+                    UUID currentDocId = UUID.fromString(document.getId());
+                    if (document.get("results") != null) {
+                        buildTrials(currentExperiment, document.get("results"));
+                    }
+                    experiments.put(currentDocId,currentExperiment);
+                    Log.d("FIRESTORE",(String) document.get("description"));
+                } else {
+                    //not able to query all from firestore
+                    Log.d("FIRESTORE","Unable to pull experiments from firestore");
+                }
+            }
+        });
+    }
+
     /**
      * Populates given experiment with trials found in trials from firestore
      * @param experiment

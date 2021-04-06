@@ -106,25 +106,37 @@ public class ScanQRFragment extends Fragment {
                     switch (qrCode.getType()){
                         case BinomialTrial:
                             trial = new BinomialTrial(user.getUserId(),(Boolean) qrCode.getValue());
-                            Experiment binExperiment =  experimentManager.getExperiment(qrCode.getExperimentID());//don't think this will work
+                            Experiment binExperiment =  experimentManager.getExperiment(qrCode.getExperimentID());
+                            if(binExperiment.isRequireLocation()){
+                                parentActivity.addLocationToTrial(trial);
+                            }
                             parentActivity.addTrial(binExperiment,trial);
                             Snackbar.make(getView(),"Binomial Trial with value " + qrCode.getValue() + " scanned successfully in "+ binExperiment.getDescription(),Snackbar.LENGTH_LONG).show();
                             break;
                         case CountTrial:
                             trial = new CountTrial(user.getUserId());
-                            Experiment countExperiment =  experimentManager.getExperiment(qrCode.getExperimentID());//don't think this will work
+                            Experiment countExperiment =  experimentManager.getExperiment(qrCode.getExperimentID());
+                            if(countExperiment.isRequireLocation()){
+                                parentActivity.addLocationToTrial(trial);
+                            }
                             parentActivity.addTrial(countExperiment,trial);
                             Snackbar.make(getView(),"Count Trial with value " + qrCode.getValue() + " scanned successfully in "+ countExperiment.getDescription(),Snackbar.LENGTH_LONG).show();
                             break;
                         case NaturalCountTrial:
                             trial = new NaturalCountTrial(user.getUserId(),(int) qrCode.getValue());
                             Experiment natExperiment = experimentManager.getExperiment(qrCode.getExperimentID());
+                            if(natExperiment.isRequireLocation()){
+                                parentActivity.addLocationToTrial(trial);
+                            }
                             parentActivity.addTrial(natExperiment,trial);
                             Snackbar.make(getView(),"NaturalCount Trial with value " + qrCode.getValue() + " scanned successfully in "+ natExperiment.getDescription(),Snackbar.LENGTH_LONG).show();
                             break;
                         case MeasurementTrial:
                             trial = new MeasurementTrial(user.getUserId(),(float) qrCode.getValue());
                             Experiment mesExperiment = experimentManager.getExperiment(qrCode.getExperimentID());
+                            if(mesExperiment.isRequireLocation()){
+                                parentActivity.addLocationToTrial(trial);
+                            }
                             parentActivity.addTrial(mesExperiment,trial);
                             Snackbar.make(getView(),"Measurement Trial with value " + qrCode.getValue() + " scanned successfully in " + mesExperiment.getDescription(),Snackbar.LENGTH_LONG).show();
 

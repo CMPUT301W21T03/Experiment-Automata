@@ -44,6 +44,15 @@ public abstract class BarcodeReference<T> {
         barcodeRefData.put("experiment-id",experimentId.toString());
         barcodeRefData.put("type",type.toString());//store type to make life easier
         barcodeRefData.put("result",result);
+        if(location == null){//must write nulls to overwrite values
+            barcodeRefData.put("longitude",null);
+            barcodeRefData.put("latitude",null);
+        }
+        else{
+            barcodeRefData.put("longitude",location.getLongitude());
+            barcodeRefData.put("latitude",location.getLatitude());
+        }
+
 
         db.collection("barcodes").document(barcodeVal).set(barcodeRefData);
     }

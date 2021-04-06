@@ -354,7 +354,7 @@ public class ExperimentManager {
      * @return
      *  The location in the given Trial
      */
-    public Location locationFromTrialHash(HashMap<String,Object> trialHash){
+        public Location locationFromTrialHash(HashMap<String,Object> trialHash){
         //ENSURE THAT THE GIVEN TRIAL HAS LAT/LON
         double latitude = (double) trialHash.get("latitude");
         double longitude = (double) trialHash.get("longitude");

@@ -101,18 +101,18 @@ public class BarcodeManager {
                         switch(type){
                             case Binomial:
                                 boolean boolVal = (boolean)document.get("result");
-                                currentBarcodeRef = new BinomialBarcodeReference(barcode,experimentId,ExperimentType.Binomial,boolVal);
+                                currentBarcodeRef = new BinomialBarcodeReference(barcode,experimentId,ExperimentType.Binomial,boolVal,locationFromPairing(document));
                                 break;
                             case Count:
-                                currentBarcodeRef = new CountBarcodeReference(barcode,experimentId,ExperimentType.Count);
+                                currentBarcodeRef = new CountBarcodeReference(barcode,experimentId,ExperimentType.Count,locationFromPairing(document));
                                 break;
                             case Measurement:
                                 float measVal = (float)((double)document.get("result"));
-                                currentBarcodeRef = new MeasurementBarcodeReference(barcode,experimentId,ExperimentType.Measurement,measVal);
+                                currentBarcodeRef = new MeasurementBarcodeReference(barcode,experimentId,ExperimentType.Measurement,measVal,locationFromPairing(document));
                                 break;
                             case NaturalCount:
                                 int natVal = (int)((long)document.get("result"));
-                                currentBarcodeRef = new NaturalBarcodeReference(barcode,experimentId,ExperimentType.NaturalCount,natVal);
+                                currentBarcodeRef = new NaturalBarcodeReference(barcode,experimentId,ExperimentType.NaturalCount,natVal,locationFromPairing(document));
                                 break;
                             default:
                                 //something went wrong when filling the database!
@@ -128,6 +128,26 @@ public class BarcodeManager {
             }
         });
     }
+    /**
+     * build a location form a barcodeReference Document in firestore
+     * @param document
+     *   document in the database representing a BarcodeReference
+     * @return
+     *  location represented by the entry in the database, returns null if no location
+
+     */
+    private Location locationFromPairing(QueryDocumentSnapshot document){
+        if(document.get("latitude") == null){
+            return null;
+        }
+        double latitude = (double) document.get("latitude");
+        double longitude = (double) document.get("longitude");
+        Location location = new Location("");
+        location.setLatitude(latitude);
+        location.setLongitude(longitude);
+        return location;
+    }
+
     /**
      * Return the barcodeReference that is represented by the given barcode Value
      * @param barcodeVal

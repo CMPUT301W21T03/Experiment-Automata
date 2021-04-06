@@ -85,7 +85,7 @@ public class AddBinomialTrialFragment extends Fragment {
                 bundle.putString("TYPE", QRType.BinomialTrial.toString());
                 bundle.putBoolean("BINVAL", checkBox.isChecked());
                 viewQRFragment.setArguments(bundle);
-                getActivity().getSupportFragmentManager().beginTransaction().add(viewQRFragment,"QR").commit();
+                requireActivity().getSupportFragmentManager().beginTransaction().add(viewQRFragment,"QR").commit();
             }
         });
         currentMapDisplay = root.findViewById(R.id.add_binomial_trial_map_view);
@@ -112,20 +112,20 @@ public class AddBinomialTrialFragment extends Fragment {
             if (qrCode.getType() == QRType.BinomialTrial){
                 checkBox.setChecked(((BinomialQRCode)qrCode).getValue());
                 Log.d("SCANNER","Scanned QR Successfully!");
-                Snackbar.make(root,"Scanned QR Successfully!",Snackbar.LENGTH_LONG).show();
+                Snackbar.make(root, "Scanned QR Successfully!", Snackbar.LENGTH_LONG).show();
 
             }
             else{
                 //send error tray message
                 Log.d("SCANNER","Scanned QR was of incorrect type " + qrCode.getType().toString());
-                Snackbar.make(root,"Scanned QR was of incorrect type",Snackbar.LENGTH_LONG).show();
+                Snackbar.make(root, "Scanned QR was of incorrect type", Snackbar.LENGTH_LONG).show();
             }
         }
         catch (QRMalformattedException qrMalE){
             //malformatted QR
             qrCode = null;
             Log.d("SCANNER","Scanned Malformatted QR");
-            Snackbar.make(root,"Scanned QR was not an Experiment-Automata QR Code",Snackbar.LENGTH_LONG).show();
+            Snackbar.make(root, "Scanned QR was not an Experiment-Automata QR Code", Snackbar.LENGTH_LONG).show();
         }
     }
 }

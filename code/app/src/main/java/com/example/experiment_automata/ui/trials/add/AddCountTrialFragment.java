@@ -87,7 +87,7 @@ public class AddCountTrialFragment extends Fragment {
                 bundle.putString("DESCRIPTION",experiment.getDescription());
                 bundle.putString("TYPE", QRType.CountTrial.toString());
                 viewQRFragment.setArguments(bundle);
-                getActivity().getSupportFragmentManager().beginTransaction().add(viewQRFragment,"QR").commit();
+                requireActivity().getSupportFragmentManager().beginTransaction().add(viewQRFragment,"QR").commit();
             }
         });
         CountExperiment currentExperiment = (CountExperiment) parentActivity.experimentManager.getCurrentExperiment();
@@ -116,19 +116,19 @@ public class AddCountTrialFragment extends Fragment {
             qrCode =qrMaker.decodeQRString(rawQRContent);
             if (qrCode.getType() == QRType.CountTrial){
                 Log.d("SCANNER","Scanned QR Successfully!");
-                Snackbar.make(root,"Scanned QR Successfully!",Snackbar.LENGTH_LONG).show();
+                Snackbar.make(root, "Scanned QR Successfully!", Snackbar.LENGTH_LONG).show();
             }
             else{
                 //send error tray message
                 Log.d("SCANNER","Scanned QR was of incorrect type " + qrCode.getType().toString());
-                Snackbar.make(root,"Scanned QR was of incorrect type",Snackbar.LENGTH_LONG).show();
+                Snackbar.make(root, "Scanned QR was of incorrect type", Snackbar.LENGTH_LONG).show();
             }
         }
         catch (QRMalformattedException qrMalE){
             //malformatted QR
             qrCode = null;
             Log.d("SCANNER","Scanned Malformatted QR");
-            Snackbar.make(root,"Scanned QR was not an Experiment-Automata QR Code",Snackbar.LENGTH_LONG).show();
+            Snackbar.make(root, "Scanned QR was not an Experiment-Automata QR Code", Snackbar.LENGTH_LONG).show();
         }
     }
 }

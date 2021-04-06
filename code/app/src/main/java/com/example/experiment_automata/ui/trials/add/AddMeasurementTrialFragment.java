@@ -87,9 +87,13 @@ public class AddMeasurementTrialFragment extends Fragment {
                 bundle.putString("UUID", experiment.getExperimentId().toString());
                 bundle.putString("DESCRIPTION",experiment.getDescription());
                 bundle.putString("TYPE", QRType.MeasurementTrial.toString());
-                bundle.putFloat("MEASVAL", Float.parseFloat(measurementValue.getText().toString()));//check value?
-                viewQRFragment.setArguments(bundle);
-                getActivity().getSupportFragmentManager().beginTransaction().add(viewQRFragment,"QR").commit();
+                try {
+                    bundle.putFloat("MEASVAL", Float.parseFloat(measurementValue.getText().toString()));//check value?
+                    viewQRFragment.setArguments(bundle);
+                    requireActivity().getSupportFragmentManager().beginTransaction().add(viewQRFragment, "QR").commit();
+                } catch (NumberFormatException e) {
+                    Snackbar.make(root, "Cannot create QR code with empty value", Snackbar.LENGTH_LONG).show();
+                }
             }
         });
         currentMapDisplay = root.findViewById(R.id.measurement_trial_experiment_map_view);
@@ -115,20 +119,20 @@ public class AddMeasurementTrialFragment extends Fragment {
             if (qrCode.getType() == QRType.MeasurementTrial){
                 measurementValue.setText(String.valueOf(((MeasurementQRCode)qrCode).getValue()));
                 Log.d("SCANNER","Scanned QR Successfully!");
-                Snackbar.make(root,"Scanned QR Successfully!",Snackbar.LENGTH_LONG).show();
+                Snackbar.make(root,"Scanned QR Successfully!", Snackbar.LENGTH_LONG).show();
 
             }
             else{
                 //send error tray message
                 Log.d("SCANNER","Scanned QR was of incorrect type " + qrCode.getType().toString());
-                Snackbar.make(root,"Scanned QR was of incorrect type",Snackbar.LENGTH_LONG).show();
+                Snackbar.make(root, "Scanned QR was of incorrect type", Snackbar.LENGTH_LONG).show();
             }
         }
         catch (QRMalformattedException qrMalE){
             //malformatted QR
             qrCode = null;
             Log.d("SCANNER","Scanned Malformatted QR");
-            Snackbar.make(root,"Scanned QR was not an Experiment-Automata QR Code",Snackbar.LENGTH_LONG).show();
+            Snackbar.make(root, "Scanned QR was not an Experiment-Automata QR Code", Snackbar.LENGTH_LONG).show();
         }
     }
 

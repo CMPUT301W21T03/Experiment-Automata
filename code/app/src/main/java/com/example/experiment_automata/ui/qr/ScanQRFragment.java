@@ -20,6 +20,9 @@ import com.example.experiment_automata.backend.qr.QRCode;
 import com.example.experiment_automata.backend.qr.QRMaker;
 import com.example.experiment_automata.backend.qr.QRMalformattedException;
 import com.example.experiment_automata.backend.trials.BinomialTrial;
+import com.example.experiment_automata.backend.trials.CountTrial;
+import com.example.experiment_automata.backend.trials.MeasurementTrial;
+import com.example.experiment_automata.backend.trials.NaturalCountTrial;
 import com.example.experiment_automata.backend.trials.Trial;
 import com.example.experiment_automata.backend.users.User;
 import com.example.experiment_automata.ui.NavigationActivity;
@@ -100,19 +103,35 @@ public class ScanQRFragment extends Fragment {
                     //add location ability later
                     Trial trial;
                     switch (qrCode.getType()){
-                        case BinomialTrial: //temp test implementation ONLY FOR BINOMIAL TRIALS
+                        case BinomialTrial:
                             trial = new BinomialTrial(user.getUserId(),(Boolean) qrCode.getValue());
                             Experiment binExperiment =  experimentManager.getExperiment(qrCode.getExperimentID());//don't think this will work
                             parentActivity.addTrial(binExperiment,trial);
+                            Snackbar.make(getView(),"Binomial Trial with value " + qrCode.getValue() + " scanned successfully in "+ binExperiment.getDescription(),Snackbar.LENGTH_LONG).show();
                             break;
                         case CountTrial:
+                            trial = new CountTrial(user.getUserId());
+                            Experiment countExperiment =  experimentManager.getExperiment(qrCode.getExperimentID());//don't think this will work
+                            parentActivity.addTrial(countExperiment,trial);
+                            Snackbar.make(getView(),"Count Trial with value " + qrCode.getValue() + " scanned successfully in "+ countExperiment.getDescription(),Snackbar.LENGTH_LONG).show();
                             break;
                         case NaturalCountTrial:
+                            trial = new NaturalCountTrial(user.getUserId(),(int) qrCode.getValue());
+                            Experiment natExperiment = experimentManager.getExperiment(qrCode.getExperimentID());
+                            parentActivity.addTrial(natExperiment,trial);
+                            Snackbar.make(getView(),"NaturalCount Trial with value " + qrCode.getValue() + " scanned successfully in "+ natExperiment.getDescription(),Snackbar.LENGTH_LONG).show();
                             break;
                         case MeasurementTrial:
+                            trial = new MeasurementTrial(user.getUserId(),(float) qrCode.getValue());
+                            Experiment mesExperiment = experimentManager.getExperiment(qrCode.getExperimentID());
+                            parentActivity.addTrial(mesExperiment,trial);
+                            Snackbar.make(getView(),"Measurement Trial with value " + qrCode.getValue() + " scanned successfully in " + mesExperiment.getDescription(),Snackbar.LENGTH_LONG).show();
+
+                            break;
+                        case Experiment:
+                            //move to screen
                             break;
                     }
-
 
                 }
                 else{
@@ -137,6 +156,12 @@ public class ScanQRFragment extends Fragment {
             else{
                 //add given Trial to experiment
                 Snackbar.make(getView(),"Scanned barcode was found!",Snackbar.LENGTH_LONG).show();
+                if(parentActivity.experimentManager.containsExperiment(barcodeReference.)){
+
+                }
+                else{
+
+                }
             }
         }
         NavController navController = Navigation.findNavController(getView());

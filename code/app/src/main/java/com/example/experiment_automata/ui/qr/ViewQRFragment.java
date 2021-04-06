@@ -65,7 +65,6 @@ public class ViewQRFragment extends DialogFragment {
         Bundle bundle = getArguments();
         String description = bundle.getString("DESCRIPTION");
         UUID experimentUUID = UUID.fromString(bundle.getString("UUID"));
-        android.util.Log.d("QR EXPERIMENT ID", experimentUUID.toString());
         String typeString = bundle.getString("TYPE");
         //use switch case and string bundles instead of serializing QR
         switch (typeString){

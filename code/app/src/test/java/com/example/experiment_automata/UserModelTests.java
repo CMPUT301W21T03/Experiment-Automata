@@ -199,4 +199,18 @@ public class UserModelTests
                 oldSize-1,
                 testUser.getSubscriptions().size());
     }
+
+    @Test
+    public void testAddExperimentNotNull()
+    {
+        ArrayList<UUID> testList = new ArrayList<>();
+        testList.add(UUID.randomUUID());
+        testUser.setOwnedExperiments(new ArrayList<>());
+        int oldSize = testUser.getOwnedExperiments().size();
+        testUser.addExperiment(UUID.randomUUID());
+
+        assertEquals("Failed to add new experiment",
+                oldSize+1,
+                testUser.getOwnedExperiments().size());
+    }
 }

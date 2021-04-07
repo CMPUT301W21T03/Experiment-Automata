@@ -18,7 +18,7 @@ public class UserManager
 {
     private static HashMap<UUID, User> currentUsers;
     private static UserManager userManager;
-    private static boolean TEST_MODE = false;
+    private boolean testMode;
 
     private UserManager()
     {
@@ -37,9 +37,10 @@ public class UserManager
             userManager.getAllUsersFromFireStore();
         }
 
-        Log.d("STEP_SIZE", userManager.getSize() + "");
         return userManager;
     }
+
+
 
 
     /**
@@ -81,7 +82,7 @@ public class UserManager
      */
     public void getAllUsersFromFireStore()
     {
-        if(TEST_MODE)
+        if(testMode)
             return;
         DataBase dataBase = DataBase.getInstance();
         FirebaseFirestore db = dataBase.getFireStore();
@@ -130,20 +131,5 @@ public class UserManager
         });
     }
 
-    /**
-     * enables test mode (Does not talk to firebase)
-     */
-    public void enableTestMode()
-    {
-        TEST_MODE = true;
-    }
-
-    /**
-     * disables test mode (Talks to firebase)
-     */
-    public void disableTestMode()
-    {
-        TEST_MODE = false;
-    }
 
 }

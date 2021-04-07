@@ -237,12 +237,15 @@ public class User implements Serializable {
     public Collection<UUID> getSubscriptions() { return subscribedExperiments; }
 
     /**
-     * Add the experiment reference to the owned experiments
+     * Add the experiment reference to the owned experiments.
+     * If the owned experiments field equals nulls then
+     * nothing happens.
      * @param experimentId
      *  the UUID of the experiment
      */
     public void addExperiment(UUID experimentId) {
-        this.ownedExperiments.add(experimentId);
+        if(ownedExperiments != null)
+            this.ownedExperiments.add(experimentId);
         if(!testMode)
             updateFirestore();
     }

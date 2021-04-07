@@ -97,9 +97,8 @@ public class ScanQRFragment extends Fragment {
             Collection<UUID> subscriptions = user.getSubscriptions();
             qrCode = qrMaker.decodeQRString(scannedContent);
             //scanned valid QR
-            if (subscriptions.contains(qrCode.getExperimentID())){//experimentManager.containsExperiment(qrCode.getExperimentID())
-                //add location ability later
-                experiment = experimentManager.getExperiment(qrCode.getExperimentID());
+            experiment = experimentManager.getExperiment(qrCode.getExperimentID());
+            if (experiment.isPublished() && experiment.isActive()){
                 switch (qrCode.getType()){
                     case BinomialTrial:
                         trial = new BinomialTrial(user.getUserId(), (boolean) qrCode.getValue());
@@ -148,8 +147,8 @@ public class ScanQRFragment extends Fragment {
             Snackbar.make(requireView(),"Scanned barcode was found!",Snackbar.LENGTH_LONG).show();
             UUID barcodeExperimentID = barcodeReference.getExperimentId();
             Location barcodeLocation = barcodeReference.getLocation();
-            experiment = null;
-            if(parentActivity.experimentManager.isExperimentPublished(barcodeExperimentID)){
+            experiment =  experimentManager.getExperiment(barcodeExperimentID);
+            if(experiment.isPublished() && experiment.isActive()){
                 experiment =  experimentManager.getExperiment(barcodeExperimentID);
                 switch (barcodeReference.getType()){
                     case Binomial:
@@ -170,6 +169,7 @@ public class ScanQRFragment extends Fragment {
                         experiment.getType(), barcodeReference.getResult(), experiment.getDescription());
                 Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG).show();
             } else {
+                experiment = null;
                 Snackbar.make(requireView(),"The scanned barcode is not published",Snackbar.LENGTH_LONG).show();
             }
         }

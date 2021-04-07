@@ -15,6 +15,10 @@ import java.util.UUID;
 public class UserModelTests
 {
 
+    /**
+     * Testing the user model class
+     */
+
     private User testUser;
     private UUID testId;
     private ContactInformation contactInformation;
@@ -32,7 +36,7 @@ public class UserModelTests
     public void testGetInstance()
     {
         User testUser = User.getInstance(UUID.randomUUID(), true);
-        assertEquals("User does not return a user instence",
+        assertEquals("User does not return a user instance",
                 true,
                 User.class.isInstance(testUser));
     }

@@ -267,19 +267,21 @@ public class NavigationActivity extends AppCompatActivity implements
      */
     @Override
     public void onOkPressed(Experiment<?> experiment) {
-        boolean added = false;
-        while (!added) {
-            try {
-                experimentManager.add(experiment.getExperimentId(), experiment);
-                added = true;
-            } catch (IllegalArgumentException badUUID) {
-                experiment.makeNewUUID();
+        if (experiment != null) {
+            boolean added = false;
+            while (!added) {
+                try {
+                    experimentManager.add(experiment.getExperimentId(), experiment);
+                    added = true;
+                } catch (IllegalArgumentException badUUID) {
+                    experiment.makeNewUUID();
+                }
             }
-        }
 
-        loggedUser.addExperiment(experiment.getExperimentId());
-        if (currentScreen == Screen.ExperimentList) {
-            ((HomeFragment) currentFragment).updateScreen();
+            loggedUser.addExperiment(experiment.getExperimentId());
+            if (currentScreen == Screen.ExperimentList) {
+                ((HomeFragment) currentFragment).updateScreen();
+            }
         }
     }
 

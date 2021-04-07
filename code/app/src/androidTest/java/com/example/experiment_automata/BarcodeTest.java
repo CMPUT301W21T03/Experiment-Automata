@@ -79,7 +79,7 @@ public class BarcodeTest {
         assertEquals(NaturalBarcodeReference.class.isInstance(barcode),true);
     }
     @Test
-    public void testBarcodeSuper(){
+    public void testBarcodeSuperGetters(){
         BinomialBarcodeReference barcode = new BinomialBarcodeReference(barcodeVal, experimentId,  ExperimentType.Binomial, true);
         assertEquals(BinomialBarcodeReference.class.isInstance(barcode),true);
         assertEquals(barcode.getBarcodeVal(),barcodeVal);

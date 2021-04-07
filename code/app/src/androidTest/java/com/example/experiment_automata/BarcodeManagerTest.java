@@ -5,6 +5,8 @@ import androidx.test.rule.ActivityTestRule;
 
 import com.example.experiment_automata.backend.DataBase;
 import com.example.experiment_automata.backend.barcode.BarcodeManager;
+import com.example.experiment_automata.backend.barcode.BarcodeReference;
+import com.example.experiment_automata.backend.experiments.ExperimentType;
 import com.example.experiment_automata.ui.NavigationActivity;
 import com.google.firebase.FirebaseApp;
 import com.robotium.solo.Solo;
@@ -17,6 +19,8 @@ import org.junit.Test;
 import java.lang.reflect.Field;
 import java.util.UUID;
 
+import static org.junit.Assert.assertEquals;
+//must be with intent tests because of firestore use
 public class BarcodeManagerTest {
     private DataBase dataBase = DataBase.getInstanceTesting();
     private String barcodeVal = "123456789";
@@ -57,6 +61,49 @@ public class BarcodeManagerTest {
     }
 
     @Test
-    public void testAdd(){
+    public void testAddBinomialBarcode(){
+        barcodeManager.addBarcode(barcodeVal,experimentId,true,null);
+        BarcodeReference barcode = barcodeManager.getBarcode(barcodeVal);
+        assertEquals(barcode.getExperimentId(),experimentId);
+        assertEquals(barcode.getType(), ExperimentType.Binomial);
     }
+    @Test
+    public void testAddCountBarcode(){
+        barcodeManager.addBarcode(barcodeVal,experimentId,null);
+        BarcodeReference barcode = barcodeManager.getBarcode(barcodeVal);
+        assertEquals(barcode.getExperimentId(),experimentId);
+        assertEquals(barcode.getType(), ExperimentType.Count);
+        assertEquals(barcode.getBarcodeVal(), barcodeVal);
+
+    }
+
+    @Test
+    public void testAddMeasurementBarcode(){
+        barcodeManager.addBarcode(barcodeVal, experimentId, (float)1,null);
+        BarcodeReference barcode = barcodeManager.getBarcode(barcodeVal);
+        assertEquals(barcode.getExperimentId(), experimentId);
+        assertEquals(barcode.getType(), ExperimentType.Measurement);
+        assertEquals(barcode.getBarcodeVal(), barcodeVal);
+    }
+
+    @Test
+    public void testAddNaturalBarcode(){
+        barcodeManager.addBarcode(barcodeVal, experimentId, 1,null);
+        BarcodeReference barcode = barcodeManager.getBarcode(barcodeVal);
+        assertEquals(barcode.getExperimentId(), experimentId);
+        assertEquals(barcode.getType(), ExperimentType.NaturalCount);
+        assertEquals(barcode.getBarcodeVal(), barcodeVal);
+    }
+
+    
+
+    @Test
+    public void testGetBarcode(){
+        barcodeManager.addBarcode(barcodeVal,experimentId,true,null);
+        BarcodeReference barcode = barcodeManager.getBarcode(barcodeVal);
+        assertEquals(barcode.getExperimentId(),experimentId);
+        assertEquals(barcode.getType(), ExperimentType.Binomial);
+    }
+
+
 }

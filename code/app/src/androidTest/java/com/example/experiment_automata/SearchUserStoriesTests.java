@@ -139,13 +139,17 @@ public class SearchUserStoriesTests
         solo.clickOnView(solo.getView(R.id.app_bar_search));
         solo.sleep(1000);
         solo.enterText(0, testQuery);
+        solo.sleep(2000);
 
         boolean checkOne = solo.searchText(testQuery, 2);
         solo.sleep(1000);
+
+
         solo.clickOnView(solo.getView(R.id.app_bar_search));
         solo.sleep(1000);
         solo.enterText(0, "Dog");
         solo.sleep(1000);
+        solo.pressSoftKeyboardSearchButton();
         boolean checkTwo = solo.searchText("Dog");
         assertEquals("Error when searching query was not proper", true, checkOne && checkTwo);
 
@@ -169,15 +173,19 @@ public class SearchUserStoriesTests
         solo.sleep(2000);
         makeExperiment("three");
         solo.sleep(2000);
+        solo.clickOnView((solo.getView(R.id.publishedCheckbox)));
+        solo.clickOnActionBarHomeButton();
+        solo.clickOnText("Published Experiments");
+        solo.sleep(2000);
         solo.clickOnView(solo.getView(R.id.app_bar_search));
         solo.sleep(2000);
         solo.enterText(0, testQuery);
+        solo.pressSoftKeyboardSearchButton();
 
         boolean checkOne = solo.searchText(testQuery, 2);
         boolean statusCheck = solo.searchText("Active");
-        boolean ownerId = solo.searchText("Experiment Owner");
 
-        assertEquals("Not all fields of experiment found", true, checkOne && statusCheck && ownerId);
+        assertEquals("Not all fields of experiment found", true, checkOne && statusCheck);
     }
 
     /**
@@ -192,20 +200,52 @@ public class SearchUserStoriesTests
         solo.clickOnText("My Experiments");
         solo.sleep(2000);
         String testQuery = "CAT";
-        makeExperiment(testQuery);
+        makeInactiveExperiment(testQuery);
+        solo.clickOnView((solo.getView(R.id.publishedCheckbox)));
         solo.sleep(2000);
         makeExperiment("two");
         solo.sleep(2000);
         makeExperiment("three");
         solo.sleep(2000);
+
+
         solo.clickOnView(solo.getView(R.id.app_bar_search));
         solo.enterText(0, testQuery);
+        solo.pressSoftKeyboardSearchButton();
 
         boolean checkOne = solo.searchText(testQuery, 2);
         boolean statusCheck = solo.searchText("Inactive");
-        boolean ownerId = solo.searchText("Experiment Owner");
 
-        assertEquals("Not all fields of experiment found", true, checkOne && statusCheck && ownerId);
+        assertEquals("Not all fields of experiment found", true, checkOne && statusCheck);
+    }
+
+    private void makeInactiveExperiment(String des)
+    {
+        addExperimentButton = solo.getView(R.id.fab_button);
+
+        //Click from the home screen the + button to make an experiment
+        solo.clickOnView(addExperimentButton);
+        solo.waitForDialogToOpen();
+        descriptionEdit = solo.getView(R.id.create_experiment_description_editText);
+        assertNotEquals("Can't find description box", null, descriptionEdit);
+
+        //We need to fill the form to add the experiment
+        //Writing description
+        solo.clickOnView(descriptionEdit);
+        solo.enterText((EditText) descriptionEdit, des);
+
+        //Writing min num trials
+        countTrialsEdit = solo.getView(R.id.experiment_min_trials_editText);
+        assertNotEquals("Can't find description box", null, countTrialsEdit);
+        solo.clickOnView(countTrialsEdit);
+        solo.enterText((EditText) countTrialsEdit, "3");
+
+        //Selecting Binomial Experiment
+        slector = solo.getView(R.id.experiment_type_spinner);
+        solo.clickOnView(slector);
+        solo.clickOnText("Binomial");
+        solo.clickOnText("Ok");
+
     }
 
 }

@@ -69,6 +69,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:autoLink="email"
             android:gravity="center"
             android:text="abc123@example.ca" />
     </LinearLayout>
@@ -99,6 +100,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:autoLink="phone"
             android:gravity="center"
             android:text="(xxx) xxx-xxxx" />
 

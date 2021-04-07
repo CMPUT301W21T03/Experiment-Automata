@@ -35,6 +35,7 @@ public class ExperimentMaker {
     public static Experiment<?> makeExperiment(ExperimentType type, String description, int minTrials,
                                                    boolean requireLocation, boolean acceptNewResults,
                                                    UUID ownerId) {
+        if (description.length() < 1) return null;
         switch (type) {
             case NaturalCount:
                 return new NaturalCountExperiment(description, minTrials, requireLocation, acceptNewResults, ownerId);

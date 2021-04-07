@@ -20,10 +20,12 @@
 
     <TextView
         android:id="@+id/main_question_display_question_view"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
+        android:breakStrategy="simple"
+        android:scrollHorizontally="false"
         android:textSize="20dp"
         app:layout_constraintStart_toEndOf="@+id/main_question_display_user"
         app:layout_constraintTop_toTopOf="parent" />
@@ -32,9 +34,8 @@
         android:id="@+id/main_question_display_reply_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
         android:background="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

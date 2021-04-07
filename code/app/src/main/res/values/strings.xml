@@ -57,6 +57,4 @@
     <string name="add_location_dialog_default_btn">Revert to Current</string>
 
     <string name="map_point_view_experiment_no_loc_err">This Experiment Does Not Have Location Trials</string>
-    <string name="update_notification">There are new changes</string>
-
 </resources>

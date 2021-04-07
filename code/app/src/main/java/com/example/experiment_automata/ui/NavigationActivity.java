@@ -84,7 +84,6 @@ public class NavigationActivity extends AppCompatActivity implements
     public Fragment currentFragment;
     public User loggedUser;
     public Trial currentTrial;
-    public View updateFragment;
 
     // Location and Map Flags and Request Codes
     public static final int PERMISSON_REQUEST_CODE = 10;
@@ -194,17 +193,9 @@ public class NavigationActivity extends AppCompatActivity implements
             }
         });
 
-        updateFragment = findViewById(R.id.update_screen_button);
-        updateFragment.setVisibility(View.GONE);
-        updateFragment.setOnClickListener(v -> {
-            updateFragment.setVisibility(View.GONE);
-        });
-
         experimentManager.setUpdateListener(() -> {
-            if (currentScreen == Screen.ExperimentList) {
-                updateFragment.setVisibility(View.VISIBLE);
+            if (currentScreen == Screen.ExperimentList)
                 ((HomeFragment) currentFragment).updateScreen();
-            }
         });
     }
 

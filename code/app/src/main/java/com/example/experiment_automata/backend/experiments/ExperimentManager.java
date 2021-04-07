@@ -48,7 +48,6 @@ public class ExperimentManager {
      * Initializes the experiment manager.
      */
     public ExperimentManager() {
-        experiments = new HashMap<>();
         getAllFromFirestore();
     }
 
@@ -303,6 +302,7 @@ public class ExperimentManager {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()){
+                    experiments = new HashMap<>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Experiment<?> currentExperiment = ExperimentMaker.makeExperiment(
                                 ExperimentType.valueOf((String) document.get("type")),

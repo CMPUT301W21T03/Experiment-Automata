@@ -23,8 +23,7 @@ public class CountQRCode extends QRCode<Object>{
         //create QR image
         try {
             this.setQrCodeImage(encodeStringToQR(packedString));
-        }
-        catch (WriterException wException){
+        } catch (WriterException wException) {
             //return special bitmap maybe?
             wException.printStackTrace();
         }

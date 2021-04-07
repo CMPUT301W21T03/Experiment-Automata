@@ -15,7 +15,7 @@ public class BinomialQRCode extends QRCode<Boolean>{
     static final String BINOMIAL_TRUE = "t";
     static final String BINOMIAL_FALSE = "f";
 
-    public BinomialQRCode(UUID experimentID,Boolean result) {
+    public BinomialQRCode(UUID experimentID, Boolean result) {
         super(experimentID, QRType.BinomialTrial);
         setValue(result);
         //pack header
@@ -65,7 +65,6 @@ public class BinomialQRCode extends QRCode<Boolean>{
             wException.printStackTrace();
         }
     }
-
 
 }
 

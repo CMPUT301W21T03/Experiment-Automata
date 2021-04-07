@@ -27,14 +27,22 @@ public class UserManager
 
     /**
      * gets the made instance of our hashmap
+     *
+     * @param testMode tells the class if it should
+     *                 be allowed to talk to the firebase system.
+     *
      * @return
      *  the current instance of the UserManager class
      */
-    public static UserManager getInstance()
+    public static UserManager getInstance(boolean testMode)
     {
-        if(userManager == null) {
+        if(userManager == null && !testMode) {
             userManager = new UserManager();
             userManager.getAllUsersFromFireStore();
+        }
+        else if (userManager == null && testMode)
+        {
+            userManager = new UserManager();
         }
 
         return userManager;
@@ -131,5 +139,13 @@ public class UserManager
         });
     }
 
+    /**
+     * sets the class test mode into either true or false
+     * @param testMode the new operating mode for the given class
+     */
+    public void setTestMode(boolean testMode)
+    {
+        this.testMode = testMode; 
+    }
 
 }

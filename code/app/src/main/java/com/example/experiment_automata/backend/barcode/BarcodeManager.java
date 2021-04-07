@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.experiment_automata.backend.DataBase;
 import com.example.experiment_automata.backend.experiments.ExperimentType;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -86,7 +87,8 @@ public class BarcodeManager {
     //add firestore here
     public void getAllFromFirestore(){
         //checkTestMode?
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DataBase database = DataBase.getInstance();
+        FirebaseFirestore db = database.getFireStore();
         CollectionReference barcodeCollection = db.collection("barcodes");
         barcodeCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override

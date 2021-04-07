@@ -2,6 +2,7 @@ package com.example.experiment_automata.backend.barcode;
 
 import android.location.Location;
 
+import com.example.experiment_automata.backend.DataBase;
 import com.example.experiment_automata.backend.experiments.ExperimentType;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -38,7 +39,8 @@ public abstract class BarcodeReference<T> {
      */
     public void postBarcodeToFirestore(){
         BarcodeReference<T> barcode = this;
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DataBase database = DataBase.getInstance();
+        FirebaseFirestore db = database.getFireStore();
         Map<String,Object> barcodeRefData = new HashMap<>();
 
         barcodeRefData.put("experiment-id",experimentId.toString());

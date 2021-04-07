@@ -126,7 +126,7 @@ public class ScanQRFragment extends Fragment {
                     Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG).show();
                 }
             } else {
-                Snackbar.make(requireView(), "You are not subscribed to the Experiment contained in the scanned QR code", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(requireView(), "The Experiment contained in the scanned QR code is not published or isn't accepting results", Snackbar.LENGTH_LONG).show();
             }
         } catch (QRMalformattedException qrMalE){
             //malformatted QR
@@ -170,7 +170,7 @@ public class ScanQRFragment extends Fragment {
                 Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG).show();
             } else {
                 experiment = null;
-                Snackbar.make(requireView(),"The scanned barcode is not published",Snackbar.LENGTH_LONG).show();
+                Snackbar.make(requireView(),"The Experiment contained in the scanned barcode is not published or isn't accepting results",Snackbar.LENGTH_LONG).show();
             }
         }
     }

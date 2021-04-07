@@ -87,29 +87,20 @@ public class HomeFragment extends Fragment {
         Log.d("MODE", getArguments().getString("mode"));
         switch (getArguments().getString("mode")) {
             case "owned":
-                experimentManager.filterFromFirestore("owner",
-                        parentActivity.loggedUser.getUserId().toString());
                 experimentsArrayList.addAll(experimentManager
                         .queryExperiments(parentActivity.loggedUser.getOwnedExperiments()));
                 break;
             case "published":
-                experimentManager.filterFromFirestore("published", true);
                 parentActivity.userManager.getAllUsersFromFireStore();
                 experimentsArrayList.addAll(experimentManager
                         .getPublishedExperiments());
                 break;
             case "subscribed":
-                List<String> subscriptionList = new ArrayList<>();
-                for (UUID experimentId : parentActivity.loggedUser.getSubscriptions()) {
-                    subscriptionList.add(experimentId.toString());
-                }
-                experimentManager.filterFromFirestore(subscriptionList);
                 experimentsArrayList.addAll(experimentManager
                         .queryExperiments(parentActivity.loggedUser.getSubscriptions()));
                 break;
             case "search":
                 // You can only search published experiments
-                experimentManager.filterFromFirestore("published", true);
                 String query = getArguments().getString("query");
                 experimentsArrayList.addAll(experimentManager
                         .queryPublishedExperiments(query));

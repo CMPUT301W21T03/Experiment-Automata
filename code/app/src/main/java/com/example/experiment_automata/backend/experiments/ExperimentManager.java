@@ -278,31 +278,6 @@ public class ExperimentManager {
     }
 
     /**
-     * Populate experiments in Experiment manager with some experiments from Firestore according to the filter
-     * @param key the key to filter
-     * @param value the value to filter
-     */
-    public void filterFromFirestore(@NonNull String key, @NonNull Object value) {
-        DataBase data = DataBase.getInstance();
-        FirebaseFirestore db = data.getFireStore();
-        CollectionReference experimentCollection = db.collection("experiments");
-        getFromFirestoreFromQuery(experimentCollection.whereEqualTo(key, value).get());
-    }
-
-    /**
-     * Populate experiments in Experiment manager with some experiments from Firestore according to the filter
-     * @param values the document IDs to filter
-     */
-    public void filterFromFirestore(@NonNull List<String> values) {
-        DataBase data = DataBase.getInstance();
-        FirebaseFirestore db = data.getFireStore();
-        CollectionReference experimentCollection = db.collection("experiments");
-        for (String experiment : values) {
-            getFromFirestoreFromDocument(experimentCollection.document(experiment).get());
-        }
-    }
-
-    /**
      * Update the experiment manager based on a firestore query.
      * @param querySnapshotTask The task of the query
      */
@@ -324,25 +299,9 @@ public class ExperimentManager {
     }
 
     /**
-     * Update the experiment manager from one document ID.
-     * @param documentSnapshotTask The task of the document
+     * Set the listener for any time the experiment manager gets updated
+     * @param listener the listener
      */
-    private void getFromFirestoreFromDocument(Task<DocumentSnapshot> documentSnapshotTask) {
-        documentSnapshotTask.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()){
-                    DocumentSnapshot document = task.getResult();
-                    updateFromDocumentSnapshot(document);
-                    Log.d("FIRESTORE", (String) document.get("description"));
-                } else {
-                    //not able to query all from firestore
-                    Log.d("FIRESTORE", "Unable to pull experiments from firestore");
-                }
-            }
-        });
-    }
-
     public void setUpdateListener(OnEventListener listener) {
         updateEvent.setOnEventListener(listener);
     }
@@ -432,7 +391,7 @@ public class ExperimentManager {
      * @return
      *  The location in the given Trial
      */
-        public Location locationFromTrialHash(HashMap<String,Object> trialHash){
+    public Location locationFromTrialHash(HashMap<String,Object> trialHash){
         //ENSURE THAT THE GIVEN TRIAL HAS LAT/LON
         double latitude = (double) trialHash.get("latitude");
         double longitude = (double) trialHash.get("longitude");
@@ -445,11 +404,11 @@ public class ExperimentManager {
     /**
      * Gets a specific Experiment
      * @param experimentID
-     *  experiment ID repersenting the experiment
+     *  experiment ID representing the experiment
      * @return
      *  the requested experiment
      */
-    public Experiment getExperiment(UUID experimentID){
+    public Experiment<?> getExperiment(UUID experimentID){
         return experiments.get(experimentID);
     }
 

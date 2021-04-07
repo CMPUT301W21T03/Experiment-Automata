@@ -30,12 +30,12 @@ import java.util.UUID;
  *      1. None
  */
 public class User implements Serializable {
-    private static String DEFAULT_UUID_STRING = "00000000-0000-0000-0000-000000000000";//move this to a constants class later
     private static final String TAG = "User";
-    private UUID userId;//changed from int to UUID
+    private UUID userId;
     private ContactInformation info;
     private Collection<UUID> ownedExperiments;
     private Collection<UUID> subscribedExperiments;
+    private boolean TEST_MODE;
 
     /**
      * Creates the user. Assigns a user id automatically.
@@ -299,4 +299,5 @@ public class User implements Serializable {
     {
         this.info = info;
     }
+
 }

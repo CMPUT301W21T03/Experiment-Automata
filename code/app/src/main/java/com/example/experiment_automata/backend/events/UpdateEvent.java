@@ -1,4 +1,4 @@
-package com.example.experiment_automata.backend.experiments;
+package com.example.experiment_automata.backend.events;
 
 public class UpdateEvent {
     private OnEventListener onEventListener;

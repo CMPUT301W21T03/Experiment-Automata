@@ -34,7 +34,6 @@ import com.example.experiment_automata.backend.DataBase;
 import com.example.experiment_automata.backend.barcode.BarcodeManager;
 import com.example.experiment_automata.backend.experiments.Experiment;
 import com.example.experiment_automata.backend.experiments.ExperimentManager;
-import com.example.experiment_automata.backend.experiments.OnEventListener;
 import com.example.experiment_automata.backend.questions.Question;
 import com.example.experiment_automata.backend.questions.QuestionManager;
 import com.example.experiment_automata.backend.questions.Reply;

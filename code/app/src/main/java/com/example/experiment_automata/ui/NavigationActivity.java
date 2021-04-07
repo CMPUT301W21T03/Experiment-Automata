@@ -192,7 +192,10 @@ public class NavigationActivity extends AppCompatActivity implements
             }
         });
 
-
+        experimentManager.setUpdateListener(() -> {
+            if (currentScreen == Screen.ExperimentList)
+                ((HomeFragment) currentFragment).updateScreen();
+        });
     }
 
 
@@ -501,4 +504,5 @@ public class NavigationActivity extends AppCompatActivity implements
         user.updateFirestore();
     }
 
+    public void updateScreen() {}
 }

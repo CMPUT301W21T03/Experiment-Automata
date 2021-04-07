@@ -8,6 +8,8 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class UserModelTests
@@ -87,5 +89,114 @@ public class UserModelTests
                 testUser.getSubscriptions());
     }
 
+    @Test
+    public void testSetSubscriptions()
+    {
+        ArrayList<UUID> testList = new ArrayList<>();
+        testList.add(UUID.randomUUID());
+        testUser.setSubscribedExperiments(testList);
+        assertEquals("Set subs failed to be set",
+                1,
+                testUser.getSubscriptions().size());
+    }
 
+    @Test
+    public void testSetOwnedExperiments()
+    {
+        testUser.setOwnedExperiments(new ArrayList<>());
+        assertNotNull("Set subs failed to be set",
+                testUser.getOwnedExperiments());
+    }
+
+    @Test
+    public void testSetSubscriptionsNotNull()
+    {
+        ArrayList<UUID> testList = new ArrayList<>();
+        testList.add(UUID.randomUUID());
+        testUser.setSubscribedExperiments(testList);
+        testUser.setSubscribedExperiments(new ArrayList<>());
+        assertEquals("Set subs failed to be set",
+                0,
+                testUser.getSubscriptions().size());
+    }
+
+    @Test
+    public void testSetOwnedExperimentsNotNull()
+    {
+        ArrayList<UUID> testList = new ArrayList<>();
+        testList.add(UUID.randomUUID());
+        testUser.setOwnedExperiments(new ArrayList<>());
+
+        testUser.setOwnedExperiments(testList);
+        assertEquals("Set subs failed to be set",1,
+                testUser.getOwnedExperiments().size());
+    }
+
+    @Test
+    public void testSetSubscriptionsNull()
+    {
+        testUser.setSubscribedExperiments(new ArrayList<>());
+        testUser.setSubscribedExperiments(null);
+        assertEquals("Set subs failed to be set",
+                0,
+                testUser.getSubscriptions().size());
+    }
+
+    @Test
+    public void testSetOwnedExperimentsNull()
+    {
+        ArrayList<UUID> testList = new ArrayList<>();
+        testList.add(UUID.randomUUID());
+
+        testUser.setOwnedExperiments(null);
+
+        testUser.setOwnedExperiments(testList);
+        assertNotNull("Set subs failed to be set",
+                testUser.getOwnedExperiments().size());
+    }
+
+    @Test
+    public void testSetTestMode()
+    {
+        try {
+            Field currentMode = User.class.getDeclaredField("testMode");
+            currentMode.setAccessible(true);
+            testUser.setTestMode(false);
+            assertEquals("Test mode not set",
+                    false,
+                    (boolean)currentMode.get(testUser));
+        }catch (Exception e)
+        {
+            fail("Exceptions thrown");
+        }
+    }
+
+    @Test
+    public void testSubscribeExperimentNotInList()
+    {
+        ArrayList<UUID> testList = new ArrayList<>();
+        UUID testExperimentId = UUID.randomUUID();
+        testList.add(UUID.randomUUID());
+        testUser.setSubscribedExperiments(testList);
+        int oldSize = testUser.getSubscriptions().size();
+        testUser.subscribeExperiment(testExperimentId);
+        assertEquals("Subscribe experiment not added",
+                oldSize+1,
+                testUser.getSubscriptions().size());
+    }
+
+    @Test
+    public void testSubscribeExperimentInList()
+    {
+        ArrayList<UUID> testList = new ArrayList<>();
+        UUID testExperimentId = UUID.randomUUID();
+        testList.add(UUID.randomUUID());
+        testUser.setSubscribedExperiments(testList);
+        testUser.subscribeExperiment(testExperimentId);
+        int oldSize = testUser.getSubscriptions().size();
+        testUser.subscribeExperiment(testExperimentId);
+        assertEquals("Subscribe experiment not added",
+                oldSize-1,
+                testUser.getSubscriptions().size());
+    }
 }

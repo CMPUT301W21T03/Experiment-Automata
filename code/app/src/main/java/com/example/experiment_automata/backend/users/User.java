@@ -267,38 +267,45 @@ public class User implements Serializable {
     }
 
     /**
-     * set the subscribed experiments
+     * set the subscribed experiments if the given
+     * parameter is not null
      * @param subs the new subs
      */
     public void setSubscribedExperiments(Collection<UUID> subs)
     {
         if(subs == null)
             return;
-        this.subscribedExperiments.clear();
-        this.subscribedExperiments.addAll(subs);
 
+        if(subscribedExperiments != null) {
+            this.subscribedExperiments.clear();
+            this.subscribedExperiments.addAll(subs);
+        }
+        else
+        {
+            this.subscribedExperiments = subs;
+        }
     }
 
     /**
-     * sets the owned experiments
+     * sets the owned experiments if the given parameter is
+     * not null.
      * @param owned the new owned experiments
      */
     public void setOwnedExperiments(Collection<UUID> owned)
     {
         if(owned == null)
             return;
-        this.ownedExperiments.clear();
-        this.ownedExperiments.addAll(owned);
+
+        if(ownedExperiments != null) {
+            this.ownedExperiments.clear();
+            this.ownedExperiments.addAll(owned);
+        }
+        else
+        {
+            this.ownedExperiments = owned;
+        }
     }
 
-    /**
-     * the the contact information
-     * @param info the new contact infromation
-     */
-    public void setContactInformation(ContactInformation info)
-    {
-        this.info = info;
-    }
 
     /**
      * sets the user class into our out of test mode

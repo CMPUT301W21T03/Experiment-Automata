@@ -169,6 +169,10 @@ public class ExperimentUserStoriesTests
         solo.sleep(1000);
         solo.clickOnActionBarHomeButton();
         solo.clickOnText("Published Experiments");
+        solo.clickOnActionBarHomeButton();
+        solo.clickOnText("My Experiments");
+        solo.clickOnActionBarHomeButton();
+        solo.clickOnText("Published Experiments");
 
 
         assertEquals("Failed to find experiment text please make sure model works",

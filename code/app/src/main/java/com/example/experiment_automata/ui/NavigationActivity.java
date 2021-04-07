@@ -34,6 +34,7 @@ import com.example.experiment_automata.backend.DataBase;
 import com.example.experiment_automata.backend.barcode.BarcodeManager;
 import com.example.experiment_automata.backend.experiments.Experiment;
 import com.example.experiment_automata.backend.experiments.ExperimentManager;
+import com.example.experiment_automata.backend.experiments.OnEventListener;
 import com.example.experiment_automata.backend.questions.Question;
 import com.example.experiment_automata.backend.questions.QuestionManager;
 import com.example.experiment_automata.backend.questions.Reply;
@@ -83,6 +84,7 @@ public class NavigationActivity extends AppCompatActivity implements
     public Fragment currentFragment;
     public User loggedUser;
     public Trial currentTrial;
+    public View updateFragment;
 
     // Location and Map Flags and Request Codes
     public static final int PERMISSON_REQUEST_CODE = 10;
@@ -192,7 +194,18 @@ public class NavigationActivity extends AppCompatActivity implements
             }
         });
 
+        updateFragment = findViewById(R.id.update_screen_button);
+        updateFragment.setVisibility(View.GONE);
+        updateFragment.setOnClickListener(v -> {
+            updateFragment.setVisibility(View.GONE);
+        });
 
+        experimentManager.setUpdateListener(() -> {
+            if (currentScreen == Screen.ExperimentList) {
+                updateFragment.setVisibility(View.VISIBLE);
+                ((HomeFragment) currentFragment).updateScreen();
+            }
+        });
     }
 
 
@@ -501,4 +514,5 @@ public class NavigationActivity extends AppCompatActivity implements
         user.updateFirestore();
     }
 
+    public void updateScreen() {}
 }

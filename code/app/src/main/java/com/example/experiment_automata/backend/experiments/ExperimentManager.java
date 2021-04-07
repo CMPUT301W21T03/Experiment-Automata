@@ -1,9 +1,11 @@
 package com.example.experiment_automata.backend.experiments;
 
 import android.location.Location;
+import android.media.MediaDrm;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.example.experiment_automata.backend.DataBase;
 import com.example.experiment_automata.backend.trials.BinomialTrial;
@@ -15,7 +17,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -43,12 +47,14 @@ public class ExperimentManager {
     private static boolean TEST_MODE = false;
     private Experiment<?> currentExperiment;
     private Experiment<?> lastAdded;
+    private UpdateEvent updateEvent;
 
     /**
      * Initializes the experiment manager.
      */
     public ExperimentManager() {
         getAllFromFirestore();
+        updateEvent = new UpdateEvent();
     }
 
     public static ExperimentManager getInstance()
@@ -251,6 +257,23 @@ public class ExperimentManager {
         FirebaseFirestore db = data.getFireStore();
         CollectionReference experimentCollection = db.collection("experiments");
         getFromFirestoreFromQuery(experimentCollection.get());
+        experimentCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot snapshot, @Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    Log.w("FIRESTORE", error);
+                    return;
+                }
+                if (snapshot != null && !snapshot.getMetadata().hasPendingWrites()) {
+                    experiments = new HashMap<>();
+                    for (QueryDocumentSnapshot document : snapshot) {
+                        updateFromDocumentSnapshot(document);
+                        Log.d("FIRESTORE", (String) document.get("description"));
+                    }
+                    updateEvent.callback();
+                }
+            }
+        });
     }
 
     /**
@@ -289,21 +312,7 @@ public class ExperimentManager {
                 if (task.isSuccessful()){
                     experiments = new HashMap<>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        Experiment<?> currentExperiment = ExperimentMaker.makeExperiment(
-                                ExperimentType.valueOf((String) document.get("type")),
-                                (String) document.get("description"),
-                                ((Long) document.get("min-trials")).intValue(),
-                                (boolean) document.get("location-required"),
-                                (boolean) document.get("accepting-new-results"),
-                                UUID.fromString((String) document.get("owner")),
-                                (boolean) document.get("published"),
-                                UUID.fromString(document.getId())
-                        );
-                        UUID currentDocId = UUID.fromString(document.getId());
-                        if (document.get("results") != null) {
-                            buildTrials(currentExperiment, document.get("results"));
-                        }
-                        experiments.put(currentDocId, currentExperiment);
+                        updateFromDocumentSnapshot(document);
                         Log.d("FIRESTORE", (String) document.get("description"));
                     }
                 } else {
@@ -324,21 +333,7 @@ public class ExperimentManager {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()){
                     DocumentSnapshot document = task.getResult();
-                    Experiment<?> currentExperiment = ExperimentMaker.makeExperiment(
-                            ExperimentType.valueOf((String) document.get("type")),
-                            (String) document.get("description"),
-                            ((Long) document.get("min-trials")).intValue(),
-                            (boolean) document.get("location-required"),
-                            (boolean) document.get("accepting-new-results"),
-                            UUID.fromString((String) document.get("owner")),
-                            (boolean) document.get("published"),
-                            UUID.fromString(document.getId())
-                    );
-                    UUID currentDocId = UUID.fromString(document.getId());
-                    if (document.get("results") != null) {
-                        buildTrials(currentExperiment, document.get("results"));
-                    }
-                    experiments.put(currentDocId, currentExperiment);
+                    updateFromDocumentSnapshot(document);
                     Log.d("FIRESTORE", (String) document.get("description"));
                 } else {
                     //not able to query all from firestore
@@ -346,6 +341,10 @@ public class ExperimentManager {
                 }
             }
         });
+    }
+
+    public void setUpdateListener(OnEventListener listener) {
+        updateEvent.setOnEventListener(listener);
     }
 
     /**
@@ -401,6 +400,29 @@ public class ExperimentManager {
             Log.d("FIRESTORE", experiment.toString());
             experiment.recordTrial(trial, true);
         }
+    }
+
+    /**
+     * Retrieve data from the firestore document and add to the experiment manager.
+     * @param document the concrete document snaphot from firestore
+     * @return the UUID of the experiment added
+     */
+    private void updateFromDocumentSnapshot(DocumentSnapshot document) {
+        Experiment<?> currentExperiment = ExperimentMaker.makeExperiment(
+                ExperimentType.valueOf((String) document.get("type")),
+                (String) document.get("description"),
+                ((Long) document.get("min-trials")).intValue(),
+                (boolean) document.get("location-required"),
+                (boolean) document.get("accepting-new-results"),
+                UUID.fromString((String) document.get("owner")),
+                (boolean) document.get("published"),
+                UUID.fromString(document.getId())
+        );
+        UUID currentDocId = UUID.fromString(document.getId());
+        if (document.get("results") != null) {
+            buildTrials(currentExperiment, document.get("results"));
+        }
+        experiments.put(currentDocId, currentExperiment);
     }
 
     /**

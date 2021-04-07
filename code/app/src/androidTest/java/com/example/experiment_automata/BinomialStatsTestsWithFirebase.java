@@ -3,7 +3,7 @@ package com.example.experiment_automata;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
-import com.example.experiment_automata.backend.DataBaseConfiguration.DataBase;
+import com.example.experiment_automata.backend.DataBase;
 import com.example.experiment_automata.backend.experiments.BinomialExperiment;
 import com.example.experiment_automata.backend.experiments.ExperimentMaker;
 import com.example.experiment_automata.backend.experiments.ExperimentType;

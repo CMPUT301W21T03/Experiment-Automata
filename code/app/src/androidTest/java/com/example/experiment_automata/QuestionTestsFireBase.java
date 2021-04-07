@@ -3,7 +3,7 @@ package com.example.experiment_automata;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
-import com.example.experiment_automata.backend.DataBaseConfiguration.DataBase;
+import com.example.experiment_automata.backend.DataBase;
 import com.example.experiment_automata.backend.questions.Question;
 import com.example.experiment_automata.ui.NavigationActivity;
 import com.google.firebase.FirebaseApp;

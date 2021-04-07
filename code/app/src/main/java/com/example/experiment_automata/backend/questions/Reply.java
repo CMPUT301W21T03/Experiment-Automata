@@ -2,7 +2,7 @@ package com.example.experiment_automata.backend.questions;
 
 import androidx.annotation.NonNull;
 
-import com.example.experiment_automata.backend.DataBaseConfiguration.DataBase;
+import com.example.experiment_automata.backend.DataBase;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;

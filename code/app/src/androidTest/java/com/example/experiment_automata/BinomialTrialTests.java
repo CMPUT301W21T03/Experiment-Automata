@@ -15,7 +15,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.experiment_automata.backend.DataBaseConfiguration.DataBase;
+import com.example.experiment_automata.backend.DataBase;
 import com.example.experiment_automata.backend.experiments.Experiment;
 import com.example.experiment_automata.backend.experiments.ExperimentMaker;
 import com.example.experiment_automata.backend.experiments.ExperimentType;

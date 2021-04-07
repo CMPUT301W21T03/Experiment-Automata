@@ -3,7 +3,7 @@ package com.example.experiment_automata;
 import android.view.View;
 import android.widget.EditText;
 
-import com.example.experiment_automata.backend.DataBaseConfiguration.DataBase;
+import com.example.experiment_automata.backend.DataBase;
 import com.example.experiment_automata.ui.NavigationActivity;
 import com.google.firebase.FirebaseApp;
 import com.robotium.solo.Solo;

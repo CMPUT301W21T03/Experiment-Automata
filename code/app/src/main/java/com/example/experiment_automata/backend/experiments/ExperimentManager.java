@@ -5,7 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.experiment_automata.backend.DataBaseConfiguration.DataBase;
+import com.example.experiment_automata.backend.DataBase;
 import com.example.experiment_automata.backend.trials.BinomialTrial;
 import com.example.experiment_automata.backend.trials.CountTrial;
 import com.example.experiment_automata.backend.trials.MeasurementTrial;

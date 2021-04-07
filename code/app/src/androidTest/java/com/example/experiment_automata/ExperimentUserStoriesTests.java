@@ -361,7 +361,7 @@ public class ExperimentUserStoriesTests
         solo.sleep(2000);
 
         solo.sleep(2000);
-        int trialSizeAfter = current.getSize();
+        int trialSizeAfter = currentTestingActivity.experimentManager.getExperiment(current.getExperimentId()).getSize();
         solo.sleep(2000);
 
         assertEquals("Trials not added", true, trialSizeAfter > trialSizeBefore);

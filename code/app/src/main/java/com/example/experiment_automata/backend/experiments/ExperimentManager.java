@@ -43,6 +43,7 @@ public class ExperimentManager {
     private static HashMap<UUID, Experiment<?>> experiments;
     private static boolean TEST_MODE = false;
     private Experiment<?> currentExperiment;
+    private Experiment<?> lastAdded;
 
     /**
      * Initializes the experiment manager.
@@ -72,6 +73,7 @@ public class ExperimentManager {
             throw new IllegalArgumentException();
         else {
             experiments.put(id, experiment);
+            lastAdded = experiment;
         }
     }
 
@@ -504,5 +506,14 @@ public class ExperimentManager {
      */
     public ArrayList<Experiment<?>> getAllExperiments() {
         return new ArrayList<>(experiments.values());
+    }
+
+    /**
+     * gets the experiment that was last added to system.
+     * @return
+     *  the last added experiment
+     */
+    public Experiment<?> getLastAdded() {
+        return lastAdded;
     }
 }

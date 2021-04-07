@@ -166,12 +166,6 @@ public class BinomialTrialTests {
     @Test
     public void testIntentIgnoringTrials() {
 
-        //Running without the DB
-        //currentTestingActivity.experimentManager.enableTestMode();
-        //currentTestingActivity.questionManager.enableTestMode();
-        //currentTestingActivity.userManager.enableTestMode();
-        //currentTestingActivity.stopRemindingMe = true;
-
         String testDes = "Testing Intent";
         makeExperiment(testDes);
         solo.clickOnText(testDes);
@@ -196,11 +190,6 @@ public class BinomialTrialTests {
     @Test
     public void testIntentIQRNumbersAppear() {
 
-        //Running without the DB
-        //currentTestingActivity.experimentManager.enableTestMode();
-        //currentTestingActivity.questionManager.enableTestMode();
-        //currentTestingActivity.userManager.enableTestMode();
-        //currentTestingActivity.stopRemindingMe = true;
 
         Double medianTestValue = 1.000;
         Double meanTestValue = 1.000;

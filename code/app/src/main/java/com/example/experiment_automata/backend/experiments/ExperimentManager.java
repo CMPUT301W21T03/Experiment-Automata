@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Role/Pattern:
@@ -146,23 +145,7 @@ public class ExperimentManager {
         Collections.sort(experimentsList);
         return experimentsList;
     }
-    /**
-     * Check if a given experiment ID is published
-     * @param experimentID
-     * experiment ID to check
-     * @return
-     * if the experiment is published
-     */
-    public boolean isExperimentPublished(UUID experimentID){
-        ArrayList<Experiment<?>> experiments = getPublishedExperiments();
-        for(Experiment experiment : experiments){
-            //if(experiment.getExperimentId() == experimentID){
-            if(experimentID.compareTo(experiment.getExperimentId()) == 0){
-                return true;
-            }
-        }
-        return false;
-    }
+
 
     /**
      * returns the experiments current UUID
@@ -436,16 +419,7 @@ public class ExperimentManager {
         location.setLongitude(longitude);
         return  location;
     }
-    /**
-     * Checks if experimentManager contains a particular Experiment
-     * @param experimentID
-     *  experiment ID repersenting the experiment
-     * @return
-     *  if the experiment is in the app
-     */
-    public boolean containsExperiment(UUID experimentID){
-        return experiments.containsKey(experimentID);
-    }
+
     /**
      * Gets a specific Experiment
      * @param experimentID

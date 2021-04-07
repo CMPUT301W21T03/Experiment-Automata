@@ -33,7 +33,6 @@ import org.osmdroid.views.MapView;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link AddNaturalCountTrialFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class AddNaturalCountTrialFragment extends Fragment {
@@ -69,9 +68,12 @@ public class AddNaturalCountTrialFragment extends Fragment {
 
             @Override
             public void onClick(View v) {//open scanner
-                Intent intent = new Intent(getActivity(), ScannerActivity.class);
-                startActivityForResult(intent,1);
-                //startActivity(intent);
+                if (countValue.getText().toString().isEmpty()) {
+                    Snackbar.make(root, "Cannot associate barcode with empty value", Snackbar.LENGTH_LONG).show();
+                } else {
+                    Intent intent = new Intent(getActivity(), ScannerActivity.class);
+                    startActivityForResult(intent, 1);
+                }
 
             }
         });
@@ -102,6 +104,7 @@ public class AddNaturalCountTrialFragment extends Fragment {
         utility.run();
         return root;
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -139,9 +142,13 @@ public class AddNaturalCountTrialFragment extends Fragment {
             Location location = parentActivity.currentTrial.getLocation();
             BarcodeManager testBC = parentActivity.barcodeManager;
             NaturalCountExperiment experiment = (NaturalCountExperiment) parentActivity.experimentManager.getCurrentExperiment();
-            int trialValue = Integer.valueOf(countValue.getText().toString());
-            parentActivity.barcodeManager.addBarcode(rawQRContent,experiment.getExperimentId(),trialValue,location);
-            Snackbar.make(root, "Scanned Barcode " + rawQRContent + " was associated with this Trials Value", Snackbar.LENGTH_LONG).show();
+            try {
+                int trialValue = Integer.valueOf(countValue.getText().toString());
+                parentActivity.barcodeManager.addBarcode(rawQRContent,experiment.getExperimentId(),trialValue,location);
+                Snackbar.make(root, "Scanned Barcode " + rawQRContent + " was associated with this Trials Value", Snackbar.LENGTH_LONG).show();
+            } catch (NumberFormatException e) {
+                Snackbar.make(root, "Cannot associate barcode with empty value", Snackbar.LENGTH_LONG).show();
+            }
         }
     }
 

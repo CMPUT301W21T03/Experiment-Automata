@@ -34,29 +34,21 @@ public class ScannerActivity extends AppCompatActivity {
         integrator.setOrientationLocked(false);//enable screen rotation for zxing activity in manifest
         integrator.initiateScan();
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
-        if(result != null) {
+        if (result != null) {
             if(result.getContents() == null) {
-                Log.d("SCANNER","Canceled scan" );
+                Log.d("SCANNER", "Canceled scan");
             } else {
                 Log.d("SCANNER","Scanned: " + result.getContents() + " of type " + result.getContents().getClass().getName());
                 Intent resultIntent = new Intent();
-                resultIntent.putExtra("QRCONTENTRAW",result.getContents());
-
-                if(result.getFormatName().equals(IntentIntegrator.QR_CODE)){//qrCode
-                    resultIntent.putExtra("IS_QR",true);
-                }
-                else{//barcode
-                    resultIntent.putExtra("IS_QR",false);
-                }
-
-                setResult(1,resultIntent);
+                resultIntent.putExtra("QRCONTENTRAW", result.getContents());
+                resultIntent.putExtra("IS_QR", result.getFormatName().equals(IntentIntegrator.QR_CODE));
+                setResult(1, resultIntent);
             }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
         }
         finish();
     }

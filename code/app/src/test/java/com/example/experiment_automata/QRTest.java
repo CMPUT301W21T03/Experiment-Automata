@@ -18,7 +18,7 @@ public class QRTest {
     static final String TEST_CONTENT_MALFORMATTED = "abc123";
     private QRMaker qrMaker;
 
-    //cannot test getters/setters here because ZXing will not run within junit
+    //cannot test getters/setters here because ZXing and bitmaps will not run within junit
 
 
     @Test

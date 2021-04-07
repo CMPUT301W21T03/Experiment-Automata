@@ -95,7 +95,7 @@ public class BarcodeManagerTest {
         assertEquals(barcode.getBarcodeVal(), barcodeVal);
     }
 
-    
+
 
     @Test
     public void testGetBarcode(){

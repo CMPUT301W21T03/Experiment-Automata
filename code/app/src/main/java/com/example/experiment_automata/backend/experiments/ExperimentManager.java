@@ -14,6 +14,7 @@ import com.example.experiment_automata.backend.trials.Trial;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -46,7 +48,6 @@ public class ExperimentManager {
      * Initializes the experiment manager.
      */
     public ExperimentManager() {
-        experiments = new HashMap<>();
         getAllFromFirestore();
     }
 
@@ -260,17 +261,50 @@ public class ExperimentManager {
     /**
      * Populate experiments in Experiment manager with all experiments from Firestore
      */
-    public void getAllFromFirestore(){
-        DataBase data = DataBase.getInstanceTesting();
+    public void getAllFromFirestore() {
+        DataBase data = DataBase.getInstance();
         FirebaseFirestore db = data.getFireStore();
         CollectionReference experimentCollection = db.collection("experiments");
-        experimentCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        getFromFirestoreFromQuery(experimentCollection.get());
+    }
+
+    /**
+     * Populate experiments in Experiment manager with some experiments from Firestore according to the filter
+     * @param key the key to filter
+     * @param value the value to filter
+     */
+    public void filterFromFirestore(@NonNull String key, @NonNull Object value) {
+        DataBase data = DataBase.getInstance();
+        FirebaseFirestore db = data.getFireStore();
+        CollectionReference experimentCollection = db.collection("experiments");
+        getFromFirestoreFromQuery(experimentCollection.whereEqualTo(key, value).get());
+    }
+
+    /**
+     * Populate experiments in Experiment manager with some experiments from Firestore according to the filter
+     * @param values the document IDs to filter
+     */
+    public void filterFromFirestore(@NonNull List<String> values) {
+        DataBase data = DataBase.getInstance();
+        FirebaseFirestore db = data.getFireStore();
+        CollectionReference experimentCollection = db.collection("experiments");
+        for (String experiment : values) {
+            getFromFirestoreFromDocument(experimentCollection.document(experiment).get());
+        }
+    }
+
+    /**
+     * Update the experiment manager based on a firestore query.
+     * @param querySnapshotTask The task of the query
+     */
+    private void getFromFirestoreFromQuery(Task<QuerySnapshot> querySnapshotTask) {
+        querySnapshotTask.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                ExperimentMaker maker = new ExperimentMaker();
                 if (task.isSuccessful()){
-                    for (QueryDocumentSnapshot document : task.getResult()){
-                        Experiment<?> currentExperiment = maker.makeExperiment(
+                    experiments = new HashMap<>();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Experiment<?> currentExperiment = ExperimentMaker.makeExperiment(
                                 ExperimentType.valueOf((String) document.get("type")),
                                 (String) document.get("description"),
                                 ((Long) document.get("min-trials")).intValue(),
@@ -281,30 +315,62 @@ public class ExperimentManager {
                                 UUID.fromString(document.getId())
                         );
                         UUID currentDocId = UUID.fromString(document.getId());
-                        if ( document.get("results") != null){
+                        if (document.get("results") != null) {
                             buildTrials(currentExperiment, document.get("results"));
                         }
-
-
-                        experiments.put(currentDocId,currentExperiment);
-                        Log.d("FIRESTORE",(String) document.get("description"));
+                        experiments.put(currentDocId, currentExperiment);
+                        Log.d("FIRESTORE", (String) document.get("description"));
                     }
-                }
-                else{
+                } else {
                     //not able to query all from firestore
-                    Log.d("FIRESTORE","Unable to pull experiments from firestore");
+                    Log.d("FIRESTORE", "Unable to pull experiments from firestore");
                 }
             }
         });
     }
+
+    /**
+     * Update the experiment manager from one document ID.
+     * @param documentSnapshotTask The task of the document
+     */
+    private void getFromFirestoreFromDocument(Task<DocumentSnapshot> documentSnapshotTask) {
+        documentSnapshotTask.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()){
+                    DocumentSnapshot document = task.getResult();
+                    Experiment<?> currentExperiment = ExperimentMaker.makeExperiment(
+                            ExperimentType.valueOf((String) document.get("type")),
+                            (String) document.get("description"),
+                            ((Long) document.get("min-trials")).intValue(),
+                            (boolean) document.get("location-required"),
+                            (boolean) document.get("accepting-new-results"),
+                            UUID.fromString((String) document.get("owner")),
+                            (boolean) document.get("published"),
+                            UUID.fromString(document.getId())
+                    );
+                    UUID currentDocId = UUID.fromString(document.getId());
+                    if (document.get("results") != null) {
+                        buildTrials(currentExperiment, document.get("results"));
+                    }
+                    experiments.put(currentDocId, currentExperiment);
+                    Log.d("FIRESTORE", (String) document.get("description"));
+                } else {
+                    //not able to query all from firestore
+                    Log.d("FIRESTORE", "Unable to pull experiments from firestore");
+                }
+            }
+        });
+    }
+
     /**
      * Populates given experiment with trials found in trials from firestore
      * @param experiment
-     *  Experiment you want to populate
+     *  Experiment ID you want to populate
      * @param trialsObj
      *  Hashmap containing other hashmaps as found in the results field in the given Experiment document
      */
-    public void buildTrials(Experiment<?> experiment, Object trialsObj){
+    private void buildTrials(Experiment<?> experiment, Object trialsObj){
         HashMap<String, Object> trials = (HashMap<String, Object>) trialsObj;
         for (String k : trials.keySet()){
             HashMap<String, Object> currentTrialMap = (HashMap<String, Object>) trials.get(k);
@@ -314,6 +380,7 @@ public class ExperimentManager {
             switch(experiment.getType()){
                 case Binomial:
                     boolean binResult = (boolean) currentTrialMap.get("result");
+
                     if (experiment.isRequireLocation()) {
                         trial = new BinomialTrial(ownerId, locationFromTrialHash(currentTrialMap), binResult);
                     } else {
@@ -328,7 +395,7 @@ public class ExperimentManager {
                     }
                     break;
                 case NaturalCount:
-                    int natResult = (int)((long) currentTrialMap.get("result"));
+                    int natResult = (int) ((long) currentTrialMap.get("result"));
 
                     if (experiment.isRequireLocation()) {
                         trial = new NaturalCountTrial(ownerId, locationFromTrialHash(currentTrialMap), natResult);
@@ -337,7 +404,7 @@ public class ExperimentManager {
                     }
                     break;
                 case Measurement:
-                    float measResult = (float)((double)currentTrialMap.get("result"));
+                    float measResult = (float) ((double) currentTrialMap.get("result"));
 
                     if (experiment.isRequireLocation()) {
                         trial = new MeasurementTrial(ownerId, locationFromTrialHash(currentTrialMap), measResult);
@@ -346,9 +413,11 @@ public class ExperimentManager {
                     }
                     break;
             }
+            Log.d("FIRESTORE", experiment.toString());
             experiment.recordTrial(trial, true);
         }
     }
+
     /**
      * Build a Location form trial hashmap taken from firestore
      * @param trialHash
@@ -414,7 +483,6 @@ public class ExperimentManager {
         return false;
     }
 
-
     /**
      * Get the current experiment being held in memory by the manager
      * @return
@@ -434,9 +502,7 @@ public class ExperimentManager {
      * @return
      *  The list of all made experiments
      */
-    public ArrayList<Experiment<?>> getAllExperiments()
-    {
+    public ArrayList<Experiment<?>> getAllExperiments() {
         return new ArrayList<>(experiments.values());
     }
-
 }

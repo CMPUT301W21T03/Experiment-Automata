@@ -16,6 +16,10 @@ import static org.junit.Assert.assertTrue;
 
 public class UserManagerModelTests
 {
+    /**
+     * Role: Testing the UserManager class
+     */
+
     UserManager userManager;
 
     @After
@@ -74,5 +78,19 @@ public class UserManagerModelTests
                 userManager.getSize());
     }
 
-    
+    @Test
+    public void testGetSpecificUser()
+    {
+        userManager = UserManager.getInstance(true);
+        UUID already = UUID.randomUUID();
+        UUID already2 = UUID.randomUUID();
+        User testUser = new User(true, null, already);
+        User testUser2 = new User(true, null, already2);
+        userManager.add(testUser);
+        userManager.add(testUser2);
+
+        assertEquals("Didn't get the correct user from system",
+                testUser2.getUserId(),
+                userManager.getSpecificUser(already2).getUserId());
+    }
 }

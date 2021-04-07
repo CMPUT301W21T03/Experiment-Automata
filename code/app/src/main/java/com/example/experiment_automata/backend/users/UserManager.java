@@ -135,14 +135,4 @@ public class UserManager
             }
         });
     }
-
-    /**
-     * sets the class test mode into either true or false
-     * @param testMode the new operating mode for the given class
-     */
-    public void setTestMode(boolean testMode)
-    {
-        this.testMode = testMode;
-    }
-
 }

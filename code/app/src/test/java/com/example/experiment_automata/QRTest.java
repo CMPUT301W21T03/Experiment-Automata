@@ -20,6 +20,7 @@ public class QRTest {
 
     //cannot test getters/setters here because ZXing will not run within junit
 
+
     @Test
     public void missingHeaderTest(){
         boolean passed = true;

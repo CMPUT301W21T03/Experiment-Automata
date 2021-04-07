@@ -20,7 +20,7 @@ import androidx.annotation.NonNull;
  */
 
 public class LocationServices implements LocationListener {
-    Location currentLocation;
+    public Location currentLocation;
 
     public LocationServices()
     {

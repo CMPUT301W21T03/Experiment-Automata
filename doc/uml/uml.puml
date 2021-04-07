@@ -25,6 +25,21 @@ package users {
         -editable: Boolean
         -preferences: SharePreferences
     }
+
+    class UserManager{
+        -{static} currentUsers: HashMap<UUID, User>
+        -{static} userManager: UserManager 
+        -testMode: Boolean 
+        +add(newUser: User)
+        +getSize(): Integer 
+        +getSpecificUser(userID: UUID): User 
+        +getAllUsersFromFireStore()
+
+    }
+
+    UserManager "1" *-- "1" UserManager: Singleton
+
+    UserManager "0..1" o-- "0..*" User
 }
 
 package questions {
@@ -64,7 +79,7 @@ Question "1" -- "0..*" Reply: Answers
 
 Reply -- User: Answers
 
-QuestionManager "1" *-- "1" QuestionManager
+QuestionManager "1" *-- "1" QuestionManager: Singleton
 QuestionManager "1" *-- "0..*" Question: addQuestion
 QuestionManager "1" *-- "0..*" Reply: addReply
 
@@ -117,6 +132,7 @@ package experiments {
         + getAtUUIDDescription(experimentUUID: UUID): Experiment
         + getAllExperiments(): ArrayList<Experiment> 
         + getAllFromFirestore()
+        + getExperiment(experimentID: UUID): Experiment
         + filterFromFirestore(key: String, value: Object)
         + filterFromFirestore(values: List<String>)
         - getFromFirestoreFromQuery(querySnapshotTask: Task<QuerySnapshot>)
@@ -161,10 +177,6 @@ package experiments {
 
     Experiment *-- "1" ExperimentType
 
-    StatSummary -- Experiment
-
-    Experiment -- QRCode
-
     User "1" *-- "0...*" Experiment
 
     Question "0..*" --o "1" Experiment
@@ -197,13 +209,6 @@ package trials {
 }
 
 package qr {
-    abstract class QRCode {
-        - rawContentString: String
-        - experimentID: UUID
-        - type: QRType
-        - qrCodeImage: Bitmap
-        + encodeStringToQR(encodedContent: String): Bitmap
-    }
 
     class ExperimentQRCode extends QRCode {}
 
@@ -226,6 +231,14 @@ package qr {
         +checkQRHeader(String qrString): Boolean
     }
 
+    abstract class QRCode {
+        - rawContentString: String
+        - experimentID: UUID
+        - type: QRType
+        - qrCodeImage: Bitmap
+        + encodeStringToQR(encodedContent: String): Bitmap
+    }
+
     enum QRType {
         Experiment
         BinomialTrial
@@ -233,7 +246,73 @@ package qr {
         MeasurementTrial
         NaturalCountTrial
     }
+
+    class QRMalformattedException
+
+    QRType -- QRCode 
+
+    QRMaker "1" o-- "0..*" QRCode: decodeQRString 
+
+    QRMaker -- QRMalformattedException: Throws 
 }
+
+package barcode{
+    class BarcodeManager{
+        -barcodes: HashMap<String,BarcodeReference>
+        -barcodeManager: BarcodeManager 
+        +addBarCode(barcodeVal: String, experimentId: UUID, result: Integer, location: Location)
+        +addBarCode(barcodeVal: String, experimentId: UUID, result: Float, location: Location)
+        +addBarCode(barcodeVal: String, experimentId: UUID, result: Boolean, location: Location)
+        +addBarCode(barcodeVal: String, experimentId: UUID,  location: Location)
+        +getAllFromFireStore()
+        +locationFromPairing(document: QueryDocumentSnapShot): Location 
+        +getBarcode(barcodeVal: String): BarcodeReference 
+    }
+
+    BarcodeManager "1" *-- "1" BarcodeManager: Singleton
+
+    BarcodeManager o-- "0..*" BarcodeReference 
+
+
+    abstract class BarcodeReference{
+        -barcodeVal: String 
+        -experimentID: UUID
+        -type: ExperimentType
+        -location: Location 
+        -T: result 
+        +postBarcodeToFirestore()    
+    }
+
+    class BinomialBarcodeReference<Boolean> extends BarcodeReference
+
+    class CountBarcodeReference<Object> extends BarcodeReference
+
+    class MeasurementBarcodeReference<Float> extends BarcodeReference
+
+    class NaturalBarcodeReference<Integer> extends BarcodeReference
+
+
+}
+
+package location{
+
+    class LocationServices {
+        +currentLocation: Location 
+        +onLocationChanged() 
+    }
+}
+
+class DataBase{
+    -{static} current: DataBase 
+    -{static} db: FirebaseFirestore 
+    -testMode: Boolean 
+
+    +{static} getInstanceTesting(): DataBase 
+    +{static} getInstance(): DataBase 
+    +getFireStore(): FirebaseFirestore 
+}
+
+DataBase "1" *-- "1": Singleton 
 
 User "1" *-- "1" ContactInformation
 
@@ -247,6 +326,12 @@ MeasurementExperiment "1" *-- "0...*" MeasurementTrial
 
 User -- Trial: Performs
 
-StatSummary o-- Trial
+Experiment -- QRCode
+
+BarcodeReference o-- Experiment 
+
+BarcodeReference o-- ExperimentType
+
+
 
 @enduml

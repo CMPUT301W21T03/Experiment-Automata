@@ -34,10 +34,8 @@ public class User implements Serializable {
     private static final String TAG = "User";
     private UUID userId;//changed from int to UUID
     private ContactInformation info;
-    //    private SearchController controller;
     private Collection<UUID> ownedExperiments;
     private Collection<UUID> subscribedExperiments;
-//    private Collection<Experiment> participatingExperiments;
 
     /**
      * Creates the user. Assigns a user id automatically.
@@ -107,22 +105,20 @@ public class User implements Serializable {
 
         DataBase dataBase = DataBase.getInstance();
         FirebaseFirestore db = dataBase.getFireStore();
-        if(!dataBase.isTestMode()) {
-            db.collection("users").document(this.userId.toString())
-                    .set(userInfo)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Log.d(TAG, "User info successfully updated!");
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.w(TAG, "Error writing document", e);
-                        }
-                    });
-        }
+        db.collection("users").document(this.userId.toString())
+                .set(userInfo)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "User info successfully updated!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                    }
+                });
     }
 
     /**

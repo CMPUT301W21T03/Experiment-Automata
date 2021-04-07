@@ -174,6 +174,9 @@ public class SearchUserStoriesTests
         makeExperiment("three");
         solo.sleep(2000);
         solo.clickOnView((solo.getView(R.id.publishedCheckbox)));
+        solo.clickOnActionBarHomeButton();
+        solo.clickOnText("Published Experiments");
+        solo.sleep(2000);
         solo.clickOnView(solo.getView(R.id.app_bar_search));
         solo.sleep(2000);
         solo.enterText(0, testQuery);

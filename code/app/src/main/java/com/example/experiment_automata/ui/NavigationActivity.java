@@ -30,7 +30,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.experiment_automata.R;
-import com.example.experiment_automata.backend.DataBase;
+import com.example.experiment_automata.backend.DataBaseConfiguration.DataBase;
 import com.example.experiment_automata.backend.barcode.BarcodeManager;
 import com.example.experiment_automata.backend.experiments.Experiment;
 import com.example.experiment_automata.backend.experiments.ExperimentManager;

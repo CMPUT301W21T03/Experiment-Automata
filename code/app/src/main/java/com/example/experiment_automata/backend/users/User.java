@@ -4,8 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.experiment_automata.backend.DataBase;
-import com.example.experiment_automata.backend.experiments.Experiment;
+import com.example.experiment_automata.backend.DataBaseConfiguration.DataBase;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;

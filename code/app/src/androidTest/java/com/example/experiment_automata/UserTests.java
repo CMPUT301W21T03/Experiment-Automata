@@ -1,13 +1,12 @@
 package com.example.experiment_automata;
 
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
-import com.example.experiment_automata.backend.DataBase;
+import com.example.experiment_automata.backend.DataBaseConfiguration.DataBase;
 import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.ui.Screen;
 import com.robotium.solo.Solo;

@@ -17,7 +17,7 @@ import android.widget.EditText;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
-import com.example.experiment_automata.backend.DataBase;
+import com.example.experiment_automata.backend.DataBaseConfiguration.DataBase;
 import com.example.experiment_automata.ui.NavigationActivity;
 import com.google.firebase.FirebaseApp;
 import com.robotium.solo.Solo;

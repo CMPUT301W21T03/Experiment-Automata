@@ -1,4 +1,4 @@
-package com.example.experiment_automata.backend;
+package com.example.experiment_automata.backend.DataBaseConfiguration;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 

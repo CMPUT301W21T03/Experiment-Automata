@@ -53,6 +53,7 @@ public class ExperimentManager {
      * Initializes the experiment manager.
      */
     public ExperimentManager() {
+        experiments = new HashMap<>();
         getAllFromFirestore();
         updateEvent = new UpdateEvent();
     }
@@ -265,7 +266,6 @@ public class ExperimentManager {
                     return;
                 }
                 if (snapshot != null && !snapshot.getMetadata().hasPendingWrites()) {
-                    experiments = new HashMap<>();
                     for (QueryDocumentSnapshot document : snapshot) {
                         updateFromDocumentSnapshot(document);
                         Log.d("FIRESTORE", (String) document.get("description"));
@@ -310,7 +310,6 @@ public class ExperimentManager {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()){
-                    experiments = new HashMap<>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         updateFromDocumentSnapshot(document);
                         Log.d("FIRESTORE", (String) document.get("description"));

@@ -48,9 +48,6 @@ public class UserManager
         return userManager;
     }
 
-
-
-
     /**
      * Adds user to current local memory
      * @param newUser user to be added
@@ -145,7 +142,7 @@ public class UserManager
      */
     public void setTestMode(boolean testMode)
     {
-        this.testMode = testMode; 
+        this.testMode = testMode;
     }
 
 }

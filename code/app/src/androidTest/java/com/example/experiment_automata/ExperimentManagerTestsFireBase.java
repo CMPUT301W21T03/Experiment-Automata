@@ -49,7 +49,6 @@ public class ExperimentManagerTestsFireBase {
          * Full:https://stackoverflow.com/questions/15993314/clicking-on-action-bar-menu-items-in-robotium
          */
         FirebaseApp.initializeApp(InstrumentationRegistry.getInstrumentation().getTargetContext());
-
         ExperimentMaker experimentMaker = new ExperimentMaker();
         experimentManager = ExperimentManager.getInstance();
         experiments = new ArrayList<>();
@@ -90,6 +89,20 @@ public class ExperimentManagerTestsFireBase {
         dataBase = DataBase.getInstanceTesting();
     }
 
+    /**
+     *  resets the experiment manager instence
+     *  Source:
+     *      Author:https://stackoverflow.com/users/1230702/teded
+     *      Editor:https://stackoverflow.com/users/1230702/teded
+     *      Full URL:https://stackoverflow.com/questions/8256989/singleton-and-unit-testing
+     * @throws NoSuchFieldException
+     */
+    @After
+    public void cleanWorld() throws NoSuchFieldException, IllegalAccessException {
+        Field currentInstence = ExperimentManager.class.getDeclaredField("experimentManager");
+        currentInstence.setAccessible(true);
+        currentInstence.set(currentInstence, null);
+    }
 
     //Testing small change work as expected
     @Test

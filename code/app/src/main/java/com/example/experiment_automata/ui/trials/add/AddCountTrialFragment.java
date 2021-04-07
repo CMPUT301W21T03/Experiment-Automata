@@ -84,7 +84,7 @@ public class AddCountTrialFragment extends Fragment {
                 bundle.putString("DESCRIPTION",experiment.getDescription());
                 bundle.putString("TYPE", QRType.CountTrial.toString());
                 viewQRFragment.setArguments(bundle);
-                getActivity().getSupportFragmentManager().beginTransaction().add(viewQRFragment,"QR").commit();
+                requireActivity().getSupportFragmentManager().beginTransaction().add(viewQRFragment,"QR").commit();
             }
         });
         CountExperiment currentExperiment = (CountExperiment) parentActivity.experimentManager.getCurrentExperiment();

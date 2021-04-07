@@ -86,7 +86,7 @@ public class AddBinomialTrialFragment extends Fragment {
                 bundle.putString("TYPE", QRType.BinomialTrial.toString());
                 bundle.putBoolean("BINVAL", checkBox.isChecked());
                 viewQRFragment.setArguments(bundle);
-                getActivity().getSupportFragmentManager().beginTransaction().add(viewQRFragment,"QR").commit();
+                requireActivity().getSupportFragmentManager().beginTransaction().add(viewQRFragment,"QR").commit();
             }
         });
         currentMapDisplay = root.findViewById(R.id.add_binomial_trial_map_view);

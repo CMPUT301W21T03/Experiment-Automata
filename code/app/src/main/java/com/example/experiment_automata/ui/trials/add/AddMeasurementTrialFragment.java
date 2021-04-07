@@ -87,9 +87,13 @@ public class AddMeasurementTrialFragment extends Fragment {
                 bundle.putString("UUID", experiment.getExperimentId().toString());
                 bundle.putString("DESCRIPTION",experiment.getDescription());
                 bundle.putString("TYPE", QRType.MeasurementTrial.toString());
-                bundle.putFloat("MEASVAL", Float.parseFloat(measurementValue.getText().toString()));//check value?
-                viewQRFragment.setArguments(bundle);
-                getActivity().getSupportFragmentManager().beginTransaction().add(viewQRFragment,"QR").commit();
+                try {
+                    bundle.putFloat("MEASVAL", Float.parseFloat(measurementValue.getText().toString()));//check value?
+                    viewQRFragment.setArguments(bundle);
+                    requireActivity().getSupportFragmentManager().beginTransaction().add(viewQRFragment, "QR").commit();
+                } catch (NumberFormatException e) {
+                    Snackbar.make(root, "Cannot create QR code with empty value", Snackbar.LENGTH_LONG).show();
+                }
             }
         });
         currentMapDisplay = root.findViewById(R.id.measurement_trial_experiment_map_view);

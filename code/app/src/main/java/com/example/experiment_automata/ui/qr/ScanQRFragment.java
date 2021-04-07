@@ -45,6 +45,7 @@ public class ScanQRFragment extends Fragment {
     private User user;
     private Trial<?> trial;
     private Experiment experiment;
+    private NavController navController;
 
     public ScanQRFragment() {
         // Required empty public constructor
@@ -70,7 +71,7 @@ public class ScanQRFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {//when the ScannerActivity is finished
         super.onActivityResult(requestCode, resultCode, data);
-        NavController navController = Navigation.findNavController(requireView());
+        navController = Navigation.findNavController(requireView());
         if (data == null) {
             navController.navigateUp();
             return;
@@ -84,6 +85,13 @@ public class ScanQRFragment extends Fragment {
         }
         navController.navigateUp();
         Bundle args = new Bundle();
+        if(experiment == null){
+            Snackbar.make(requireView(), "The Experiment represented by the scanned code is not published or is not accepting results", Snackbar.LENGTH_LONG).show();
+            navController.navigateUp();
+            return;
+
+        }
+
         args.putString(NavExperimentDetailsFragment.CURRENT_EXPERIMENT_ID,
                 experiment.getExperimentId().toString());
         parentActivity.experimentManager.setCurrentExperiment(experiment);
@@ -125,8 +133,8 @@ public class ScanQRFragment extends Fragment {
                             experiment.getType(), qrCode.getValue(), experiment.getDescription());
                     Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG).show();
                 }
-            } else {
-                Snackbar.make(requireView(), "The Experiment contained in the scanned QR code is not published or isn't accepting results", Snackbar.LENGTH_LONG).show();
+            } else {//scanned experiment is not published
+                return;
             }
         } catch (QRMalformattedException qrMalE){
             //malformatted QR

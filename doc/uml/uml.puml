@@ -117,6 +117,10 @@ package experiments {
         + getAtUUIDDescription(experimentUUID: UUID): Experiment
         + getAllExperiments(): ArrayList<Experiment> 
         + getAllFromFirestore()
+        + filterFromFirestore(key: String, value: Object)
+        + filterFromFirestore(values: List<String>)
+        - getFromFirestoreFromQuery(querySnapshotTask: Task<QuerySnapshot>)
+        - getFromFirestoreFromDocument(documentSnapshotTask: Task<DocumentSnapshot>)
         - queryMatch(query: String, source: String): Boolean
         + {abstract} getRecordedTrials(): ArrayList<Trial>
     }

@@ -342,28 +342,25 @@ public class ExperimentUserStoriesTests
     @Test
     public void testingAddingTrials() {
         Experiment<?> current = null;
-        makeExperiment("GUI Test Experiment");
+        String des = "Evil String";
+        makeExperiment(des);
         solo.sleep(2000);
-        if(currentTestingActivity.experimentManager.getAllExperiments().size() > 0) {
-            current = currentTestingActivity.experimentManager.getAllExperiments().get(0);
+        current = currentTestingActivity.experimentManager.getLastAdded();
 
-            int trialSizeBefore = current.getSize();
-            solo.clickOnText(current.getDescription());
-            solo.sleep(2000);
-            solo.clickOnView(addExperimentButton);
-            solo.sleep(2000);
+        int trialSizeBefore = current.getSize();
+        solo.clickOnText(des);
+        solo.sleep(2000);
+        solo.clickOnView(addExperimentButton);
+        solo.sleep(2000);
 
-            solo.clickOnView(addExperimentButton);
-            solo.sleep(2000);
+        solo.clickOnView(addExperimentButton);
+        solo.sleep(2000);
 
-            solo.sleep(2000);
-            int trialSizeAfter = current.getSize();
-            solo.sleep(2000);
+        solo.sleep(2000);
+        int trialSizeAfter = current.getSize();
+        solo.sleep(2000);
 
-            assertEquals("Trials not added", true, trialSizeAfter > trialSizeBefore);
-        }
-        else
-            fail("Should never happen: if it does it's error with robotium");
+        assertEquals("Trials not added", true, trialSizeAfter > trialSizeBefore);
     }
 
     /**

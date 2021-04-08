@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.example.experiment_automata.backend.events.UpdateEvent;
 import com.example.experiment_automata.backend.experiments.Experiment;
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.backend.users.ContactInformation;
@@ -25,6 +26,7 @@ import com.example.experiment_automata.backend.users.UserManager;
 import com.example.experiment_automata.ui.LinkView;
 import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.ui.profile.ProfileFragment;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -46,6 +48,7 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment<?>> {
     private Context context;
     private String mode;
     private UserManager manager;
+    private LinkView owner;
 
     /**
      * Constructor takes in an array list of experiments and a context to set the attributes properly
@@ -85,7 +88,7 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment<?>> {
 
         // Find the corresponding views from experiment_layout
         TextView name = view.findViewById(R.id.experimentName);
-        LinkView owner = view.findViewById(R.id.experimentOwner);
+        owner = view.findViewById(R.id.experimentOwner);
         TextView active = view.findViewById(R.id.experimentActivity);
         TextView experimentID = view.findViewById(R.id.experiment__id);
         CheckBox publishedCheckbox = view.findViewById(R.id.publishedCheckbox);
@@ -96,6 +99,16 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment<?>> {
 
         // Set the name of the experiment owner
 
+        manager.setUpdateListener(() -> {
+            Log.wtf("POSITION", position + "");
+            Experiment<?> currentExperiment = experiment.get(position);
+            UUID userId = currentExperiment.getOwnerId();
+            String username = manager.getSpecificUser(userId).getInfo().getName();
+            Log.wtf("Update listener exp", exp.toString());
+            Log.wtf("Update listener oid", userId.toString());
+            Log.wtf("Update listener username", username);
+            updateUsername(username);
+        });
         User user = manager.getSpecificUser(oid);
         if(user == null) {
             ContactInformation ci = new ContactInformation("BAD-DATA", "BAD", "BAD");
@@ -103,8 +116,9 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment<?>> {
 
         }
 
-        owner.setText(user.getInfo().getName());
+
         User finalUser = user;
+        updateUsername(finalUser.getInfo().getName());
         owner.setOnClickListener(v -> {
             NavigationActivity parentActivity = (NavigationActivity) context;
             Bundle args = new Bundle();
@@ -144,5 +158,9 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment<?>> {
         experimentID.setText(exp.getExperimentId().toString());
 
         return view;
+    }
+
+    private void updateUsername(String name) {
+        owner.setText(name);
     }
 }

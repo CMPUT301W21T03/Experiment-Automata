@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.example.experiment_automata.backend.DataBase;
+import com.example.experiment_automata.backend.events.OnEventListener;
 import com.example.experiment_automata.backend.events.UpdateEvent;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -163,5 +164,13 @@ public class UserManager
                     currentUsers.put(userId, newUser);
             }
         }
+    }
+
+    /**
+     * Set the listener for any time the experiment manager gets updated
+     * @param listener the listener
+     */
+    public void setUpdateListener(OnEventListener listener) {
+        updateEvent.setOnEventListener(listener);
     }
 }

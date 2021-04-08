@@ -16,6 +16,7 @@ import androidx.navigation.Navigation;
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.backend.questions.Reply;
 import com.example.experiment_automata.backend.users.User;
+import com.example.experiment_automata.backend.users.UserManager;
 import com.example.experiment_automata.ui.LinkView;
 import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.ui.profile.ProfileFragment;
@@ -37,6 +38,7 @@ import java.util.List;
 public class ReplyArrayAdapter extends ArrayAdapter<Reply> {
     private ArrayList<Reply> replies;
     private Context context;
+    private UserManager userManager;
 
     /**
      * Constructor takes in an array list of replies and a context to set the attributes properly
@@ -49,6 +51,7 @@ public class ReplyArrayAdapter extends ArrayAdapter<Reply> {
         super(context, 0, replyList);
         this.replies = replyList;
         this.context = context;
+        this.userManager = UserManager.getInstance();
     }
 
     /**
@@ -67,7 +70,7 @@ public class ReplyArrayAdapter extends ArrayAdapter<Reply> {
         }
 
         Reply reply = replies.get(position);
-        User user = User.getInstance(reply.getUser());
+        User user = userManager.getSpecificUser(reply.getUser());
 
         TextView replyTextView = (TextView) view.findViewById(R.id.reply_text);
         LinkView replyUserView = (LinkView) view.findViewById(R.id.reply_user);

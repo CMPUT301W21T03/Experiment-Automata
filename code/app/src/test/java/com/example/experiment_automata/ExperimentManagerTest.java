@@ -22,12 +22,6 @@ public class ExperimentManagerTest {
 
     @Before
     public void runningSetup() {
-        /**
-         * Sources
-         * Author:https://stackoverflow.com/users/7699270/nur-el-din
-         * Editor:https://stackoverflow.com/users/6463791/satan-pandeya
-         * Full:https://stackoverflow.com/questions/15993314/clicking-on-action-bar-menu-items-in-robotium
-         */
         ExperimentManager.enableFirestore = false;
         ExperimentManager.resetInstance();
         experimentManager = ExperimentManager.getInstance();

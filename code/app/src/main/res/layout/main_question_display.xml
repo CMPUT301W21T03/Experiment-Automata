@@ -7,7 +7,7 @@
 
     <com.example.experiment_automata.ui.LinkView
         android:id="@+id/main_question_display_user"
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"

@@ -1,10 +1,13 @@
 package com.example.experiment_automata;
 
+import android.content.SharedPreferences;
+
 import com.example.experiment_automata.backend.users.ContactInformation;
 
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 public class ContactInformationTests {
 
@@ -54,6 +57,10 @@ public class ContactInformationTests {
                 contactInformation.getPhone());
     }
 
+
+    /**
+     * These tests are such that the edit flag is false
+     */
     @Test
     public void testSetName()
     {
@@ -63,7 +70,7 @@ public class ContactInformationTests {
                 phone);
         contactInformation.setName(change);
 
-        assertEquals("Change did not occur",
+        assertNotEquals("Change did not occur",
                 change,
                 contactInformation.getName());
     }
@@ -77,7 +84,7 @@ public class ContactInformationTests {
                 phone);
         contactInformation.setEmail(change);
 
-        assertEquals("Change did not occur",
+        assertNotEquals("Change did not occur",
                 change,
                 contactInformation.getEmail());
     }
@@ -91,8 +98,31 @@ public class ContactInformationTests {
                 phone);
         contactInformation.setPhone(change);
 
-        assertEquals("Change did not occur",
+        assertNotEquals("Change did not occur",
                 change,
                 contactInformation.getPhone());
     }
+
+    @Test
+    public void testSetAllNotEditable()
+    {
+        String change = "bad";
+        ContactInformation contactInformation
+                = new ContactInformation(name,
+                                        email,
+                                        phone);
+
+        contactInformation.setAll(change, change, change);
+
+        assertNotEquals("Name not set", change,
+                contactInformation.getName());
+        assertNotEquals("Email not set", change,
+                contactInformation.getEmail());
+        assertNotEquals("Phone not set", change,
+                contactInformation.getPhone());
+    }
+
+    /**
+     * Testing the not edit field is not feasible  
+     */
 }

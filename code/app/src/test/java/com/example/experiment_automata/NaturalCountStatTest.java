@@ -8,21 +8,13 @@ import org.junit.Test;
 
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class NaturalCountStatTest {
-
     UUID ownerId = UUID.randomUUID();
-    NaturalCountExperiment natExperiment=new NaturalCountExperiment(
-            "This is a test",
-            5,
-            false,
-            true,
-            ownerId, false, UUID.randomUUID(), true);
+    NaturalCountExperiment natExperiment;
     UUID id = UUID.randomUUID();
-    UUID id2 = UUID.randomUUID();
     UUID id3 = UUID.randomUUID();
     UUID id4 = UUID.randomUUID();
 
@@ -31,26 +23,19 @@ public class NaturalCountStatTest {
 
     @Before
     public void setup() {
-        // Reset the binomial experiment
-        natExperiment = new NaturalCountExperiment("This is a test",
-                5, false, true, ownerId, false, UUID.randomUUID(), true);
+        natExperiment = new NaturalCountExperiment("This is a test", 5, false,
+                true, ownerId, false);
     }
 
-
-    /**
+  /**
      * Function to see if two floats are close in value
      * @param first First float to compare to the second one
      * @param second Second float to compare to the first one
      * @return true if f and g are within a close margin of error and false otherwise
      */
     public boolean marginOfError(float first, float second){
-        if(Math.abs(first-second)<Math.pow(10,-6)){
-            // If the absolute value of the difference between first and second is within an error margin (10^(-6))
-            return true;
-        }
-        else{
-            return false;
-        }
+        // If the absolute value of the difference between first and second is within an error margin (10^(-6))
+        return Math.abs(first - second) < Math.pow(10, -6);
     }
 
     @Test

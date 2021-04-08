@@ -1,6 +1,5 @@
 package com.example.experiment_automata;
 
-import com.example.experiment_automata.backend.DataBase;
 import com.example.experiment_automata.backend.experiments.MeasurementExperiment;
 import com.example.experiment_automata.backend.trials.MeasurementTrial;
 
@@ -10,12 +9,13 @@ import org.junit.Test;
 import java.util.UUID;
 import static org.junit.Assert.*;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MeasurementStatTest {
     UUID ownerId = UUID.randomUUID();
     MeasurementExperiment mesExperiment;
     UUID id = UUID.randomUUID();
-    UUID id2 = UUID.randomUUID();
     UUID id3 = UUID.randomUUID();
     UUID id4 = UUID.randomUUID();
 
@@ -26,7 +26,7 @@ public class MeasurementStatTest {
     public void setup() {
         // Reset the binomial experiment
         mesExperiment = new MeasurementExperiment("This is a test", 5,
-                false, true, ownerId, false, UUID.randomUUID(), true);
+                false, true, ownerId, false);
     }
 
     /**
@@ -36,13 +36,8 @@ public class MeasurementStatTest {
      * @return true if f and g are within a close margin of error and false otherwise
      */
     public boolean marginOfError(float first, float second){
-        if(Math.abs(first-second)<Math.pow(10,-6)){
-            // If the absolute value of the difference between first and second is within an error margin (10^(-6))
-            return true;
-        }
-        else{
-            return false;
-        }
+        // If the absolute value of the difference between first and second is within an error margin (10^(-6))
+        return Math.abs(first - second) < Math.pow(10, -6);
     }
 
     @Test

@@ -25,6 +25,8 @@ import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.backend.users.User;
 
+import java.util.Objects;
+
 /**
  * Role/Pattern:
  *
@@ -179,9 +181,9 @@ public class AddExperimentFragment extends DialogFragment {
                             boolean experimentLocation = requireLocation.isChecked();
                             boolean experimentNewResults = acceptNewResults.isChecked();
                             // todo: determine if we need to do unit testing on this
-                            User user = ((NavigationActivity) getActivity()).loggedUser;
-                            listener.onOkPressed(new ExperimentMaker().makeExperiment(experimentType, experimentDescription,
-                                    experimentTrials, experimentLocation, experimentNewResults, user.getUserId()));
+                            User user = ((NavigationActivity) requireActivity()).loggedUser;
+                            listener.onOkPressed(ExperimentMaker.makeExperiment(experimentType, experimentDescription,
+                                    experimentTrials, experimentLocation, experimentNewResults, user.getUserId(), true));
                             // debug statements since no unit testing, prints out all info used to create the experiment object
                             Log.d("NEW_EXPERIMENT", experimentDescription);
                             Log.d("EXPERIMENT_TYPE", experimentType.toString());

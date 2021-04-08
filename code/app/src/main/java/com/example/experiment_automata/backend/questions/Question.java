@@ -159,7 +159,6 @@ public class Question implements Serializable, Comparable
      */
     public UUID getExperimentId() {return experimentId;}
 
-    // todo: a question won't always have a reply so we have to account for that
     /**
      * Get the UUID of the reply associated with a question
      * @return
@@ -169,7 +168,6 @@ public class Question implements Serializable, Comparable
         return reply;
     }
 
-    // todo: this should only set a reply if one does not currently exist, possibly return bool for pass/fail
     /**
      * Set the reply associated with a question
      * @param reply

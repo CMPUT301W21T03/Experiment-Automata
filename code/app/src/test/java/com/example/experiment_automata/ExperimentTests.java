@@ -1,6 +1,5 @@
 package com.example.experiment_automata;
 
-import com.example.experiment_automata.backend.DataBase;
 import com.example.experiment_automata.backend.experiments.BinomialExperiment;
 import com.example.experiment_automata.backend.experiments.CountExperiment;
 import com.example.experiment_automata.backend.experiments.Experiment;
@@ -12,21 +11,15 @@ import com.example.experiment_automata.backend.trials.BinomialTrial;
 import com.example.experiment_automata.backend.trials.CountTrial;
 import com.example.experiment_automata.backend.trials.MeasurementTrial;
 import com.example.experiment_automata.backend.trials.NaturalCountTrial;
-import com.example.experiment_automata.ui.NavigationActivity;
-import com.google.firebase.FirebaseApp;
-
-import org.junit.After;
+;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 
-import java.lang.reflect.Field;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 public class ExperimentTests {
 
@@ -46,7 +39,7 @@ public class ExperimentTests {
                 0, false, true,  userId, false, UUID.randomUUID(), true);
         experiment.recordTrial(new CountTrial(userId));
         experiment.setActive(false);
-        assertThrows(IllegalStateException.class, () -> experiment.recordTrial(new CountTrial(userId)));
+        Assertions.assertThrows(IllegalStateException.class, () -> experiment.recordTrial(new CountTrial(userId)));
     }
 
     @Test
@@ -55,7 +48,7 @@ public class ExperimentTests {
                 "Count Experiment", 0, false, true, userId, false, UUID.randomUUID(), true);
         experiment.recordTrial(new NaturalCountTrial(userId, 1));
         experiment.setActive(false);
-        assertThrows(IllegalStateException.class, () -> experiment.recordTrial(new NaturalCountTrial(userId, 2)));
+        Assertions.assertThrows(IllegalStateException.class, () -> experiment.recordTrial(new NaturalCountTrial(userId, 2)));
     }
 
     @Test
@@ -64,7 +57,7 @@ public class ExperimentTests {
                 "Count Experiment", 0, false, true, userId, false, UUID.randomUUID(), true);
         experiment.recordTrial(new BinomialTrial(userId, true));
         experiment.setActive(false);
-        assertThrows(IllegalStateException.class, () -> experiment.recordTrial(new BinomialTrial(userId, false)));
+        Assertions.assertThrows(IllegalStateException.class, () -> experiment.recordTrial(new BinomialTrial(userId, false)));
     }
 
     @Test
@@ -73,7 +66,7 @@ public class ExperimentTests {
                 "Count Experiment", 0, false, true, userId, false, UUID.randomUUID(), true);
         experiment.recordTrial(new MeasurementTrial(userId, 3));
         experiment.setActive(false);
-        assertThrows(IllegalStateException.class, () -> experiment.recordTrial(new MeasurementTrial(userId, 42.0f)));
+        Assertions.assertThrows(IllegalStateException.class, () -> experiment.recordTrial(new MeasurementTrial(userId, 42.0f)));
     }
 
     @Test
@@ -91,9 +84,9 @@ public class ExperimentTests {
     public void publishing() {
         Experiment<?> experiment = ExperimentMaker.makeExperiment(ExperimentType.Count,
                 "Experiment", 0, false, false, userId, false, UUID.randomUUID(), true);
-        assertFalse(experiment.isPublished());
+        Assertions.assertFalse(experiment.isPublished());
         experiment.setPublished(true);
-        assertTrue(experiment.isPublished());
+        Assertions.assertTrue(experiment.isPublished());
     }
 
     @Test
@@ -111,8 +104,8 @@ public class ExperimentTests {
     public void requireLocation() {
         Experiment<?> experiment = ExperimentMaker.makeExperiment(ExperimentType.Count,
                 "Experiment", 0, false, false, userId, false, UUID.randomUUID(), true);
-        assertFalse(experiment.isRequireLocation());
+        Assertions.assertFalse(experiment.isRequireLocation());
         experiment.setRequireLocation(true);
-        assertTrue(experiment.isRequireLocation());
+        Assertions.assertTrue(experiment.isRequireLocation());
     }
 }

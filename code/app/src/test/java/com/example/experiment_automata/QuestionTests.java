@@ -17,8 +17,6 @@ import static org.junit.Assert.assertNotNull;
 
 public class QuestionTests {
 
-    private NavigationActivity currentTestingActivity;
-
     private UUID experimentId;
     private UUID userId;
 
@@ -33,26 +31,26 @@ public class QuestionTests {
 
     @Test
     public void createQuestion() {
-        Question test = new Question("test", userId, experimentId);
+        Question test = new Question("test", userId, experimentId, true);
         assertNotNull(test);
     }
 
     @Test
     public void getQuestion() {
-        Question test = new Question("test", userId, experimentId);
+        Question test = new Question("test", userId, experimentId, true);
         assertEquals("test", test.getQuestion());
     }
 
     @Test
     public void getQuestionId() {
-        Question test = new Question("test", userId, experimentId);
+        Question test = new Question("test", userId, experimentId, true);
         UUID testId = test.getQuestionId();
         assertNotNull(testId);
     }
 
     @Test
     public void getQuestionUser() {
-        Question test = new Question("test", userId, experimentId);
+        Question test = new Question("test", userId, experimentId, true);
         UUID testUser = test.getUser();
         assertNotNull(testUser);
         assertEquals(userId, testUser);
@@ -60,7 +58,7 @@ public class QuestionTests {
 
     @Test
     public void getQuestionExperiment() {
-        Question test = new Question("test", userId, experimentId);
+        Question test = new Question("test", userId, experimentId, true);
         UUID testExperiment = test.getExperimentId();
         assertNotNull(testExperiment);
         assertEquals(experimentId, testExperiment);

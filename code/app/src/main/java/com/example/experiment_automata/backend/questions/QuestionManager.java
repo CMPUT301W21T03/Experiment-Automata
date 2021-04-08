@@ -27,8 +27,7 @@ import java.util.UUID;
  *
  *  Known Issue:
  *
- *      1. Could be broken into something for question and something for reply
- *      2. An owner technically should not be creating questions, but we need this to test for now
+ *      1. None
  */
 public class QuestionManager {
     private static  HashMap<UUID, ArrayList<Question>> questions;
@@ -36,7 +35,7 @@ public class QuestionManager {
     private static  HashMap<UUID, ArrayList<Reply>> replies;
     private static QuestionManager questionManager;
     private static HashMap<UUID,Boolean> repliesFromId;
-    private static boolean TEST_MODE = false;
+    private boolean testMode;
 
 
     /**
@@ -48,14 +47,46 @@ public class QuestionManager {
         replies = new HashMap<>();
         repliesFromId = new HashMap<>();
         questionFromId = new HashMap<>();
+        this.testMode = false;
         getQuestionsFromFirestore();
     }
 
+    /**
+     * make a tests instance of the question manager class.
+     * @param testMode the current mode of the class
+     */
+    private QuestionManager(boolean testMode)
+    {
+        questions = new HashMap<>();
+        replies = new HashMap<>();
+        repliesFromId = new HashMap<>();
+        questionFromId = new HashMap<>();
+        this.testMode = testMode;
+    }
+
+    /**
+     * makes or returns the current instance of question manager
+     * @return
+     */
     public static QuestionManager getInstance()
     {
         if (questionManager == null)
             questionManager =  new QuestionManager();
 
+        return questionManager;
+    }
+
+    /**
+     * returns a test instance of the question manager class
+     * @return
+     *  the question managers test instence.
+     */
+    public static QuestionManager getTestInstence()
+    {
+        if(questionManager == null)
+        {
+            questionManager = new QuestionManager(true);
+        }
         return questionManager;
     }
 
@@ -192,7 +223,8 @@ public class QuestionManager {
      */
 
     public void getQuestionsFromFirestore() {
-
+        if(testMode)
+            return;
         DataBase dataBase = DataBase.getInstanceTesting();
         FirebaseFirestore db = dataBase.getFireStore();
         CollectionReference questionsCollection = db.collection("questions");
@@ -222,7 +254,7 @@ public class QuestionManager {
 
     private void getRepliesFromFirestore() {
 
-        if(TEST_MODE)
+        if(testMode)
             return;
         DataBase dataBase = DataBase.getInstanceTesting();
         FirebaseFirestore db = dataBase.getFireStore();
@@ -244,21 +276,5 @@ public class QuestionManager {
                 }
             }
         });
-    }
-
-    /**
-     * enables test mode (Does not talk to firebase)
-     */
-    public void enableTestMode()
-    {
-        TEST_MODE = true;
-    }
-
-    /**
-     * disables test mode (Talks to firebase)
-     */
-    public void disableTestMode()
-    {
-        TEST_MODE = false;
     }
 }

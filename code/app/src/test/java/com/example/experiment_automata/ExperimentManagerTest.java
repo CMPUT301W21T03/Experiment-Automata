@@ -29,6 +29,7 @@ public class ExperimentManagerTest {
          * Full:https://stackoverflow.com/questions/15993314/clicking-on-action-bar-menu-items-in-robotium
          */
         ExperimentManager.enableFirestore = false;
+        ExperimentManager.resetInstance();
         experimentManager = ExperimentManager.getInstance();
         experiments = new ArrayList<>();
         experimentReferences = new ArrayList<>();
@@ -50,7 +51,6 @@ public class ExperimentManagerTest {
         experimentReferences.add(e.getExperimentId());
         experiments.add(e);
         experimentManager.add(id, e);
-
     }
 
     //Testing small change work as expected

@@ -12,6 +12,7 @@ import com.example.experiment_automata.backend.trials.CountTrial;
 import com.example.experiment_automata.backend.trials.MeasurementTrial;
 import com.example.experiment_automata.backend.trials.NaturalCountTrial;
 ;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -19,6 +20,11 @@ import org.junit.jupiter.api.Assertions;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class ExperimentTests {
@@ -26,86 +32,155 @@ public class ExperimentTests {
     private ExperimentMaker maker;
     private UUID userId;
 
+    private final static String description = "Test Experiment";
+    private final static Integer minTrials = Integer.MAX_VALUE;
+    private final static Boolean requireLocation = Boolean.FALSE;
+    private final static Boolean acceptNewResults = Boolean.TRUE;
+    private final static UUID owner = UUID.randomUUID();
+    private final static Boolean enableFirestoreSupport = Boolean.FALSE;
 
-    @Before
-    public void setup() {
+    @org.junit.jupiter.api.Test
+    public void testExperiment() {
+        Experiment<CountTrial> experiment = (CountExperiment) ExperimentMaker.makeExperiment(
+                ExperimentType.Count, description, minTrials, requireLocation,
+                acceptNewResults, owner, enableFirestoreSupport);
+        assertNotNull(experiment);
+        assertEquals(description, experiment.getDescription());
+        assertEquals(minTrials, experiment.getMinTrials());
+        assertEquals(requireLocation, experiment.isRequireLocation());
+        assertEquals(acceptNewResults, experiment.isActive());
+        assertEquals(owner, experiment.getOwnerId());
+        assertNotEquals(experiment, ExperimentMaker.makeExperiment(
+                ExperimentType.Count, description, minTrials, requireLocation,
+                acceptNewResults, owner, enableFirestoreSupport)
+        );
+        assertEquals((Integer) 0, experiment.getSize());
+        CountTrial trial = new CountTrial(owner);
+        experiment.recordTrial(trial);
+        assertEquals((Integer) 1, experiment.getSize());
+
         maker = new ExperimentMaker();
         userId = UUID.randomUUID();
     }
 
-    @Test
-    public void countAdd() {
-        CountExperiment experiment = (CountExperiment) ExperimentMaker.makeExperiment(ExperimentType.Count, "Count",
-                0, false, true,  userId, false, UUID.randomUUID(), true);
-        experiment.recordTrial(new CountTrial(userId));
-        experiment.setActive(false);
-        Assertions.assertThrows(IllegalStateException.class, () -> experiment.recordTrial(new CountTrial(userId)));
+
+    @org.junit.jupiter.api.Test
+    public void testCountExperiment() {
+        CountExperiment experiment = (CountExperiment) ExperimentMaker.makeExperiment(
+                ExperimentType.Count, description, minTrials, requireLocation,
+                acceptNewResults, owner, enableFirestoreSupport);
+        assertNotNull(experiment);
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
+    public void testNaturalCountExperiment() {
+        NaturalCountExperiment experiment = (NaturalCountExperiment) ExperimentMaker.makeExperiment(
+                ExperimentType.NaturalCount, description, minTrials, requireLocation,
+                acceptNewResults, owner, enableFirestoreSupport);
+        assertNotNull(experiment);
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testBinomialExperiment() {
+        BinomialExperiment experiment = (BinomialExperiment) ExperimentMaker.makeExperiment(
+                ExperimentType.Binomial, description, minTrials, requireLocation,
+                acceptNewResults, owner, enableFirestoreSupport);
+        assertNotNull(experiment);
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testMeasurementExperiment() {
+        MeasurementExperiment experiment = (MeasurementExperiment) ExperimentMaker.makeExperiment(
+                ExperimentType.Measurement, description, minTrials, requireLocation,
+                acceptNewResults, owner, enableFirestoreSupport);
+        assertNotNull(experiment);
+    }
+
+    @org.junit.jupiter.api.Test
+    public void countAdd() {
+        CountExperiment experiment = (CountExperiment) ExperimentMaker.makeExperiment(ExperimentType.Count,
+                "Count Experiment", 0, false, true, owner, false);
+        assert experiment != null;
+        experiment.recordTrial(new CountTrial(owner));
+        experiment.setActive(false);
+        assertFalse(experiment.isActive());
+        assertThrows(IllegalStateException.class, () -> experiment.recordTrial(new CountTrial(owner)));
+    }
+
+    @org.junit.jupiter.api.Test
     public void naturalCountAdd() {
         NaturalCountExperiment experiment = (NaturalCountExperiment) ExperimentMaker.makeExperiment(ExperimentType.NaturalCount,
-                "Count Experiment", 0, false, true, userId, false, UUID.randomUUID(), true);
-        experiment.recordTrial(new NaturalCountTrial(userId, 1));
+                "Count Experiment", 0, false, true, owner, false);
+        assert experiment != null;
+        experiment.recordTrial(new NaturalCountTrial(owner, 1));
         experiment.setActive(false);
-        Assertions.assertThrows(IllegalStateException.class, () -> experiment.recordTrial(new NaturalCountTrial(userId, 2)));
+        assertFalse(experiment.isActive());
+        assertThrows(IllegalStateException.class, () -> experiment.recordTrial(new NaturalCountTrial(owner, 2)));
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void binomialAdd() {
         BinomialExperiment experiment = (BinomialExperiment) ExperimentMaker.makeExperiment(ExperimentType.Binomial,
-                "Count Experiment", 0, false, true, userId, false, UUID.randomUUID(), true);
-        experiment.recordTrial(new BinomialTrial(userId, true));
+                "Count Experiment", 0, false, true, owner, false);
+        assert experiment != null;
+        experiment.recordTrial(new BinomialTrial(owner, true));
         experiment.setActive(false);
-        Assertions.assertThrows(IllegalStateException.class, () -> experiment.recordTrial(new BinomialTrial(userId, false)));
+        assertFalse(experiment.isActive());
+        assertThrows(IllegalStateException.class, () -> experiment.recordTrial(new BinomialTrial(owner, false)));
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void measurementAdd() {
         MeasurementExperiment experiment = (MeasurementExperiment) ExperimentMaker.makeExperiment(ExperimentType.Measurement,
-                "Count Experiment", 0, false, true, userId, false, UUID.randomUUID(), true);
-        experiment.recordTrial(new MeasurementTrial(userId, 3));
+                "Count Experiment", 0, false, true, owner, false);
+        assert experiment != null;
+        experiment.recordTrial(new MeasurementTrial(owner, 3));
         experiment.setActive(false);
-        Assertions.assertThrows(IllegalStateException.class, () -> experiment.recordTrial(new MeasurementTrial(userId, 42.0f)));
+        assertFalse(experiment.isActive());
+        assertThrows(IllegalStateException.class, () -> experiment.recordTrial(new MeasurementTrial(owner, 42.0f)));
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void minTrials() {
         Integer trials = 10;
         Experiment<?> experiment = ExperimentMaker.makeExperiment(ExperimentType.Count,
-                "Experiment", trials, false, false, userId, false, UUID.randomUUID(), true);
-        assertEquals(trials, experiment.getMinTrials());
+                "Experiment", trials, false, false, owner, false);
+        assert experiment != null;
+        Assert.assertEquals(trials, experiment.getMinTrials());
         trials++;
         experiment.setMinTrials(trials);
-        assertEquals(trials, experiment.getMinTrials());
+        Assert.assertEquals(trials, experiment.getMinTrials());
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void publishing() {
         Experiment<?> experiment = ExperimentMaker.makeExperiment(ExperimentType.Count,
-                "Experiment", 0, false, false, userId, false, UUID.randomUUID(), true);
-        Assertions.assertFalse(experiment.isPublished());
+                "Experiment", 0, false, false, owner, false);
+        assert experiment != null;
+        assertFalse(experiment.isPublished());
         experiment.setPublished(true);
-        Assertions.assertTrue(experiment.isPublished());
+        assertTrue(experiment.isPublished());
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void description() {
         String description = "The cake is a lie";
         Experiment<?> experiment = ExperimentMaker.makeExperiment(ExperimentType.Count,
-                description, 0, false, false, userId, false, UUID.randomUUID(), true);
-        assertEquals(description, experiment.getDescription());
+                description, 0, false, false, owner, false);
+        assert experiment != null;
+        Assert.assertEquals(description, experiment.getDescription());
         description = "Return to monke";
         experiment.setDescription(description);
-        assertEquals(description, experiment.getDescription());
+        Assert.assertEquals(description, experiment.getDescription());
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void requireLocation() {
         Experiment<?> experiment = ExperimentMaker.makeExperiment(ExperimentType.Count,
-                "Experiment", 0, false, false, userId, false, UUID.randomUUID(), true);
-        Assertions.assertFalse(experiment.isRequireLocation());
+                "Experiment", 0, false, false, owner, false);
+        assert experiment != null;
+        assertFalse(experiment.isRequireLocation());
         experiment.setRequireLocation(true);
-        Assertions.assertTrue(experiment.isRequireLocation());
+        assertTrue(experiment.isRequireLocation());
     }
 }

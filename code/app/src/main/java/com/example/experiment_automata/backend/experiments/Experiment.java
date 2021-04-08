@@ -68,7 +68,6 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
         this.type = type;
         this.enableFirestore = enableFirestore;
         results = new ArrayList<>();
-        testMode = false;
         postExperimentToFirestore();
     }
 
@@ -94,7 +93,6 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
         this.type = type;
         this.enableFirestore = true;
         results = new ArrayList<>();
-        testMode = false;
     }
 
     /**
@@ -123,7 +121,6 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
         this.experimentId = experimentId;
         this.type = type;
         results = new ArrayList<>();
-        this.testMode = testMode;
     }
 
     /**

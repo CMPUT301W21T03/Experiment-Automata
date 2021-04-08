@@ -46,12 +46,10 @@ public class UserManager
     public static UserManager getInstance(boolean testMode) {
         if (userManager == null && !testMode) {
             userManager = new UserManager();
-
             userManager.getAllUsersFromFireStore();
         } else if (userManager == null && testMode) {
             userManager = new UserManager();
         }
-
         return userManager;
     }
 

@@ -12,19 +12,10 @@ import org.junit.Test;
 
 import java.util.UUID;
 
-import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertEquals;
 
 public class ExperimentMakerTests
 {
-    @Test
-    public void makeErrorNullInput() {
-        assertThrows(NullPointerException.class, () -> {
-            ExperimentMaker.makeExperiment(null, "funny guy eh!", 0,
-                    false, false, UUID.randomUUID(), false, UUID.randomUUID(), true);
-        });
-    }
-
     @Test
     public void makeBinomialExperiment() {
         Experiment<?> x = ExperimentMaker.makeExperiment(ExperimentType.Binomial, "Should binomial",

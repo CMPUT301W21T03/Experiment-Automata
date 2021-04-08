@@ -34,7 +34,7 @@ public class DataBase {
 
     public static DataBase getInstance() {
 
-        if(current == null) {
+        if (current == null) {
             current = new DataBase(false);
         }
 

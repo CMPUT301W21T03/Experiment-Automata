@@ -87,7 +87,7 @@ public class MapDisplayFragment extends Fragment {
         fab.setVisibility(View.GONE);
         ((NavigationActivity)(getActivity())).setCurrentScreen(Screen.MAP);
 
-        if(currentExperiment.isRequireLocation())
+        if (currentExperiment.isRequireLocation())
             updateMap(root);
         else
             currentMapDisplay.setVisibility(View.GONE);

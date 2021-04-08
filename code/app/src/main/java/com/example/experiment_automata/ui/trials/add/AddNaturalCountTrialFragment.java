@@ -67,7 +67,7 @@ public class AddNaturalCountTrialFragment extends Fragment {
         scanQRButton.setOnClickListener(new View.OnClickListener(){
 
             @Override
-            public void onClick(View v) {//open scanner
+            public void onClick(View v) {
                 if (countValue.getText().toString().isEmpty()) {
                     Snackbar.make(root, "Cannot associate barcode with empty value", Snackbar.LENGTH_LONG).show();
                 } else {
@@ -80,8 +80,7 @@ public class AddNaturalCountTrialFragment extends Fragment {
         viewQRButton = root.findViewById(R.id.add_natural_count_qr_generate_button);
         viewQRButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {//display QR
-                // add content when done
+            public void onClick(View v) {
                 Fragment viewQRFragment = new ViewQRFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString("UUID", experiment.getExperimentId().toString());
@@ -113,7 +112,7 @@ public class AddNaturalCountTrialFragment extends Fragment {
         }
         String rawQRContent =  data.getStringExtra("QRCONTENTRAW");
         Log.d("ACTIVITYRESULT","val " + data.getStringExtra("QRCONTENTRAW"));
-        if(data.getBooleanExtra("IS_QR",true)) {//if is QR
+        if (data.getBooleanExtra("IS_QR",true)) {
             QRMaker qrMaker = new QRMaker();
             QRCode qrCode;
             try{
@@ -123,8 +122,7 @@ public class AddNaturalCountTrialFragment extends Fragment {
                     Log.d("SCANNER","Scanned QR Successfully!");
                     Snackbar.make(root,"Scanned QR Successfully!",Snackbar.LENGTH_LONG).show();
 
-                }
-                else{
+                } else {
                     //send error tray message
                     Log.d("SCANNER","Scanned QR was of incorrect type " + qrCode.getType().toString());
                     Snackbar.make(root,"Scanned QR was of incorrect type",Snackbar.LENGTH_LONG).show();
@@ -136,8 +134,7 @@ public class AddNaturalCountTrialFragment extends Fragment {
                 Log.d("SCANNER","Scanned Malformatted QR");
                 Snackbar.make(root,"Scanned QR was not an Experiment-Automata QR Code",Snackbar.LENGTH_LONG).show();
             }
-        }
-        else {//if scanned was barcode
+        } else {
             NavigationActivity parentActivity = ((NavigationActivity) getActivity());
             Location location = parentActivity.currentTrial.getLocation();
             BarcodeManager testBC = parentActivity.barcodeManager;

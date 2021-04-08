@@ -61,13 +61,13 @@ public class AddBinomialTrialFragment extends Fragment {
         NavigationActivity parentActivity = ((NavigationActivity) getActivity());
         BinomialExperiment experiment = (BinomialExperiment) parentActivity.experimentManager.getCurrentExperiment();
         description.setText(experiment.getDescription());
-        checkBox = root.findViewById(R.id.add_binomial_value);//add_binomial_value
+        checkBox = root.findViewById(R.id.add_binomial_value);
 
         scanQRButton = root.findViewById(R.id.binomial_trial_experiment_description_qr_button);
         scanQRButton.setOnClickListener(new View.OnClickListener(){
 
             @Override
-            public void onClick(View v) {//open scanner
+            public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ScannerActivity.class);
                 startActivityForResult(intent,1);
 
@@ -77,8 +77,7 @@ public class AddBinomialTrialFragment extends Fragment {
         viewQRButton = root.findViewById(R.id.binomial_trial_experiment_description_qr_generate_button);
         viewQRButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {//display QR
-                // add content when done
+            public void onClick(View v) {
                 Fragment viewQRFragment = new ViewQRFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString("UUID", experiment.getExperimentId().toString());
@@ -106,7 +105,8 @@ public class AddBinomialTrialFragment extends Fragment {
         }
         String rawQRContent =  data.getStringExtra("QRCONTENTRAW");
         Log.d("ACTIVITYRESULT","val " + data.getStringExtra("QRCONTENTRAW"));
-        if(data.getBooleanExtra("IS_QR",true)) {//if is QR
+        if (data.getBooleanExtra("IS_QR",true)) {
+        //if is QR
             QRMaker qrMaker = new QRMaker();
             QRCode qrCode;
             try {
@@ -127,8 +127,8 @@ public class AddBinomialTrialFragment extends Fragment {
                 Log.d("SCANNER", "Scanned Malformatted QR");
                 Snackbar.make(root, "Scanned QR was not an Experiment-Automata QR Code", Snackbar.LENGTH_LONG).show();
             }
-        }
-        else {//if scanned was barcode
+        } else {
+        //if scanned was barcode
             NavigationActivity parentActivity = ((NavigationActivity) getActivity());
             Location location = parentActivity.currentTrial.getLocation();
 

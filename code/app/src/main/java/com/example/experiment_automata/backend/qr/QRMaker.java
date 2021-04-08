@@ -59,7 +59,8 @@ public class QRMaker {
             case QRCode.NATURALC_ID:
                 qrCode = new NaturalQRCode(experimentUUID, Integer.parseInt(content));
                 break;
-            default://incorrect type specifier
+            default:
+            //incorrect type specifier
                 qrCode = null;
         }
         return qrCode;

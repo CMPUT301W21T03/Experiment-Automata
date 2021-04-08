@@ -82,11 +82,10 @@ public class MapUtility {
          * Date of Publication: Unknown
          * Full Link: https://github.com/osmdroid/osmdroid
          */
-        if(!experiment.isRequireLocation()) {
+        if (!experiment.isRequireLocation()) {
             display.setVisibility(View.GONE);
             revertBack.setVisibility(View.GONE);
-        }
-        else {
+        } else {
             setupMap();
             marker.setTitle("Recorded Location");
             marker.setSubDescription("This location is what is saved into the trial!");
@@ -170,7 +169,7 @@ public class MapUtility {
                 public boolean singleTapConfirmedHelper(GeoPoint p) {
                     boolean boundingBoxLatiCheck = p.getLatitude() > MIN_BOUND_SIZE_LAT && p.getLatitude() < MAX_BOUND_SIZE_LAT;
                     boolean boundingBoxLongiCheck = p.getLongitude() > MIN_BOUND_SIZE_LONG && p.getLongitude() < MAX_BOUND_SIZE_LONG;
-                    if(boundingBoxLatiCheck && boundingBoxLongiCheck) {
+                    if (boundingBoxLatiCheck && boundingBoxLongiCheck) {
                         display.invalidate();
                         trial.getLocation().setLongitude(p.getLongitude());
                         trial.getLocation().setLatitude(p.getLatitude());
@@ -213,7 +212,7 @@ public class MapUtility {
      * so that we can remove assets when the map is not in use.
      */
     private void makeMapItemsDisappear() {
-        if(revertBack != null)
+        if (revertBack != null)
             revertBack.setVisibility(View.GONE);
         display.setVisibility(View.GONE);
     }

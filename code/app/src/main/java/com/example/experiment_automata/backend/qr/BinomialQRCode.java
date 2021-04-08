@@ -26,10 +26,9 @@ public class BinomialQRCode extends QRCode<Boolean>{
         this.setRawContentString(packedString);
         //pack content
         setValue(result);
-        if(result){
+        if (result) {
             packedString += BINOMIAL_TRUE;
-        }
-        else{
+        } else{
             packedString += BINOMIAL_FALSE;
         }
         this.setRawContentString(packedString);
@@ -67,4 +66,3 @@ public class BinomialQRCode extends QRCode<Boolean>{
     }
 
 }
-

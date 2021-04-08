@@ -30,12 +30,12 @@ import java.util.UUID;
 public abstract class Experiment<T extends Trial<?>> implements Serializable, StatSummary, Graphable, Comparable {
     private String description;
     private int minTrials;
-    private UUID experimentId; // changed from UML to better match project
-    private UUID ownerId; // // changed from UML to better match project
-    protected boolean active; // changed from UML for style
-    private boolean published; // changed from UML for style
-    private boolean requireLocation; // added to align with storyboard
-    private ExperimentType type; // todo: do we need type here if an experiment has a type? (yes makes it easy)
+    private UUID experimentId;
+    private UUID ownerId;
+    protected boolean active;
+    private boolean published;
+    private boolean requireLocation;
+    private ExperimentType type;
     protected Collection<T> results;
     private Boolean enableFirestore;
 
@@ -82,7 +82,7 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
      * @param acceptNewResults
      *   a boolean for whether this trial should be accepting new requests or not
      */
-    protected Experiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId, ExperimentType type, Boolean published, UUID experimentId) {//MAKE SURE WE ADD QUESTIONS TO THIS CONSTRUCTOR
+    protected Experiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId, ExperimentType type, Boolean published, UUID experimentId) {
         this.description = description;
         this.minTrials = minTrials;
         this.requireLocation = requireLocation;
@@ -111,7 +111,6 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
      */
     public void postExperimentToFirestore(){
         if (this.enableFirestore) {
-            //add key field?
             DataBase dataBase = DataBase.getInstance();
             Experiment<T> experiment = this;
             FirebaseFirestore db = dataBase.getFireStore();
@@ -124,7 +123,7 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
             experimentData.put("location-required", experiment.isRequireLocation());
             experimentData.put("min-trials", experiment.getMinTrials());
             experimentData.put("owner", experiment.getOwnerId().toString());
-            experimentData.put("type", experiment.getType().toString());//enum to string
+            experimentData.put("type", experiment.getType().toString());
             experimentData.put("published", experiment.isPublished());
             experimentData.put("results", resultsData);
 
@@ -318,13 +317,13 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
         for(T trial : results) {
             HashMap<String,Object> singleResult = new HashMap<String, Object>();
             singleResult.put("owner-id",trial.getUserId().toString());
-            if (trial.getLocation() != null){//maybe move to a method in superclass
-                singleResult.put("latitude",trial.getLocation().getLatitude());
-                singleResult.put("longitude",trial.getLocation().getLongitude());
+            if (trial.getLocation() != null) {
+                singleResult.put("latitude", trial.getLocation().getLatitude());
+                singleResult.put("longitude", trial.getLocation().getLongitude());
             }
-            singleResult.put("date",trial.getDate().toString());
-            singleResult.put("ignore",trial.isIgnored());
-            singleResult.put("result",trial.getResult());
+            singleResult.put("date", trial.getDate().toString());
+            singleResult.put("ignore", trial.isIgnored());
+            singleResult.put("result", trial.getResult());
             resultsData.put(trial.getTrialId().toString(),singleResult);
         }
         return resultsData;

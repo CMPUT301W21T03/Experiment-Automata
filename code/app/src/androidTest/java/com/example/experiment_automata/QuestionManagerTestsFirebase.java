@@ -97,7 +97,7 @@ public class QuestionManagerTestsFirebase {
         int questionCountBefore;
         int questionCountAfter;
 
-        if(experimentId1 == null || q1 == null)
+        if (experimentId1 == null || q1 == null)
             assertEquals("BAD TEST", 1, 2);
 
         questionCountBefore = questionManager.getTotalQuestions(experimentId1);

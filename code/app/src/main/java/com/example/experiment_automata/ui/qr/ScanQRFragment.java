@@ -69,7 +69,8 @@ public class ScanQRFragment extends Fragment {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {//when the ScannerActivity is finished
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        //when the ScannerActivity is finished
         super.onActivityResult(requestCode, resultCode, data);
         navController = Navigation.findNavController(requireView());
         if (data == null) {
@@ -85,7 +86,7 @@ public class ScanQRFragment extends Fragment {
         }
         navController.navigateUp();
         Bundle args = new Bundle();
-        if(experiment == null){
+        if (experiment == null) {
             Snackbar.make(requireView(), "The Experiment represented by the scanned code is not published or is not accepting results", Snackbar.LENGTH_LONG).show();
             navController.navigateUp();
             return;
@@ -133,7 +134,7 @@ public class ScanQRFragment extends Fragment {
                             experiment.getType(), qrCode.getValue(), experiment.getDescription());
                     Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG).show();
                 }
-            } else {//scanned experiment is not published
+            } else {
                 return;
             }
         } catch (QRMalformattedException qrMalE){
@@ -156,7 +157,7 @@ public class ScanQRFragment extends Fragment {
             UUID barcodeExperimentID = barcodeReference.getExperimentId();
             Location barcodeLocation = barcodeReference.getLocation();
             experiment =  experimentManager.getExperiment(barcodeExperimentID);
-            if(experiment.isPublished() && experiment.isActive()){
+            if (experiment.isPublished() && experiment.isActive()){
                 experiment =  experimentManager.getExperiment(barcodeExperimentID);
                 switch (barcodeReference.getType()){
                     case Binomial:

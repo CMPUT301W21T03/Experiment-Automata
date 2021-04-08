@@ -63,7 +63,7 @@ public class EditLocationDialog extends DialogFragment {
     }
 
     private void revertButtonClick() {
-        if(current != null) {
+        if (current != null) {
             longInputBox.setText(current.getLongitude() + "");
             latInputBox.setText(current.getLatitude() + "");
         }

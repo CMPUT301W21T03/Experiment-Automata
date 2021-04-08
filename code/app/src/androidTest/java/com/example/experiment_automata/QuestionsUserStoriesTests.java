@@ -112,7 +112,7 @@ public class QuestionsUserStoriesTests {
         location = solo.getView(R.id.experiment_require_location_switch);
         acceptNewResults = solo.getView(R.id.experiment_accept_new_results_switch);
         solo.clickOnView(location);
-        if(des != "One")
+        if (des != "One")
             solo.clickOnView(acceptNewResults);
         solo.clickOnText("Ok");
     }

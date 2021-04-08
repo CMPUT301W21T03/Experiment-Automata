@@ -110,7 +110,7 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment<?>> {
         // Set the name of the experiment owner
 
         User user = manager.getSpecificUser(oid);
-        if(user == null) {
+        if (user == null) {
             ContactInformation ci = new ContactInformation("BAD-DATA", "BAD", "BAD");
             user = new User(ci, null);
 

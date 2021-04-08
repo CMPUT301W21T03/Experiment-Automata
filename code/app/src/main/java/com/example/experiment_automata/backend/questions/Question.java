@@ -24,9 +24,9 @@ import java.util.UUID;
  */
 public class Question implements Serializable, Comparable {
     private String question;
-    private UUID user; // this makes more sense to just store a user ID
-    private UUID reply;// we will likely want the reply UUID since we have to query and see if a question has a reply
-    private UUID experimentId; // I think we need this so we know what to query with each experiment
+    private UUID user;
+    private UUID reply;
+    private UUID experimentId;
     private UUID questionId;
 
     /**

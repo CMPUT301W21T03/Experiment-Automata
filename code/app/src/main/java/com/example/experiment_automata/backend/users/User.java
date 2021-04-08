@@ -48,7 +48,7 @@ public class User implements Serializable {
         editor.apply();
         this.info = new ContactInformation(preferences);
         this.testMode = false;
-        if(!testMode) {
+        if (!testMode) {
             updateExperimentFromFirestore();
             updateFirestore();
         }
@@ -83,7 +83,7 @@ public class User implements Serializable {
      */
     private User(UUID id, boolean testMode) {
         this.userId = id;
-        if(!testMode)
+        if (!testMode)
             updateContactFromFirestore();
     }
 
@@ -105,7 +105,7 @@ public class User implements Serializable {
      */
     public void updateFirestore() {
 
-        if(testMode)
+        if (testMode)
             return;
 
         // convert collection of UUIDs to collection of Strings
@@ -150,7 +150,7 @@ public class User implements Serializable {
      * Update the user experiments from the Firestore.
      */
     protected void updateExperimentFromFirestore() {
-        if(testMode)
+        if (testMode)
             return;
 
         DataBase dataBase = DataBase.getInstance();
@@ -183,7 +183,7 @@ public class User implements Serializable {
      * Update the user contact information from the Firestore.
      */
     protected void updateContactFromFirestore() {
-        if(testMode)
+        if (testMode)
             return;
 
         DataBase dataBase = DataBase.getInstance();
@@ -241,9 +241,9 @@ public class User implements Serializable {
      *  the UUID of the experiment
      */
     public void addExperiment(UUID experimentId) {
-        if(ownedExperiments != null)
+        if (ownedExperiments != null)
             this.ownedExperiments.add(experimentId);
-        if(!testMode)
+        if (!testMode)
             updateFirestore();
     }
 
@@ -262,7 +262,7 @@ public class User implements Serializable {
             subscribedExperiments.add(experimentId);
         }
 
-        if(!testMode)
+        if (!testMode)
             updateFirestore();
     }
 

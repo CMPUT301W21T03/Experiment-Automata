@@ -65,7 +65,7 @@ public class AddCountTrialFragment extends Fragment {
         scanQRButton.setOnClickListener(new View.OnClickListener(){
 
             @Override
-            public void onClick(View v) {//open scanner
+            public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ScannerActivity.class);
                 startActivityForResult(intent,1);
             }
@@ -74,8 +74,7 @@ public class AddCountTrialFragment extends Fragment {
         viewQRButton = root.findViewById(R.id.count_trial_qr_generate_button);
         viewQRButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {//display QR
-                // add content when done
+            public void onClick(View v) {
                 Fragment viewQRFragment = new ViewQRFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString("UUID", experiment.getExperimentId().toString());
@@ -98,14 +97,13 @@ public class AddCountTrialFragment extends Fragment {
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        //COUNT TRIAL MAY NOT NEED THIS
         super.onActivityResult(requestCode, resultCode, data);
         if (data == null){
             return;
         }
         String rawQRContent =  data.getStringExtra("QRCONTENTRAW");
         Log.d("ACTIVITYRESULT","val " + data.getStringExtra("QRCONTENTRAW"));
-        if(data.getBooleanExtra("IS_QR",true)) {//if is QR
+        if (data.getBooleanExtra("IS_QR",true)) {
             QRMaker qrMaker = new QRMaker();
             QRCode qrCode;
             try {
@@ -114,19 +112,15 @@ public class AddCountTrialFragment extends Fragment {
                     Log.d("SCANNER", "Scanned QR Successfully!");
                     Snackbar.make(root, "Scanned QR Successfully!", Snackbar.LENGTH_LONG).show();
                 } else {
-                    //send error tray message
                     Log.d("SCANNER", "Scanned QR was of incorrect type " + qrCode.getType().toString());
                     Snackbar.make(root, "Scanned QR was of incorrect type", Snackbar.LENGTH_LONG).show();
                 }
             } catch (QRMalformattedException qrMalE) {
-                //malformatted QR
                 qrCode = null;
                 Log.d("SCANNER", "Scanned Malformatted QR");
                 Snackbar.make(root, "Scanned QR was not an Experiment-Automata QR Code", Snackbar.LENGTH_LONG).show();
             }
-
-        }
-        else {//if scanned was barcode
+        } else {
             NavigationActivity parentActivity = ((NavigationActivity) getActivity());
             Location location = parentActivity.currentTrial.getLocation();
             BarcodeManager testBC = parentActivity.barcodeManager;

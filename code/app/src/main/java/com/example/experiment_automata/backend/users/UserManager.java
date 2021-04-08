@@ -66,7 +66,7 @@ public class UserManager {
      * @param newUser user to be added
      */
     public void add(User newUser) {
-        if(!currentUsers.containsKey(newUser.getUserId()))
+        if (!currentUsers.containsKey(newUser.getUserId()))
             currentUsers.put(newUser.getUserId(), newUser);
     }
 
@@ -87,7 +87,7 @@ public class UserManager {
      */
     public User getSpecificUser(UUID userId) {
         User current = null;
-        if(currentUsers.containsKey(userId))
+        if (currentUsers.containsKey(userId))
             current = currentUsers.get(userId);
 
         return current;
@@ -97,23 +97,23 @@ public class UserManager {
      * gets all the user from firebase and stores them locally
      */
     public void getAllUsersFromFireStore() {
-        if(testMode)
+        if (testMode)
             return;
         DataBase dataBase = DataBase.getInstance();
         FirebaseFirestore db = dataBase.getFireStore();
         CollectionReference userCollection = db.collection("users");
         userCollection.get().addOnCompleteListener(task -> {
-            if(task.isSuccessful()) {
+            if (task.isSuccessful()) {
                 sectorRead(task.getResult());
             }
         });
 
         userCollection.addSnapshotListener((value, error) -> {
-            if(error != null) {
+            if (error != null) {
                 Log.w("UserManager -> Error", error);
                 return;
             }
-            if(value != null) {
+            if (value != null) {
                 Log.wtf("RAN", "DONE");
                 sectorRead(value);
                 updateEvent.callback();

@@ -422,7 +422,7 @@ public class NavigationActivity extends AppCompatActivity implements
      */
     @SuppressLint("MissingPermission")
     public void addLocationToTrial(Trial<?> currentTrial) {
-        if(canMakeLocationTrials) {
+        if (canMakeLocationTrials) {
 
             //TODO: Place location warning dialog here -- Display only once?
             LocationManager locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
@@ -476,7 +476,7 @@ public class NavigationActivity extends AppCompatActivity implements
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
             case PERMISSON_REQUEST_CODE:
-                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                     canMakeLocationTrials = true;
                 else {
                     //TODO: Make dialog or warning windows of what these means for the project

@@ -76,7 +76,7 @@ public class ReplyArrayAdapter extends ArrayAdapter<Reply> {
         LinkView replyUserView = (LinkView) view.findViewById(R.id.reply_user);
 
         replyTextView.setText(reply.getReply());
-        if(user.getInfo() != null) {
+        if (user.getInfo() != null) {
             replyUserView.setText(user.getInfo().getName());
             replyUserView.setOnClickListener(v -> {
                 NavigationActivity parentActivity = (NavigationActivity) context;
@@ -85,8 +85,7 @@ public class ReplyArrayAdapter extends ArrayAdapter<Reply> {
                 NavController navController = Navigation.findNavController(parentActivity, R.id.nav_host_fragment);
                 navController.navigate(R.id.nav_profile, args);
             });
-        }
-        else
+        } else
             replyUserView.setText("BAD=DATA");
 
         return view;

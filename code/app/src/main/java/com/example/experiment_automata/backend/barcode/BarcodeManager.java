@@ -128,8 +128,7 @@ public class BarcodeManager {
                         }
                         barcodes.put(barcode,currentBarcodeRef);
                     }
-                }
-                else{
+                } else {
                     //not able to query firestore
                     Log.d("FIRESTORE","Unable to pull barcodes from firestore");
                 }
@@ -168,7 +167,7 @@ public class BarcodeManager {
     }
 
     public static BarcodeManager getInstance() {
-        if(barcodeManager == null)
+        if (barcodeManager == null)
             barcodeManager = new BarcodeManager();
         return barcodeManager;
     }

@@ -40,7 +40,7 @@ public class ScannerActivity extends AppCompatActivity {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
         if (result != null) {
-            if(result.getContents() == null) {
+            if (result.getContents() == null) {
                 Log.d("SCANNER", "Canceled scan");
             } else {
                 Log.d("SCANNER","Scanned: " + result.getContents() + " of type " + result.getContents().getClass().getName());

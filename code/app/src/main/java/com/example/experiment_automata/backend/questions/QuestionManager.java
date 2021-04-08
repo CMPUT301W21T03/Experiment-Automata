@@ -218,8 +218,7 @@ public class QuestionManager {
 
     private void getRepliesFromFirestore() {
 
-        if(TEST_MODE)
-            return;
+        if (TEST_MODE) return;
         DataBase dataBase = DataBase.getInstanceTesting();
         FirebaseFirestore db = dataBase.getFireStore();
         CollectionReference questionsCollection = db.collection("replies");

@@ -137,7 +137,7 @@ public class ExperimentUserStoriesTests {
         //Setting the boxes
         location = solo.getView(R.id.experiment_require_location_switch);
         acceptNewResults = solo.getView(R.id.experiment_accept_new_results_switch);
-        if(des != "One")
+        if (des != "One")
             solo.clickOnView(acceptNewResults);
         solo.clickOnText("Ok");
     }

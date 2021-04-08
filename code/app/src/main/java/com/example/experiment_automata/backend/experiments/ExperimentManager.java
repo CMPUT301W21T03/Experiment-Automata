@@ -61,7 +61,7 @@ public class ExperimentManager {
     }
 
     public static ExperimentManager getInstance() {
-        if(experimentManager == null)
+        if (experimentManager == null)
             experimentManager = new ExperimentManager();
         return experimentManager;
     }

@@ -34,19 +34,16 @@ public abstract class QRCode<T> {
     private Bitmap qrCodeImage;
     private T value;
 
-    public QRCode(UUID experimentID, QRType type){//For creating QRCode image from data
+    public QRCode(UUID experimentID, QRType type) {
         this.experimentID = experimentID;
         this.type = type;
     }
 
-    public QRCode(String rawContentString){//For creating QRCode from parsed image data
+    public QRCode(String rawContentString) {
         this.rawContentString = rawContentString;
-        if (!checkQRHeader(rawContentString)){
-            //not valid raise exception
+        if (!checkQRHeader(rawContentString)) {
         }
-        //mask uuid
         this.experimentID = UUID.fromString(rawContentString.substring(4, 41));
-
     }
 
     /**

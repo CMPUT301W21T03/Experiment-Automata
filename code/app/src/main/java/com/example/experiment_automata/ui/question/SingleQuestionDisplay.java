@@ -87,7 +87,7 @@ public class SingleQuestionDisplay extends ArrayAdapter {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View root = convertView;
         currentQuestion = currentExperimentQuestions.get(position);
-        if(root == null) {
+        if (root == null) {
             root = LayoutInflater.from(context).inflate(R.layout.main_question_display, parent, false);
             update(root);
         }
@@ -100,7 +100,7 @@ public class SingleQuestionDisplay extends ArrayAdapter {
         replyArrayAdapter = new ReplyArrayAdapter(getContext(), currentReplies);
         replyListView.setAdapter(replyArrayAdapter);
 
-        if(currentExperimentQuestions != null) {
+        if (currentExperimentQuestions != null) {
             setView(root, position);
         }
         return root;
@@ -125,7 +125,7 @@ public class SingleQuestionDisplay extends ArrayAdapter {
             NavController navController = Navigation.findNavController(parentActivity, R.id.nav_host_fragment);
             navController.navigate(R.id.nav_profile, args);
         });
-        if(user.getInfo() != null)
+        if (user.getInfo() != null)
             questionUser.setText(user.getInfo().getName());
         else
             questionUser.setText("BAD-DATA");

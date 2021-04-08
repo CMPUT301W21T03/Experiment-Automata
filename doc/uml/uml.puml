@@ -116,8 +116,9 @@ package experiments {
     }
 
     class ExperimentManager {
-        - {static} experiments: HashMap<UUID, Experiment> 
-        - currentExperiment: Experiment 
+        - {static} experiments: HashMap<UUID, Experiment>
+        - currentExperiment: Experiment
+        - updateEvent: UpdateEvent
 
         + delete(id: UUID)
         + add(id: UUID, experiment: Experiment)
@@ -133,10 +134,8 @@ package experiments {
         + getAllExperiments(): ArrayList<Experiment> 
         + getAllFromFirestore()
         + getExperiment(experimentID: UUID): Experiment
-        + filterFromFirestore(key: String, value: Object)
-        + filterFromFirestore(values: List<String>)
         - getFromFirestoreFromQuery(querySnapshotTask: Task<QuerySnapshot>)
-        - getFromFirestoreFromDocument(documentSnapshotTask: Task<DocumentSnapshot>)
+        - updateFromDocumentSnapshot(document: DocumentSnapshot)
         - queryMatch(query: String, source: String): Boolean
         + {abstract} getRecordedTrials(): ArrayList<Trial>
     }
@@ -182,6 +181,20 @@ package experiments {
     Question "0..*" --o "1" Experiment
 
     QuestionManager -- Experiment
+
+    ExperimentManager o-- "1" UpdateEvent
+}
+
+package events {
+    interface "OnEventListener" as OnEventListener <<Interface>> {
+        + onEvent()
+    }
+
+    class UpdateEvent {
+        - OnEventListener: OnEventListener
+        + setOnEventListener(listener: OnEventListener)
+        + callback()
+    }
 }
 
 package trials {

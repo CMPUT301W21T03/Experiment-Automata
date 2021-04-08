@@ -18,6 +18,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.experiment_automata.backend.users.User;
+import com.example.experiment_automata.backend.users.UserManager;
 import com.example.experiment_automata.ui.LinkView;
 import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.backend.questions.Question;
@@ -51,6 +52,7 @@ public class SingleQuestionDisplay extends ArrayAdapter {
     private Question currentQuestion;
     private ListView replyListView;
     private ReplyArrayAdapter replyArrayAdapter;
+    private UserManager userManager;
 
     /**
      * Constructor takes in an array list of questions and a context to set the attributes properly
@@ -66,7 +68,7 @@ public class SingleQuestionDisplay extends ArrayAdapter {
         this.context = context;
         this.currentExperimentQuestions = currentExperimentQuestions;
         this.mainActivity = (NavigationActivity) mainActivity;
-
+        this.userManager = UserManager.getInstance();
     }
 
     /**
@@ -85,8 +87,7 @@ public class SingleQuestionDisplay extends ArrayAdapter {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View root = convertView;
         currentQuestion = currentExperimentQuestions.get(position);
-        if(root == null)
-        {
+        if(root == null) {
             root = LayoutInflater.from(context).inflate(R.layout.main_question_display, parent, false);
             update(root);
         }
@@ -155,5 +156,4 @@ public class SingleQuestionDisplay extends ArrayAdapter {
         mainActivity.getSupportFragmentManager().beginTransaction().add(replyFragment, "Reply").commit();
         notifyDataSetChanged();
     }
-
 }

@@ -64,7 +64,7 @@ public class QuestionManagerTest {
         try {
             questionManager.getQuestion(newQuestion.getQuestionId());
             fail("Should not have found the question");
-        } catch(IllegalArgumentException ignored) {}
+        } catch (IllegalArgumentException ignored) {}
         questionManager.addQuestion(experimentId, newQuestion);
         assertEquals(newQuestion, questionManager.getQuestion(newQuestion.getQuestionId()));
     }
@@ -88,7 +88,7 @@ public class QuestionManagerTest {
         try {
             questionManager.getQuestion(UUID.randomUUID());
             fail("Finding question that does not exist");
-        } catch(IllegalArgumentException e) {}
+        } catch (IllegalArgumentException e) {}
     }
 
     @Test
@@ -113,7 +113,7 @@ public class QuestionManagerTest {
         try {
             questionManager.getExperimentQuestions(UUID.randomUUID());
             fail("Should have thrown an error searching for non-existent experiment");
-        } catch(IllegalArgumentException e) {}
+        } catch (IllegalArgumentException e) {}
     }
 
     @Test

@@ -25,10 +25,9 @@ public class QRTest {
     public void missingHeaderTest(){
         boolean passed = true;
         qrMaker = new QRMaker();
-        try{
+        try {
             qrMaker.decodeQRString(TEST_CONTENT_MISSINGHEADER);
-        }
-        catch (QRMalformattedException qrMalException){
+        } catch (QRMalformattedException qrMalException){
             passed = false;
         }
         assertEquals(passed, false);
@@ -38,10 +37,9 @@ public class QRTest {
     public void malformattedContentTest(){
         boolean passed = true;
         qrMaker = new QRMaker();
-        try{
+        try {
             qrMaker.decodeQRString(TEST_CONTENT_MALFORMATTED);
-        }
-        catch (QRMalformattedException qrMalException){
+        } catch (QRMalformattedException qrMalException){
             passed = false;
         }
         assertEquals(passed, false);

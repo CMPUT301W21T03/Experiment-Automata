@@ -115,7 +115,7 @@ public class AddNaturalCountTrialFragment extends Fragment {
         if (data.getBooleanExtra("IS_QR",true)) {
             QRMaker qrMaker = new QRMaker();
             QRCode qrCode;
-            try{
+            try {
                 qrCode =qrMaker.decodeQRString(rawQRContent);
                 if (qrCode.getType() == QRType.NaturalCountTrial){
                     countValue.setText(String.valueOf(((NaturalQRCode)qrCode).getValue()));
@@ -127,8 +127,7 @@ public class AddNaturalCountTrialFragment extends Fragment {
                     Log.d("SCANNER","Scanned QR was of incorrect type " + qrCode.getType().toString());
                     Snackbar.make(root,"Scanned QR was of incorrect type",Snackbar.LENGTH_LONG).show();
                 }
-            }
-            catch (QRMalformattedException qrMalE){
+            } catch (QRMalformattedException qrMalE){
                 //malformatted QR
                 qrCode = null;
                 Log.d("SCANNER","Scanned Malformatted QR");

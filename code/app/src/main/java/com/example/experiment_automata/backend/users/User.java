@@ -174,9 +174,7 @@ public class User implements Serializable {
             for (String experimentId : subscribedExperiments) {
                 this.subscribedExperiments.add(UUID.fromString(experimentId));
             }
-        }
-        catch (Exception e) {}
-        String name = info.getName();
+        } catch (Exception e) {}
     }
 
     /**

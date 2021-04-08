@@ -37,6 +37,7 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
     private boolean requireLocation; // added to align with storyboard
     private ExperimentType type; // todo: do we need type here if an experiment has a type? (yes makes it easy)
     protected Collection<T> results;
+    private Boolean enableFirestore;
 
     /**
      * Experiment constructor to be used by ExperimentMaker when creating an experiment from the AddExperimentFragment
@@ -48,8 +49,15 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
      *   a boolean for whether or not the trials need a location
      * @param acceptNewResults
      *   a boolean for whether this trial should be accepting new requests or not
+     * @param ownerId
+     *   the UUID for the owner of the experiment
+     * @param type
+     *   the type of experiment wanted
+     * @param enableFirestore
+     *   whether to enable firestore or not
      */
-    protected Experiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId, ExperimentType type) {
+    protected Experiment(String description, int minTrials, boolean requireLocation,
+                         boolean acceptNewResults, UUID ownerId, ExperimentType type, Boolean enableFirestore) {
         this.description = description;
         this.minTrials = minTrials;
         this.requireLocation = requireLocation;
@@ -58,6 +66,7 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
         this.ownerId = ownerId;
         this.experimentId = UUID.randomUUID();
         this.type = type;
+        this.enableFirestore = enableFirestore;
         results = new ArrayList<>();
         postExperimentToFirestore();
     }
@@ -82,6 +91,7 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
         this.ownerId = ownerId;
         this.experimentId = experimentId;
         this.type = type;
+        this.enableFirestore = true;
         results = new ArrayList<>();
     }
 
@@ -97,41 +107,43 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
     }
 
     /**
-     * Post the current experiment to firestore
+     * Post the current experiment to firestore if support is enabled
      */
     public void postExperimentToFirestore(){
-        //add key field?
-        DataBase dataBase = DataBase.getInstance();
-        Experiment<T> experiment = this;
-        FirebaseFirestore db = dataBase.getFireStore();
-        Map<String, Object> experimentData = new HashMap<>();
-        String experimentUUIDString = experiment.getExperimentId().toString();
-        HashMap<String, Object> resultsData = buildResultsmap();
+        if (this.enableFirestore) {
+            //add key field?
+            DataBase dataBase = DataBase.getInstance();
+            Experiment<T> experiment = this;
+            FirebaseFirestore db = dataBase.getFireStore();
+            Map<String, Object> experimentData = new HashMap<>();
+            String experimentUUIDString = experiment.getExperimentId().toString();
+            HashMap<String, Object> resultsData = buildResultsmap();
 
-        experimentData.put("accepting-new-results", experiment.isActive());
-        experimentData.put("description", experiment.getDescription());
-        experimentData.put("location-required", experiment.isRequireLocation());
-        experimentData.put("min-trials", experiment.getMinTrials());
-        experimentData.put("owner", experiment.getOwnerId().toString());
-        experimentData.put("type", experiment.getType().toString());//enum to string
-        experimentData.put("published", experiment.isPublished());
-        experimentData.put("results", resultsData);
+            experimentData.put("accepting-new-results", experiment.isActive());
+            experimentData.put("description", experiment.getDescription());
+            experimentData.put("location-required", experiment.isRequireLocation());
+            experimentData.put("min-trials", experiment.getMinTrials());
+            experimentData.put("owner", experiment.getOwnerId().toString());
+            experimentData.put("type", experiment.getType().toString());//enum to string
+            experimentData.put("published", experiment.isPublished());
+            experimentData.put("results", resultsData);
 
-        if(!dataBase.isTestMode()) {
-            db.collection("experiments").document(experimentUUIDString)
-                    .set(experimentData)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
+            if (!dataBase.isTestMode()) {
+                db.collection("experiments").document(experimentUUIDString)
+                        .set(experimentData)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
 
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
 
-                        }
-                    });
+                            }
+                        });
+            }
         }
     }
 
@@ -206,7 +218,6 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
      * @param active value to be set
      */
     public void setActive(boolean active) {
-
         this.active = active;
         postExperimentToFirestore();
     }

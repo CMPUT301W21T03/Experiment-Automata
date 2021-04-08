@@ -47,15 +47,8 @@ public class BinomialTrialTests {
 
     // The needed views
     private View addExperimentButton;
-    private View descriptionEdit;
-    private View countTrialsEdit;
-    private View location;
-    private View acceptNewResults;
-    private View slector;
 
     //Needed Objects
-    private ExperimentMaker maker;
-    private Experiment<?> testExperiment;
     private UUID testUUID;
 
     @Rule
@@ -72,12 +65,13 @@ public class BinomialTrialTests {
         //Finding the buttons we need to press
         addExperimentButton = currentTestingActivity.findViewById(R.id.fab_button);
         testUUID = UUID.randomUUID();
-        testExperiment = ExperimentMaker.makeExperiment(ExperimentType.Count,
+        Experiment<?> testExperiment = ExperimentMaker.makeExperiment(ExperimentType.Count,
                 "Test Experiment",
                 0,
                 true,
                 true,
-                testUUID);
+                testUUID,
+                false);
 
         /**
          * Sources
@@ -117,7 +111,7 @@ public class BinomialTrialTests {
         //Click from the home screen the + button to make an experiment
         solo.clickOnView(addExperimentButton);
         solo.waitForDialogToOpen();
-        descriptionEdit = solo.getView(R.id.create_experiment_description_editText);
+        View descriptionEdit = solo.getView(R.id.create_experiment_description_editText);
         assertNotEquals("Can't find description box", null, descriptionEdit);
 
         //We need to fill the form to add the experiment
@@ -126,19 +120,19 @@ public class BinomialTrialTests {
         solo.enterText((EditText) descriptionEdit, des);
 
         //Writing min num trials
-        countTrialsEdit = solo.getView(R.id.experiment_min_trials_editText);
+        View countTrialsEdit = solo.getView(R.id.experiment_min_trials_editText);
         assertNotEquals("Can't find description box", null, countTrialsEdit);
         solo.clickOnView(countTrialsEdit);
         solo.enterText((EditText) countTrialsEdit, "3");
 
         //Selecting Binomial Experiment
-        slector = solo.getView(R.id.experiment_type_spinner);
-        solo.clickOnView(slector);
+        View selector = solo.getView(R.id.experiment_type_spinner);
+        solo.clickOnView(selector);
         solo.clickOnText("Binomial");
 
         //Setting the boxes
-        location = solo.getView(R.id.experiment_require_location_switch);
-        acceptNewResults = solo.getView(R.id.experiment_accept_new_results_switch);
+        View location = solo.getView(R.id.experiment_require_location_switch);
+        View acceptNewResults = solo.getView(R.id.experiment_accept_new_results_switch);
         //solo.clickOnView(location);
         if (!des.equals("One"))
             solo.clickOnView(acceptNewResults);

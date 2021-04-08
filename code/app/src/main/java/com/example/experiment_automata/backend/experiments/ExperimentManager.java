@@ -46,6 +46,7 @@ public class ExperimentManager {
     private static ExperimentManager experimentManager;
     private static HashMap<UUID, Experiment<?>> experiments;
     private static boolean TEST_MODE = false;
+    public static boolean enableFirestore = true;
     private Experiment<?> currentExperiment;
     private Experiment<?> lastAdded;
     private UpdateEvent updateEvent;
@@ -55,15 +56,18 @@ public class ExperimentManager {
      */
     public ExperimentManager() {
         experiments = new HashMap<>();
-        getAllFromFirestore();
+        if (enableFirestore) getAllFromFirestore();
         updateEvent = new UpdateEvent();
     }
 
-    public static ExperimentManager getInstance()
-    {
+    public static ExperimentManager getInstance() {
         if(experimentManager == null)
             experimentManager = new ExperimentManager();
         return experimentManager;
+    }
+
+    public static void resetInstance() {
+        experimentManager = new ExperimentManager();
     }
 
     /**
@@ -76,7 +80,7 @@ public class ExperimentManager {
      *  The id is already associated to an experiment
      */
     public void add(UUID id, Experiment<?> experiment) throws IllegalArgumentException {
-        if(experiments.containsKey(id))
+        if (experiments.containsKey(id))
             throw new IllegalArgumentException();
         else {
             experiments.put(id, experiment);

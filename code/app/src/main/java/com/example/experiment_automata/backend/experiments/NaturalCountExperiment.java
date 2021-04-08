@@ -30,11 +30,18 @@ public class NaturalCountExperiment extends Experiment<NaturalCountTrial> {
      *   a boolean for if the trials need a location
      * @param acceptNewResults
      *   a boolean for if the experiment is accepting new results
+     * @param ownerId
+     *   the UUID for the owner of the experiment
+     * @param enableFirestore
+     *   whether to enable firestore or not
      */
-    public NaturalCountExperiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId) {
-        super(description, minTrials, requireLocation, acceptNewResults, ownerId, ExperimentType.NaturalCount);
+    public NaturalCountExperiment(String description, int minTrials, boolean requireLocation,
+                                  boolean acceptNewResults, UUID ownerId, boolean enableFirestore) {
+        super(description, minTrials, requireLocation, acceptNewResults, ownerId,
+                ExperimentType.NaturalCount, enableFirestore);
         results = new ArrayList<>();
     }
+
     /**
      * Firestore constructor for NaturalCountExperiment
      * @param description

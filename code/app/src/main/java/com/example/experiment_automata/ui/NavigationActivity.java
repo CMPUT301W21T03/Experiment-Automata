@@ -77,7 +77,7 @@ public class NavigationActivity extends AppCompatActivity implements
     public final ExperimentManager experimentManager = ExperimentManager.getInstance();
     public final BarcodeManager barcodeManager = BarcodeManager.getInstance();
     public QuestionManager questionManager = QuestionManager.getInstance();
-    public UserManager userManager = UserManager.getInstance();
+    public UserManager userManager = UserManager.getInstance(false);
 
     private Screen currentScreen;
     public Fragment currentFragment;

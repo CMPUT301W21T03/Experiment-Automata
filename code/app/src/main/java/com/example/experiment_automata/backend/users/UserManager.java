@@ -18,7 +18,7 @@ public class UserManager
 {
     private static HashMap<UUID, User> currentUsers;
     private static UserManager userManager;
-    private static boolean TEST_MODE = false;
+    private boolean testMode;
 
     private UserManager()
     {
@@ -27,9 +27,25 @@ public class UserManager
 
     /**
      * gets the made instance of our hashmap
+     *
+     * @param testMode tells the class if it should
+     *                 be allowed to talk to the firebase system.
+     *
      * @return
      *  the current instance of the UserManager class
      */
+    public static UserManager getInstance(boolean testMode) {
+        if (userManager == null && !testMode) {
+            userManager = new UserManager();
+            userManager.getAllUsersFromFireStore();
+        } else if (userManager == null && testMode) {
+            userManager = new UserManager();
+        }
+
+        return userManager;
+    }
+
+
     public static UserManager getInstance() {
         if (userManager == null) {
             userManager = new UserManager();
@@ -37,7 +53,6 @@ public class UserManager
         }
         return userManager;
     }
-
 
     /**
      * Adds user to current local memory
@@ -74,8 +89,9 @@ public class UserManager
     /**
      * gets all the user from firebase and stores them locally
      */
-    public void getAllUsersFromFireStore() {
-        if(TEST_MODE)
+    public void getAllUsersFromFireStore()
+    {
+        if(testMode)
             return;
         DataBase dataBase = DataBase.getInstance();
         FirebaseFirestore db = dataBase.getFireStore();
@@ -123,21 +139,4 @@ public class UserManager
             }
         });
     }
-
-    /**
-     * enables test mode (Does not talk to firebase)
-     */
-    public void enableTestMode()
-    {
-        TEST_MODE = true;
-    }
-
-    /**
-     * disables test mode (Talks to firebase)
-     */
-    public void disableTestMode()
-    {
-        TEST_MODE = false;
-    }
-
 }

@@ -132,7 +132,6 @@ public class BinomialTrialTests {
         //Setting the boxes
         View location = solo.getView(R.id.experiment_require_location_switch);
         View acceptNewResults = solo.getView(R.id.experiment_accept_new_results_switch);
-        //solo.clickOnView(location);
         if (!des.equals("One"))
             solo.clickOnView(acceptNewResults);
         solo.clickOnText("Ok");

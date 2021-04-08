@@ -184,9 +184,7 @@ public class ExperimentManager {
         for (Map.Entry<UUID, Experiment<?>> entry : experiments.entrySet()) {
             try {
                 Experiment<?> experiment = experiments.get(entry.getKey());
-                //Log.d("SEARCHING", "Experiment:\t" + experiment.getDescription());
                 if (queryMatch(query, experiment.getDescription())) {
-                    //Log.d("QUERY", "Found Match");
                     experimentsList.add(experiment);
                 }
             } catch (NullPointerException e) {}
@@ -323,7 +321,6 @@ public class ExperimentManager {
             HashMap<String, Object> currentTrialMap = (HashMap<String, Object>) trials.get(k);
             UUID ownerId = UUID.fromString((String) currentTrialMap.get("owner-id"));
             Trial<?> trial = null;
-            //Location location = ; NEED TO WRITE LOCATION HANDLING
             switch(experiment.getType()){
                 case Binomial:
                     boolean binResult = (boolean) currentTrialMap.get("result");

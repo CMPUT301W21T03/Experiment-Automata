@@ -68,8 +68,6 @@ public class AddCountTrialFragment extends Fragment {
             public void onClick(View v) {//open scanner
                 Intent intent = new Intent(getActivity(), ScannerActivity.class);
                 startActivityForResult(intent,1);
-                //startActivity(intent);
-
             }
         });
 

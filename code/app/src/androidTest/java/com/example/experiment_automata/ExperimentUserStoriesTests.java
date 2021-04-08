@@ -139,7 +139,6 @@ public class ExperimentUserStoriesTests
         //Setting the boxes
         location = solo.getView(R.id.experiment_require_location_switch);
         acceptNewResults = solo.getView(R.id.experiment_accept_new_results_switch);
-        //solo.clickOnView(location);
         if(des != "One")
             solo.clickOnView(acceptNewResults);
         solo.clickOnText("Ok");
@@ -262,14 +261,6 @@ public class ExperimentUserStoriesTests
         solo.clickOnView(location);
         solo.clickOnView(acceptNewResults);
         solo.clickOnText("Ok");
-
-
-        //Clicking on publish button
-        //publishButton = solo.getView(R.id.publishedCheckbox);
-        //solo.clickOnView(publishButton);
-
-        //solo.clickOnActionBarHomeButton();
-        //solo.clickOnText("Published Experiments");
 
         assertEquals("Empty experiment not displayed",
                 false,

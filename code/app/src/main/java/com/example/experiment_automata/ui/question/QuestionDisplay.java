@@ -74,7 +74,6 @@ public class QuestionDisplay extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //((NavigationActivity)getActivity()).questionManager.getQuestionsFromFirestore();
         ((NavigationActivity)getActivity()).setCurrentFragment(this);
         if (getArguments() != null) {
             currentExperiment = (Experiment<?>) getArguments().getSerializable(QUESTION_EXPERIMENT);

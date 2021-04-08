@@ -87,4 +87,42 @@ public class ExperimentMaker {
                 return null;
         }
     }
+
+    /**
+     * Will create an experiment with the selected type in test mode
+     * @param type
+     *   the type of experiment that will be created
+     * @param description
+     *   the description of the experiment to be created
+     * @param minTrials
+     *   the minimum number of trials for this experiment
+     * @param requireLocation
+     *   a boolean for whether this experiment requires location
+     * @param acceptNewResults
+     *   a boolean for whether this experiment is accepting new results
+     * @param ownerId
+     *   the UUID of the owner of the experiment
+     * @param published
+     *   a boolean for whether this experiment is published
+     * @param experimentId
+     *   UUID representing the current experiment
+     * @return
+     *   an experiment object of the requested type with information
+     */
+    public static Experiment<?> makeExperiment(ExperimentType type, String description, int minTrials,
+                                               boolean requireLocation, boolean acceptNewResults,
+                                               UUID ownerId, Boolean published, UUID experimentId, boolean testMode) {
+        switch (type) {
+            case NaturalCount:
+                return new NaturalCountExperiment(description, minTrials, requireLocation, acceptNewResults, ownerId, published, experimentId, testMode);
+            case Binomial:
+                return new BinomialExperiment(description, minTrials, requireLocation, acceptNewResults, ownerId, published, experimentId, testMode);
+            case Count:
+                return new CountExperiment(description, minTrials, requireLocation, acceptNewResults, ownerId, published, experimentId, testMode);
+            case Measurement:
+                return new MeasurementExperiment(description, minTrials, requireLocation, acceptNewResults, ownerId, published, experimentId, testMode);
+            default:
+                return null;
+        }
+    }
 }

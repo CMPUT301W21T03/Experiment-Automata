@@ -56,6 +56,22 @@ public class NaturalCountExperiment extends Experiment<NaturalCountTrial> {
     }
 
     /**
+     * Default constructor for Binomial Experiment for using test mode
+     * @param description
+     *   the description for the experiment
+     * @param minTrials
+     *   the minimum number of trials for the experiment
+     * @param requireLocation
+     *   a boolean for if the trials need a location
+     * @param acceptNewResults
+     *   a boolean for if the experiment is accepting new results
+     */
+    public NaturalCountExperiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId, Boolean published, UUID experimentId, boolean testMode){
+        super(description, minTrials, requireLocation, acceptNewResults, ownerId, ExperimentType.Binomial,published, experimentId, testMode);
+        results = new ArrayList<>();
+    }
+
+    /**
      * Generate a list of entries needed to plot a histogram
      * @return
      *  the list of entries that represent a histogram of trials.

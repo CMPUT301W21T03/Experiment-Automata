@@ -30,13 +30,14 @@ import java.util.UUID;
 public abstract class Experiment<T extends Trial<?>> implements Serializable, StatSummary, Graphable, Comparable {
     private String description;
     private int minTrials;
-    private UUID experimentId; // changed from UML to better match project
-    private UUID ownerId; // // changed from UML to better match project
-    protected boolean active; // changed from UML for style
-    private boolean published; // changed from UML for style
-    private boolean requireLocation; // added to align with storyboard
-    private ExperimentType type; // todo: do we need type here if an experiment has a type? (yes makes it easy)
+    private UUID experimentId;
+    private UUID ownerId;
+    protected boolean active;
+    private boolean published;
+    private boolean requireLocation;
+    private ExperimentType type;
     protected Collection<T> results;
+    private boolean testMode;
 
     /**
      * Experiment constructor to be used by ExperimentMaker when creating an experiment from the AddExperimentFragment
@@ -59,6 +60,7 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
         this.experimentId = UUID.randomUUID();
         this.type = type;
         results = new ArrayList<>();
+        testMode = false;
         postExperimentToFirestore();
     }
 
@@ -83,6 +85,36 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
         this.experimentId = experimentId;
         this.type = type;
         results = new ArrayList<>();
+        testMode = false;
+    }
+
+    /**
+     * Experiment constructor to be used by tests so that we test the experiment without adding
+     * it to firestore.
+     * @param description
+     *   the description of the experiment
+     * @param minTrials
+     *   the minimum number of trials for this experiment
+     * @param requireLocation
+     *   a boolean for whether or not the trials need a location
+     * @param acceptNewResults
+     *   a boolean for whether this trial should be accepting new requests or not
+     */
+    protected Experiment(String description, int minTrials, boolean requireLocation,
+                         boolean acceptNewResults, UUID ownerId,
+                         ExperimentType type, Boolean published,
+                         UUID experimentId, boolean testMode)
+    {
+        this.description = description;
+        this.minTrials = minTrials;
+        this.requireLocation = requireLocation;
+        this.published = published;
+        this.active = acceptNewResults;
+        this.ownerId = ownerId;
+        this.experimentId = experimentId;
+        this.type = type;
+        results = new ArrayList<>();
+        this.testMode = testMode;
     }
 
     /**
@@ -100,6 +132,8 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
      * Post the current experiment to firestore
      */
     public void postExperimentToFirestore(){
+        if(testMode)
+            return;
         //add key field?
         DataBase dataBase = DataBase.getInstance();
         Experiment<T> experiment = this;

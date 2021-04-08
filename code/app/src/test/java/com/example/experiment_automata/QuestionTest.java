@@ -23,10 +23,9 @@ public class QuestionTest {
     private final static UUID owner = UUID.randomUUID();
     private final static UUID experiment = UUID.randomUUID();
     private final static UUID questionID = UUID.randomUUID();
-    private final static Boolean enableFirestoreSupport = Boolean.FALSE;
 
     @Test
-    public void testExperiment() {
+    public void testQuestion() {
         Question question = new Question(description, owner, experiment, questionID);
         assertNotNull(question);
         assertEquals(description, question.getQuestion());

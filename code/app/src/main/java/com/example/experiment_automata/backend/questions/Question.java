@@ -25,26 +25,42 @@ import java.util.UUID;
 public class Question implements Serializable, Comparable
 {
     private String question;
-    private UUID user; // this makes more sense to just store a user ID
-    private UUID  reply;// we will likely want the reply UUID since we have to query and see if a question has a reply
-    private UUID experimentId; // I think we need this so we know what to query with each experiment
+    private UUID user;
+    private UUID  reply;
+    private UUID experimentId;
     private UUID questionId;
+    private boolean testMode;
 
+    /**
+     * Regular questions constructor
+     * @param question the asked user question
+     * @param user the user id
+     * @param experimentId the experiment id
+     */
     public Question(String question, UUID user, UUID experimentId)
     {
         this.question = question;
         this.user = user;
         this.experimentId = experimentId;
         this.questionId = UUID.randomUUID();
+        this.testMode = false;
         postQuestionToFirestore();
     }
 
-    public Question(Question question) {
-        this.question = question.getQuestion();
-        this.user = question.getUser();
-        this.reply = question.getReply();
-        this.experimentId = question.getExperimentId();
-        this.questionId = question.getQuestionId();
+    /**
+     * Test constructor so that the class does not talk to firebase
+     * @param question the asked question
+     * @param user the user id
+     * @param experimentId the experiment id
+     * @param testMode the mode of the class
+     */
+    public Question(String question, UUID user, UUID experimentId, boolean testMode)
+    {
+        this.question = question;
+        this.user = user;
+        this.experimentId = experimentId;
+        this.questionId = UUID.randomUUID();
+        this.testMode = true;
     }
 
     /**
@@ -61,13 +77,17 @@ public class Question implements Serializable, Comparable
         this.user = userId;
         this.experimentId = experimentId;
         this.questionId = questionId;
+        this.testMode = false;
     }
 
     /**
      *  Post the current question to firestore
      */
-
     protected void postQuestionToFirestore() {
+
+        if(testMode)
+            return;
+
         DataBase dataBase = DataBase.getInstanceTesting();
         FirebaseFirestore db = dataBase.getFireStore();
         Map<String,Object> questionData = new HashMap<>();

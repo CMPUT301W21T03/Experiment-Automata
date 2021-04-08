@@ -35,6 +35,7 @@ public class QuestionManagerTests {
 
     @Before
     public void setup() {
+        questionManager = QuestionManager.getTestInstence();
         questions = new ArrayList<>();
         replies = new ArrayList<>();
         experimentReferences = new ArrayList<>();

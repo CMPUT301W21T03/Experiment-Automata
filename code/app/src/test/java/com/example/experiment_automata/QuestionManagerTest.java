@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -80,6 +81,41 @@ public class QuestionManagerTest {
         assertEquals(2, questionManager.getQuestionReply(questionId).size());
 
     }
+
+    @Test
+    public void testGetQuestion() {
+        assertEquals(questions.get(0), questionManager.getQuestion(questionId));
+        try {
+            questionManager.getQuestion(UUID.randomUUID());
+            fail("Finding question that does not exist");
+        } catch(IllegalArgumentException e) {}
+    }
+
+    @Test
+    public void testGetTotalQuestions() {
+        assertEquals(1, questionManager.getTotalQuestions(experimentId));
+        Question newQuestion = new Question(question, userId, experimentId, UUID.randomUUID());
+        assertEquals(1, questionManager.getTotalQuestions(experimentId));
+        questionManager.addQuestion(newQuestion.getExperimentId(), newQuestion);
+        assertEquals(2, questionManager.getTotalQuestions(experimentId));
+        assertEquals(-1, questionManager.getTotalQuestions(UUID.randomUUID()));
+    }
+
+    @Test
+    public void testGetExperimentQuestions() {
+        assertEquals(1, questionManager.getExperimentQuestions(experimentId).size());
+        assertEquals(questions.get(0), questionManager.getExperimentQuestions(experimentId).get(0));
+        Question newQuestion = new Question(question, userId, experimentId, UUID.randomUUID());
+        assertEquals(1, questionManager.getTotalQuestions(experimentId));
+        questionManager.addQuestion(newQuestion.getExperimentId(), newQuestion);
+        assertEquals(2, questionManager.getExperimentQuestions(experimentId).size());
+        assertTrue("Error, does not contain newQuestion", questionManager.getExperimentQuestions(experimentId).contains(newQuestion));
+        try {
+            questionManager.getExperimentQuestions(UUID.randomUUID());
+            fail("Should have thrown an error searching for non-existent experiment");
+        } catch(IllegalArgumentException e) {}
+    }
+
 
     @After
     public void finish() {

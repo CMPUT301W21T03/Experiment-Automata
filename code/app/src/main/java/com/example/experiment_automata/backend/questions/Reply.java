@@ -131,6 +131,7 @@ public class Reply implements Serializable, Comparable {
      */
     @Override
     public int compareTo(Object o) {
-        return reply.toLowerCase().compareTo(((Reply)o).reply);
+        Reply reply = (Reply) o;
+        return reply.getReply().compareTo(this.reply);
     }
 }

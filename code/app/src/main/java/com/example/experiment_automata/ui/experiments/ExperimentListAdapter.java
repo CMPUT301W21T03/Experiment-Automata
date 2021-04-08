@@ -1,6 +1,5 @@
 package com.example.experiment_automata.ui.experiments;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -27,6 +26,7 @@ import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.ui.profile.ProfileFragment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.UUID;
 
 /**
@@ -46,6 +46,7 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment<?>> {
     private Context context;
     private String mode;
     private UserManager manager;
+    private HashMap<Integer, LinkView> owners;
 
     /**
      * Constructor takes in an array list of experiments and a context to set the attributes properly
@@ -62,6 +63,18 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment<?>> {
         this.context=context;
         this.mode = mode;
         this.manager = manager;
+        this.owners = new HashMap<>();
+        manager.setUpdateListener(() -> {
+            for (int i = 0; i < experiments.size(); i++) {
+                UUID userId = experiment.get(i).getOwnerId();
+                String username = manager.getSpecificUser(userId).getInfo().getName();
+                Log.wtf("Update listener username", username);
+                if (owners.containsKey(i)) {
+                    Log.wtf("Owner View", owners.get(i).toString());
+                    owners.get(i).setText(username);
+                }
+            }
+        });
     }
 
     /**
@@ -85,7 +98,7 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment<?>> {
 
         // Find the corresponding views from experiment_layout
         TextView name = view.findViewById(R.id.experimentName);
-        LinkView owner = view.findViewById(R.id.experimentOwner);
+        owners.put(position, view.findViewById(R.id.experimentOwner));
         TextView active = view.findViewById(R.id.experimentActivity);
         TextView experimentID = view.findViewById(R.id.experiment__id);
         CheckBox publishedCheckbox = view.findViewById(R.id.publishedCheckbox);
@@ -103,9 +116,10 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment<?>> {
 
         }
 
-        owner.setText(user.getInfo().getName());
+
         User finalUser = user;
-        owner.setOnClickListener(v -> {
+        owners.get(position).setText(finalUser.getInfo().getName());
+        owners.get(position).setOnClickListener(v -> {
             NavigationActivity parentActivity = (NavigationActivity) context;
             Bundle args = new Bundle();
             args.putSerializable(ProfileFragment.userKey, finalUser);

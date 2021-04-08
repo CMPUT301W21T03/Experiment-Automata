@@ -22,6 +22,7 @@ import com.example.experiment_automata.backend.trials.MeasurementTrial;
 import com.example.experiment_automata.backend.trials.NaturalCountTrial;
 import com.example.experiment_automata.backend.trials.Trial;
 import com.example.experiment_automata.backend.users.User;
+import com.example.experiment_automata.backend.users.UserManager;
 import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.ui.experiments.NavExperimentDetailsFragment;
 import com.example.experiment_automata.ui.profile.ProfileFragment;
@@ -42,10 +43,10 @@ import java.util.UUID;
 public class TrialArrayAdapter extends ArrayAdapter<Trial> {
     // Syntax inspired by Abdul Ali Bangash, "Lab 3 Instructions - Custom List",
     // 2021-02-04, Public Domain, https://eclass.srv.ualberta.ca/pluginfile.php/6713985/mod_resource/content/1/Lab%203%20instructions%20-%20CustomList.pdf
-
     private ArrayList<Trial> trials;
     private Context context;
     private NavExperimentDetailsFragment parentFragment;
+    private UserManager userManager;
 
     /**
      * Constructor takes in an array list of trials and a context to set the attributes properly
@@ -59,6 +60,7 @@ public class TrialArrayAdapter extends ArrayAdapter<Trial> {
         this.trials = trialList;
         this.context = context;
         this.parentFragment = parentFragment;
+        this.userManager = UserManager.getInstance();
     }
 
     /**
@@ -82,11 +84,12 @@ public class TrialArrayAdapter extends ArrayAdapter<Trial> {
 
         LinkView experimenterNameView = (LinkView) view.findViewById(R.id.trial_experimenter_name);
         UUID userId = trial.getUserId();
-        experimenterNameView.setText(User.getInstance(userId, false).getInfo().getName());
+        User user = userManager.getSpecificUser(userId);
+        experimenterNameView.setText(user.getInfo().getName());
         experimenterNameView.setOnClickListener(v -> {
             NavigationActivity parentActivity = (NavigationActivity) context;
             Bundle args = new Bundle();
-            args.putSerializable(ProfileFragment.userKey, User.getInstance(userId, false));
+            args.putSerializable(ProfileFragment.userKey, user);
             NavController navController = Navigation.findNavController(parentActivity, R.id.nav_host_fragment);
             navController.navigate(R.id.nav_profile, args);
         });

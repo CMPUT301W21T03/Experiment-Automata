@@ -117,7 +117,7 @@ public class SingleQuestionDisplay extends ArrayAdapter {
         // try and find a reply for the current question
         replyButton.setOnClickListener(v -> dealingWithReply(pos));
         questionView.setText(currentQuestion.getQuestion());
-        User user = User.getInstance(currentQuestion.getUser(), false);
+        User user = userManager.getSpecificUser(currentQuestion.getUser());
         questionUser.setOnClickListener(v -> {
             NavigationActivity parentActivity = (NavigationActivity) context;
             Bundle args = new Bundle();

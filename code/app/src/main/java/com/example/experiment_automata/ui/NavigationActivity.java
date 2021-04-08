@@ -502,6 +502,7 @@ public class NavigationActivity extends AppCompatActivity implements
             ((ProfileFragment) currentFragment).update();
         }
         user.updateFirestore();
+
     }
 
     public void updateScreen() {}

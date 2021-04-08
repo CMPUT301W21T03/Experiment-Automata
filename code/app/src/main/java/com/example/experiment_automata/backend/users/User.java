@@ -178,6 +178,7 @@ public class User implements Serializable {
             }
         }
         catch (Exception e) {}
+        String name = info.getName();
     }
 
     /**

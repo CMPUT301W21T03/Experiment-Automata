@@ -28,7 +28,7 @@ public class ExperimentTest {
 
     @Test
     public void testExperiment() {
-        Experiment<CountTrial> experiment = (Experiment<CountTrial>) ExperimentMaker.makeExperiment(
+        Experiment<CountTrial> experiment = (CountExperiment) ExperimentMaker.makeExperiment(
                 ExperimentType.Count, description, minTrials, requireLocation,
                 acceptNewResults, owner, enableFirestoreSupport);
         assertNotNull(experiment);

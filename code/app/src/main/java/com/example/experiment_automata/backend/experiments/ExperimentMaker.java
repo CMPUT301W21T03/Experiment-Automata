@@ -29,22 +29,28 @@ public class ExperimentMaker {
      *   a boolean for whether this experiment is accepting new results
      * @param ownerId
      *   the UUID of the owner of the experiment
+     * @param enableFirestore
+     *   whether to enable firestore or not
      * @return
      *   an experiment object of the requested type with information
      */
     public static Experiment<?> makeExperiment(ExperimentType type, String description, int minTrials,
                                                    boolean requireLocation, boolean acceptNewResults,
-                                                   UUID ownerId) {
+                                                   UUID ownerId, Boolean enableFirestore) {
         if (description.length() < 1) return null;
         switch (type) {
             case NaturalCount:
-                return new NaturalCountExperiment(description, minTrials, requireLocation, acceptNewResults, ownerId);
+                return new NaturalCountExperiment(description, minTrials, requireLocation,
+                        acceptNewResults, ownerId, enableFirestore);
             case Binomial:
-                return new BinomialExperiment(description, minTrials, requireLocation, acceptNewResults, ownerId);
+                return new BinomialExperiment(description, minTrials, requireLocation,
+                        acceptNewResults, ownerId, enableFirestore);
             case Count:
-                return new CountExperiment(description, minTrials, requireLocation, acceptNewResults, ownerId);
+                return new CountExperiment(description, minTrials, requireLocation,
+                        acceptNewResults, ownerId, enableFirestore);
             case Measurement:
-                return new MeasurementExperiment(description, minTrials, requireLocation, acceptNewResults, ownerId);
+                return new MeasurementExperiment(description, minTrials, requireLocation,
+                        acceptNewResults, ownerId, enableFirestore);
             default:
                 return null;
         }
@@ -72,17 +78,21 @@ public class ExperimentMaker {
      *   an experiment object of the requested type with information
      */
     public static Experiment<?> makeExperiment(ExperimentType type, String description, int minTrials,
-                                                                boolean requireLocation, boolean acceptNewResults,
-                                                                UUID ownerId, Boolean published, UUID experimentId) {
+                                                    boolean requireLocation, boolean acceptNewResults,
+                                                    UUID ownerId, Boolean published, UUID experimentId) {
         switch (type) {
             case NaturalCount:
-                return new NaturalCountExperiment(description, minTrials, requireLocation, acceptNewResults, ownerId, published, experimentId);
+                return new NaturalCountExperiment(description, minTrials, requireLocation,
+                        acceptNewResults, ownerId, published, experimentId);
             case Binomial:
-                return new BinomialExperiment(description, minTrials, requireLocation, acceptNewResults, ownerId, published, experimentId);
+                return new BinomialExperiment(description, minTrials, requireLocation,
+                        acceptNewResults, ownerId, published, experimentId);
             case Count:
-                return new CountExperiment(description, minTrials, requireLocation, acceptNewResults, ownerId, published, experimentId);
+                return new CountExperiment(description, minTrials, requireLocation,
+                        acceptNewResults, ownerId, published, experimentId);
             case Measurement:
-                return new MeasurementExperiment(description, minTrials, requireLocation, acceptNewResults, ownerId, published, experimentId);
+                return new MeasurementExperiment(description, minTrials, requireLocation,
+                        acceptNewResults, ownerId, published, experimentId);
             default:
                 return null;
         }

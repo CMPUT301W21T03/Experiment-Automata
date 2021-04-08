@@ -17,32 +17,33 @@ public class ExperimentTest {
     private final static Boolean requireLocation = Boolean.FALSE;
     private final static Boolean acceptNewResults = Boolean.TRUE;
     private final static UUID owner = UUID.randomUUID();
+    private final static Boolean enableFirestoreSupport = Boolean.FALSE;
 
     @Test
     public void testCountExperiment() {
         CountExperiment experiment = (CountExperiment) ExperimentMaker.makeExperiment(
                 ExperimentType.Count, description, minTrials, requireLocation,
-                acceptNewResults, owner);
+                acceptNewResults, owner, enableFirestoreSupport);
     }
 
     @Test
     public void testNaturalCountExperiment() {
         NaturalCountExperiment experiment = (NaturalCountExperiment) ExperimentMaker.makeExperiment(
-                ExperimentType.Count, description, minTrials, requireLocation,
-                acceptNewResults, owner);
+                ExperimentType.NaturalCount, description, minTrials, requireLocation,
+                acceptNewResults, owner, enableFirestoreSupport);
     }
 
     @Test
     public void testBinomialExperiment() {
         BinomialExperiment experiment = (BinomialExperiment) ExperimentMaker.makeExperiment(
-                ExperimentType.Count, description, minTrials, requireLocation,
-                acceptNewResults, owner);
+                ExperimentType.Binomial, description, minTrials, requireLocation,
+                acceptNewResults, owner, enableFirestoreSupport);
     }
 
     @Test
     public void testMeasurementExperiment() {
         MeasurementExperiment experiment = (MeasurementExperiment) ExperimentMaker.makeExperiment(
-                ExperimentType.Count, description, minTrials, requireLocation,
-                acceptNewResults, owner);
+                ExperimentType.Measurement, description, minTrials, requireLocation,
+                acceptNewResults, owner, enableFirestoreSupport);
     }
 }

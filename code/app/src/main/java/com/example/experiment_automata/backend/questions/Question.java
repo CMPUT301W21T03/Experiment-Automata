@@ -26,10 +26,19 @@ public class Question implements Serializable, Comparable
 {
     private String question;
     private UUID user; // this makes more sense to just store a user ID
-    private UUID  reply;// we will likely want the reply UUID since we have to query and see if a question has a reply
+    private UUID reply;// we will likely want the reply UUID since we have to query and see if a question has a reply
     private UUID experimentId; // I think we need this so we know what to query with each experiment
     private UUID questionId;
 
+    /**
+     * Constructor used when creating experiment from dialog
+     * @param question
+     *   The question asked by a user
+     * @param user
+     *   The user who asked the question
+     * @param experimentId
+     *   The ID of the experiment associated with the question
+     */
     public Question(String question, UUID user, UUID experimentId)
     {
         this.question = question;
@@ -39,6 +48,11 @@ public class Question implements Serializable, Comparable
         postQuestionToFirestore();
     }
 
+    /**
+     * Copy constructor for questions
+     * @param question
+     *   The question passed in from Firestore
+     */
     public Question(Question question) {
         this.question = question.getQuestion();
         this.user = question.getUser();
@@ -48,13 +62,17 @@ public class Question implements Serializable, Comparable
     }
 
     /**
-     * Constructor for Question when all values are received from firestore.
+     * Constructor for Question when all values are received from Firestore.
      * Note that reply is not an argument because replies will be added by the
      * Question manager later.
      * @param questionText
+     *   The string the question will hold
      * @param userId
+     *   The UUID of the user
      * @param experimentId
+     *   The UUID of the associated experiment
      * @param questionId
+     *   The UUID of the question being created
      */
     public Question(String questionText, UUID userId, UUID experimentId, UUID questionId) {
         this.question = questionText;
@@ -64,9 +82,8 @@ public class Question implements Serializable, Comparable
     }
 
     /**
-     *  Post the current question to firestore
+     *  Post the current question to Firestore
      */
-
     protected void postQuestionToFirestore() {
         DataBase dataBase = DataBase.getInstanceTesting();
         FirebaseFirestore db = dataBase.getFireStore();
@@ -99,36 +116,72 @@ public class Question implements Serializable, Comparable
         {}
     }
 
+    /**
+     * Get the question
+     * @return
+     *   The question as a string
+     */
     public String getQuestion() {
         return question;
     }
 
-    // can users edit a question?
+    /**
+     * Set the string of a question
+     * @param question
+     *   The new question it should hold
+     */
     public void setQuestion(String question) {
         this.question = question;
     }
 
+    /**
+     * Get the UUID of the owner
+     * @return
+     *   The UUID of the owner
+     */
     public UUID getUser() {
         return user;
     }
 
-    // will we want to set a new userID for questions?
+    /**
+     * Set the UUID of the owner
+     * @param user
+     *   The new owner's UUID
+     */
     public void setUser(UUID user) {
         this.user = user;
     }
 
+    /**
+     * Get the experiment ID associated with the question
+     * @return
+     *   The UUID of the experiment associated with the question
+     */
     public UUID getExperimentId() {return experimentId;}
 
-    // todo: a question won't always have a reply so we have to account for that
+    /**
+     * Get the UUID of the reply associated with a question
+     * @return
+     *   The UUID of the associated reply
+     */
     public UUID getReply() {
         return reply;
     }
 
-    // todo: this should only set a reply if one does not currently exist, possibly return bool for pass/fail
+    /**
+     * Set the reply associated with a question
+     * @param reply
+     *   The UUID you want to add
+     */
     public void setReply(UUID reply) {
         this.reply = reply;
     }
 
+    /**
+     * Get the UUID of the question
+     * @return
+     *   The UUID of the question
+     */
     public UUID getQuestionId()
     {
         return this.questionId;

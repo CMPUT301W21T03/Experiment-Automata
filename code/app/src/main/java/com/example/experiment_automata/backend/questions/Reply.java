@@ -27,6 +27,15 @@ public class Reply implements Serializable, Comparable {
     private UUID replyId;
     private UUID questionId;
 
+    /**
+     * Constructor for creating a reply in a dialog
+     * @param reply
+     *   The actual reply someone typed in
+     * @param questionId
+     *   The UUID of the associated question
+     * @param experimenter
+     *   The UUID of the experimenter who made the question
+     */
     public Reply(String reply, UUID questionId, UUID experimenter) {
         this.reply = reply;
         this.experimenter = experimenter;
@@ -38,9 +47,13 @@ public class Reply implements Serializable, Comparable {
     /**
      * Constructor for replies generated from firestore data
      * @param reply
+     *   The actual reply someone typed in
      * @param questionId
+     *   The UUID of the associated question
      * @param experimenter
+     *   The UUID of the experimenter who made the question
      * @param replyId
+     *   The UUID for this reply
      */
     public Reply(String reply, UUID questionId, UUID experimenter, UUID replyId) {
         this.reply = reply;
@@ -118,6 +131,7 @@ public class Reply implements Serializable, Comparable {
      */
     @Override
     public int compareTo(Object o) {
-        return reply.toLowerCase().compareTo(((Reply)o).reply);
+        Reply reply = (Reply) o;
+        return reply.getReply().compareTo(this.reply);
     }
 }

@@ -48,7 +48,9 @@ public class QuestionManager {
         replies = new HashMap<>();
         repliesFromId = new HashMap<>();
         questionFromId = new HashMap<>();
-        getQuestionsFromFirestore();
+        if (!TEST_MODE) {
+            getQuestionsFromFirestore();
+        }
     }
 
     public static QuestionManager getInstance()
@@ -102,7 +104,9 @@ public class QuestionManager {
             repliesFromId.put(reply.getReplyId(), true);
             Question questionToUpdate = getQuestion(questionId);
             questionToUpdate.setReply(reply.getReplyId());
-            questionToUpdate.postQuestionToFirestore();
+            if (!TEST_MODE) {
+                questionToUpdate.postQuestionToFirestore();
+            }
         }
     }
 
@@ -249,7 +253,7 @@ public class QuestionManager {
     /**
      * enables test mode (Does not talk to firebase)
      */
-    public void enableTestMode()
+    public static void enableTestMode()
     {
         TEST_MODE = true;
     }
@@ -257,7 +261,7 @@ public class QuestionManager {
     /**
      * disables test mode (Talks to firebase)
      */
-    public void disableTestMode()
+    public static void disableTestMode()
     {
         TEST_MODE = false;
     }

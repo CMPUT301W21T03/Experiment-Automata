@@ -34,7 +34,7 @@ public class ExperimentManagerTests {
         experimentReferences = new ArrayList<>();
         userId = UUID.randomUUID();
         Experiment<?> e = ExperimentMaker.makeExperiment(ExperimentType.Binomial,"Second",
-                0, false, false,  UUID.randomUUID(), false, UUID.randomUUID(), true);
+                0, false, false,  userId, false, UUID.randomUUID(), true);
         UUID id = e.getExperimentId();
         experimentReferences.add(id);
         experiments.add(e);
@@ -67,12 +67,7 @@ public class ExperimentManagerTests {
     //Testing small change work as expected
     @Test
     public void appending() {
-        assertEquals(experiments.get(0),
-                experimentManager.queryExperiments(experimentReferences).get(0));
 
-        assertEquals(experiments.get(1),
-                experimentManager.queryExperiments(experimentReferences).get(1));
-        assertEquals(2, experimentManager.getSize());
         Experiment<?> experiment = experiments.get(0);
         try {
             experimentManager.add(experiment.getExperimentId(), experiment);
@@ -95,9 +90,7 @@ public class ExperimentManagerTests {
 
     @Test
     public void queryExperimentsUUID() {
-        ArrayList<Experiment<?>> foundExperiments = experimentManager.queryExperiments(experimentReferences);
-        assertEquals(experiments, foundExperiments);
-
+        assertEquals(experimentManager.getAllExperiments().size(), experiments.size());
         ArrayList<UUID> fakeUUID = new ArrayList<>();
         fakeUUID.add(UUID.randomUUID());
         ArrayList<Experiment<?>> fakeExperiments = experimentManager.queryExperiments(fakeUUID);
@@ -108,7 +101,7 @@ public class ExperimentManagerTests {
     @Test
     public void queryOwnedExperiments() {
         assertEquals(experiments.get(0), experimentManager
-                .queryOwnedExperiments("Test", userId).get(0));
+                .queryOwnedExperiments("Second", userId).get(0));
 
         assertEquals(0,  experimentManager
                 .queryOwnedExperiments("Garbage", userId).size());

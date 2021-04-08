@@ -2,6 +2,7 @@ package com.example.experiment_automata;
 
 
 import com.example.experiment_automata.backend.DataBase;
+import com.example.experiment_automata.backend.experiments.ExperimentManager;
 import com.example.experiment_automata.backend.questions.Question;
 import com.example.experiment_automata.backend.questions.QuestionManager;
 import com.example.experiment_automata.backend.questions.Reply;
@@ -47,8 +48,8 @@ public class QuestionManagerTests {
         q1 = new Question("Q1", userId1, experimentId1, true);
         q2 = new Question("Q2", userId1, experimentId1, true);
         q3 = new Question("Q3", userId2, experimentId2, true);
-        r1 = new Reply("R1", q1.getQuestionId(), userId2);
-        r3 = new Reply("R3", q3.getExperimentId(), userId1);
+        r1 = new Reply("R1", q1.getQuestionId(), userId2, true);
+        r3 = new Reply("R3", q3.getExperimentId(), userId1, true);
         questions.add(q1);
         questions.add(q2);
         questions.add(q3);
@@ -58,6 +59,12 @@ public class QuestionManagerTests {
         userReferences.add(userId2);
     }
 
+    @After
+    public void destroyManager() throws NoSuchFieldException, IllegalAccessException {
+        Field currentInstance = QuestionManager.class.getDeclaredField("questionManager");
+        currentInstance.setAccessible(true);
+        currentInstance.set(questionManager, null);
+    }
 
     @Test
     public void addQuestion()
@@ -127,14 +134,13 @@ public class QuestionManagerTests {
         for(int i = 0; i < 20; i++)
         {
             ArrayList temp = new ArrayList();
-            Question q = new Question("ddd", UUID.randomUUID(), UUID.randomUUID());
+            Question q = new Question("ddd", UUID.randomUUID(), UUID.randomUUID(), true);
             temp.add(q);
             givenQuestion.add(temp);
             questionManager.addQuestion(UUID.randomUUID(), q);
         }
-        //Removing 5 because of the ones we added
         assertEquals("Was not able to get the list of all questions",
-                questionManager.getAllQuestions().size() - 5,
+                questionManager.getAllQuestions().size(),
                 givenQuestion.size());
     }
 

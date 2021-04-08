@@ -2,10 +2,17 @@ package com.example.experiment_automata.backend.users;
 
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import com.example.experiment_automata.backend.DataBase;
+import com.example.experiment_automata.backend.events.UpdateEvent;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,9 +26,11 @@ public class UserManager
     private static HashMap<UUID, User> currentUsers;
     private static UserManager userManager;
     private boolean testMode;
+    private UpdateEvent updateEvent;
 
     private UserManager()
     {
+        updateEvent = new UpdateEvent();
         currentUsers = new HashMap<>();
     }
 
@@ -37,6 +46,7 @@ public class UserManager
     public static UserManager getInstance(boolean testMode) {
         if (userManager == null && !testMode) {
             userManager = new UserManager();
+
             userManager.getAllUsersFromFireStore();
         } else if (userManager == null && testMode) {
             userManager = new UserManager();
@@ -98,45 +108,62 @@ public class UserManager
         CollectionReference userCollection = db.collection("users");
         userCollection.get().addOnCompleteListener(task -> {
             if(task.isSuccessful()) {
-                for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-                    if (documentSnapshot != null) {
-                        UUID userId = UUID.fromString(documentSnapshot.getId());
-                        Log.d("BUILT", "" + userId);
-
-                        if (!currentUsers.containsKey(userId)) {
-                            // We don't have the user so we need to make them
-
-                            Map<String, Object> userInformation = documentSnapshot.getData();
-                            String name = (String) userInformation.get("name");
-                            String email = (String) userInformation.get("email");
-                            String phone = (String) userInformation.get("phone");
-                            Collection<String> owned = (List<String>) userInformation.get("owned");
-                            Collection<String> subscriptions = (List<String>) userInformation.get("subscriptions");
-                            ContactInformation ci = new ContactInformation(name, email, phone);
-                            User newUser = new User(ci, userId);
-                            ArrayList<UUID> valsO = new ArrayList<>();
-                            ArrayList<UUID>valsS = new ArrayList<>();
-                            try {
-                                for(String o : owned)
-                                {
-                                    valsO.add(UUID.fromString(o));
-                                }
-                                for(String s : subscriptions)
-                                {
-                                    valsS.add(UUID.fromString(s));
-                                }
-                                newUser.setOwnedExperiments(valsO);
-                                newUser.setSubscribedExperiments(valsS);
-                            }catch (Exception e)
-                            {
-                                // Something
-                                // Data corruption within the db causes this
-                            }
-                            currentUsers.put(userId, newUser);
-                        }
-                    }
-                }
+                sectorRead(task.getResult());
             }
         });
+
+        userCollection.addSnapshotListener((value, error) -> {
+            if(error != null)
+            {
+                Log.w("UserManager -> Error", error);
+                return;
+            }
+            if(value != null)
+            {
+                Log.wtf("RAN", "DONE");
+                sectorRead(value);
+                updateEvent.callback();
+            }
+        });
+    }
+
+    public void sectorRead(QuerySnapshot snapshot)
+    {
+        for (QueryDocumentSnapshot documentSnapshot : snapshot) {
+            if (documentSnapshot != null) {
+                UUID userId = UUID.fromString(documentSnapshot.getId());
+                Log.d("BUILT", "" + userId);
+
+                    // We don't have the user so we need to make them
+
+                    Map<String, Object> userInformation = documentSnapshot.getData();
+                    String name = (String) userInformation.get("name");
+                    String email = (String) userInformation.get("email");
+                    String phone = (String) userInformation.get("phone");
+                    Collection<String> owned = (List<String>) userInformation.get("owned");
+                    Collection<String> subscriptions = (List<String>) userInformation.get("subscriptions");
+                    ContactInformation ci = new ContactInformation(name, email, phone);
+                    User newUser = new User(ci, userId);
+                    ArrayList<UUID> valsO = new ArrayList<>();
+                    ArrayList<UUID>valsS = new ArrayList<>();
+                    try {
+                        for(String o : owned)
+                        {
+                            valsO.add(UUID.fromString(o));
+                        }
+                        for(String s : subscriptions)
+                        {
+                            valsS.add(UUID.fromString(s));
+                        }
+                        newUser.setOwnedExperiments(valsO);
+                        newUser.setSubscribedExperiments(valsS);
+                    }catch (Exception e)
+                    {
+                        // Something
+                        // Data corruption within the db causes this
+                    }
+                    currentUsers.put(userId, newUser);
+            }
+        }
     }
 }

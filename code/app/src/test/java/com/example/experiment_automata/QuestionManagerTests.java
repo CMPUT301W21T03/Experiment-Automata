@@ -44,9 +44,9 @@ public class QuestionManagerTests {
         experimentId1 = UUID.randomUUID();
         userId2 = UUID.randomUUID();
         experimentId2 = UUID.randomUUID();
-        q1 = new Question("Q1", userId1, experimentId1);
-        q2 = new Question("Q2", userId1, experimentId1);
-        q3 = new Question("Q3", userId2, experimentId2);
+        q1 = new Question("Q1", userId1, experimentId1, true);
+        q2 = new Question("Q2", userId1, experimentId1, true);
+        q3 = new Question("Q3", userId2, experimentId2, true);
         r1 = new Reply("R1", q1.getQuestionId(), userId2);
         r3 = new Reply("R3", q3.getExperimentId(), userId1);
         questions.add(q1);

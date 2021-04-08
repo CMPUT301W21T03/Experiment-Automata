@@ -26,7 +26,14 @@ public class Reply implements Serializable, Comparable {
     private UUID experimenter;
     private UUID replyId;
     private UUID questionId;
+    private boolean testMode;
 
+    /**
+     * main constructor for reply class
+     * @param reply the string reply
+     * @param questionId the parent question id
+     * @param experimenter the id of the experimenter
+     */
     public Reply(String reply, UUID questionId, UUID experimenter) {
         this.reply = reply;
         this.experimenter = experimenter;
@@ -50,10 +57,29 @@ public class Reply implements Serializable, Comparable {
     }
 
     /**
+     * the test constructor for the given class
+     * @param reply the string reply
+     * @param questionId the parent question id
+     * @param experimenter the experimenter id
+     * @param testMode the boolean mode of the class
+     */
+    public Reply(String reply, UUID questionId, UUID experimenter, boolean testMode)
+    {
+        this.testMode = testMode;
+        this.reply = reply;
+        this.experimenter = experimenter;
+        this.replyId = UUID.randomUUID();
+        this.questionId = questionId;
+    }
+
+    /**
      *  Post the current question to firestore
      */
 
     private void postReplyToFirestore() {
+        if(testMode)
+            return;
+
         DataBase dataBase = DataBase.getInstanceTesting();
         FirebaseFirestore db = dataBase.getFireStore();
         Map<String,Object> questionData = new HashMap<>();

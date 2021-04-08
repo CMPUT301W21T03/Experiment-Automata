@@ -84,7 +84,6 @@ public class Question implements Serializable, Comparable
      *  Post the current question to firestore
      */
     protected void postQuestionToFirestore() {
-
         if(testMode)
             return;
 

@@ -2,9 +2,14 @@ package com.example.experiment_automata;
 
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.experiment_automata.backend.DataBase;
+import com.example.experiment_automata.backend.experiments.ExperimentMaker;
+import com.example.experiment_automata.backend.experiments.ExperimentType;
+import com.example.experiment_automata.ui.LinkView;
 import com.example.experiment_automata.ui.NavigationActivity;
+import com.example.experiment_automata.ui.Screen;
 import com.google.firebase.FirebaseApp;
 import com.robotium.solo.Solo;
 
@@ -18,6 +23,7 @@ import androidx.test.rule.ActivityTestRule;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;

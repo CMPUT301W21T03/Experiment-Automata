@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.experiment_automata.backend.DataBase;
+import com.example.experiment_automata.backend.experiments.Experiment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -29,12 +30,12 @@ import java.util.UUID;
  *      1. None
  */
 public class User implements Serializable {
+    private static String DEFAULT_UUID_STRING = "00000000-0000-0000-0000-000000000000";//move this to a constants class later
     private static final String TAG = "User";
-    private UUID userId;
+    private UUID userId;//changed from int to UUID
     private ContactInformation info;
     private Collection<UUID> ownedExperiments;
     private Collection<UUID> subscribedExperiments;
-    private boolean testMode;
 
     /**
      * Creates the user. Assigns a user id automatically.
@@ -47,35 +48,14 @@ public class User implements Serializable {
         editor.putString("userId", userId.toString());
         editor.apply();
         this.info = new ContactInformation(preferences);
-        this.testMode = false;
-        if(!testMode) {
-            updateExperimentFromFirestore();
-            updateFirestore();
-        }
+        updateExperimentFromFirestore();
+        updateFirestore();
     }
 
-    /**
-     * Makes a user from some ContactInformation and usedId
-     * @param ci the new contact information
-     * @param userId the userId we want to assign
-     */
     public User(ContactInformation ci, UUID userId)
     {
         this.info = ci;
         this.userId = userId;
-        this.testMode = false;
-    }
-
-    /**
-     * makes a user without all information and sets a test flag for
-     * the class that tells us how we should handle the firebase stuff.
-     * @param testMode the mode of the class
-     */
-    public User(boolean testMode, ContactInformation ci, UUID uid)
-    {
-        this.info = ci;
-        this.userId = uid;
-        this.testMode = testMode;
     }
 
     /**
@@ -83,10 +63,9 @@ public class User implements Serializable {
      * @param id
      *  The id of the user to get the firestore document
      */
-    private User(UUID id, boolean testMode) {
+    private User(UUID id) {
         this.userId = id;
-        if(!testMode)
-            updateContactFromFirestore();
+        updateContactFromFirestore();
     }
 
     /**
@@ -96,20 +75,14 @@ public class User implements Serializable {
      * @return
      *  The user instance with the information queried from the firestore
      */
-    public static User getInstance(UUID id, boolean testMode) {
-        User newUser = new User(id, testMode);
-        newUser.setTestMode(testMode);
-        return newUser;
+    public static User getInstance(UUID id) {
+        return new User(id);
     }
 
     /**
      * Update the user information in the Firestore
      */
     public void updateFirestore() {
-
-        if(testMode)
-            return;
-
         // convert collection of UUIDs to collection of Strings
         Collection<String> owned = new ArrayList<>();
         if (this.ownedExperiments != null) {
@@ -149,12 +122,45 @@ public class User implements Serializable {
     }
 
     /**
+     * Update the user information from the Firestore.
+     */
+    protected void updateFromFirestore() {
+        DataBase dataBase = DataBase.getInstance();
+        FirebaseFirestore db = dataBase.getFireStore();
+        this.ownedExperiments = new ArrayList<>();
+        this.subscribedExperiments = new ArrayList<>();
+        try {
+            DocumentReference documentReference = db.collection("users").document(this.userId.toString());
+            if (documentReference != null) {
+                Task<DocumentSnapshot> task = documentReference.get();
+                // wait until the task is complete
+                while (!task.isComplete()) ;
+                DocumentSnapshot document = task.getResult();
+                String name = (String) document.get("name");
+                String email = (String) document.get("email");
+                String phone = (String) document.get("phone");
+                Collection<String> owned = (List<String>) document.get("owned");
+                if (owned == null) owned = new ArrayList<>();
+                Collection<String> subscribed = (List<String>) document.get("subscriptions");
+                if (subscribed == null) subscribed = new ArrayList<>();
+                // Convert Collection of String to Collection of UUIDs
+                for (String experimentId : owned) {
+                    this.ownedExperiments.add(UUID.fromString(experimentId));
+                }
+                for (String experimentId : subscribed) {
+                    this.subscribedExperiments.add(UUID.fromString(experimentId));
+                }
+
+                this.info = new ContactInformation(name, email, phone);
+            }
+        }
+        catch (Exception e) {}
+    }
+
+    /**
      * Update the user experiments from the Firestore.
      */
     protected void updateExperimentFromFirestore() {
-        if(testMode)
-            return;
-
         DataBase dataBase = DataBase.getInstance();
         FirebaseFirestore db = dataBase.getFireStore();
         this.ownedExperiments = new ArrayList<>();
@@ -184,9 +190,6 @@ public class User implements Serializable {
      * Update the user contact information from the Firestore.
      */
     protected void updateContactFromFirestore() {
-        if(testMode)
-            return;
-
         DataBase dataBase = DataBase.getInstance();
         FirebaseFirestore db = dataBase.getFireStore();
         try {
@@ -237,17 +240,13 @@ public class User implements Serializable {
     public Collection<UUID> getSubscriptions() { return subscribedExperiments; }
 
     /**
-     * Add the experiment reference to the owned experiments.
-     * If the owned experiments field equals nulls then
-     * nothing happens.
+     * Add the experiment reference to the owned experiments
      * @param experimentId
      *  the UUID of the experiment
      */
     public void addExperiment(UUID experimentId) {
-        if(ownedExperiments != null)
-            this.ownedExperiments.add(experimentId);
-        if(!testMode)
-            updateFirestore();
+        this.ownedExperiments.add(experimentId);
+        updateFirestore();
     }
 
     /**
@@ -264,58 +263,40 @@ public class User implements Serializable {
         } else {
             subscribedExperiments.add(experimentId);
         }
-
-        if(!testMode)
-            updateFirestore();
+        updateFirestore();
     }
 
     /**
-     * set the subscribed experiments if the given
-     * parameter is not null
+     * set the subscribed experiments
      * @param subs the new subs
      */
     public void setSubscribedExperiments(Collection<UUID> subs)
     {
         if(subs == null)
             return;
+        this.subscribedExperiments.clear();
+        this.subscribedExperiments.addAll(subs);
 
-        if(subscribedExperiments != null) {
-            this.subscribedExperiments.clear();
-            this.subscribedExperiments.addAll(subs);
-        }
-        else
-        {
-            this.subscribedExperiments = subs;
-        }
     }
 
     /**
-     * sets the owned experiments if the given parameter is
-     * not null.
+     * sets the owned experiments
      * @param owned the new owned experiments
      */
     public void setOwnedExperiments(Collection<UUID> owned)
     {
         if(owned == null)
             return;
-
-        if(ownedExperiments != null) {
-            this.ownedExperiments.clear();
-            this.ownedExperiments.addAll(owned);
-        }
-        else
-        {
-            this.ownedExperiments = owned;
-        }
+        this.ownedExperiments.clear();
+        this.ownedExperiments.addAll(owned);
     }
 
-
     /**
-     * sets the user class into our out of test mode
-     * @param testMode the mode of the class
+     * the the contact information
+     * @param info the new contact infromation
      */
-    public void setTestMode(boolean testMode)
+    public void setContactInformation(ContactInformation info)
     {
-        this.testMode = testMode;
+        this.info = info;
     }
 }

@@ -82,11 +82,11 @@ public class TrialArrayAdapter extends ArrayAdapter<Trial> {
 
         LinkView experimenterNameView = (LinkView) view.findViewById(R.id.trial_experimenter_name);
         UUID userId = trial.getUserId();
-        experimenterNameView.setText(User.getInstance(userId, false).getInfo().getName());
+        experimenterNameView.setText(User.getInstance(userId).getInfo().getName());
         experimenterNameView.setOnClickListener(v -> {
             NavigationActivity parentActivity = (NavigationActivity) context;
             Bundle args = new Bundle();
-            args.putSerializable(ProfileFragment.userKey, User.getInstance(userId, false));
+            args.putSerializable(ProfileFragment.userKey, User.getInstance(userId));
             NavController navController = Navigation.findNavController(parentActivity, R.id.nav_host_fragment);
             navController.navigate(R.id.nav_profile, args);
         });

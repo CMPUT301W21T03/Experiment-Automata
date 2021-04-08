@@ -70,7 +70,7 @@ public class ReplyArrayAdapter extends ArrayAdapter<Reply> {
         }
 
         Reply reply = replies.get(position);
-        User user = User.getInstance(reply.getUser(), false);
+        User user = userManager.getSpecificUser(reply.getUser());
 
         TextView replyTextView = (TextView) view.findViewById(R.id.reply_text);
         LinkView replyUserView = (LinkView) view.findViewById(R.id.reply_user);

@@ -40,8 +40,7 @@ import java.util.UUID;
 // Basic layout of this fragment inspired by lab work in CMPUT 301
 // Abdul Ali Bangash, "Lab 3", 2021-02-04, Public Domain,
 // https://eclass.srv.ualberta.ca/pluginfile.php/6713985/mod_resource/content/1/Lab%203%20instructions%20-%20CustomList.pdf
-public class AddQuestionFragment extends DialogFragment
-{
+public class AddQuestionFragment extends DialogFragment {
     // this will be a string passed in if editing a question
     public static final String QUESTION = "QUESTION-STRING";
     // this will determine if this dialog is for a question or reply
@@ -55,8 +54,7 @@ public class AddQuestionFragment extends DialogFragment
 
     private AddQuestionFragment.OnFragmentInteractionListener listener;
 
-    public interface OnFragmentInteractionListener
-    {
+    public interface OnFragmentInteractionListener {
         void onOkPressedQuestion(String question, UUID Experiment);
         void onOkPressedReply(String reply, UUID questionId);
     }
@@ -66,12 +64,10 @@ public class AddQuestionFragment extends DialogFragment
      * @param context
      */
     @Override
-    public void onAttach(Context context)
-    {
+    public void onAttach(Context context) {
         super.onAttach(context);
 
-        if (context instanceof AddQuestionFragment.OnFragmentInteractionListener)
-        {
+        if (context instanceof AddQuestionFragment.OnFragmentInteractionListener) {
             listener = (AddQuestionFragment.OnFragmentInteractionListener) context;
         } else {
 
@@ -88,8 +84,7 @@ public class AddQuestionFragment extends DialogFragment
      * @return
      *   a fragment to edit an questions's information
      */
-    public static AddQuestionFragment newInstance(String question, Boolean type, UUID ownerId)
-    {
+    public static AddQuestionFragment newInstance(String question, Boolean type, UUID ownerId) {
         AddQuestionFragment questionFragment = new AddQuestionFragment();
         Bundle args = new Bundle();
         args.putString(QUESTION, question);
@@ -112,8 +107,7 @@ public class AddQuestionFragment extends DialogFragment
      */
     @NonNull
     @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstancesState)
-    {
+    public Dialog onCreateDialog(@Nullable Bundle savedInstancesState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_add_edit_question_diolog_op_up, null);
         questionInput = view.findViewById(R.id.frag_add_edit_question_input_box_diolog);
         Bundle args = getArguments();

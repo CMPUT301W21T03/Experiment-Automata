@@ -18,8 +18,7 @@ import androidx.fragment.app.DialogFragment;
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.backend.trials.Trial;
 
-public class EditLocationDialog extends DialogFragment
-{
+public class EditLocationDialog extends DialogFragment {
 
     public static final String PASSED_TRIAL= "LOCATION-RECV";
     private final int LONGITUDE_MAX = 181;
@@ -57,15 +56,13 @@ public class EditLocationDialog extends DialogFragment
         }
     }
 
-    private boolean validateInputLocation(double lat, double longi)
-    {
+    private boolean validateInputLocation(double lat, double longi) {
         boolean latRange = lat < LATITUDE_MAX && lat > LATITUDE_MIN;
         boolean longiRange = longi < LONGITUDE_MAX && longi > LONGITUDE_MIN;
         return latRange && longiRange;
     }
 
-    private void revertButtonClick()
-    {
+    private void revertButtonClick() {
         if(current != null) {
             longInputBox.setText(current.getLongitude() + "");
             latInputBox.setText(current.getLatitude() + "");

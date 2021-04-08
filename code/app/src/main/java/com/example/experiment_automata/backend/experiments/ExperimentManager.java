@@ -166,8 +166,7 @@ public class ExperimentManager {
      * @return
      *  the experiment containing the given uuid
      */
-    public Experiment<?> getAtUUIDDescription(UUID experimentUUID)
-    {
+    public Experiment<?> getAtUUIDDescription(UUID experimentUUID) {
         return experiments.get(experimentUUID);
     }
 

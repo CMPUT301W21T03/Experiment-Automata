@@ -12,8 +12,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class UserModelTests
-{
+public class UserModelTests {
 
     /**
      * Testing the user model class
@@ -24,8 +23,7 @@ public class UserModelTests
     private ContactInformation contactInformation;
 
     @Before
-    public void makeTestUser()
-    {
+    public void makeTestUser() {
         testId = UUID.randomUUID();
         contactInformation =
                 new ContactInformation("1", "2", "3");
@@ -33,8 +31,7 @@ public class UserModelTests
     }
 
     @Test
-    public void testGetInstance()
-    {
+    public void testGetInstance() {
         User testUser = User.getInstance(UUID.randomUUID(), true);
         assertEquals("User does not return a user instance",
                 true,
@@ -42,16 +39,14 @@ public class UserModelTests
     }
 
     @Test
-    public void testGetUserId()
-    {
+    public void testGetUserId() {
         assertEquals("User does not return user ID",
                 testId,
                 testUser.getUserId());
     }
 
     @Test
-    public void testGetContactInfoName()
-    {
+    public void testGetContactInfoName() {
         String name = contactInformation.getName();
         ContactInformation returnedContactInfo = testUser.getInfo();
         assertEquals("Name returned is not correct",
@@ -60,8 +55,7 @@ public class UserModelTests
     }
 
     @Test
-    public void testGetContactInfoEmail()
-    {
+    public void testGetContactInfoEmail() {
         String email = contactInformation.getEmail();
         ContactInformation returnedContactInfo = testUser.getInfo();
         assertEquals("Email returned is not correct",
@@ -70,8 +64,7 @@ public class UserModelTests
     }
 
     @Test
-    public void testGetContactInfoPhone()
-    {
+    public void testGetContactInfoPhone() {
         String phone = contactInformation.getPhone();
         ContactInformation returnedContactInfo = testUser.getInfo();
         assertEquals("Phone returned is not correct",
@@ -80,22 +73,19 @@ public class UserModelTests
     }
 
     @Test
-    public void testGetOwnedExperiments()
-    {
+    public void testGetOwnedExperiments() {
         assertNull("Test user did not return the correct owned amount",
                 testUser.getOwnedExperiments());
     }
 
     @Test
-    public void testGetSubscriptions()
-    {
+    public void testGetSubscriptions() {
         assertNull("Test user did not return the correct subs amount",
                 testUser.getSubscriptions());
     }
 
     @Test
-    public void testSetSubscriptions()
-    {
+    public void testSetSubscriptions() {
         ArrayList<UUID> testList = new ArrayList<>();
         testList.add(UUID.randomUUID());
         testUser.setSubscribedExperiments(testList);
@@ -105,16 +95,14 @@ public class UserModelTests
     }
 
     @Test
-    public void testSetOwnedExperiments()
-    {
+    public void testSetOwnedExperiments() {
         testUser.setOwnedExperiments(new ArrayList<>());
         assertNotNull("Set subs failed to be set",
                 testUser.getOwnedExperiments());
     }
 
     @Test
-    public void testSetSubscriptionsNotNull()
-    {
+    public void testSetSubscriptionsNotNull() {
         ArrayList<UUID> testList = new ArrayList<>();
         testList.add(UUID.randomUUID());
         testUser.setSubscribedExperiments(testList);
@@ -125,8 +113,7 @@ public class UserModelTests
     }
 
     @Test
-    public void testSetOwnedExperimentsNotNull()
-    {
+    public void testSetOwnedExperimentsNotNull() {
         ArrayList<UUID> testList = new ArrayList<>();
         testList.add(UUID.randomUUID());
         testUser.setOwnedExperiments(new ArrayList<>());
@@ -137,8 +124,7 @@ public class UserModelTests
     }
 
     @Test
-    public void testSetSubscriptionsNull()
-    {
+    public void testSetSubscriptionsNull() {
         testUser.setSubscribedExperiments(new ArrayList<>());
         testUser.setSubscribedExperiments(null);
         assertEquals("Set subs failed to be set",
@@ -147,8 +133,7 @@ public class UserModelTests
     }
 
     @Test
-    public void testSetOwnedExperimentsNull()
-    {
+    public void testSetOwnedExperimentsNull() {
         ArrayList<UUID> testList = new ArrayList<>();
         testList.add(UUID.randomUUID());
 
@@ -160,8 +145,7 @@ public class UserModelTests
     }
 
     @Test
-    public void testSetTestMode()
-    {
+    public void testSetTestMode() {
         try {
             Field currentMode = User.class.getDeclaredField("testMode");
             currentMode.setAccessible(true);
@@ -169,15 +153,13 @@ public class UserModelTests
             assertEquals("Test mode not set",
                     false,
                     (boolean)currentMode.get(testUser));
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             fail("Exceptions thrown");
         }
     }
 
     @Test
-    public void testSubscribeExperimentNotInList()
-    {
+    public void testSubscribeExperimentNotInList() {
         ArrayList<UUID> testList = new ArrayList<>();
         UUID testExperimentId = UUID.randomUUID();
         testList.add(UUID.randomUUID());
@@ -190,8 +172,7 @@ public class UserModelTests
     }
 
     @Test
-    public void testSubscribeExperimentInList()
-    {
+    public void testSubscribeExperimentInList() {
         ArrayList<UUID> testList = new ArrayList<>();
         UUID testExperimentId = UUID.randomUUID();
         testList.add(UUID.randomUUID());
@@ -205,8 +186,7 @@ public class UserModelTests
     }
 
     @Test
-    public void testAddExperimentNotNull()
-    {
+    public void testAddExperimentNotNull() {
         ArrayList<UUID> testList = new ArrayList<>();
         testList.add(UUID.randomUUID());
         testUser.setOwnedExperiments(new ArrayList<>());

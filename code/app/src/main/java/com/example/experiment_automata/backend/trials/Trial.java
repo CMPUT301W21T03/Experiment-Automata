@@ -83,8 +83,7 @@ public abstract class Trial<T> implements Serializable {
      *
      * @param newLocation the new location we want to change to.
      */
-    public void setLocation(Location newLocation)
-    {
+    public void setLocation(Location newLocation) {
         this.location = newLocation;
     }
 
@@ -93,8 +92,7 @@ public abstract class Trial<T> implements Serializable {
      * @return
      *      the currently set location
      */
-    public Location getLocation()
-    {
+    public Location getLocation() {
         return location;
     }
 

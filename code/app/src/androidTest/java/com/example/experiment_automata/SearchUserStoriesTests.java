@@ -33,8 +33,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.fail;
 
-public class SearchUserStoriesTests
-{
+public class SearchUserStoriesTests {
     private DataBase dataBase = DataBase.getInstanceTesting();
     private Solo solo;
     private NavigationActivity currentTestingActivity;
@@ -124,8 +123,7 @@ public class SearchUserStoriesTests
      * Searching using some data given
      */
     @Test
-    public void testSearchingUsingQuery()
-    {
+    public void testSearchingUsingQuery() {
         solo.clickOnActionBarHomeButton();
         solo.clickOnText("My Experiments");
         solo.sleep(2000);
@@ -161,8 +159,7 @@ public class SearchUserStoriesTests
      * Checking for active
      */
     @Test
-    public void testSearchDisplayingResultsActive()
-    {
+    public void testSearchDisplayingResultsActive() {
         solo.clickOnActionBarHomeButton();
         solo.clickOnText("My Experiments");
         solo.sleep(2000);
@@ -194,8 +191,7 @@ public class SearchUserStoriesTests
      * Checking for active
      */
     @Test
-    public void testSearchDisplayingResultsInactive()
-    {
+    public void testSearchDisplayingResultsInactive() {
         solo.clickOnActionBarHomeButton();
         solo.clickOnText("My Experiments");
         solo.sleep(2000);
@@ -219,8 +215,7 @@ public class SearchUserStoriesTests
         assertEquals("Not all fields of experiment found", true, checkOne && statusCheck);
     }
 
-    private void makeInactiveExperiment(String des)
-    {
+    private void makeInactiveExperiment(String des) {
         addExperimentButton = solo.getView(R.id.fab_button);
 
         //Click from the home screen the + button to make an experiment
@@ -245,7 +240,5 @@ public class SearchUserStoriesTests
         solo.clickOnView(slector);
         solo.clickOnText("Binomial");
         solo.clickOnText("Ok");
-
     }
-
 }

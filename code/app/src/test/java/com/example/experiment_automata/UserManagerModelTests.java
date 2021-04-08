@@ -14,8 +14,7 @@ import java.util.UUID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class UserManagerModelTests
-{
+public class UserManagerModelTests {
     /**
      * Role: Testing the UserManager class
      */
@@ -36,8 +35,7 @@ public class UserManagerModelTests
      * is tested when doing the intent tests.
      */
     @Test
-    public void testGetInstance()
-    {
+    public void testGetInstance() {
          userManager = UserManager.getInstance(true);
         assertTrue("UserManager did not return an instance of itself",
                 UserManager.class.isInstance(userManager));
@@ -45,8 +43,7 @@ public class UserManagerModelTests
     }
 
     @Test
-    public void testSizeCorrect()
-    {
+    public void testSizeCorrect() {
         userManager = UserManager.getInstance(true);
         assertEquals("Size is wrong",
                 0,
@@ -54,8 +51,7 @@ public class UserManagerModelTests
     }
 
     @Test
-    public void testAddNoInside()
-    {
+    public void testAddNoInside() {
         userManager = UserManager.getInstance(true);
         User testUser = new User(true, null, UUID.randomUUID());
         userManager.add(testUser);
@@ -65,8 +61,7 @@ public class UserManagerModelTests
     }
 
     @Test
-    public void testAddAlreadyInside()
-    {
+    public void testAddAlreadyInside() {
         userManager = UserManager.getInstance(true);
         UUID already = UUID.randomUUID();
         User testUser = new User(true, null, already);
@@ -79,8 +74,7 @@ public class UserManagerModelTests
     }
 
     @Test
-    public void testGetSpecificUser()
-    {
+    public void testGetSpecificUser() {
         userManager = UserManager.getInstance(true);
         UUID already = UUID.randomUUID();
         UUID already2 = UUID.randomUUID();

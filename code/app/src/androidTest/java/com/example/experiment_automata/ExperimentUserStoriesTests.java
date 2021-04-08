@@ -46,8 +46,7 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-public class ExperimentUserStoriesTests
-{
+public class ExperimentUserStoriesTests {
     DataBase dataBase = DataBase.getInstanceTesting();
     private Solo solo;
     private NavigationActivity currentTestingActivity;
@@ -113,8 +112,7 @@ public class ExperimentUserStoriesTests
     }
 
 
-    private void makeExperiment(String des)
-    {
+    private void makeExperiment(String des) {
         solo.clickOnActionBarHomeButton();
         solo.clickOnText("My Experiments");
         solo.sleep(2000);
@@ -157,8 +155,7 @@ public class ExperimentUserStoriesTests
      * (This test is following the golden path)
      */
     @Test
-    public void testMakeAnExperimentCount()
-    {
+    public void testMakeAnExperimentCount() {
 
         makeExperiment("GUI Test Experiment");
         //Clicking on publish button
@@ -187,8 +184,7 @@ public class ExperimentUserStoriesTests
      * per(us.01.01.01)
      */
     @Test
-    public void testMakeExperimentCancel()
-    {
+    public void testMakeExperimentCancel() {
         solo.clickOnActionBarHomeButton();
         solo.clickOnText("My Experiments");
         solo.sleep(2000);
@@ -230,8 +226,7 @@ public class ExperimentUserStoriesTests
      * per(us.01.01.01)
      */
     @Test
-    public void makeEmptyExperiment()
-    {
+    public void makeEmptyExperiment() {
         solo.clickOnActionBarHomeButton();
         solo.clickOnText("My Experiments");
         solo.sleep(2000);

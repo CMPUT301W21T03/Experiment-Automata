@@ -105,11 +105,7 @@ public class QuestionDisplay extends Fragment {
             questionsList = ((NavigationActivity) (getActivity()))
                     .questionManager
                     .getExperimentQuestions(currentExperiment.getExperimentId());
-        }
-        catch (Exception e)
-        {
-            //TODO: find a better way to deal with this situation
-        }
+        } catch (Exception e) {}
 
         questionDisplayAdapter = new SingleQuestionDisplay(getContext(), questionsList, getActivity());
         questionsDisplayList.setAdapter(questionDisplayAdapter);
@@ -151,8 +147,7 @@ public class QuestionDisplay extends Fragment {
     }
 
     @Override
-    public void onDestroy()
-    {
+    public void onDestroy() {
         super.onDestroy();
         ((NavigationActivity)(getActivity())).setCurrentScreen(Screen.ExperimentDetails);
     }

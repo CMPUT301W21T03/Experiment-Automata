@@ -59,8 +59,7 @@ public class User implements Serializable {
      * @param ci the new contact information
      * @param userId the userId we want to assign
      */
-    public User(ContactInformation ci, UUID userId)
-    {
+    public User(ContactInformation ci, UUID userId) {
         this.info = ci;
         this.userId = userId;
         this.testMode = false;
@@ -71,8 +70,7 @@ public class User implements Serializable {
      * the class that tells us how we should handle the firebase stuff.
      * @param testMode the mode of the class
      */
-    public User(boolean testMode, ContactInformation ci, UUID uid)
-    {
+    public User(boolean testMode, ContactInformation ci, UUID uid) {
         this.info = ci;
         this.userId = uid;
         this.testMode = testMode;
@@ -200,8 +198,7 @@ public class User implements Serializable {
             String email = (String) document.get("email");
             String phone = (String) document.get("phone");
             this.info = new ContactInformation(name, email, phone);
-        }catch (Exception e)
-        {}
+        } catch (Exception e) {}
     }
 
     /**
@@ -209,8 +206,7 @@ public class User implements Serializable {
      * @return
      *  The id
      */
-    public UUID getUserId()
-    {
+    public UUID getUserId() {
         return this.userId;
     }
 
@@ -275,17 +271,14 @@ public class User implements Serializable {
      * parameter is not null
      * @param subs the new subs
      */
-    public void setSubscribedExperiments(Collection<UUID> subs)
-    {
-        if(subs == null)
+    public void setSubscribedExperiments(Collection<UUID> subs) {
+        if (subs == null)
             return;
 
-        if(subscribedExperiments != null) {
+        if (subscribedExperiments != null) {
             this.subscribedExperiments.clear();
             this.subscribedExperiments.addAll(subs);
-        }
-        else
-        {
+        } else {
             this.subscribedExperiments = subs;
         }
     }
@@ -295,17 +288,14 @@ public class User implements Serializable {
      * not null.
      * @param owned the new owned experiments
      */
-    public void setOwnedExperiments(Collection<UUID> owned)
-    {
-        if(owned == null)
+    public void setOwnedExperiments(Collection<UUID> owned) {
+        if (owned == null)
             return;
 
-        if(ownedExperiments != null) {
+        if (ownedExperiments != null) {
             this.ownedExperiments.clear();
             this.ownedExperiments.addAll(owned);
-        }
-        else
-        {
+        } else {
             this.ownedExperiments = owned;
         }
     }
@@ -315,8 +305,7 @@ public class User implements Serializable {
      * sets the user class into our out of test mode
      * @param testMode the mode of the class
      */
-    public void setTestMode(boolean testMode)
-    {
+    public void setTestMode(boolean testMode) {
         this.testMode = testMode;
     }
 }

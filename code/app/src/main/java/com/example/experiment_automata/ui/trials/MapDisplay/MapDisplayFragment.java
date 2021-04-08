@@ -90,9 +90,7 @@ public class MapDisplayFragment extends Fragment {
         if(currentExperiment.isRequireLocation())
             updateMap(root);
         else
-        {
             currentMapDisplay.setVisibility(View.GONE);
-        }
 
         return root;
     }
@@ -107,8 +105,7 @@ public class MapDisplayFragment extends Fragment {
      * sets up the map markers for display
      * @param root
      */
-    private void updateMap(View root)
-    {
+    private void updateMap(View root) {
         ((root.findViewById(R.id.map_point_view_experiment_loc_error_display))).setVisibility(View.GONE);
         currentMapDisplay.setTileSource(TileSourceFactory.MAPNIK);
         currentMapDisplay.setVerticalMapRepetitionEnabled(false);

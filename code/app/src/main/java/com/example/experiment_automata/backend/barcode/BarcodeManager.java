@@ -26,13 +26,14 @@ import java.util.UUID;
  *      1.
  */
 public class BarcodeManager {
-    private HashMap<String,BarcodeReference> barcodes;
+    private HashMap<String,BarcodeReference<?>> barcodes;
     private static BarcodeManager barcodeManager;
 
     public BarcodeManager(){
-        barcodes = new HashMap<String,BarcodeReference>();
+        barcodes = new HashMap<>();
         getAllFromFirestore();
     }
+
     /**
      * Add a barcode reference to the barcode manager for a NaturalCount Trial
      * @param barcodeVal
@@ -46,6 +47,7 @@ public class BarcodeManager {
         NaturalBarcodeReference barcodeRef = new NaturalBarcodeReference(barcodeVal,experimentId,ExperimentType.NaturalCount,result,location);
         barcodes.put(barcodeVal,barcodeRef);
     }
+
     /**
      * Add a barcode reference to the barcode manager for a Measurement Trial
      * @param barcodeVal
@@ -59,6 +61,7 @@ public class BarcodeManager {
         MeasurementBarcodeReference barcodeRef = new MeasurementBarcodeReference(barcodeVal,experimentId,ExperimentType.Measurement,result,location);
         barcodes.put(barcodeVal,barcodeRef);
     }
+
     /**
      * Add a barcode reference to the barcode manager for a Binomial Trial
      * @param barcodeVal
@@ -72,6 +75,7 @@ public class BarcodeManager {
        BinomialBarcodeReference barcodeRef = new BinomialBarcodeReference(barcodeVal,experimentId,ExperimentType.Binomial,result,location);
        barcodes.put(barcodeVal,barcodeRef);
     }
+
     /**
      * Add a barcode reference to the barcode manager for a Count Trial
      * @param barcodeVal
@@ -84,7 +88,9 @@ public class BarcodeManager {
         barcodes.put(barcodeVal,barcodeRef);
     }
 
-    //add firestore here
+    /**
+     * Get all the barcode documents from firestore
+     */
     public void getAllFromFirestore(){
         //checkTestMode?
         DataBase database = DataBase.getInstance();
@@ -95,25 +101,25 @@ public class BarcodeManager {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()){
                     for (QueryDocumentSnapshot document : task.getResult()){
-                        BarcodeReference currentBarcodeRef;
+                        BarcodeReference<?> currentBarcodeRef;
                         UUID experimentId = UUID.fromString((String)document.get("experiment-id"));
                         String barcode = document.getId();
                         ExperimentType type = ExperimentType.valueOf((String)document.get("type"));
 
                         switch(type){
                             case Binomial:
-                                boolean boolVal = (boolean)document.get("result");
+                                boolean boolVal = (boolean) document.get("result");
                                 currentBarcodeRef = new BinomialBarcodeReference(barcode,experimentId,ExperimentType.Binomial,boolVal,locationFromPairing(document));
                                 break;
                             case Count:
                                 currentBarcodeRef = new CountBarcodeReference(barcode,experimentId,ExperimentType.Count,locationFromPairing(document));
                                 break;
                             case Measurement:
-                                float measVal = (float)((double)document.get("result"));
+                                float measVal = (float) ((double) document.get("result"));
                                 currentBarcodeRef = new MeasurementBarcodeReference(barcode,experimentId,ExperimentType.Measurement,measVal,locationFromPairing(document));
                                 break;
                             case NaturalCount:
-                                int natVal = (int)((long)document.get("result"));
+                                int natVal = (int) ((long) document.get("result"));
                                 currentBarcodeRef = new NaturalBarcodeReference(barcode,experimentId,ExperimentType.NaturalCount,natVal,locationFromPairing(document));
                                 break;
                             default:
@@ -130,16 +136,16 @@ public class BarcodeManager {
             }
         });
     }
+
     /**
      * build a location form a barcodeReference Document in firestore
      * @param document
      *   document in the database representing a BarcodeReference
      * @return
      *  location represented by the entry in the database, returns null if no location
-
      */
     private Location locationFromPairing(QueryDocumentSnapshot document){
-        if(document.get("latitude") == null){
+        if (document.get("latitude") == null) {
             return null;
         }
         double latitude = (double) document.get("latitude");
@@ -156,14 +162,12 @@ public class BarcodeManager {
      *   String that is contained in the barcode
      * @return
      *  barcodeReference representing the given barcode value
-
      */
-    public BarcodeReference getBarcode(String barcodeVal){
+    public BarcodeReference<?> getBarcode(String barcodeVal){
         return barcodes.get(barcodeVal);
     }
 
-    public static BarcodeManager getInstance()
-    {
+    public static BarcodeManager getInstance() {
         if(barcodeManager == null)
             barcodeManager = new BarcodeManager();
         return barcodeManager;

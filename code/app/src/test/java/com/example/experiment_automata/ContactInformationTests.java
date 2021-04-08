@@ -22,8 +22,7 @@ public class ContactInformationTests {
      */
 
     @Test
-    public void testGetName()
-    {
+    public void testGetName() {
         ContactInformation contactInformation = new ContactInformation(name,
                 email,
                 phone);
@@ -34,8 +33,7 @@ public class ContactInformationTests {
     }
 
     @Test
-    public void testGetEmail()
-    {
+    public void testGetEmail() {
         ContactInformation contactInformation = new ContactInformation(name,
                 email,
                 phone);
@@ -46,8 +44,7 @@ public class ContactInformationTests {
     }
 
     @Test
-    public void testGetPhone()
-    {
+    public void testGetPhone() {
         ContactInformation contactInformation = new ContactInformation(name,
                 email,
                 phone);
@@ -62,8 +59,7 @@ public class ContactInformationTests {
      * These tests are such that the edit flag is false
      */
     @Test
-    public void testSetName()
-    {
+    public void testSetName() {
         String change = "bad";
         ContactInformation contactInformation = new ContactInformation(name,
                 email,
@@ -76,8 +72,7 @@ public class ContactInformationTests {
     }
 
     @Test
-    public void testSetEmail()
-    {
+    public void testSetEmail() {
         String change = "bad";
         ContactInformation contactInformation = new ContactInformation(name,
                 email,
@@ -90,8 +85,7 @@ public class ContactInformationTests {
     }
 
     @Test
-    public void testSetPhone()
-    {
+    public void testSetPhone() {
         String change = "bad";
         ContactInformation contactInformation = new ContactInformation(name,
                 email,
@@ -104,8 +98,7 @@ public class ContactInformationTests {
     }
 
     @Test
-    public void testSetAllNotEditable()
-    {
+    public void testSetAllNotEditable() {
         String change = "bad";
         ContactInformation contactInformation
                 = new ContactInformation(name,

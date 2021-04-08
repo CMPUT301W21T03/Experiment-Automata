@@ -91,8 +91,7 @@ public class Reply implements Serializable, Comparable {
 
                         }
                     });
-        }catch (Exception e)
-        {}
+        } catch (Exception e) {}
     }
 
     public String getReply() {

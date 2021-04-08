@@ -18,16 +18,14 @@ public class DataBase {
     private DataBase(boolean testMode) {
         this.testMode = testMode;
         db = FirebaseFirestore.getInstance();
-        if(testMode)
-        {
+        if (testMode) {
             db.clearPersistence();
             db.disableNetwork();
         }
     }
 
     public static DataBase getInstanceTesting() {
-        if(current == null)
-        {
+        if (current == null) {
             current = new DataBase(true);
         }
         current.disableTest();
@@ -43,18 +41,15 @@ public class DataBase {
         return current;
     }
 
-    public FirebaseFirestore getFireStore()
-    {
+    public FirebaseFirestore getFireStore() {
         return db;
     }
 
-    public void disableTest()
-    {
+    public void disableTest() {
         this.testMode = false;
     }
 
-    public boolean isTestMode()
-    {
+    public boolean isTestMode() {
         return this.testMode;
     }
 }

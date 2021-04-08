@@ -448,8 +448,7 @@ public class NavigationActivity extends AppCompatActivity implements
     public void requestLocationResourcePermissions() {
         if (ContextCompat.checkSelfPermission(getApplicationContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]
-                            {
+            requestPermissions(new String[] {
                                     Manifest.permission.ACCESS_FINE_LOCATION,
                                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
                                     Manifest.permission.ACCESS_NETWORK_STATE,

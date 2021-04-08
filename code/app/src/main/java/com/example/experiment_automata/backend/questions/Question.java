@@ -22,8 +22,7 @@ import java.util.UUID;
  *
  *      1. None
  */
-public class Question implements Serializable, Comparable
-{
+public class Question implements Serializable, Comparable {
     private String question;
     private UUID user; // this makes more sense to just store a user ID
     private UUID reply;// we will likely want the reply UUID since we have to query and see if a question has a reply
@@ -39,8 +38,7 @@ public class Question implements Serializable, Comparable
      * @param experimentId
      *   The ID of the experiment associated with the question
      */
-    public Question(String question, UUID user, UUID experimentId)
-    {
+    public Question(String question, UUID user, UUID experimentId) {
         this.question = question;
         this.user = user;
         this.experimentId = experimentId;
@@ -112,8 +110,7 @@ public class Question implements Serializable, Comparable
 
                         }
                     });
-        }catch (Exception e)
-        {}
+        } catch (Exception e) {}
     }
 
     /**
@@ -182,8 +179,7 @@ public class Question implements Serializable, Comparable
      * @return
      *   The UUID of the question
      */
-    public UUID getQuestionId()
-    {
+    public UUID getQuestionId() {
         return this.questionId;
     }
 

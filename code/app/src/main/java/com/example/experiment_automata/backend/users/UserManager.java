@@ -22,15 +22,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class UserManager
-{
+public class UserManager {
     private static HashMap<UUID, User> currentUsers;
     private static UserManager userManager;
     private boolean testMode;
     private UpdateEvent updateEvent;
 
-    private UserManager()
-    {
+    private UserManager() {
         updateEvent = new UpdateEvent();
         currentUsers = new HashMap<>();
     }
@@ -98,8 +96,7 @@ public class UserManager
     /**
      * gets all the user from firebase and stores them locally
      */
-    public void getAllUsersFromFireStore()
-    {
+    public void getAllUsersFromFireStore() {
         if(testMode)
             return;
         DataBase dataBase = DataBase.getInstance();
@@ -112,13 +109,11 @@ public class UserManager
         });
 
         userCollection.addSnapshotListener((value, error) -> {
-            if(error != null)
-            {
+            if(error != null) {
                 Log.w("UserManager -> Error", error);
                 return;
             }
-            if(value != null)
-            {
+            if(value != null) {
                 Log.wtf("RAN", "DONE");
                 sectorRead(value);
                 updateEvent.callback();
@@ -126,8 +121,7 @@ public class UserManager
         });
     }
 
-    public void sectorRead(QuerySnapshot snapshot)
-    {
+    public void sectorRead(QuerySnapshot snapshot) {
         for (QueryDocumentSnapshot documentSnapshot : snapshot) {
             if (documentSnapshot != null) {
                 UUID userId = UUID.fromString(documentSnapshot.getId());
@@ -146,21 +140,15 @@ public class UserManager
                     ArrayList<UUID> valsO = new ArrayList<>();
                     ArrayList<UUID>valsS = new ArrayList<>();
                     try {
-                        for(String o : owned)
-                        {
+                        for(String o : owned) {
                             valsO.add(UUID.fromString(o));
                         }
-                        for(String s : subscriptions)
-                        {
+                        for(String s : subscriptions) {
                             valsS.add(UUID.fromString(s));
                         }
                         newUser.setOwnedExperiments(valsO);
                         newUser.setSubscribedExperiments(valsS);
-                    }catch (Exception e)
-                    {
-                        // Something
-                        // Data corruption within the db causes this
-                    }
+                    } catch (Exception e) {}
                     currentUsers.put(userId, newUser);
             }
         }

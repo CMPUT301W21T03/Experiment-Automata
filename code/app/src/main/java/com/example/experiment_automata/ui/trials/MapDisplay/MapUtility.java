@@ -64,8 +64,7 @@ public class MapUtility {
         marker = new Marker(this.display);
     }
 
-    public void setRevertBack(Button revertBack)
-    {
+    public void setRevertBack(Button revertBack) {
         this.revertBack = revertBack;
     }
 
@@ -94,7 +93,7 @@ public class MapUtility {
 
             parentActivity.addLocationToTrial(trial);
 
-            if(trial.getLocation() == null){
+            if (trial.getLocation() == null){
                 // Ends the function
                 AlertDialog myDialog = new AlertDialog.Builder(context).create();
 
@@ -115,9 +114,7 @@ public class MapUtility {
             // Author: Google LLC
             // Date: 2019-12-27
             // License: Apache 2.0
-
-            // TODO: Change this location warning count to be a button that says (do not show again)
-            if(!parentActivity.stopRemindingMe) {
+            if (!parentActivity.stopRemindingMe) {
                 // Warns the user that their location is being used
                 AlertDialog.Builder myDialog = new AlertDialog.Builder(context)
                         .setPositiveButton("Don't Show Again", (dialog, id) -> {
@@ -144,8 +141,7 @@ public class MapUtility {
             GeoPoint oldLocation = new GeoPoint(trial.getLocation());
             parentActivity.setCurrentScreen(Screen.Trial);
 
-            if(revertBack != null)
-            {
+            if (revertBack != null) {
                 revertBack.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -201,8 +197,7 @@ public class MapUtility {
     /**
      * Initializes all the needed items for the map to be displayed and viewed
      */
-    private void setupMap()
-    {
+    private void setupMap() {
         Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(context));
         display.setTileSource(TileSourceFactory.MAPNIK);
         display.setVerticalMapRepetitionEnabled(false);
@@ -227,11 +222,9 @@ public class MapUtility {
      * this method sets things to deal with the map
      */
     public void run() {
-        if(experiment.isRequireLocation()) {
+        if (experiment.isRequireLocation()) {
             mapSupport();
-        }
-        else
-        {
+        } else {
             makeMapItemsDisappear();
         }
     }

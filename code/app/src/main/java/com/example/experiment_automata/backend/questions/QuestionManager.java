@@ -42,8 +42,7 @@ public class QuestionManager {
     /**
      * Initializes the question manager.
      */
-    private QuestionManager()
-    {
+    private QuestionManager() {
         questions = new HashMap<>();
         replies = new HashMap<>();
         repliesFromId = new HashMap<>();
@@ -53,11 +52,9 @@ public class QuestionManager {
         }
     }
 
-    public static QuestionManager getInstance()
-    {
+    public static QuestionManager getInstance() {
         if (questionManager == null)
             questionManager =  new QuestionManager();
-
         return questionManager;
     }
 
@@ -69,8 +66,7 @@ public class QuestionManager {
      * @param question
      *  question to add to the manager
      */
-    public void addQuestion(UUID experimentId, Question question)
-    {
+    public void addQuestion(UUID experimentId, Question question) {
         if (!questionFromId.containsKey(question.getQuestionId())) {
             ArrayList<Question> returnQuestions = new ArrayList<>();
             returnQuestions.add(question);
@@ -91,8 +87,7 @@ public class QuestionManager {
      * @param reply
      *  reply to add to the manager
      */
-    public void addReply(UUID questionId, Reply reply)
-    {
+    public void addReply(UUID questionId, Reply reply) {
         if (!repliesFromId.containsKey(reply.getReplyId())) {
             ArrayList<Reply> reps = replies.get(questionId);
             ArrayList<Reply> allReplies = new ArrayList<>();
@@ -133,8 +128,7 @@ public class QuestionManager {
      *  the number of questions that experiment has
      *  -1 If the experiment is not contained
      */
-    public int getTotalQuestions(UUID experimentId)
-    {
+    public int getTotalQuestions(UUID experimentId) {
         int count;
         if (!questions.containsKey(experimentId))
             count = -1;
@@ -170,8 +164,7 @@ public class QuestionManager {
      * @return
      *  A list of all replies given to that question
      */
-    public ArrayList<Reply> getQuestionReply(UUID questionId)
-    {
+    public ArrayList<Reply> getQuestionReply(UUID questionId) {
         if (!replies.containsKey(questionId)) {
             return new ArrayList<Reply>();
         }
@@ -186,8 +179,7 @@ public class QuestionManager {
      * @return
      *  return all questions
      */
-    public Collection<ArrayList<Question>> getAllQuestions()
-    {
+    public Collection<ArrayList<Question>> getAllQuestions() {
         return questions.values();
     }
 
@@ -253,16 +245,14 @@ public class QuestionManager {
     /**
      * enables test mode (Does not talk to firebase)
      */
-    public static void enableTestMode()
-    {
+    public static void enableTestMode() {
         TEST_MODE = true;
     }
 
     /**
      * disables test mode (Talks to firebase)
      */
-    public static void disableTestMode()
-    {
+    public static void disableTestMode() {
         TEST_MODE = false;
     }
 }

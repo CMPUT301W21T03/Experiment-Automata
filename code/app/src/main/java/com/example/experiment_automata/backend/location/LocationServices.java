@@ -22,8 +22,7 @@ import androidx.annotation.NonNull;
 public class LocationServices implements LocationListener {
     public Location currentLocation;
 
-    public LocationServices()
-    {
+    public LocationServices() {
         currentLocation = null;
     }
 
@@ -33,8 +32,7 @@ public class LocationServices implements LocationListener {
      * @param location the updated location
      */
     @Override
-    public void onLocationChanged(@NonNull Location location)
-    {
+    public void onLocationChanged(@NonNull Location location) {
         currentLocation = location;
     }
 }

@@ -93,8 +93,7 @@ public class QuestionManagerTestsFirebase {
     }
 
     @Test
-    public void addQuestion()
-    {
+    public void addQuestion() {
         int questionCountBefore;
         int questionCountAfter;
 
@@ -112,16 +111,13 @@ public class QuestionManagerTestsFirebase {
 
     // currently fails due to NullPointerException, could be issue with Question class or QuestionManager
     @Test
-    public void addReply()
-    {
+    public void addReply() {
         questionManager.addQuestion(experimentId1, q1);
         questionManager.addReply(q1.getQuestionId(), r1);
         Reply returnedReply = null;
-        try
-        {
+        try {
             returnedReply =  questionManager.getQuestionReply(q1.getQuestionId()).get(0);
-        }
-        catch (IllegalArgumentException e) {}
+        } catch (IllegalArgumentException e) {}
 
         assertEquals(r1.getReplyId(), returnedReply.getReplyId());
     }
@@ -154,11 +150,9 @@ public class QuestionManagerTestsFirebase {
     }
 
     @Test
-    public void testGetAllQuestions()
-    {
+    public void testGetAllQuestions() {
         Collection<ArrayList<Question>> givenQuestion = new ArrayList<>();
-        for(int i = 0; i < 20; i++)
-        {
+        for (int i = 0; i < 20; i++) {
             ArrayList temp = new ArrayList();
             Question q = new Question("ddd", UUID.randomUUID(), UUID.randomUUID());
             temp.add(q);

@@ -1,6 +1,5 @@
 package com.example.experiment_automata;
 
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 

@@ -30,14 +30,11 @@ public class UserManager
      * @return
      *  the current instance of the UserManager class
      */
-    public static UserManager getInstance()
-    {
-        if(userManager == null) {
+    public static UserManager getInstance() {
+        if (userManager == null) {
             userManager = new UserManager();
             userManager.getAllUsersFromFireStore();
         }
-
-        Log.d("STEP_SIZE", userManager.getSize() + "");
         return userManager;
     }
 
@@ -46,8 +43,7 @@ public class UserManager
      * Adds user to current local memory
      * @param newUser user to be added
      */
-    public void add(User newUser)
-    {
+    public void add(User newUser) {
         if(!currentUsers.containsKey(newUser.getUserId()))
             currentUsers.put(newUser.getUserId(), newUser);
     }
@@ -67,8 +63,7 @@ public class UserManager
      * @return
      *  the user we want
      */
-    public User getSpecificUser(UUID userId)
-    {
+    public User getSpecificUser(UUID userId) {
         User current = null;
         if(currentUsers.containsKey(userId))
             current = currentUsers.get(userId);
@@ -79,8 +74,7 @@ public class UserManager
     /**
      * gets all the user from firebase and stores them locally
      */
-    public void getAllUsersFromFireStore()
-    {
+    public void getAllUsersFromFireStore() {
         if(TEST_MODE)
             return;
         DataBase dataBase = DataBase.getInstance();

@@ -34,16 +34,16 @@ public class UserManager
      * @return
      *  the current instance of the UserManager class
      */
-    public static UserManager getInstance(boolean testMode)
-    {
-        if(userManager == null && !testMode) {
+    public static UserManager getInstance(boolean testMode) {
+        if (userManager == null && !testMode) {
             userManager = new UserManager();
             userManager.getAllUsersFromFireStore();
-        }
-        else if (userManager == null && testMode)
-        {
+        } else if (userManager == null && testMode) {
             userManager = new UserManager();
         }
+
+        return userManager;
+    }
 
 
     public static UserManager getInstance() {

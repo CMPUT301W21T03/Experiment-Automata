@@ -49,6 +49,7 @@ public class ExperimentManager {
     private Experiment<?> currentExperiment;
     private Experiment<?> lastAdded;
     private UpdateEvent updateEvent;
+    private boolean testMode;
 
     /**
      * Initializes the experiment manager.
@@ -59,10 +60,34 @@ public class ExperimentManager {
         updateEvent = new UpdateEvent();
     }
 
+
+    /**
+     * sets ExperimentManager in test mode which means that
+     * we don't touch the firebase system.
+     * @param testMode the firebase system
+     */
+    public ExperimentManager(boolean testMode)
+    {
+        experiments = new HashMap<>();
+        this.testMode = testMode;
+    }
+
+    /**
+     * gets an instance of the experiment manager so that we
+     * only have one in the system.
+     * @return
+     */
     public static ExperimentManager getInstance()
     {
         if(experimentManager == null)
             experimentManager = new ExperimentManager();
+        return experimentManager;
+    }
+
+    public static ExperimentManager getInstance(boolean testMode)
+    {
+        if(experimentManager == null)
+            experimentManager = new ExperimentManager(testMode);
         return experimentManager;
     }
 
@@ -255,6 +280,8 @@ public class ExperimentManager {
      * Populate experiments in Experiment manager with all experiments from Firestore
      */
     public void getAllFromFirestore() {
+        if(testMode)
+            return;
         DataBase data = DataBase.getInstance();
         FirebaseFirestore db = data.getFireStore();
         CollectionReference experimentCollection = db.collection("experiments");
@@ -282,6 +309,8 @@ public class ExperimentManager {
      * @param querySnapshotTask The task of the query
      */
     private void getFromFirestoreFromQuery(Task<QuerySnapshot> querySnapshotTask) {
+        if(testMode)
+            return;
         querySnapshotTask.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -314,6 +343,8 @@ public class ExperimentManager {
      *  Hashmap containing other hashmaps as found in the results field in the given Experiment document
      */
     private void buildTrials(Experiment<?> experiment, Object trialsObj){
+        if(testMode)
+            return;
         HashMap<String, Object> trials = (HashMap<String, Object>) trialsObj;
         for (String k : trials.keySet()){
             HashMap<String, Object> currentTrialMap = (HashMap<String, Object>) trials.get(k);
@@ -367,6 +398,8 @@ public class ExperimentManager {
      * @return the UUID of the experiment added
      */
     private void updateFromDocumentSnapshot(DocumentSnapshot document) {
+        if(testMode)
+            return;
         Experiment<?> currentExperiment = ExperimentMaker.makeExperiment(
                 ExperimentType.valueOf((String) document.get("type")),
                 (String) document.get("description"),

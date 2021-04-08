@@ -106,7 +106,7 @@ public class QuestionManagerTest {
         assertEquals(1, questionManager.getExperimentQuestions(experimentId).size());
         assertEquals(questions.get(0), questionManager.getExperimentQuestions(experimentId).get(0));
         Question newQuestion = new Question(question, userId, experimentId, UUID.randomUUID());
-        assertEquals(1, questionManager.getTotalQuestions(experimentId));
+        assertEquals(1, questionManager.getExperimentQuestions(experimentId).size());
         questionManager.addQuestion(newQuestion.getExperimentId(), newQuestion);
         assertEquals(2, questionManager.getExperimentQuestions(experimentId).size());
         assertTrue("Error, does not contain newQuestion", questionManager.getExperimentQuestions(experimentId).contains(newQuestion));
@@ -116,6 +116,35 @@ public class QuestionManagerTest {
         } catch(IllegalArgumentException e) {}
     }
 
+    @Test
+    public void testGetQuestionReply() {
+        assertEquals(1, questionManager.getQuestionReply(questionId).size());
+        assertEquals(replies.get(0), questionManager.getQuestionReply(questionId).get(0));
+        UUID newReplyUUID = UUID.randomUUID();
+        Reply newReply = new Reply("New reply", questionId, userId, newReplyUUID);
+        assertEquals(1, questionManager.getQuestionReply(questionId).size());
+        questionManager.addReply(questionId, newReply);
+        assertEquals(2, questionManager.getQuestionReply(questionId).size());
+        assertTrue("Error, could not find new reply", questionManager.getQuestionReply(questionId).contains(newReply));
+        UUID newQuestionUUID = UUID.randomUUID();
+        Question otherQuestion = new Question("Other Question", userId, experimentId, newQuestionUUID);
+        Reply otherReply = new Reply("Other reply", newQuestionUUID, userId, UUID.randomUUID());
+        assertEquals(0, questionManager.getQuestionReply(newQuestionUUID).size());
+        questionManager.addQuestion(experimentId, otherQuestion);
+        questionManager.addReply(newQuestionUUID, otherReply);
+        assertEquals(otherReply, questionManager.getQuestionReply(newQuestionUUID).get(0));
+        assertEquals(2, questionManager.getQuestionReply(questionId).size());
+    }
+
+    @Test
+    public void testGetAllQuestions() {
+        assertEquals(1, questionManager.getAllQuestions().iterator().next().size());
+        Question newQuestion = new Question("New Question", userId, experimentId, UUID.randomUUID());
+        questionManager.addQuestion(experimentId, newQuestion);
+        assertEquals(2, questionManager.getAllQuestions().iterator().next().size());
+        assertTrue("Does not contain original item",  questionManager.getAllQuestions().iterator().next().contains(questions.get(0)));
+        assertTrue("Does not contain new item", questionManager.getAllQuestions().iterator().next().contains(newQuestion));
+    }
 
     @After
     public void finish() {

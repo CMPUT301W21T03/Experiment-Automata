@@ -10,14 +10,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
  *      None:
  */
 
-public class DataBase
-{
+public class DataBase {
     private static DataBase current;
     private static FirebaseFirestore db;
     private boolean testMode;
 
-    private DataBase(boolean testMode)
-    {
+    private DataBase(boolean testMode) {
         this.testMode = testMode;
         db = FirebaseFirestore.getInstance();
         if(testMode)
@@ -27,8 +25,7 @@ public class DataBase
         }
     }
 
-    public static DataBase getInstanceTesting()
-    {
+    public static DataBase getInstanceTesting() {
         if(current == null)
         {
             current = new DataBase(true);
@@ -37,8 +34,7 @@ public class DataBase
         return current;
     }
 
-    public static DataBase getInstance()
-    {
+    public static DataBase getInstance() {
 
         if(current == null) {
             current = new DataBase(false);

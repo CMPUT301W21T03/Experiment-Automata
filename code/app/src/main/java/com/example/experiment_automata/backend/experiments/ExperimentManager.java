@@ -46,6 +46,7 @@ public class ExperimentManager {
     private static ExperimentManager experimentManager;
     private static HashMap<UUID, Experiment<?>> experiments;
     private static boolean TEST_MODE = false;
+    public static boolean enableFirestore = true;
     private Experiment<?> currentExperiment;
     private Experiment<?> lastAdded;
     private UpdateEvent updateEvent;
@@ -55,7 +56,7 @@ public class ExperimentManager {
      */
     public ExperimentManager() {
         experiments = new HashMap<>();
-        getAllFromFirestore();
+        if (enableFirestore) getAllFromFirestore();
         updateEvent = new UpdateEvent();
     }
 

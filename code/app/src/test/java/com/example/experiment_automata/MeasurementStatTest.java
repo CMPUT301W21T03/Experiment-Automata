@@ -6,9 +6,10 @@ import com.example.experiment_automata.backend.trials.MeasurementTrial;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.UUID;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.UUID;
 
 public class MeasurementStatTest {
     UUID ownerId = UUID.randomUUID();

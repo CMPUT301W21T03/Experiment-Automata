@@ -218,7 +218,6 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
      * @param active value to be set
      */
     public void setActive(boolean active) {
-
         this.active = active;
         postExperimentToFirestore();
     }

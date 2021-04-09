@@ -97,7 +97,7 @@ public class BinomialExperiment extends Experiment<BinomialTrial> {
                     first = false;
                     offset = trial.getTimestamp();
                 }
-                data.add(new Entry(trial.getTimestamp(), - offset, trial.getResult() ? 1 : 0));
+                data.add(new Entry(trial.getTimestamp() - offset, trial.getResult() ? 1 : 0));
             }
         }
         return data;

@@ -74,7 +74,8 @@ public class MeasurementExperiment extends Experiment<MeasurementTrial> {
                 if (value < min) min = value;
             }
         }
-        float range = min + max;
+       
+        float range = max - min;
         // Get data range counts into bins
         final int amountOfBins = 10;
         int[] bins = new int[amountOfBins];

@@ -230,6 +230,9 @@ public class NavExperimentDetailsFragment extends Fragment {
                     updateExperiment(current);
             });
 
+            updateExperiment((((NavigationActivity) requireActivity()).getExperimentManager())
+                    .getAtUUIDDescription(UUID.fromString(experimentStringId)));
+
 
         } else {
             textViewMean.setText(R.string.no_trials);

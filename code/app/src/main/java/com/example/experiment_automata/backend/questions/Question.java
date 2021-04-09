@@ -79,7 +79,7 @@ public class Question implements Serializable, Comparable<Question> {
      *  Post the current question to Firestore
      */
     protected void postQuestionToFirestore() {
-        DataBase dataBase = DataBase.getInstanceTesting();
+        DataBase dataBase = DataBase.getInstance();
         FirebaseFirestore db = dataBase.getFireStore();
         Map<String,Object> questionData = new HashMap<>();
         String questionIdString = this.questionId.toString();

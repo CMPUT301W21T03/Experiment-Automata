@@ -29,7 +29,7 @@ import static org.junit.Assert.*;
  *
  */
 public class UserTests {
-    DataBase dataBase = DataBase.getInstanceTesting();;
+    DataBase dataBase = DataBase.getInstanceTesting();
     private Solo solo;
     private NavigationActivity currentTestingActivity;
 
@@ -38,7 +38,7 @@ public class UserTests {
             new ActivityTestRule<>(NavigationActivity.class, true, true);
 
     @Before
-    public void setup() throws InterruptedException {
+    public void setup() {
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
         currentTestingActivity = (NavigationActivity) solo.getCurrentActivity();
         // Open navigation drawer

@@ -40,9 +40,7 @@ public class SearchUserStoriesTests {
     private View addExperimentButton;
     private View descriptionEdit;
     private View countTrialsEdit;
-    private View location;
-    private View acceptNewResults;
-    private View slector;
+    private View selector;
 
 
 
@@ -106,13 +104,13 @@ public class SearchUserStoriesTests {
         solo.enterText((EditText) countTrialsEdit, "3");
 
         //Selecting Binomial Experiment
-        slector = solo.getView(R.id.experiment_type_spinner);
-        solo.clickOnView(slector);
+        selector = solo.getView(R.id.experiment_type_spinner);
+        solo.clickOnView(selector);
         solo.clickOnText("Binomial");
 
         //Setting the boxes
-        location = solo.getView(R.id.experiment_require_location_switch);
-        acceptNewResults = solo.getView(R.id.experiment_accept_new_results_switch);
+        View location = solo.getView(R.id.experiment_require_location_switch);
+        View acceptNewResults = solo.getView(R.id.experiment_accept_new_results_switch);
         if (des != "One")
             solo.clickOnView(acceptNewResults);
         solo.clickOnText("Ok");
@@ -236,8 +234,8 @@ public class SearchUserStoriesTests {
         solo.enterText((EditText) countTrialsEdit, "3");
 
         //Selecting Binomial Experiment
-        slector = solo.getView(R.id.experiment_type_spinner);
-        solo.clickOnView(slector);
+        selector = solo.getView(R.id.experiment_type_spinner);
+        solo.clickOnView(selector);
         solo.clickOnText("Binomial");
         solo.clickOnText("Ok");
     }

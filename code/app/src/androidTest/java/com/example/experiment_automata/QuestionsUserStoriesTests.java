@@ -2,9 +2,12 @@ package com.example.experiment_automata;
 
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.experiment_automata.backend.DataBase;
+import com.example.experiment_automata.ui.LinkView;
 import com.example.experiment_automata.ui.NavigationActivity;
+import com.example.experiment_automata.ui.Screen;
 import com.google.firebase.FirebaseApp;
 import com.robotium.solo.Solo;
 
@@ -220,6 +223,7 @@ public class QuestionsUserStoriesTests {
      * Testing if the username of the question post links to the user profile.
      * can't really be tested because of issues with firebase being disconnected
      *      * at the time of testing
+     */
     @Test
     public void testingQuestionLinksToProfile() {
         View replyButton = null;
@@ -247,13 +251,12 @@ public class QuestionsUserStoriesTests {
         assertEquals(solo.getString(R.string.profile_contact),
                 ((TextView) solo.getView(R.id.profile_contact)).getText().toString());
     }
-    */
 
     /**
      * Testing if the username of the reply post links to the user profile.
      * can't really be tested because of issues with firebase being disconnected
      * at the time of testing
-     *
+     */
     @Test
     public void testingReplyLinksToProfile() {
         View replyButton = null;
@@ -286,5 +289,4 @@ public class QuestionsUserStoriesTests {
         assertEquals(solo.getString(R.string.profile_contact),
                 ((TextView) solo.getView(R.id.profile_contact)).getText().toString());
     }
-    */
 }

@@ -22,9 +22,9 @@ public abstract class Trial<T> implements Serializable, Comparable<Trial<T>> {
     private boolean ignore;
     protected T result;
 
-    public Trial(UUID userId, long timestamp, T result) {
+    public Trial(UUID userId, boolean ignore, long timestamp, T result) {
         this.userId = userId;
-        this.ignore = false;
+        this.ignore = ignore;
         this.result = result;
         this.trialId = UUID.randomUUID();
         if (timestamp == 0) {
@@ -34,10 +34,10 @@ public abstract class Trial<T> implements Serializable, Comparable<Trial<T>> {
         }
     }
 
-    public Trial(UUID userId, long timestamp,  Location location, T result) {
+    public Trial(UUID userId, boolean ignore, long timestamp,  Location location, T result) {
         this.userId = userId;
         this.location = location;
-        this.ignore = false;
+        this.ignore = ignore;
         this.result = result;
         this.trialId = UUID.randomUUID();
         if (timestamp == 0) {

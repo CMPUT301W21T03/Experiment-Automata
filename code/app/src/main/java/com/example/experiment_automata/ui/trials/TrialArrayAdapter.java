@@ -114,6 +114,7 @@ public class TrialArrayAdapter extends ArrayAdapter<Trial<?>> {
             checkBox.setOnClickListener(v -> {
                 boolean ignore = !((CheckBox) v).isChecked();
                 trial.setIgnore(ignore);
+                experiment.postExperimentToFirestore();
                 parentFragment.updateScreen();
             });
         } else {

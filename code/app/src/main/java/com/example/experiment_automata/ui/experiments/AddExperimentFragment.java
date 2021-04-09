@@ -113,6 +113,7 @@ public class AddExperimentFragment extends DialogFragment {
             (view.findViewById(R.id.experiment_require_location_switch)).setVisibility(View.GONE);
 
             description.setText(currentExperiment.getDescription());
+            region.setText(currentExperiment.getRegion());
             requireLocation.setChecked(currentExperiment.isRequireLocation());
             acceptNewResults.setChecked(currentExperiment.isActive());
             minTrials.setText(currentExperiment.getMinTrials().toString());

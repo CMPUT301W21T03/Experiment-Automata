@@ -16,7 +16,7 @@ jobs:
   uml:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
@@ -24,14 +24,13 @@ jobs:
       - name: Install Plant UML
         uses: cloudbees/plantuml-github-action@master 
         with: 
-           args: -v doc/uml/uml.puml
-           
+           args: -v doc/uml/uml.puml -tsvg
+
       - name: Commits File 
         uses: EndBug/add-and-commit@v7
         with: 
-           add: 'doc/uml/UML.png'
+           add: 'doc/uml/UML.svg'
            author_name: ${{ secrets.GH_NAME }}
            author_email: ${{ secrets.GH_EMAIL }}
            message: 'Update UML image'
            push: true 
-         

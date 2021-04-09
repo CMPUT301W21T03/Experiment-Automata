@@ -7,7 +7,6 @@ import java.util.UUID;
 /**
  * Role/Pattern:
  *     Holds the information needed to maintain and track a natural count trial
- *
  */
 public class NaturalCountTrial extends Trial<Integer> {
     public NaturalCountTrial(UUID collector, int result) throws IllegalArgumentException {

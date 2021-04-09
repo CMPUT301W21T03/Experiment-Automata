@@ -19,11 +19,6 @@ import java.util.UUID;
  *      Class made to maintain questions and replies that the users will make.
  *      This class is the main Model for keeping the questions
  *      in their place while taking the work away from other classes.
- *
- *  Known Issue:
- *
- *      1. Could be broken into something for question and something for reply
- *      2. An owner technically should not be creating questions, but we need this to test for now
  */
 public class QuestionManager {
     private static  HashMap<UUID, ArrayList<Question>> questions;

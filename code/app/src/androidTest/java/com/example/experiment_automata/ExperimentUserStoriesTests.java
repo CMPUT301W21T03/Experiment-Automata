@@ -1,21 +1,5 @@
 package com.example.experiment_automata;
 
-
-/**
- * Test functionality the deals with
- *  1. us.01.01.01
- *  2. us.01.02.01
- *  3. us.01.03.01
- *  4. us.01.04.01 - Not yet implemented
- *  5. us.01.05.01
- *
- * Known Issues:
- *  1. Since we have not added the ability to add coordinates that is not tested
- *  2. Not yet dealing with the owner/experimenter access values
- *
- */
-
-
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -46,6 +30,14 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+/**
+ * Test functionality the deals with
+ *  1. us.01.01.01
+ *  2. us.01.02.01
+ *  3. us.01.03.01
+ *  4. us.01.04.01 - Not yet implemented
+ *  5. us.01.05.01
+ */
 public class ExperimentUserStoriesTests {
     DataBase dataBase = DataBase.getInstanceTesting();
     private Solo solo;

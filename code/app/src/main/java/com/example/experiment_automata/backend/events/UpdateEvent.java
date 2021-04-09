@@ -4,9 +4,7 @@ package com.example.experiment_automata.backend.events;
  * Role/Pattern:
  *      Class implementation of on event listener made for whenever
  *      we want to update something based on an event
- *
  */
-
 public class UpdateEvent {
     private OnEventListener onEventListener;
 

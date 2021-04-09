@@ -1,16 +1,5 @@
 package com.example.experiment_automata;
 
-/**
- * Test functionality the deals with
- *  1. us.05.01.01
- *  2. us.05.02.01 - Some aspects of the experiment have yet to be implemented.
- *
- * Known Issues:
- *  1. Experiment owner is right now is a single value that does not change
- *      since some aspects of the user class is not yet finished.
- *
- */
-
 import android.view.View;
 import android.widget.EditText;
 
@@ -33,6 +22,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.fail;
 
+/**
+ * Test functionality the deals with
+ *  1. us.05.01.01
+ *  2. us.05.02.01 - Some aspects of the experiment have yet to be implemented.
+ */
 public class SearchUserStoriesTests {
     private DataBase dataBase = DataBase.getInstanceTesting();
     private Solo solo;

@@ -35,12 +35,7 @@ import java.util.UUID;
 
 /**
  * Role/Pattern:
- *
  *       This class displays a QR code representing the current Experiment
- *
- * Known Issue:
- *
- *      1. Saves an image of the QR code anytime the share button is pressed, regardless if it's cancelled
  */
 public class ViewQRFragment extends DialogFragment {
     private Bitmap qrCodeImage;
@@ -136,4 +131,3 @@ public class ViewQRFragment extends DialogFragment {
         notification.show();
     }
 }
-

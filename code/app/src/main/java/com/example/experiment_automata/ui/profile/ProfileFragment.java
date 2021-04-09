@@ -19,12 +19,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /**
  * Role/Pattern:
- *
  *  Displays a user profile with contact information
- *
- *  Known Issue:
- *
- *      1. No ability to edit information
  */
 public class ProfileFragment extends Fragment {
     public static final String userKey = "user";

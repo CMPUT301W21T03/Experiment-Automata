@@ -22,13 +22,6 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  *
  * And to maintain the main page view of question display of the experiment.
- *
- *
- * Known Issues:
- *  1. If you try and add a second reply, app crashes (partly by design). Determine
- *     if we should expect multiple replies to a single question or not
- *  2. At the moment, anyone can reply to a question. Add testing to ensure that
- *     owner can not ask questions and that only the only can answer them
  */
 public class QuestionDisplay extends Fragment {
 

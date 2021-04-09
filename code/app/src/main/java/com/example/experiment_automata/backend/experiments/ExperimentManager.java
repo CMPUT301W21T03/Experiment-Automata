@@ -31,7 +31,6 @@ import java.util.UUID;
  *      Class made to maintain experiments that the users will make.
  *      This class is the main Model for keeping the experiments
  *      in their place while taking the work away from other classes.
- *
  */
 public class ExperimentManager {
     private static ExperimentManager experimentManager;

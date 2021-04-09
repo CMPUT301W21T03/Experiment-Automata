@@ -12,9 +12,7 @@ import com.example.experiment_automata.R;
 
 /**
  * Role/Pattern:
- *
  *       This fragment class inflates the results fragment view.
- *
  */
 public class ResultsFragment extends Fragment {
     @Override

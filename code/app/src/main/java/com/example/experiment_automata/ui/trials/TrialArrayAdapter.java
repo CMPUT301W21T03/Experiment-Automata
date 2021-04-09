@@ -33,7 +33,6 @@ import java.util.UUID;
 
 /**
  * Role/Pattern:
- *
  * This maintains the list for the android system to display the individual inflated views.
  *
  */

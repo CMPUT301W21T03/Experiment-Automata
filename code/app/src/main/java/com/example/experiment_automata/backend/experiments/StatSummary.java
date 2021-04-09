@@ -3,7 +3,6 @@ package com.example.experiment_automata.backend.experiments;
 /**
  * Role/Pattern:
  *     provides contract for stats
- *
  */
 public interface StatSummary {
     /**

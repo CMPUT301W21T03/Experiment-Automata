@@ -9,7 +9,6 @@ import java.util.UUID;
 /**
  * Role/Pattern:
  *     The main trial type class of which the different trials are parts of.
- *
  */
 public abstract class Trial<T> implements Serializable {
     private final UUID userId;

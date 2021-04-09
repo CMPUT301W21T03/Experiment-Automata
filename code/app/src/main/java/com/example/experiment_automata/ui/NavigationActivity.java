@@ -59,15 +59,8 @@ import java.util.UUID;
 
 /**
  * Role/Pattern:
- *     The main launch activity where everything is being held and maintained. 
- *
- *  Known Issue:
- *
- *      1. When searching for an item, the label at the top stays as whatever the current
- *         screen is. Should update to 'published' while still in search fragment
- *      2. Search must be cleared each time or a bug appears where 2 searches are performed.
+ *     The main launch activity where everything is being held and maintained.
  */
-
 public class NavigationActivity extends AppCompatActivity implements
         AddExperimentFragment.OnFragmentInteractionListener,
         AddQuestionFragment.OnFragmentInteractionListener,

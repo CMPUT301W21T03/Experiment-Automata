@@ -7,7 +7,6 @@ import java.util.UUID;
 /**
  * Role/Pattern:
  *     Holds the information needed to maintain and track a binomial trial
- *
  */
 public class BinomialTrial extends Trial<Boolean> {
     public BinomialTrial(UUID collector, boolean result) {

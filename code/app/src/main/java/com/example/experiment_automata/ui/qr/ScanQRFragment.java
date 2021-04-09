@@ -102,7 +102,7 @@ public class ScanQRFragment extends Fragment {
             qrCode = qrMaker.decodeQRString(scannedContent);
             //scanned valid QR
             experiment = experimentManager.getExperiment(qrCode.getExperimentID());
-            if ( experiment!= null && experiment.isPublished() && experiment.isActive()){
+            if (experiment!= null && experiment!= null && experiment.isPublished() && experiment.isActive()){
                 switch (qrCode.getType()){
                     case BinomialTrial:
                         trial = new BinomialTrial(user.getUserId(), false, 0, (Boolean) qrCode.getValue());

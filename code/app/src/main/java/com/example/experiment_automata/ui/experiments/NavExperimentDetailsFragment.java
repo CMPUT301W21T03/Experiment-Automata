@@ -14,6 +14,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.experiment_automata.R;
+import com.example.experiment_automata.backend.events.OnEventListener;
 import com.example.experiment_automata.backend.experiments.Experiment;
 import com.example.experiment_automata.backend.qr.QRType;
 import com.example.experiment_automata.ui.NavigationActivity;
@@ -217,6 +218,7 @@ public class NavExperimentDetailsFragment extends Fragment {
         toggleSubscribeButton();
 
 
+
         if (current.getSize() >= 3) {
             float[] quartiles = current.getQuartiles();
             String quartileString = String.format("q1: %.4f, q3: %.4f", quartiles[0], quartiles[2]);
@@ -226,60 +228,70 @@ public class NavExperimentDetailsFragment extends Fragment {
         }
 
         if (current.getSize() >= 1) {
-            float mean = current.getMean();
-            float median = current.getMedian();
-            float stdev = current.getStdev();
 
-            String meanString = String.format("%.4f", mean);
-            String medianString = String.format("%.4f", median);
-            String stdevString = String.format("%.4f", stdev);
+            parentActivity.experimentManager.setUpdateListener(() -> {
+                if(resultsPlot != null)
+                    resultsPlot.invalidate();
+            });
+            updateExperiment(current);
 
-            textViewMean.setText(meanString);
-            textViewMedian.setText(medianString);
-            textViewStdev.setText(stdevString);
-
-            // Charts
-            BarDataSet histogramData = new BarDataSet(current.generateHistogram(), "");
-            histogramData.setColors(R.color.purple_500);
-            histogram.setData(new BarData(histogramData));
-            histogram.getLegend().setEnabled(false);
-            histogram.setDrawGridBackground(false);
-            histogram.getXAxis().setDrawGridLines(false);
-            histogram.getXAxis().setValueFormatter(new LargeValueFormatter());
-            histogram.getAxisLeft().setEnabled(false);
-            histogram.getAxisLeft().setAxisMinimum(0f);
-            histogram.getAxisRight().setEnabled(false);
-            histogram.setTouchEnabled(false);
-            histogram.getDescription().setEnabled(false);
-            histogram.invalidate();
-
-            LineDataSet resultsData = new LineDataSet(current.generatePlot(), "");
-            resultsData.setColor(R.color.purple_500);
-            resultsData.setFillAlpha(255);
-            resultsData.setLineWidth(2f);
-            resultsData.setDrawCircles(false);
-            resultsData.setDrawValues(false);
-            resultsData.setCircleColor(R.color.purple_500);
-            resultsData.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
-            resultsPlot.setData(new LineData(resultsData));
-            resultsPlot.getLegend().setEnabled(false);
-            resultsPlot.getXAxis().setEnabled(false);
-            histogram.getXAxis().setValueFormatter(new LargeValueFormatter());
-            resultsPlot.setTouchEnabled(false);
-            resultsPlot.getDescription().setEnabled(false);
-            resultsPlot.invalidate();
-
-            // trial results
-            for (Fragment fragment : getChildFragmentManager().getFragments()) {
-                if (fragment instanceof TrialsFragment) {
-                    ((TrialsFragment) fragment).updateView();
-                    break;
-                }
-            }
         } else {
             textViewMean.setText(R.string.no_trials);
             textViewMedian.setText(R.string.no_trials);
             textViewStdev.setText(R.string.no_trials);
+        }
+    }
+
+    private void updateExperiment(Experiment current) {
+        float mean = current.getMean();
+        float median = current.getMedian();
+        float stdev = current.getStdev();
+
+        String meanString = String.format("%.4f", mean);
+        String medianString = String.format("%.4f", median);
+        String stdevString = String.format("%.4f", stdev);
+
+        textViewMean.setText(meanString);
+        textViewMedian.setText(medianString);
+        textViewStdev.setText(stdevString);
+
+        // Charts
+        BarDataSet histogramData = new BarDataSet(current.generateHistogram(), "");
+        histogramData.setColors(R.color.purple_500);
+        histogram.setData(new BarData(histogramData));
+        histogram.getLegend().setEnabled(false);
+        histogram.setDrawGridBackground(false);
+        histogram.getXAxis().setDrawGridLines(false);
+        histogram.getXAxis().setValueFormatter(new LargeValueFormatter());
+        histogram.getAxisLeft().setEnabled(false);
+        histogram.getAxisLeft().setAxisMinimum(0f);
+        histogram.getAxisRight().setEnabled(false);
+        histogram.setTouchEnabled(false);
+        histogram.getDescription().setEnabled(false);
+        histogram.invalidate();
+
+        LineDataSet resultsData = new LineDataSet(current.generatePlot(), "");
+        resultsData.setColor(R.color.purple_500);
+        resultsData.setFillAlpha(255);
+        resultsData.setLineWidth(2f);
+        resultsData.setDrawCircles(false);
+        resultsData.setDrawValues(false);
+        resultsData.setCircleColor(R.color.purple_500);
+        resultsData.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+        resultsPlot.setData(new LineData(resultsData));
+        resultsPlot.getLegend().setEnabled(false);
+        resultsPlot.getXAxis().setEnabled(false);
+        histogram.getXAxis().setValueFormatter(new LargeValueFormatter());
+        resultsPlot.setTouchEnabled(false);
+        resultsPlot.getDescription().setEnabled(false);
+        resultsPlot.invalidate();
+
+        // trial results
+        for (Fragment fragment : getChildFragmentManager().getFragments()) {
+            if (fragment instanceof TrialsFragment) {
+                ((TrialsFragment) fragment).updateView();
+                break;
+            }
         }
     }
 

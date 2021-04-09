@@ -118,7 +118,7 @@ public class AddQuestionFragment extends DialogFragment {
         questionInput.setText(args.getString(QUESTION));
 
         // update the hint text of the question input depending on what the dialogType is
-        if (args.getBoolean(TYPE)) {
+        if (args.getString(TYPE).equals("Add Question")) {
             questionInput.setHint("Question");
             return build.setView(view)
                     .setTitle(dialogType)

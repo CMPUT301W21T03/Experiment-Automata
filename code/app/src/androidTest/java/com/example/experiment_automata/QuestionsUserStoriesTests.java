@@ -5,6 +5,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.experiment_automata.backend.DataBase;
+import com.example.experiment_automata.backend.questions.QuestionManager;
 import com.example.experiment_automata.ui.LinkView;
 import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.ui.Screen;
@@ -57,8 +58,6 @@ public class QuestionsUserStoriesTests {
 
     @Before
     public void setup() {
-
-
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
         currentTestingActivity = (NavigationActivity) solo.getCurrentActivity();
 
@@ -69,6 +68,7 @@ public class QuestionsUserStoriesTests {
          * Full:https://stackoverflow.com/questions/15993314/clicking-on-action-bar-menu-items-in-robotium
          */
         FirebaseApp.initializeApp(InstrumentationRegistry.getInstrumentation().getTargetContext());
+        QuestionManager.resetInstance();
     }
 
     @After

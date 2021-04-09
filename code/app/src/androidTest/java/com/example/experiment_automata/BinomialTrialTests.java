@@ -70,6 +70,7 @@ public class BinomialTrialTests {
                 true,
                 true,
                 testUUID,
+                "Jasper",
                 false);
 
         /**

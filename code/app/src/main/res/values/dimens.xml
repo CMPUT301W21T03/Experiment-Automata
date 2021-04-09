@@ -8,4 +8,5 @@
     <dimen name="text_margin">16dp</dimen>
     <dimen name="chart_height">300dp</dimen>
     <dimen name="reply_list_height">128dp</dimen>
+    <dimen name="trial_element_height">32dp</dimen>
 </resources>

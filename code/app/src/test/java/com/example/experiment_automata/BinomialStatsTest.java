@@ -35,10 +35,10 @@ public class BinomialStatsTest {
                 ownerId,
                 "MURICA",
                 false);
-        successTrial = new BinomialTrial(id, true);
-        failureTrial = new BinomialTrial(id2, false);
-        ignoreSuccess = new BinomialTrial(id3, true);
-        ignoreFailure = new BinomialTrial(id4, false);
+        successTrial = new BinomialTrial(id, 0, true);
+        failureTrial = new BinomialTrial(id2, 0, false);
+        ignoreSuccess = new BinomialTrial(id3, 0, true);
+        ignoreFailure = new BinomialTrial(id4, 0, false);
     }
 
     /**

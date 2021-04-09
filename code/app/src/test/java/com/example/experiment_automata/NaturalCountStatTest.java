@@ -18,8 +18,8 @@ public class NaturalCountStatTest {
     UUID id3 = UUID.randomUUID();
     UUID id4 = UUID.randomUUID();
 
-    NaturalCountTrial ignoreNatural = new NaturalCountTrial(id3, 3);
-    NaturalCountTrial ignoreNatural2 = new NaturalCountTrial(id4, 5);
+    NaturalCountTrial ignoreNatural = new NaturalCountTrial(id3, 0, 3);
+    NaturalCountTrial ignoreNatural2 = new NaturalCountTrial(id4, 0, 5);
 
     @Before
     public void setup() {
@@ -40,52 +40,52 @@ public class NaturalCountStatTest {
 
     @Test
     public void getMeanTest(){
-        natExperiment.recordTrial(new NaturalCountTrial(id, 2));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 2));
         assertEquals(natExperiment.getMean(), 2.0, 0.01);
-        natExperiment.recordTrial(new NaturalCountTrial(id, 3));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 3));
         assertEquals(natExperiment.getMean(), 2.5, 0.01);
 
-        natExperiment.recordTrial(new NaturalCountTrial(id, 4));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 4));
         assertEquals(natExperiment.getMean(), 3, 0.01);
 
-        natExperiment.recordTrial(new NaturalCountTrial(id, 9));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 9));
         assertEquals(natExperiment.getMean(), 4.5, 0.01);
 
-        natExperiment.recordTrial(new NaturalCountTrial(id, 3));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 3));
         assertTrue(marginOfError(natExperiment.getMean(),  4.2f));
 
-        natExperiment.recordTrial(new NaturalCountTrial(id, 1));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 1));
         assertTrue(marginOfError(natExperiment.getMean(), 3.6666667f));
     }
 
 
     @Test
     public void getMedianTest(){
-        natExperiment.recordTrial(new NaturalCountTrial(id, 2));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 2));
         assertEquals(natExperiment.getMedian(), 2.0, 0.01);
-        natExperiment.recordTrial(new NaturalCountTrial(id, 3));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 3));
         assertEquals(natExperiment.getMedian(), 2.5, 0.01);
 
-        natExperiment.recordTrial(new NaturalCountTrial(id, 4));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 4));
         assertEquals(natExperiment.getMedian(), 3, 0.01);
 
-        natExperiment.recordTrial(new NaturalCountTrial(id, 9));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 9));
         assertEquals(natExperiment.getMedian(), 3.5, 0.01);
 
-        natExperiment.recordTrial(new NaturalCountTrial(id, 3));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 3));
         assertEquals(natExperiment.getMedian(),  3, 0.01);
 
 
-        natExperiment.recordTrial(new NaturalCountTrial(id, 1));
-        natExperiment.recordTrial(new NaturalCountTrial(id, 1));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 1));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 1));
         // 1, 1, 2, 3, 3, 4, 9
         assertEquals(natExperiment.getMedian(), 3, 0.01);
 
         //  1, 1, 1, 2, 3, 3, 4, 9
-        natExperiment.recordTrial(new NaturalCountTrial(id, 1));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 1));
         assertEquals(natExperiment.getMedian(), 2.5, 0.01);
         // 1, 1, 1, 1, 2, 3, 3, 4, 9
-        natExperiment.recordTrial(new NaturalCountTrial(id, 1));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 1));
 
         assertEquals(natExperiment.getMedian(), 2, 0.01);
 
@@ -95,34 +95,34 @@ public class NaturalCountStatTest {
     @Test
     public void getStdevTest(){
         // Numbers for verification computed from https://www.calculator.net/standard-deviation-calculator.html
-        natExperiment.recordTrial(new NaturalCountTrial(id, 2));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 2));
         assertEquals(natExperiment.getStdev(), 0, 0.01);
-        natExperiment.recordTrial(new NaturalCountTrial(id, 3));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 3));
         assertEquals(natExperiment.getStdev(), 0.5,0.01);
 
-        natExperiment.recordTrial(new NaturalCountTrial(id, 4));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 4));
         assertTrue(marginOfError(natExperiment.getStdev(), 0.81649658092773f));
 
-        natExperiment.recordTrial(new NaturalCountTrial(id, 9));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 9));
         assertTrue(marginOfError(natExperiment.getStdev(), 2.6925824035673f));
 
-        natExperiment.recordTrial(new NaturalCountTrial(id, 3));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 3));
         assertTrue(marginOfError(natExperiment.getStdev(),  2.4819347291982f));
     }
 
     @Test
     public void getQuartilesTest1(){
         // True values computed from https://www.calculatorsoup.com/calculators/statistics/quartile-calculator.php
-        natExperiment.recordTrial(new NaturalCountTrial(id, 2));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 2));
 
-        natExperiment.recordTrial(new NaturalCountTrial(id, 3));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 3));
 
 
-        natExperiment.recordTrial(new NaturalCountTrial(id, 4));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 4));
 
-        natExperiment.recordTrial(new NaturalCountTrial(id, 9));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 9));
 
-        natExperiment.recordTrial(new NaturalCountTrial(id, 3));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 3));
 
         float[] quartiles = natExperiment.getQuartiles();
 
@@ -137,17 +137,17 @@ public class NaturalCountStatTest {
     public void getQuartilesTest2(){
         // True values computed from https://www.calculatorsoup.com/calculators/statistics/quartile-calculator.php
 
-        natExperiment.recordTrial(new NaturalCountTrial(id, 3));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 3));
 
-        natExperiment.recordTrial(new NaturalCountTrial(id, 7));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 7));
 
-        natExperiment.recordTrial(new NaturalCountTrial(id, 11));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 11));
 
-        natExperiment.recordTrial(new NaturalCountTrial(id, 16));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 16));
 
-        natExperiment.recordTrial(new NaturalCountTrial(id, 19));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 19));
 
-        natExperiment.recordTrial(new NaturalCountTrial(id, 22));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 22));
 
         float[] quartiles = natExperiment.getQuartiles();
         assertEquals(quartiles[0], 7, 0.01);
@@ -160,13 +160,13 @@ public class NaturalCountStatTest {
     public void getQuartilesTest3(){
         // True values computed from https://www.calculatorsoup.com/calculators/statistics/quartile-calculator.php
 
-        natExperiment.recordTrial(new NaturalCountTrial(id, 3));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 3));
 
-        natExperiment.recordTrial(new NaturalCountTrial(id, 7));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 7));
 
-        natExperiment.recordTrial(new NaturalCountTrial(id, 11));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 11));
 
-        natExperiment.recordTrial(new NaturalCountTrial(id, 16));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 16));
 
         float[] quartiles = natExperiment.getQuartiles();
         assertEquals(quartiles[0], 5, 0.01);
@@ -179,11 +179,11 @@ public class NaturalCountStatTest {
     public void getQuartilesTest4(){
         // True values computed from https://www.calculatorsoup.com/calculators/statistics/quartile-calculator.php
 
-        natExperiment.recordTrial(new NaturalCountTrial(id, 3));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 3));
 
-        natExperiment.recordTrial(new NaturalCountTrial(id, 7));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 7));
 
-        natExperiment.recordTrial(new NaturalCountTrial(id, 11));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 11));
 
         float[] quartiles = natExperiment.getQuartiles();
         assertEquals(quartiles[0], 3, 0.01);
@@ -201,11 +201,11 @@ public class NaturalCountStatTest {
 
         ignoreNatural2.setIgnore(true);
 
-        natExperiment.recordTrial(new NaturalCountTrial(id, 3));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 3));
 
-        natExperiment.recordTrial(new NaturalCountTrial(id, 7));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 7));
 
-        natExperiment.recordTrial(new NaturalCountTrial(id, 11));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 11));
 
         natExperiment.recordTrial(ignoreNatural);
 
@@ -241,18 +241,18 @@ public class NaturalCountStatTest {
 
         // Should be the same as in the median test since the above trials are ignored
 
-        natExperiment.recordTrial(new NaturalCountTrial(id, 2));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 2));
         assertEquals(natExperiment.getStdev(), 0, 0.01);
-        natExperiment.recordTrial(new NaturalCountTrial(id, 3));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 3));
         assertEquals(natExperiment.getStdev(), 0.5, 0.01);
 
-        natExperiment.recordTrial(new NaturalCountTrial(id, 4));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 4));
         assertTrue(marginOfError(natExperiment.getStdev(), 0.81649658092773f));
 
-        natExperiment.recordTrial(new NaturalCountTrial(id, 9));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 9));
         assertTrue(marginOfError(natExperiment.getStdev(), 2.6925824035673f));
 
-        natExperiment.recordTrial(new NaturalCountTrial(id, 3));
+        natExperiment.recordTrial(new NaturalCountTrial(id, 0, 3));
         assertTrue(marginOfError(natExperiment.getStdev(),  2.4819347291982f));
     }
 }

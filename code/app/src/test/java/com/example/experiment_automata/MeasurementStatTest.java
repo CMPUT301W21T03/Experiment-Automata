@@ -18,8 +18,8 @@ public class MeasurementStatTest {
     UUID id3 = UUID.randomUUID();
     UUID id4 = UUID.randomUUID();
 
-    MeasurementTrial measurementIgnore = new MeasurementTrial(id3, 13.7f);
-    MeasurementTrial measurementIgnore2 = new MeasurementTrial(id4, 17.1f);
+    MeasurementTrial measurementIgnore = new MeasurementTrial(id3, 0, 13.7f);
+    MeasurementTrial measurementIgnore2 = new MeasurementTrial(id4, 0, 17.1f);
 
     @Before
     public void setup() {
@@ -41,81 +41,81 @@ public class MeasurementStatTest {
 
     @Test
     public void getMeanTest(){
-        mesExperiment.recordTrial(new MeasurementTrial(id, 2.4f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 2.4f));
         assertEquals(mesExperiment.getMean(), 2.4f, 0.01);
-        mesExperiment.recordTrial(new MeasurementTrial(id, 3.1f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 3.1f));
         assertTrue(marginOfError(mesExperiment.getMean(), 2.75f));
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 4.61f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 4.61f));
         assertTrue(marginOfError(mesExperiment.getMean(), 3.37f));
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 9f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 9f));
         assertTrue(marginOfError(mesExperiment.getMean(), 4.7775f));
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 14.12f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 14.12f));
         assertTrue(marginOfError(mesExperiment.getMean(), 6.646f));
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 16.1234f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 16.1234f));
         assertTrue(marginOfError(mesExperiment.getMean(), 8.225566666666667f));
     }
 
 
     @Test
     public void getMedianTest(){
-        mesExperiment.recordTrial(new MeasurementTrial(id, 2.4f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 2.4f));
         assertEquals(mesExperiment.getMedian(), 2.4f, 0.01);
-        mesExperiment.recordTrial(new MeasurementTrial(id, 3.1f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 3.1f));
         assertTrue(marginOfError(mesExperiment.getMedian(), 2.75f));
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 4.61f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 4.61f));
         assertTrue(marginOfError(mesExperiment.getMedian(), 3.1f));
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 9f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 9f));
         assertTrue(marginOfError(mesExperiment.getMedian(), 3.855f));
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 14.12f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 14.12f));
         assertTrue(marginOfError(mesExperiment.getMedian(), 4.61f));
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 16.1234f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 16.1234f));
         assertTrue(marginOfError(mesExperiment.getMedian(), 6.805f));
     }
 
     @Test
     public void getStdevTest(){
         // Numbers for verification were computed from https://www.calculator.net/standard-deviation-calculator.html
-        mesExperiment.recordTrial(new MeasurementTrial(id, 2.4f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 2.4f));
         assertEquals(mesExperiment.getStdev(), 0f, 0.01);
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 3.1f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 3.1f));
         assertTrue(marginOfError(mesExperiment.getStdev(), 0.35f));
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 4.61f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 4.61f));
         assertTrue(marginOfError(mesExperiment.getStdev(), 0.92220749653571f));
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 9f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 9f));
         assertTrue(marginOfError(mesExperiment.getStdev(), 2.56534963504f));
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 14.12f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 14.12f));
         assertTrue(marginOfError(mesExperiment.getStdev(), 4.3852005655386f));
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 16.1234f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 16.1234f));
         assertTrue(marginOfError(mesExperiment.getStdev(), 5.3385523261357f));
     }
 
     @Test
     public void getQuartilesTest1(){
         // True values computed from https://www.calculatorsoup.com/calculators/statistics/quartile-calculator.php
-        mesExperiment.recordTrial(new MeasurementTrial(id, 2.4f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 2.4f));
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 3.1f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 3.1f));
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 4.61f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 4.61f));
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 9f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 9f));
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 14.12f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 14.12f));
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 16.1234f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 16.1234f));
 
         float[] quartiles = mesExperiment.getQuartiles();
 
@@ -130,15 +130,15 @@ public class MeasurementStatTest {
     public void getQuartilesTest2(){
         // True values computed from https://www.calculatorsoup.com/calculators/statistics/quartile-calculator.php
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 4.1f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 4.1f));
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 6.9f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 6.9f));
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 8.0f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 8.0f));
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 25.6f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 25.6f));
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 420f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 420f));
 
         float[] quartiles = mesExperiment.getQuartiles();
         assertEquals(quartiles[0], 5.5,0.01);
@@ -151,13 +151,13 @@ public class MeasurementStatTest {
     public void getQuartilesTest3(){
         // True values computed from https://www.calculatorsoup.com/calculators/statistics/quartile-calculator.php
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 4.1f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 4.1f));
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 6.9f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 6.9f));
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 8.0f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 8.0f));
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 25.6f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 25.6f));
 
 
         float[] quartiles = mesExperiment.getQuartiles();
@@ -171,11 +171,11 @@ public class MeasurementStatTest {
     public void getQuartilesTest4(){
         // True values computed from https://www.calculatorsoup.com/calculators/statistics/quartile-calculator.php
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 4.1f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 4.1f));
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 6.9f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 6.9f));
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 8.0f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 8.0f));
 
 
         float[] quartiles = mesExperiment.getQuartiles();
@@ -193,11 +193,11 @@ public class MeasurementStatTest {
 
         measurementIgnore2.setIgnore(true);
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 4.1f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 4.1f));
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 6.9f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 6.9f));
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 8.0f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 8.0f));
 
         // Ignore the measurement experiments from above
 
@@ -233,13 +233,13 @@ public class MeasurementStatTest {
 
         mesExperiment.recordTrial(measurementIgnore2);
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 2.4f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 2.4f));
         assertEquals(mesExperiment.getStdev(), 0f, 0.01);
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 3.1f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 3.1f));
         assertTrue(marginOfError(mesExperiment.getStdev(), 0.35f));
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 4.61f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 4.61f));
         assertTrue(marginOfError(mesExperiment.getStdev(), 0.92220749653571f));
 
         // Should be ignored
@@ -250,13 +250,13 @@ public class MeasurementStatTest {
 
         mesExperiment.recordTrial(measurementIgnore2);
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 9f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 9f));
         assertTrue(marginOfError(mesExperiment.getStdev(), 2.56534963504f));
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 14.12f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 14.12f));
         assertTrue(marginOfError(mesExperiment.getStdev(), 4.3852005655386f));
 
-        mesExperiment.recordTrial(new MeasurementTrial(id, 16.1234f));
+        mesExperiment.recordTrial(new MeasurementTrial(id, 0, 16.1234f));
         assertTrue(marginOfError(mesExperiment.getStdev(), 5.3385523261357f));
     }
 }

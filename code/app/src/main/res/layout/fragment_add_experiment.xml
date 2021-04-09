@@ -18,6 +18,16 @@
         android:paddingLeft="10dp" />
 
     <EditText
+        android:id="@+id/create_experiment_region"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
+        android:hint="@string/region"
+        android:inputType="textShortMessage"
+        android:paddingVertical="10dp"
+        android:paddingLeft="10dp" />
+
+    <EditText
         android:id="@+id/experiment_min_trials_editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

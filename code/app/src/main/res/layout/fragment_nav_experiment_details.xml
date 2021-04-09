@@ -48,6 +48,18 @@
         android:textColor="@color/teal_700"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/nav_experiment_details_experiment_type"
+        app:layout_constraintStart_toEndOf="@+id/nav_experiment_details_region" />
+
+    <TextView
+        android:id="@+id/nav_experiment_details_region"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:textAllCaps="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/nav_experiment_details_experiment_type"
         app:layout_constraintStart_toEndOf="@+id/nav_experiment_details_experiment_type" />
 
     <ImageButton

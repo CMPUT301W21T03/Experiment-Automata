@@ -32,6 +32,7 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
     private boolean requireLocation;
     private final ExperimentType type;
     protected Collection<T> results;
+    private final String region;
     private final Boolean enableFirestore;
 
     /**
@@ -52,13 +53,14 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
      *   whether to enable firestore or not
      */
     protected Experiment(String description, int minTrials, boolean requireLocation,
-                         boolean acceptNewResults, UUID ownerId, ExperimentType type, Boolean enableFirestore) {
+                         boolean acceptNewResults, UUID ownerId, String region, ExperimentType type, Boolean enableFirestore) {
         this.description = description;
         this.minTrials = minTrials;
         this.requireLocation = requireLocation;
         this.published = false;
         this.active = acceptNewResults;
         this.ownerId = ownerId;
+        this.region = region;
         this.experimentId = UUID.randomUUID();
         this.type = type;
         this.enableFirestore = enableFirestore;
@@ -77,7 +79,8 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
      * @param acceptNewResults
      *   a boolean for whether this trial should be accepting new requests or not
      */
-    protected Experiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId, ExperimentType type, Boolean published, UUID experimentId) {
+    protected Experiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults,
+                         UUID ownerId, String region, ExperimentType type, Boolean published, UUID experimentId) {
         this.description = description;
         this.minTrials = minTrials;
         this.requireLocation = requireLocation;
@@ -85,6 +88,7 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
         this.active = acceptNewResults;
         this.ownerId = ownerId;
         this.experimentId = experimentId;
+        this.region = region;
         this.type = type;
         this.enableFirestore = true;
         results = new ArrayList<>();
@@ -104,6 +108,7 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
 
             experimentData.put("accepting-new-results", experiment.isActive());
             experimentData.put("description", experiment.getDescription());
+            experimentData.put("region", experiment.getRegion());
             experimentData.put("location-required", experiment.isRequireLocation());
             experimentData.put("min-trials", experiment.getMinTrials());
             experimentData.put("owner", experiment.getOwnerId().toString());
@@ -210,6 +215,12 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
     public ExperimentType getType() {
         return type;
     }
+
+    /**
+     * Get the region of the experiment
+     * @return the region
+     */
+    public String getRegion() { return region; }
 
     /**
      * get the min trials

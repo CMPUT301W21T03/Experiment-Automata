@@ -34,9 +34,9 @@ public class CountExperiment extends Experiment<CountTrial> {
      *   whether to enable firestore or not
      */
     public CountExperiment(String description, int minTrials, boolean requireLocation,
-                           boolean acceptNewResults, UUID ownerId, boolean enableFirestore) {
+                           boolean acceptNewResults, UUID ownerId, String region, boolean enableFirestore) {
         super(description, minTrials, requireLocation, acceptNewResults, ownerId,
-                ExperimentType.Count, enableFirestore);
+                region, ExperimentType.Count, enableFirestore);
     }
 
     /**
@@ -54,8 +54,10 @@ public class CountExperiment extends Experiment<CountTrial> {
      * @param experimentId
      * UUID representing the current experiment
      */
-    public CountExperiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId, Boolean published, UUID experimentId) {
-        super(description, minTrials, requireLocation, acceptNewResults, ownerId, ExperimentType.Count, published, experimentId);
+    public CountExperiment(String description, int minTrials, boolean requireLocation,
+                           boolean acceptNewResults, UUID ownerId, String region, Boolean published, UUID experimentId) {
+        super(description, minTrials, requireLocation, acceptNewResults, ownerId,
+                region, ExperimentType.Count, published, experimentId);
     }
 
     /**

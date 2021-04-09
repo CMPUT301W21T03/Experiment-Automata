@@ -34,21 +34,21 @@ public class ExperimentMaker {
      */
     public static Experiment<?> makeExperiment(ExperimentType type, String description, int minTrials,
                                                    boolean requireLocation, boolean acceptNewResults,
-                                                   UUID ownerId, Boolean enableFirestore) {
+                                                   UUID ownerId, String region, Boolean enableFirestore) {
         if (description.length() < 1) return null;
         switch (type) {
             case NaturalCount:
                 return new NaturalCountExperiment(description, minTrials, requireLocation,
-                        acceptNewResults, ownerId, enableFirestore);
+                        acceptNewResults, ownerId, region, enableFirestore);
             case Binomial:
                 return new BinomialExperiment(description, minTrials, requireLocation,
-                        acceptNewResults, ownerId, enableFirestore);
+                        acceptNewResults, ownerId, region, enableFirestore);
             case Count:
                 return new CountExperiment(description, minTrials, requireLocation,
-                        acceptNewResults, ownerId, enableFirestore);
+                        acceptNewResults, ownerId, region, enableFirestore);
             case Measurement:
                 return new MeasurementExperiment(description, minTrials, requireLocation,
-                        acceptNewResults, ownerId, enableFirestore);
+                        acceptNewResults, ownerId, region, enableFirestore);
             default:
                 return null;
         }
@@ -77,20 +77,20 @@ public class ExperimentMaker {
      */
     public static Experiment<?> makeExperiment(ExperimentType type, String description, int minTrials,
                                                     boolean requireLocation, boolean acceptNewResults,
-                                                    UUID ownerId, Boolean published, UUID experimentId) {
+                                                    UUID ownerId, String region, Boolean published, UUID experimentId) {
         switch (type) {
             case NaturalCount:
                 return new NaturalCountExperiment(description, minTrials, requireLocation,
-                        acceptNewResults, ownerId, published, experimentId);
+                        acceptNewResults, ownerId, region, published, experimentId);
             case Binomial:
                 return new BinomialExperiment(description, minTrials, requireLocation,
-                        acceptNewResults, ownerId, published, experimentId);
+                        acceptNewResults, ownerId, region, published, experimentId);
             case Count:
                 return new CountExperiment(description, minTrials, requireLocation,
-                        acceptNewResults, ownerId, published, experimentId);
+                        acceptNewResults, ownerId, region, published, experimentId);
             case Measurement:
                 return new MeasurementExperiment(description, minTrials, requireLocation,
-                        acceptNewResults, ownerId, published, experimentId);
+                        acceptNewResults, ownerId, region, published, experimentId);
             default:
                 return null;
         }

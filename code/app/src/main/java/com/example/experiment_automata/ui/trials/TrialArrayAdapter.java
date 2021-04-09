@@ -108,16 +108,16 @@ public class TrialArrayAdapter extends ArrayAdapter<Trial<?>> {
         ExperimentManager experimentManager = ExperimentManager.getInstance();
         Experiment<?> experiment = experimentManager.getCurrentExperiment();
         CheckBox checkBox = view.findViewById(R.id.trial_ignore_checkbox);
+        checkBox.setChecked(!trial.isIgnored());
         if (parentActivity.loggedUser.getUserId().equals(experiment.getOwnerId())) {
-            checkBox.setVisibility(View.VISIBLE);
-            checkBox.setChecked(!trial.isIgnored());
+            checkBox.setEnabled(true);
             checkBox.setOnClickListener(v -> {
                 boolean ignore = !((CheckBox) v).isChecked();
                 trial.setIgnore(ignore);
                 parentFragment.updateScreen();
             });
         } else {
-            checkBox.setVisibility(View.GONE);
+            checkBox.setEnabled(false);
         }
 
         return view;

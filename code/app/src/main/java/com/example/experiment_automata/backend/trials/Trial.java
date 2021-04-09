@@ -3,10 +3,6 @@ package com.example.experiment_automata.backend.trials;
 import android.location.Location;
 
 import java.io.Serializable;
-import java.security.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 

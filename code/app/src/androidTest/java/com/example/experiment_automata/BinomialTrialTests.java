@@ -132,7 +132,6 @@ public class BinomialTrialTests {
         //Setting the boxes
         View location = solo.getView(R.id.experiment_require_location_switch);
         View acceptNewResults = solo.getView(R.id.experiment_accept_new_results_switch);
-        //solo.clickOnView(location);
         if (!des.equals("One"))
             solo.clickOnView(acceptNewResults);
         solo.clickOnText("Ok");
@@ -142,7 +141,7 @@ public class BinomialTrialTests {
         solo.sleep(2000);
         solo.clickOnView(solo.getView(R.id.fab_button));
         solo.sleep(2000);
-        if(click) {
+        if (click) {
             solo.waitForText("Passed");
             solo.clickOnText("Passed");
         }

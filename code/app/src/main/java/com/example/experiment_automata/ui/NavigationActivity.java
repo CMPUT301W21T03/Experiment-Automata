@@ -30,7 +30,6 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.experiment_automata.R;
-import com.example.experiment_automata.backend.DataBase;
 import com.example.experiment_automata.backend.barcode.BarcodeManager;
 import com.example.experiment_automata.backend.experiments.Experiment;
 import com.example.experiment_automata.backend.experiments.ExperimentManager;
@@ -54,6 +53,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.UUID;
 
 /**
@@ -71,8 +72,6 @@ public class NavigationActivity extends AppCompatActivity implements
         AddExperimentFragment.OnFragmentInteractionListener,
         AddQuestionFragment.OnFragmentInteractionListener,
         EditUserFragment.OnFragmentInteractionListener {
-
-    private DataBase dataBase = DataBase.getInstance();
     private AppBarConfiguration mAppBarConfiguration;
     public final ExperimentManager experimentManager = ExperimentManager.getInstance();
     public final BarcodeManager barcodeManager = BarcodeManager.getInstance();
@@ -159,7 +158,7 @@ public class NavigationActivity extends AppCompatActivity implements
                                 case Count:
                                     break;
                                 case NaturalCount:
-                                    EditText naturalCountInput = (EditText) findViewById(R.id.add_natural_count_value);
+                                    EditText naturalCountInput = findViewById(R.id.add_natural_count_value);
                                     result = Integer.parseInt(naturalCountInput.getText().toString());
                                     break;
                                 case Binomial:
@@ -167,7 +166,7 @@ public class NavigationActivity extends AppCompatActivity implements
                                     result = passedInput.isChecked();
                                     break;
                                 case Measurement:
-                                    EditText measurementInput = (EditText) findViewById(R.id.add_measurement_value);
+                                    EditText measurementInput = findViewById(R.id.add_measurement_value);
                                     result = Float.parseFloat(measurementInput.getText().toString());
                                     break;
                             }
@@ -340,7 +339,7 @@ public class NavigationActivity extends AppCompatActivity implements
 
     /**
      * Gives the singleton Experiment Manager used throughout
-     * @return
+     * @return the experiment manager for the activity
      */
     public ExperimentManager getExperimentManager() {
         return experimentManager;
@@ -422,7 +421,7 @@ public class NavigationActivity extends AppCompatActivity implements
      */
     @SuppressLint("MissingPermission")
     public void addLocationToTrial(Trial<?> currentTrial) {
-        if(canMakeLocationTrials) {
+        if (canMakeLocationTrials) {
 
             //TODO: Place location warning dialog here -- Display only once?
             LocationManager locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
@@ -448,8 +447,7 @@ public class NavigationActivity extends AppCompatActivity implements
     public void requestLocationResourcePermissions() {
         if (ContextCompat.checkSelfPermission(getApplicationContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]
-                            {
+            requestPermissions(new String[] {
                                     Manifest.permission.ACCESS_FINE_LOCATION,
                                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
                                     Manifest.permission.ACCESS_NETWORK_STATE,
@@ -474,14 +472,10 @@ public class NavigationActivity extends AppCompatActivity implements
      *          Full Source: https://developer.android.com/training/permissions/requesting#java
     */
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case PERMISSON_REQUEST_CODE:
-                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                    canMakeLocationTrials = true;
-                else {
-                    //TODO: Make dialog or warning windows of what these means for the project
-                }
+    public void onRequestPermissionsResult(int requestCode, String @NotNull [] permissions, int @NotNull [] grantResults) {
+        if (requestCode == PERMISSON_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                canMakeLocationTrials = true;
         }
     }
 
@@ -502,8 +496,5 @@ public class NavigationActivity extends AppCompatActivity implements
             ((ProfileFragment) currentFragment).update();
         }
         user.updateFirestore();
-
     }
-
-    public void updateScreen() {}
 }

@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.experiment_automata.R;
-import com.github.mikephil.charting.charts.LineChart;
+
 /**
  * Role/Pattern:
  *
@@ -20,10 +20,6 @@ import com.github.mikephil.charting.charts.LineChart;
  *      1. None
  */
 public class ResultsFragment extends Fragment {
-    public ResultsFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,8 +28,6 @@ public class ResultsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_results, container, false);
-        LineChart chart = (LineChart) root.findViewById(R.id.results_chart);
-        return root;
+        return inflater.inflate(R.layout.fragment_results, container, false);
     }
 }

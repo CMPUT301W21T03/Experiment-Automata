@@ -17,6 +17,7 @@ public class MeasurementBarcodeReference extends BarcodeReference<Float> {
     public MeasurementBarcodeReference(String barcodeVal, UUID experimentId, ExperimentType type, float result){
         super(barcodeVal,experimentId,type,result,null);
     }
+
     public MeasurementBarcodeReference(String barcodeVal, UUID experimentId, ExperimentType type, float result, Location location){
         super(barcodeVal,experimentId,type,result,location);
     }

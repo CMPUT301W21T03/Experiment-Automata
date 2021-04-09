@@ -24,7 +24,6 @@ public class QuestionTestsFireBase {
 
     DataBase dataBase = DataBase.getInstanceTesting();;
     private Solo solo;
-    private NavigationActivity currentTestingActivity;
 
     private UUID experimentId;
     private UUID userId;
@@ -38,7 +37,7 @@ public class QuestionTestsFireBase {
     public void setup() {
         dataBase.getFireStore().disableNetwork();
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
-        currentTestingActivity = (NavigationActivity) solo.getCurrentActivity();
+        NavigationActivity currentTestingActivity = (NavigationActivity) solo.getCurrentActivity();
 
         userId = UUID.randomUUID();
         experimentId = UUID.randomUUID();

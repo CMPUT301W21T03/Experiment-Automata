@@ -2,16 +2,11 @@ package com.example.experiment_automata.backend.users;
 
 import android.util.Log;
 
-import androidx.annotation.Nullable;
-
 import com.example.experiment_automata.backend.DataBase;
 import com.example.experiment_automata.backend.events.OnEventListener;
 import com.example.experiment_automata.backend.events.UpdateEvent;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -22,42 +17,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class UserManager
-{
+public class UserManager {
     private static HashMap<UUID, User> currentUsers;
     private static UserManager userManager;
-    private boolean testMode;
-    private UpdateEvent updateEvent;
+    private final boolean testMode;
+    private final UpdateEvent updateEvent;
 
-    private UserManager()
-    {
+    private UserManager(boolean testMode) {
         updateEvent = new UpdateEvent();
         currentUsers = new HashMap<>();
+        this.testMode = testMode;
     }
 
     /**
      * gets the made instance of our hashmap
-     *
-     * @param testMode tells the class if it should
-     *                 be allowed to talk to the firebase system.
-     *
+     * @param testMode tells the class if it should be allowed to talk to the firebase system.
      * @return
      *  the current instance of the UserManager class
      */
     public static UserManager getInstance(boolean testMode) {
-        if (userManager == null && !testMode) {
-            userManager = new UserManager();
-            userManager.getAllUsersFromFireStore();
-        } else if (userManager == null && testMode) {
-            userManager = new UserManager();
-        }
-        return userManager;
-    }
-
-
-    public static UserManager getInstance() {
         if (userManager == null) {
-            userManager = new UserManager();
+            userManager = new UserManager(testMode);
             userManager.getAllUsersFromFireStore();
         }
         return userManager;
@@ -68,7 +48,7 @@ public class UserManager
      * @param newUser user to be added
      */
     public void add(User newUser) {
-        if(!currentUsers.containsKey(newUser.getUserId()))
+        if (!currentUsers.containsKey(newUser.getUserId()))
             currentUsers.put(newUser.getUserId(), newUser);
     }
 
@@ -89,7 +69,7 @@ public class UserManager
      */
     public User getSpecificUser(UUID userId) {
         User current = null;
-        if(currentUsers.containsKey(userId))
+        if (currentUsers.containsKey(userId))
             current = currentUsers.get(userId);
 
         return current;
@@ -98,27 +78,24 @@ public class UserManager
     /**
      * gets all the user from firebase and stores them locally
      */
-    public void getAllUsersFromFireStore()
-    {
-        if(testMode)
+    public void getAllUsersFromFireStore() {
+        if (testMode)
             return;
         DataBase dataBase = DataBase.getInstance();
         FirebaseFirestore db = dataBase.getFireStore();
         CollectionReference userCollection = db.collection("users");
         userCollection.get().addOnCompleteListener(task -> {
-            if(task.isSuccessful()) {
+            if (task.isSuccessful()) {
                 sectorRead(task.getResult());
             }
         });
 
         userCollection.addSnapshotListener((value, error) -> {
-            if(error != null)
-            {
+            if (error != null) {
                 Log.w("UserManager -> Error", error);
                 return;
             }
-            if(value != null)
-            {
+            if (value != null) {
                 Log.wtf("RAN", "DONE");
                 sectorRead(value);
                 updateEvent.callback();
@@ -126,8 +103,7 @@ public class UserManager
         });
     }
 
-    public void sectorRead(QuerySnapshot snapshot)
-    {
+    public void sectorRead(QuerySnapshot snapshot) {
         for (QueryDocumentSnapshot documentSnapshot : snapshot) {
             if (documentSnapshot != null) {
                 UUID userId = UUID.fromString(documentSnapshot.getId());
@@ -146,21 +122,17 @@ public class UserManager
                     ArrayList<UUID> valsO = new ArrayList<>();
                     ArrayList<UUID>valsS = new ArrayList<>();
                     try {
-                        for(String o : owned)
-                        {
+                        assert owned != null;
+                        for(String o : owned) {
                             valsO.add(UUID.fromString(o));
                         }
-                        for(String s : subscriptions)
-                        {
+                        assert subscriptions != null;
+                        for(String s : subscriptions) {
                             valsS.add(UUID.fromString(s));
                         }
                         newUser.setOwnedExperiments(valsO);
                         newUser.setSubscribedExperiments(valsS);
-                    }catch (Exception e)
-                    {
-                        // Something
-                        // Data corruption within the db causes this
-                    }
+                    } catch (Exception ignored) {}
                     currentUsers.put(userId, newUser);
             }
         }

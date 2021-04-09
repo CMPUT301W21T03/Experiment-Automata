@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.experiment_automata.backend.experiments.Experiment;
@@ -20,7 +19,6 @@ import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link QuestionDisplay#newInstance} factory method to
  * create an instance of this fragment.
  *
  * And to maintain the main page view of question display of the experiment.
@@ -36,46 +34,19 @@ public class QuestionDisplay extends Fragment {
 
     public static final String QUESTION_EXPERIMENT = "QUESTION-UI-CURRENT-EXPERIMENT";
     // this will be a string passed in if editing a question
-    public static final String QUESTION = "QUESTION-STRING";
-    // this will determine if this dialog is for a question or reply
-    public static final String TYPE = "QUESTION-OR-REPLY";
-    // this will be the ID of the experiment this belongs to
-    public static final String EXPERIMENT = "EXPERIMENT-ID";
-
 
     private Experiment<?> currentExperiment;
-    private ArrayAdapter<Question> questionDisplayAdapter;
     ListView questionsDisplayList;
     ArrayList<Question> questionsList = new ArrayList<>();
 
-    public QuestionDisplay() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param currentExperiment is the experiment that contains the needed questions
-     * @return A new instance of fragment QuestionDisplay.
-     */
-    public static QuestionDisplay newInstance(Experiment<?> currentExperiment) {
-        QuestionDisplay fragment = new QuestionDisplay();
-        Bundle args = new Bundle();
-        args.putSerializable(QUESTION_EXPERIMENT, currentExperiment);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     /**
      * Retrieves the current experiment to query questions on creation
-     * @param savedInstanceState
+     * @param savedInstanceState the saved instance
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //((NavigationActivity)getActivity()).questionManager.getQuestionsFromFirestore();
-        ((NavigationActivity)getActivity()).setCurrentFragment(this);
+        ((NavigationActivity)requireActivity()).setCurrentFragment(this);
         if (getArguments() != null) {
             currentExperiment = (Experiment<?>) getArguments().getSerializable(QUESTION_EXPERIMENT);
         }
@@ -89,7 +60,7 @@ public class QuestionDisplay extends Fragment {
      *   Viewgroup containing any information that needs to be shared with the activity
      * @param savedInstanceState
      *   Bundle of parameters if needed
-     * @return
+     * @return the view created
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -98,25 +69,21 @@ public class QuestionDisplay extends Fragment {
         questionsDisplayList = root.findViewById(R.id.frag_questions_display_list_view);
         //Getting all the questions
 
-        ((NavigationActivity)getActivity()).setCurrentFragment(this);
+        ((NavigationActivity)requireActivity()).setCurrentFragment(this);
 
         try {
-            ((NavigationActivity)getActivity()).questionManager.getQuestionsFromFirestore();
+            ((NavigationActivity)requireActivity()).questionManager.getQuestionsFromFirestore();
 
-            questionsList = ((NavigationActivity) (getActivity()))
+            questionsList = ((NavigationActivity) (requireActivity()))
                     .questionManager
                     .getExperimentQuestions(currentExperiment.getExperimentId());
-        }
-        catch (Exception e)
-        {
-            //TODO: find a better way to deal with this situation
-        }
+        } catch (Exception ignored) {}
 
-        questionDisplayAdapter = new SingleQuestionDisplay(getContext(), questionsList, getActivity());
+        SingleQuestionDisplay questionDisplayAdapter = new SingleQuestionDisplay(getContext(), questionsList, requireActivity());
         questionsDisplayList.setAdapter(questionDisplayAdapter);
 
         //Getting rid of the floating button that adds experiments on every navigation
-        getActivity().findViewById(R.id.fab_button).setVisibility(View.GONE);
+        requireActivity().findViewById(R.id.fab_button).setVisibility(View.GONE);
 
         return root;
     }
@@ -125,7 +92,7 @@ public class QuestionDisplay extends Fragment {
      * Creates a dialog for question creation
      */
     public void makeQuestion() {
-        getActivity().getSupportFragmentManager().beginTransaction()
+        requireActivity().getSupportFragmentManager().beginTransaction()
                 .add(AddQuestionFragment
                         .newInstance("", true, currentExperiment.getExperimentId()), "ADD QUESTION")
                 .commit();
@@ -139,23 +106,21 @@ public class QuestionDisplay extends Fragment {
      *  Link: https://stackoverflow.com/questions/15422120/notifydatasetchange-not-working-from-custom-adapter
      */
     public void updateQuestionsList() {
-        questionsDisplayList.setAdapter(new SingleQuestionDisplay(getContext(), ((NavigationActivity) getActivity())
+        questionsDisplayList.setAdapter(new SingleQuestionDisplay(getContext(), ((NavigationActivity) requireActivity())
                 .questionManager
                 .getExperimentQuestions(currentExperiment
-                        .getExperimentId()), getActivity()));
+                        .getExperimentId()), requireActivity()));
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        (((NavigationActivity)getActivity()).findViewById(R.id.fab_button)).setVisibility(View.VISIBLE);
+        requireActivity().findViewById(R.id.fab_button).setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void onDestroy()
-    {
+    public void onDestroy() {
         super.onDestroy();
-        ((NavigationActivity)(getActivity())).setCurrentScreen(Screen.ExperimentDetails);
+        ((NavigationActivity)(requireActivity())).setCurrentScreen(Screen.ExperimentDetails);
     }
-
 }

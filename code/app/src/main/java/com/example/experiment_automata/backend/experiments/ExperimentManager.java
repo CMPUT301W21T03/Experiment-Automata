@@ -3,9 +3,6 @@ package com.example.experiment_automata.backend.experiments;
 import android.location.Location;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.example.experiment_automata.backend.DataBase;
 import com.example.experiment_automata.backend.events.OnEventListener;
 import com.example.experiment_automata.backend.events.UpdateEvent;
@@ -14,13 +11,10 @@ import com.example.experiment_automata.backend.trials.CountTrial;
 import com.example.experiment_automata.backend.trials.MeasurementTrial;
 import com.example.experiment_automata.backend.trials.NaturalCountTrial;
 import com.example.experiment_automata.backend.trials.Trial;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -28,8 +22,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -45,11 +39,10 @@ import java.util.UUID;
 public class ExperimentManager {
     private static ExperimentManager experimentManager;
     private static HashMap<UUID, Experiment<?>> experiments;
-    private static boolean TEST_MODE = false;
     public static boolean enableFirestore = true;
     private Experiment<?> currentExperiment;
     private Experiment<?> lastAdded;
-    private UpdateEvent updateEvent;
+    private final UpdateEvent updateEvent;
 
     /**
      * Initializes the experiment manager.
@@ -61,7 +54,7 @@ public class ExperimentManager {
     }
 
     public static ExperimentManager getInstance() {
-        if(experimentManager == null)
+        if (experimentManager == null)
             experimentManager = new ExperimentManager();
         return experimentManager;
     }
@@ -113,6 +106,7 @@ public class ExperimentManager {
         ArrayList<Experiment<?>> experimentsList = new ArrayList<>();
         for (Map.Entry<UUID, Experiment<?>> entry : experiments.entrySet()) {
             Experiment<?> experiment = experiments.get(entry.getKey());
+            assert experiment != null;
             if (experiment.getOwnerId().equals(ownerId)) {
                 experimentsList.add(experiment);
             }
@@ -150,6 +144,7 @@ public class ExperimentManager {
         ArrayList<Experiment<?>> experimentsList = new ArrayList<>();
         for (Map.Entry<UUID, Experiment<?>> entry : experiments.entrySet()) {
             Experiment<?> experiment = experiments.get(entry.getKey());
+            assert experiment != null;
             if (experiment.isPublished()) {
                 experimentsList.add(experiment);
             }
@@ -166,8 +161,7 @@ public class ExperimentManager {
      * @return
      *  the experiment containing the given uuid
      */
-    public Experiment<?> getAtUUIDDescription(UUID experimentUUID)
-    {
+    public Experiment<?> getAtUUIDDescription(UUID experimentUUID) {
         return experiments.get(experimentUUID);
     }
 
@@ -184,12 +178,11 @@ public class ExperimentManager {
         for (Map.Entry<UUID, Experiment<?>> entry : experiments.entrySet()) {
             try {
                 Experiment<?> experiment = experiments.get(entry.getKey());
-                //Log.d("SEARCHING", "Experiment:\t" + experiment.getDescription());
+                assert experiment != null;
                 if (queryMatch(query, experiment.getDescription())) {
-                    //Log.d("QUERY", "Found Match");
                     experimentsList.add(experiment);
                 }
-            } catch (NullPointerException e) {}
+            } catch (NullPointerException ignored) {}
         }
         return experimentsList;
     }
@@ -208,10 +201,11 @@ public class ExperimentManager {
         for (UUID id : experimentIds) {
             try {
                 Experiment<?> experiment = experiments.get(id);
+                assert experiment != null;
                 if (queryMatch(query, experiment.getDescription())) {
                     experimentsList.add(experiments.get(id));
                 }
-            } catch (NullPointerException e) {}
+            } catch (NullPointerException ignored) {}
         }
         return experimentsList;
     }
@@ -229,6 +223,7 @@ public class ExperimentManager {
         ArrayList<Experiment<?>> experimentsList = new ArrayList<>();
         for (Map.Entry<UUID, Experiment<?>> entry : experiments.entrySet()) {
             Experiment<?> experiment = experiments.get(entry.getKey());
+            assert experiment != null;
             if (experiment.getOwnerId().equals(ownerId) && queryMatch(query,
                     experiment.getDescription())) {
                 experimentsList.add(experiment);
@@ -248,6 +243,7 @@ public class ExperimentManager {
         ArrayList<Experiment<?>> experimentsList = new ArrayList<>();
         for (Map.Entry<UUID, Experiment<?>> entry : experiments.entrySet()) {
             Experiment<?> experiment = experiments.get(entry.getKey());
+            assert experiment != null;
             if (experiment.isPublished() && queryMatch(query, experiment.getDescription())) {
                 experimentsList.add(experiment);
             }
@@ -263,20 +259,17 @@ public class ExperimentManager {
         FirebaseFirestore db = data.getFireStore();
         CollectionReference experimentCollection = db.collection("experiments");
         getFromFirestoreFromQuery(experimentCollection.get());
-        experimentCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot snapshot, @Nullable FirebaseFirestoreException error) {
-                if (error != null) {
-                    Log.w("FIRESTORE", error);
-                    return;
+        experimentCollection.addSnapshotListener((snapshot, error) -> {
+            if (error != null) {
+                Log.w("FIRESTORE", error);
+                return;
+            }
+            if (snapshot != null && !snapshot.getMetadata().hasPendingWrites()) {
+                for (QueryDocumentSnapshot document : snapshot) {
+                    updateFromDocumentSnapshot(document);
+                    Log.d("FIRESTORE", (String) document.get("description"));
                 }
-                if (snapshot != null && !snapshot.getMetadata().hasPendingWrites()) {
-                    for (QueryDocumentSnapshot document : snapshot) {
-                        updateFromDocumentSnapshot(document);
-                        Log.d("FIRESTORE", (String) document.get("description"));
-                    }
-                    updateEvent.callback();
-                }
+                updateEvent.callback();
             }
         });
     }
@@ -286,18 +279,15 @@ public class ExperimentManager {
      * @param querySnapshotTask The task of the query
      */
     private void getFromFirestoreFromQuery(Task<QuerySnapshot> querySnapshotTask) {
-        querySnapshotTask.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()){
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        updateFromDocumentSnapshot(document);
-                        Log.d("FIRESTORE", (String) document.get("description"));
-                    }
-                } else {
-                    //not able to query all from firestore
-                    Log.d("FIRESTORE", "Unable to pull experiments from firestore");
+        querySnapshotTask.addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    updateFromDocumentSnapshot(document);
+                    Log.d("FIRESTORE", (String) document.get("description"));
                 }
+            } else {
+                //not able to query all from firestore
+                Log.d("FIRESTORE", "Unable to pull experiments from firestore");
             }
         });
     }
@@ -317,17 +307,16 @@ public class ExperimentManager {
      * @param trialsObj
      *  Hashmap containing other hashmaps as found in the results field in the given Experiment document
      */
-    private void buildTrials(Experiment<?> experiment, Object trialsObj){
-        HashMap<String, Object> trials = (HashMap<String, Object>) trialsObj;
-        for (String k : trials.keySet()){
-            HashMap<String, Object> currentTrialMap = (HashMap<String, Object>) trials.get(k);
+    private void buildTrials(Experiment<?> experiment, HashMap<String, Object> trialsObj){
+        for (String k : trialsObj.keySet()) {
+            HashMap<String, Object> currentTrialMap = (HashMap<String, Object>) trialsObj.get(k);
+            assert currentTrialMap != null;
             UUID ownerId = UUID.fromString((String) currentTrialMap.get("owner-id"));
             Trial<?> trial = null;
-            //Location location = ; NEED TO WRITE LOCATION HANDLING
             switch(experiment.getType()){
                 case Binomial:
-                    boolean binResult = (boolean) currentTrialMap.get("result");
-
+                    Boolean binResult = (Boolean) currentTrialMap.get("result");
+                    assert binResult != null;
                     if (experiment.isRequireLocation()) {
                         trial = new BinomialTrial(ownerId, locationFromTrialHash(currentTrialMap), binResult);
                     } else {
@@ -342,21 +331,23 @@ public class ExperimentManager {
                     }
                     break;
                 case NaturalCount:
-                    int natResult = (int) ((long) currentTrialMap.get("result"));
-
+                    Long longRes = (Long) currentTrialMap.get("result");
+                    assert longRes != null;
+                    int natResult = longRes.intValue();
                     if (experiment.isRequireLocation()) {
                         trial = new NaturalCountTrial(ownerId, locationFromTrialHash(currentTrialMap), natResult);
                     } else{
-                        trial = new NaturalCountTrial(ownerId,natResult);
+                        trial = new NaturalCountTrial(ownerId, natResult);
                     }
                     break;
                 case Measurement:
-                    float measResult = (float) ((double) currentTrialMap.get("result"));
-
+                    Double doubleRes = (Double) currentTrialMap.get("result");
+                    assert doubleRes != null;
+                    float measResult = doubleRes.floatValue();
                     if (experiment.isRequireLocation()) {
                         trial = new MeasurementTrial(ownerId, locationFromTrialHash(currentTrialMap), measResult);
                     } else {
-                        trial = new MeasurementTrial(ownerId,measResult);
+                        trial = new MeasurementTrial(ownerId, measResult);
                     }
                     break;
             }
@@ -368,22 +359,22 @@ public class ExperimentManager {
     /**
      * Retrieve data from the firestore document and add to the experiment manager.
      * @param document the concrete document snaphot from firestore
-     * @return the UUID of the experiment added
      */
     private void updateFromDocumentSnapshot(DocumentSnapshot document) {
         Experiment<?> currentExperiment = ExperimentMaker.makeExperiment(
                 ExperimentType.valueOf((String) document.get("type")),
                 (String) document.get("description"),
-                ((Long) document.get("min-trials")).intValue(),
-                (boolean) document.get("location-required"),
-                (boolean) document.get("accepting-new-results"),
+                ((Long) Objects.requireNonNull(document.get("min-trials"))).intValue(),
+                (boolean) Objects.requireNonNull(document.get("location-required")),
+                (boolean) Objects.requireNonNull(document.get("accepting-new-results")),
                 UUID.fromString((String) document.get("owner")),
-                (boolean) document.get("published"),
+                (boolean) Objects.requireNonNull(document.get("published")),
                 UUID.fromString(document.getId())
         );
         UUID currentDocId = UUID.fromString(document.getId());
         if (document.get("results") != null) {
-            buildTrials(currentExperiment, document.get("results"));
+            buildTrials(currentExperiment,
+                    (HashMap<String, Object>) Objects.requireNonNull(document.get("results")));
         }
         experiments.put(currentDocId, currentExperiment);
     }
@@ -397,8 +388,8 @@ public class ExperimentManager {
      */
     public Location locationFromTrialHash(HashMap<String,Object> trialHash){
         //ENSURE THAT THE GIVEN TRIAL HAS LAT/LON
-        double latitude = (double) trialHash.get("latitude");
-        double longitude = (double) trialHash.get("longitude");
+        double latitude = (double) Objects.requireNonNull(trialHash.get("latitude"));
+        double longitude = (double) Objects.requireNonNull(trialHash.get("longitude"));
         Location location = new Location("bad");
         location.setLatitude(latitude);
         location.setLongitude(longitude);

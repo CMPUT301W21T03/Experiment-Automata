@@ -17,6 +17,7 @@ public class NaturalBarcodeReference extends BarcodeReference<Integer>{
     public NaturalBarcodeReference(String barcodeVal, UUID experimentId, ExperimentType type, int result){
         super(barcodeVal,experimentId,type,result,null);
     }
+
     public NaturalBarcodeReference(String barcodeVal, UUID experimentId, ExperimentType type, int result, Location location){
         super(barcodeVal,experimentId,type,result,location);
     }

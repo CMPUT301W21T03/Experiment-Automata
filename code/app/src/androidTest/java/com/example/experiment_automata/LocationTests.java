@@ -82,7 +82,8 @@ public class LocationTests {
                 0,
                 true,
                 true,
-                testUUID);
+                testUUID,
+                true);
 
         /**
          * Sources

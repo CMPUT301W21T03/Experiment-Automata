@@ -24,7 +24,6 @@ import com.example.experiment_automata.ui.experiments.ExperimentListAdapter;
 
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -35,7 +34,6 @@ import java.util.UUID;
  *
  *      1. None
  */
-
 public class HomeFragment extends Fragment {
     private ExperimentManager experimentManager;
     private ArrayList<Experiment<?>> experimentsArrayList;
@@ -43,6 +41,7 @@ public class HomeFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        assert getArguments() != null;
         Log.d("HomeFragment", "Entering home fragment: " + getArguments().getString("mode"));
         NavigationActivity parentActivity = ((NavigationActivity) requireActivity());
 
@@ -52,10 +51,10 @@ public class HomeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         parentActivity.setCurrentScreen(Screen.ExperimentList);
         parentActivity.setCurrentFragment(this);
-        ListView experimentList = (ListView) root.findViewById(R.id.experiment_list);
+        ListView experimentList = root.findViewById(R.id.experiment_list);
         experimentsArrayList = new ArrayList<>();
         populateList();
-        experimentArrayAdapter = new ExperimentListAdapter(getActivity(),
+        experimentArrayAdapter = new ExperimentListAdapter(requireActivity(),
                 experimentsArrayList, getArguments().getString("mode"), parentActivity.userManager);
         experimentList.setAdapter(experimentArrayAdapter);
 
@@ -84,6 +83,7 @@ public class HomeFragment extends Fragment {
     public void populateList() {
         NavigationActivity parentActivity = ((NavigationActivity) requireActivity());
         experimentsArrayList.clear();
+        assert getArguments() != null;
         Log.d("MODE", getArguments().getString("mode"));
         switch (getArguments().getString("mode")) {
             case "owned":

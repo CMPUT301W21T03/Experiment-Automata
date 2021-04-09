@@ -28,25 +28,18 @@ public abstract class QRCode<T> {
     static final String MEASUREMENT_ID = "m";
     static final String NATURALC_ID = "n";
     static final String EXPERIMENT_ONLY_ID = "e";
-    private String rawContentString;
-    private UUID experimentID;
+    private final UUID experimentID;
     private QRType type;
     private Bitmap qrCodeImage;
     private T value;
 
-    public QRCode(UUID experimentID, QRType type){//For creating QRCode image from data
+    public QRCode(UUID experimentID, QRType type) {
         this.experimentID = experimentID;
         this.type = type;
     }
 
-    public QRCode(String rawContentString){//For creating QRCode from parsed image data
-        this.rawContentString = rawContentString;
-        if (!checkQRHeader(rawContentString)){
-            //not valid raise exception
-        }
-        //mask uuid
+    public QRCode(String rawContentString) {
         this.experimentID = UUID.fromString(rawContentString.substring(4, 41));
-
     }
 
     /**
@@ -78,24 +71,6 @@ public abstract class QRCode<T> {
         }
         return qrCodeBitmap;
     }
-    /**
-     * Checks a string for the custom Automata QR identifier
-     * @param qrString
-     * raw string from QR to check
-     * @return
-     * returns a QRCode
-     */
-    public boolean checkQRHeader(String qrString){
-        return qrString.substring(0,4).equals(QRCode.AUTOMATA_QR_HEADER);
-    }
-
-    public void setRawContentString(String rawContentString) {
-        this.rawContentString = rawContentString;
-    }
-
-    public void setExperimentID(UUID experimentID) {
-        this.experimentID = experimentID;
-    }
 
     public void setType(QRType type) {
         this.type = type;
@@ -103,10 +78,6 @@ public abstract class QRCode<T> {
 
     public void setQrCodeImage(Bitmap qrCodeImage) {
         this.qrCodeImage = qrCodeImage;
-    }
-
-    public String getRawContentString() {
-        return rawContentString;
     }
 
     public QRType getType() {

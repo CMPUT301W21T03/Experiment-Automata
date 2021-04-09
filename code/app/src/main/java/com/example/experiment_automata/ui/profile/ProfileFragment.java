@@ -13,7 +13,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.R;
-import com.example.experiment_automata.backend.users.ContactInformation;
 import com.example.experiment_automata.backend.users.User;
 import com.example.experiment_automata.ui.Screen;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -48,8 +47,7 @@ public class ProfileFragment extends Fragment {
      */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        NavigationActivity parentActivity = (NavigationActivity) getActivity();
-        // Set current fragment in parent activity
+        NavigationActivity parentActivity = (NavigationActivity) requireActivity();
         parentActivity.setCurrentScreen(Screen.Profile);
         parentActivity.setCurrentFragment(this);
         User user;
@@ -58,7 +56,6 @@ public class ProfileFragment extends Fragment {
         } else {
             user = parentActivity.loggedUser;
         }
-        ContactInformation userInfo = user.getInfo();
         profileViewModel =
                 new ViewModelProvider(this).get(ProfileViewModel.class);
         profileViewModel.setUser(user);
@@ -78,7 +75,7 @@ public class ProfileFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(EditUserFragment.bundleUserKey, user);
                 editUserFragment.setArguments(bundle);
-                getActivity().getSupportFragmentManager().beginTransaction()
+                requireActivity().getSupportFragmentManager().beginTransaction()
                         .add(editUserFragment, "USER").commit();
             });
         } else {

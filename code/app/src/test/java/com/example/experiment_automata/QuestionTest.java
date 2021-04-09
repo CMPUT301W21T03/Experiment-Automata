@@ -1,22 +1,16 @@
 package com.example.experiment_automata;
 
-import com.example.experiment_automata.backend.experiments.CountExperiment;
-import com.example.experiment_automata.backend.experiments.Experiment;
-import com.example.experiment_automata.backend.experiments.ExperimentMaker;
-import com.example.experiment_automata.backend.experiments.ExperimentType;
 import com.example.experiment_automata.backend.questions.Question;
-import com.example.experiment_automata.backend.questions.Reply;
-import com.example.experiment_automata.backend.trials.CountTrial;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class QuestionTest {
     private final static String description = "Example Question";
@@ -80,7 +74,7 @@ public class QuestionTest {
     @Test
     public void testGetReply() {
         Question question = new Question(description, owner, experiment, questionID);
-        assertEquals(null, question.getReply());
+        assertNull(question.getReply());
         UUID replyId = UUID.randomUUID();
         question.setReply(replyId);
         assertEquals(replyId, question.getReply());
@@ -90,7 +84,7 @@ public class QuestionTest {
     @Test
     public void testSetReply() {
         Question question = new Question(description, owner, experiment, questionID);
-        assertEquals(null, question.getReply());
+        assertNull(question.getReply());
         UUID replyId = UUID.randomUUID();
         question.setReply(replyId);
         assertEquals(replyId, question.getReply());
@@ -112,10 +106,10 @@ public class QuestionTest {
     public void testCompare() {
         Question questionOne = new Question(description, owner, experiment, questionID);
         Question questionTwo = new Question(description, owner, experiment, questionID);
-        assertTrue("Error, not equal", questionOne.compareTo(questionTwo) == 0);
+        assertEquals(0, questionOne.compareTo(questionTwo), "Error, not equal");
         questionTwo.setQuestion("Z");
-        assertTrue("Error, not positive", questionOne.compareTo(questionTwo) > 0);
+        assertTrue(questionOne.compareTo(questionTwo) > 0, "Error, not positive");
         questionTwo.setQuestion("A");
-        assertTrue("Error, not negative", questionOne.compareTo(questionTwo) < 0);
+        assertTrue(questionOne.compareTo(questionTwo) < 0, "Error, not negative");
     }
 }

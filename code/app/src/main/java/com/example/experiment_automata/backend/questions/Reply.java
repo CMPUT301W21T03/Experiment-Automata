@@ -1,11 +1,9 @@
 package com.example.experiment_automata.backend.questions;
 
-import androidx.annotation.NonNull;
-
 import com.example.experiment_automata.backend.DataBase;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -21,11 +19,11 @@ import java.util.UUID;
  *
  *      1. None
  */
-public class Reply implements Serializable, Comparable {
-    private String reply;
-    private UUID experimenter;
-    private UUID replyId;
-    private UUID questionId;
+public class Reply implements Serializable, Comparable<Reply> {
+    private final String reply;
+    private final UUID experimenter;
+    private final UUID replyId;
+    private final UUID questionId;
 
     /**
      * Constructor for creating a reply in a dialog
@@ -78,21 +76,8 @@ public class Reply implements Serializable, Comparable {
 
         try {
             db.collection("replies").document(replyIdString)
-                    .set(questionData)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-
-                        }
-                    });
-        }catch (Exception e)
-        {}
+                    .set(questionData);
+        } catch (Exception ignored) {}
     }
 
     public String getReply() {
@@ -113,7 +98,7 @@ public class Reply implements Serializable, Comparable {
      *  text of the reply
      */
     @Override
-    public String toString() {
+    public @NotNull String toString() {
         return reply;
     }
 
@@ -122,7 +107,7 @@ public class Reply implements Serializable, Comparable {
      * negative integer, zero, or a positive integer as this object is less
      * than, equal to, or greater than the specified object.
      *
-     * @param o the object to be compared.
+     * @param o the reply to be compared.
      * @return a negative integer, zero, or a positive integer as this object
      * is less than, equal to, or greater than the specified object.
      * @throws NullPointerException if the specified object is null
@@ -130,8 +115,7 @@ public class Reply implements Serializable, Comparable {
      *                              from being compared to this object.
      */
     @Override
-    public int compareTo(Object o) {
-        Reply reply = (Reply) o;
-        return reply.getReply().compareTo(this.reply);
+    public int compareTo(Reply o) {
+        return o.getReply().compareTo(this.reply);
     }
 }

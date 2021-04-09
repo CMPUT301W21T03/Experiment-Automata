@@ -1,7 +1,5 @@
 package com.example.experiment_automata;
 
-import android.content.SharedPreferences;
-
 import com.example.experiment_automata.backend.users.ContactInformation;
 
 import org.junit.Test;
@@ -11,9 +9,9 @@ import static org.junit.Assert.assertNotEquals;
 
 public class ContactInformationTests {
 
-    private String name = "name";
-    private String email = "email";
-    private String phone = "phone";
+    private final String name = "name";
+    private final String email = "email";
+    private final String phone = "phone";
     /**
      * Testing contact information
      *
@@ -22,8 +20,7 @@ public class ContactInformationTests {
      */
 
     @Test
-    public void testGetName()
-    {
+    public void testGetName() {
         ContactInformation contactInformation = new ContactInformation(name,
                 email,
                 phone);
@@ -34,8 +31,7 @@ public class ContactInformationTests {
     }
 
     @Test
-    public void testGetEmail()
-    {
+    public void testGetEmail() {
         ContactInformation contactInformation = new ContactInformation(name,
                 email,
                 phone);
@@ -46,8 +42,7 @@ public class ContactInformationTests {
     }
 
     @Test
-    public void testGetPhone()
-    {
+    public void testGetPhone() {
         ContactInformation contactInformation = new ContactInformation(name,
                 email,
                 phone);
@@ -62,8 +57,7 @@ public class ContactInformationTests {
      * These tests are such that the edit flag is false
      */
     @Test
-    public void testSetName()
-    {
+    public void testSetName() {
         String change = "bad";
         ContactInformation contactInformation = new ContactInformation(name,
                 email,
@@ -76,8 +70,7 @@ public class ContactInformationTests {
     }
 
     @Test
-    public void testSetEmail()
-    {
+    public void testSetEmail() {
         String change = "bad";
         ContactInformation contactInformation = new ContactInformation(name,
                 email,
@@ -90,8 +83,7 @@ public class ContactInformationTests {
     }
 
     @Test
-    public void testSetPhone()
-    {
+    public void testSetPhone() {
         String change = "bad";
         ContactInformation contactInformation = new ContactInformation(name,
                 email,
@@ -104,8 +96,7 @@ public class ContactInformationTests {
     }
 
     @Test
-    public void testSetAllNotEditable()
-    {
+    public void testSetAllNotEditable() {
         String change = "bad";
         ContactInformation contactInformation
                 = new ContactInformation(name,
@@ -121,8 +112,4 @@ public class ContactInformationTests {
         assertNotEquals("Phone not set", change,
                 contactInformation.getPhone());
     }
-
-    /**
-     * Testing the not edit field is not feasible  
-     */
 }

@@ -28,5 +28,4 @@ public class CountQRCode extends QRCode<Object>{
             wException.printStackTrace();
         }
     }
-
 }

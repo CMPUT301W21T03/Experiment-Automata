@@ -14,7 +14,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.experiment_automata.R;
-import com.example.experiment_automata.backend.barcode.BarcodeManager;
 import com.example.experiment_automata.backend.experiments.CountExperiment;
 import com.example.experiment_automata.backend.qr.QRCode;
 import com.example.experiment_automata.backend.qr.QRMaker;
@@ -29,19 +28,11 @@ import com.google.android.material.snackbar.Snackbar;
 
 import org.osmdroid.views.MapView;
 
-
-
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link AddCountTrialFragment#newInstance} factory method to
- * create an instance of this fragment.
  */
 public class AddCountTrialFragment extends Fragment {
-    private ImageButton scanQRButton;
-    private ImageButton viewQRButton;
     private View root;
-    private MapView currentMapDisplay;
-    private MapUtility utility;
 
     public AddCountTrialFragment() {
         // Required empty public constructor
@@ -57,42 +48,32 @@ public class AddCountTrialFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         root = inflater.inflate(R.layout.fragment_add_count_trial, container, false);
-        TextView description = (TextView) root.findViewById(R.id.count_trial_experiment_description);
-        NavigationActivity parentActivity = ((NavigationActivity) getActivity());
+        TextView description = root.findViewById(R.id.count_trial_experiment_description);
+        NavigationActivity parentActivity = ((NavigationActivity) requireActivity());
         CountExperiment experiment = (CountExperiment) parentActivity.experimentManager.getCurrentExperiment();
         description.setText(experiment.getDescription());
-        scanQRButton = root.findViewById(R.id.count_trial_qr_button);
-        scanQRButton.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {//open scanner
-                Intent intent = new Intent(getActivity(), ScannerActivity.class);
-                startActivityForResult(intent,1);
-                //startActivity(intent);
-
-            }
+        ImageButton scanQRButton = root.findViewById(R.id.count_trial_qr_button);
+        scanQRButton.setOnClickListener(v -> {
+            Intent intent = new Intent(requireActivity(), ScannerActivity.class);
+            startActivityForResult(intent,1);
         });
 
-        viewQRButton = root.findViewById(R.id.count_trial_qr_generate_button);
-        viewQRButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {//display QR
-                // add content when done
-                Fragment viewQRFragment = new ViewQRFragment();
-                Bundle bundle = new Bundle();
-                bundle.putString("UUID", experiment.getExperimentId().toString());
-                bundle.putString("DESCRIPTION",experiment.getDescription());
-                bundle.putString("TYPE", QRType.CountTrial.toString());
-                viewQRFragment.setArguments(bundle);
-                requireActivity().getSupportFragmentManager().beginTransaction().add(viewQRFragment,"QR").commit();
-            }
+        ImageButton viewQRButton = root.findViewById(R.id.count_trial_qr_generate_button);
+        viewQRButton.setOnClickListener(v -> {
+            Fragment viewQRFragment = new ViewQRFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("UUID", experiment.getExperimentId().toString());
+            bundle.putString("DESCRIPTION",experiment.getDescription());
+            bundle.putString("TYPE", QRType.CountTrial.toString());
+            viewQRFragment.setArguments(bundle);
+            requireActivity().getSupportFragmentManager().beginTransaction().add(viewQRFragment,"QR").commit();
         });
         CountExperiment currentExperiment = (CountExperiment) parentActivity.experimentManager.getCurrentExperiment();
         description.setText(currentExperiment.getDescription());
-        currentMapDisplay = root.findViewById(R.id.count_trial_map_view);
+        MapView currentMapDisplay = root.findViewById(R.id.count_trial_map_view);
 
         parentActivity.currentTrial = new CountTrial(parentActivity.loggedUser.getUserId());
-        utility = new MapUtility(currentExperiment, currentMapDisplay, getContext(), parentActivity, parentActivity.currentTrial);
+        MapUtility utility = new MapUtility(currentExperiment, currentMapDisplay, getContext(), parentActivity, parentActivity.currentTrial);
         utility.setRevertBack(root.findViewById(R.id.add_count_trial_revert_loc_bttn));
         utility.run();
 
@@ -100,38 +81,31 @@ public class AddCountTrialFragment extends Fragment {
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        //COUNT TRIAL MAY NOT NEED THIS
         super.onActivityResult(requestCode, resultCode, data);
         if (data == null){
             return;
         }
         String rawQRContent =  data.getStringExtra("QRCONTENTRAW");
         Log.d("ACTIVITYRESULT","val " + data.getStringExtra("QRCONTENTRAW"));
-        if(data.getBooleanExtra("IS_QR",true)) {//if is QR
+        if (data.getBooleanExtra("IS_QR",true)) {
             QRMaker qrMaker = new QRMaker();
-            QRCode qrCode;
+            QRCode<?> qrCode;
             try {
                 qrCode = qrMaker.decodeQRString(rawQRContent);
                 if (qrCode.getType() == QRType.CountTrial) {
                     Log.d("SCANNER", "Scanned QR Successfully!");
                     Snackbar.make(root, "Scanned QR Successfully!", Snackbar.LENGTH_LONG).show();
                 } else {
-                    //send error tray message
                     Log.d("SCANNER", "Scanned QR was of incorrect type " + qrCode.getType().toString());
                     Snackbar.make(root, "Scanned QR was of incorrect type", Snackbar.LENGTH_LONG).show();
                 }
             } catch (QRMalformattedException qrMalE) {
-                //malformatted QR
-                qrCode = null;
                 Log.d("SCANNER", "Scanned Malformatted QR");
                 Snackbar.make(root, "Scanned QR was not an Experiment-Automata QR Code", Snackbar.LENGTH_LONG).show();
             }
-
-        }
-        else {//if scanned was barcode
-            NavigationActivity parentActivity = ((NavigationActivity) getActivity());
+        } else {
+            NavigationActivity parentActivity = ((NavigationActivity) requireActivity());
             Location location = parentActivity.currentTrial.getLocation();
-            BarcodeManager testBC = parentActivity.barcodeManager;
             CountExperiment experiment = (CountExperiment) parentActivity.experimentManager.getCurrentExperiment();
             parentActivity.barcodeManager.addBarcode(rawQRContent,experiment.getExperimentId(),location);
             Snackbar.make(root, "Scanned Barcode " + rawQRContent + " was associated with this Trials Value", Snackbar.LENGTH_LONG).show();

@@ -2,9 +2,13 @@ package com.example.experiment_automata;
 
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.experiment_automata.backend.DataBase;
+import com.example.experiment_automata.backend.questions.QuestionManager;
+import com.example.experiment_automata.ui.LinkView;
 import com.example.experiment_automata.ui.NavigationActivity;
+import com.example.experiment_automata.ui.Screen;
 import com.google.firebase.FirebaseApp;
 import com.robotium.solo.Solo;
 
@@ -54,8 +58,6 @@ public class QuestionsUserStoriesTests {
 
     @Before
     public void setup() {
-
-
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
         currentTestingActivity = (NavigationActivity) solo.getCurrentActivity();
 
@@ -66,6 +68,7 @@ public class QuestionsUserStoriesTests {
          * Full:https://stackoverflow.com/questions/15993314/clicking-on-action-bar-menu-items-in-robotium
          */
         FirebaseApp.initializeApp(InstrumentationRegistry.getInstrumentation().getTargetContext());
+        QuestionManager.resetInstance();
     }
 
     @After
@@ -112,7 +115,7 @@ public class QuestionsUserStoriesTests {
         location = solo.getView(R.id.experiment_require_location_switch);
         acceptNewResults = solo.getView(R.id.experiment_accept_new_results_switch);
         solo.clickOnView(location);
-        if(des != "One")
+        if (des != "One")
             solo.clickOnView(acceptNewResults);
         solo.clickOnText("Ok");
     }
@@ -220,24 +223,23 @@ public class QuestionsUserStoriesTests {
      * Testing if the username of the question post links to the user profile.
      * can't really be tested because of issues with firebase being disconnected
      *      * at the time of testing
+     */
     @Test
     public void testingQuestionLinksToProfile() {
         View replyButton = null;
         View questionButton = null;
-
+        makeExperiment("GUI Test Experiment");
         solo.clickOnText("GUI Test Experiment");
+        solo.sleep(1000);
         questionButton = solo.getView(R.id.nav_fragment_experiment_detail_view_qa_button);
         solo.clickOnView(questionButton);
+        solo.sleep(1000);
         solo.clickOnView(addExperimentButton);
+        solo.sleep(1000);
         View questionBox = solo.getView(R.id.frag_add_edit_question_input_box_diolog);
         solo.enterText((EditText)questionBox,"Test Question");
         solo.clickOnText("Ok");
-
-        replyButton = solo.getView(R.id.main_question_display_reply_button);
-        solo.clickOnView(replyButton);
-        questionBox = solo.getView(R.id.frag_add_edit_question_input_box_diolog);
-        solo.enterText((EditText)questionBox,"Test reply");
-        solo.clickOnText("Ok");
+        solo.sleep(1000);
 
         // check linking to profile
         View questionUsername = solo.getView(R.id.main_question_display_user);
@@ -247,13 +249,12 @@ public class QuestionsUserStoriesTests {
         assertEquals(solo.getString(R.string.profile_contact),
                 ((TextView) solo.getView(R.id.profile_contact)).getText().toString());
     }
-    */
 
     /**
      * Testing if the username of the reply post links to the user profile.
      * can't really be tested because of issues with firebase being disconnected
      * at the time of testing
-     *
+     */
     @Test
     public void testingReplyLinksToProfile() {
         View replyButton = null;
@@ -286,5 +287,4 @@ public class QuestionsUserStoriesTests {
         assertEquals(solo.getString(R.string.profile_contact),
                 ((TextView) solo.getView(R.id.profile_contact)).getText().toString());
     }
-    */
 }

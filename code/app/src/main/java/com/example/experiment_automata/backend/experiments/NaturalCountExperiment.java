@@ -1,12 +1,10 @@
 package com.example.experiment_automata.backend.experiments;
 
 import com.example.experiment_automata.backend.trials.NaturalCountTrial;
-import com.example.experiment_automata.backend.trials.Trial;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;

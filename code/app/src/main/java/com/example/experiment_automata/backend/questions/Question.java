@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-
 /**
  * Role/Pattern:
  *
@@ -22,13 +21,12 @@ import java.util.UUID;
  *
  *      1. None
  */
-public class Question implements Serializable, Comparable
-{
+public class Question implements Serializable, Comparable<Question> {
     private String question;
-    private UUID user; // this makes more sense to just store a user ID
-    private UUID reply;// we will likely want the reply UUID since we have to query and see if a question has a reply
-    private UUID experimentId; // I think we need this so we know what to query with each experiment
-    private UUID questionId;
+    private UUID user;
+    private UUID reply;
+    private final UUID experimentId;
+    private final UUID questionId;
 
     /**
      * Constructor used when creating experiment from dialog
@@ -39,8 +37,7 @@ public class Question implements Serializable, Comparable
      * @param experimentId
      *   The ID of the experiment associated with the question
      */
-    public Question(String question, UUID user, UUID experimentId)
-    {
+    public Question(String question, UUID user, UUID experimentId) {
         this.question = question;
         this.user = user;
         this.experimentId = experimentId;
@@ -99,21 +96,8 @@ public class Question implements Serializable, Comparable
 
         try {
             db.collection("questions").document(questionIdString)
-                    .set(questionData)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-
-                        }
-                    });
-        }catch (Exception e)
-        {}
+                    .set(questionData);
+        } catch (Exception ignored) {}
     }
 
     /**
@@ -182,8 +166,7 @@ public class Question implements Serializable, Comparable
      * @return
      *   The UUID of the question
      */
-    public UUID getQuestionId()
-    {
+    public UUID getQuestionId() {
         return this.questionId;
     }
 
@@ -200,9 +183,7 @@ public class Question implements Serializable, Comparable
      *                              from being compared to this object.
      */
     @Override
-    public int compareTo(Object o) {
-        Question question = (Question) o;
-
-        return question.getQuestion().compareTo(this.question);
+    public int compareTo(Question o) {
+        return o.getQuestion().compareTo(this.question);
     }
 }

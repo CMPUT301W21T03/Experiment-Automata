@@ -40,16 +40,13 @@ public class MapUtility {
     private static final double MAX_BOUND_SIZE_LAT = 85.05112877980658;
     private static final double MIN_BOUND_SIZE_LONG = -180.0;
     private static final double MAX_BOUND_SIZE_LONG = 180.0;
-
-
-    private Experiment<?> experiment;
-    private Trial<?> trial;
-    private MapView display;
-    private Context context;
-    private Marker marker;
-    private NavigationActivity parentActivity;
+    private final Experiment<?> experiment;
+    private final Trial<?> trial;
+    private final MapView display;
+    private final Context context;
+    private final Marker marker;
+    private final NavigationActivity parentActivity;
     private Button revertBack;
-
 
     public MapUtility(Experiment<?> experiment,
                       MapView display,
@@ -64,8 +61,7 @@ public class MapUtility {
         marker = new Marker(this.display);
     }
 
-    public void setRevertBack(Button revertBack)
-    {
+    public void setRevertBack(Button revertBack) {
         this.revertBack = revertBack;
     }
 
@@ -83,18 +79,17 @@ public class MapUtility {
          * Date of Publication: Unknown
          * Full Link: https://github.com/osmdroid/osmdroid
          */
-        if(!experiment.isRequireLocation()) {
+        if (!experiment.isRequireLocation()) {
             display.setVisibility(View.GONE);
             revertBack.setVisibility(View.GONE);
-        }
-        else {
+        } else {
             setupMap();
             marker.setTitle("Recorded Location");
             marker.setSubDescription("This location is what is saved into the trial!");
 
             parentActivity.addLocationToTrial(trial);
 
-            if(trial.getLocation() == null){
+            if (trial.getLocation() == null){
                 // Ends the function
                 AlertDialog myDialog = new AlertDialog.Builder(context).create();
 
@@ -115,9 +110,7 @@ public class MapUtility {
             // Author: Google LLC
             // Date: 2019-12-27
             // License: Apache 2.0
-
-            // TODO: Change this location warning count to be a button that says (do not show again)
-            if(!parentActivity.stopRemindingMe) {
+            if (!parentActivity.stopRemindingMe) {
                 // Warns the user that their location is being used
                 AlertDialog.Builder myDialog = new AlertDialog.Builder(context)
                         .setPositiveButton("Don't Show Again", (dialog, id) -> {
@@ -129,9 +122,7 @@ public class MapUtility {
                             parentActivity.setCurrentScreen(Screen.ExperimentDetails);
                             parentActivity.onBackPressed();
                         })
-                        .setNeutralButton("Okay", (dialog, which) -> {
-                            parentActivity.setCurrentScreen(Screen.Trial);
-                        });
+                        .setNeutralButton("Okay", (dialog, which) -> parentActivity.setCurrentScreen(Screen.Trial));
 
                 myDialog.setTitle("Warning");
 
@@ -144,18 +135,14 @@ public class MapUtility {
             GeoPoint oldLocation = new GeoPoint(trial.getLocation());
             parentActivity.setCurrentScreen(Screen.Trial);
 
-            if(revertBack != null)
-            {
-                revertBack.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+            if (revertBack != null) {
+                revertBack.setOnClickListener(v -> {
 
-                        // Maybe make into function -> Violating dry a bit :p
-                        marker.setPosition(oldLocation);
-                        trial.getLocation().setLongitude(oldLocation.getLongitude());
-                        trial.getLocation().setLatitude(oldLocation.getLatitude());
-                        display.invalidate();
-                    }
+                    // Maybe make into function -> Violating dry a bit :p
+                    marker.setPosition(oldLocation);
+                    trial.getLocation().setLongitude(oldLocation.getLongitude());
+                    trial.getLocation().setLatitude(oldLocation.getLatitude());
+                    display.invalidate();
                 });
             }
 
@@ -174,7 +161,7 @@ public class MapUtility {
                 public boolean singleTapConfirmedHelper(GeoPoint p) {
                     boolean boundingBoxLatiCheck = p.getLatitude() > MIN_BOUND_SIZE_LAT && p.getLatitude() < MAX_BOUND_SIZE_LAT;
                     boolean boundingBoxLongiCheck = p.getLongitude() > MIN_BOUND_SIZE_LONG && p.getLongitude() < MAX_BOUND_SIZE_LONG;
-                    if(boundingBoxLatiCheck && boundingBoxLongiCheck) {
+                    if (boundingBoxLatiCheck && boundingBoxLongiCheck) {
                         display.invalidate();
                         trial.getLocation().setLongitude(p.getLongitude());
                         trial.getLocation().setLatitude(p.getLatitude());
@@ -186,7 +173,7 @@ public class MapUtility {
                 @Override
                 public boolean longPressHelper(GeoPoint p) {
 
-                    Toast.makeText(context, "" + p, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, p.toString(), Toast.LENGTH_SHORT).show();
 
                     return false;
                 }
@@ -201,8 +188,7 @@ public class MapUtility {
     /**
      * Initializes all the needed items for the map to be displayed and viewed
      */
-    private void setupMap()
-    {
+    private void setupMap() {
         Configuration.getInstance().load(context, PreferenceManager.getDefaultSharedPreferences(context));
         display.setTileSource(TileSourceFactory.MAPNIK);
         display.setVerticalMapRepetitionEnabled(false);
@@ -218,7 +204,7 @@ public class MapUtility {
      * so that we can remove assets when the map is not in use.
      */
     private void makeMapItemsDisappear() {
-        if(revertBack != null)
+        if (revertBack != null)
             revertBack.setVisibility(View.GONE);
         display.setVisibility(View.GONE);
     }
@@ -227,11 +213,9 @@ public class MapUtility {
      * this method sets things to deal with the map
      */
     public void run() {
-        if(experiment.isRequireLocation()) {
+        if (experiment.isRequireLocation()) {
             mapSupport();
-        }
-        else
-        {
+        } else {
             makeMapItemsDisappear();
         }
     }

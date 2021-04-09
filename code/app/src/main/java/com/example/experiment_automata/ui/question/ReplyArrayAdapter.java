@@ -1,5 +1,6 @@
 package com.example.experiment_automata.ui.question;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,7 +23,6 @@ import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.ui.profile.ProfileFragment;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Role/Pattern:
@@ -36,9 +36,9 @@ import java.util.List;
 // Syntax inspired by Abdul Ali Bangash, "Lab 3 Instructions - Custom List",
 // 2021-02-04, Public Domain, https://eclass.srv.ualberta.ca/pluginfile.php/6713985/mod_resource/content/1/Lab%203%20instructions%20-%20CustomList.pdf
 public class ReplyArrayAdapter extends ArrayAdapter<Reply> {
-    private ArrayList<Reply> replies;
-    private Context context;
-    private UserManager userManager;
+    private final ArrayList<Reply> replies;
+    private final Context context;
+    private final UserManager userManager;
 
     /**
      * Constructor takes in an array list of replies and a context to set the attributes properly
@@ -51,7 +51,7 @@ public class ReplyArrayAdapter extends ArrayAdapter<Reply> {
         super(context, 0, replyList);
         this.replies = replyList;
         this.context = context;
-        this.userManager = UserManager.getInstance();
+        this.userManager = UserManager.getInstance(true);
     }
 
     /**
@@ -61,6 +61,7 @@ public class ReplyArrayAdapter extends ArrayAdapter<Reply> {
      * @param parent Parent view of the current file
      * @return View with all the attributes set properly
      */
+    @SuppressLint("SetTextI18n")
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -72,11 +73,11 @@ public class ReplyArrayAdapter extends ArrayAdapter<Reply> {
         Reply reply = replies.get(position);
         User user = userManager.getSpecificUser(reply.getUser());
 
-        TextView replyTextView = (TextView) view.findViewById(R.id.reply_text);
-        LinkView replyUserView = (LinkView) view.findViewById(R.id.reply_user);
+        TextView replyTextView = view.findViewById(R.id.reply_text);
+        LinkView replyUserView = view.findViewById(R.id.reply_user);
 
         replyTextView.setText(reply.getReply());
-        if(user.getInfo() != null) {
+        if (user.getInfo() != null) {
             replyUserView.setText(user.getInfo().getName());
             replyUserView.setOnClickListener(v -> {
                 NavigationActivity parentActivity = (NavigationActivity) context;
@@ -85,9 +86,8 @@ public class ReplyArrayAdapter extends ArrayAdapter<Reply> {
                 NavController navController = Navigation.findNavController(parentActivity, R.id.nav_host_fragment);
                 navController.navigate(R.id.nav_profile, args);
             });
-        }
-        else
-            replyUserView.setText("BAD=DATA");
+        } else
+            replyUserView.setText("BAD-DATA");
 
         return view;
     }

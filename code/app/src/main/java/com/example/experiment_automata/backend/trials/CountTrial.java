@@ -13,7 +13,6 @@ import java.util.UUID;
  *      1. None
  */
 public class CountTrial extends Trial<Object> {
-
     public CountTrial(UUID collector) {
         super(collector, null);
     }

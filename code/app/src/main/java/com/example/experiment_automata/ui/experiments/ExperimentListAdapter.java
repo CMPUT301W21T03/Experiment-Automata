@@ -1,5 +1,6 @@
 package com.example.experiment_automata.ui.experiments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import com.example.experiment_automata.ui.profile.ProfileFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -38,15 +40,14 @@ import java.util.UUID;
  *
  *      1. None
  */
+// Syntax inspired by Abdul Ali Bangash, "Lab 3 Instructions - Custom List",
+// 2021-02-04, Public Domain, https://eclass.srv.ualberta.ca/pluginfile.php/6713985/mod_resource/content/1/Lab%203%20instructions%20-%20CustomList.pdf
 public class ExperimentListAdapter extends ArrayAdapter<Experiment<?>> {
-    // Syntax inspired by Abdul Ali Bangash, "Lab 3 Instructions - Custom List",
-    // 2021-02-04, Public Domain, https://eclass.srv.ualberta.ca/pluginfile.php/6713985/mod_resource/content/1/Lab%203%20instructions%20-%20CustomList.pdf
-
-    private ArrayList<Experiment<?>> experiment;
-    private Context context;
-    private String mode;
-    private UserManager manager;
-    private HashMap<Integer, LinkView> owners;
+    private final ArrayList<Experiment<?>> experiment;
+    private final Context context;
+    private final String mode;
+    private final UserManager manager;
+    private final HashMap<Integer, LinkView> owners;
 
     /**
      * Constructor takes in an array list of experiments and a context to set the attributes properly
@@ -70,8 +71,8 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment<?>> {
                 String username = manager.getSpecificUser(userId).getInfo().getName();
                 Log.wtf("Update listener username", username);
                 if (owners.containsKey(i)) {
-                    Log.wtf("Owner View", owners.get(i).toString());
-                    owners.get(i).setText(username);
+                    Log.wtf("Owner View", Objects.requireNonNull(owners.get(i)).toString());
+                    Objects.requireNonNull(owners.get(i)).setText(username);
                 }
             }
         });
@@ -84,6 +85,7 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment<?>> {
      * @param parent Parent view of the current file
      * @return View with all the attributes set properly
      */
+    @SuppressLint("SetTextI18n")
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -110,7 +112,7 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment<?>> {
         // Set the name of the experiment owner
 
         User user = manager.getSpecificUser(oid);
-        if(user == null) {
+        if (user == null) {
             ContactInformation ci = new ContactInformation("BAD-DATA", "BAD", "BAD");
             user = new User(ci, null);
 
@@ -118,8 +120,8 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment<?>> {
 
 
         User finalUser = user;
-        owners.get(position).setText(finalUser.getInfo().getName());
-        owners.get(position).setOnClickListener(v -> {
+        Objects.requireNonNull(owners.get(position)).setText(finalUser.getInfo().getName());
+        Objects.requireNonNull(owners.get(position)).setOnClickListener(v -> {
             NavigationActivity parentActivity = (NavigationActivity) context;
             Bundle args = new Bundle();
             args.putSerializable(ProfileFragment.userKey, finalUser);

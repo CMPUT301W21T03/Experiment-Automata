@@ -3,7 +3,6 @@ package com.example.experiment_automata.ui.question;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.experiment_automata.R;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
@@ -40,8 +41,7 @@ import java.util.UUID;
 // Basic layout of this fragment inspired by lab work in CMPUT 301
 // Abdul Ali Bangash, "Lab 3", 2021-02-04, Public Domain,
 // https://eclass.srv.ualberta.ca/pluginfile.php/6713985/mod_resource/content/1/Lab%203%20instructions%20-%20CustomList.pdf
-public class AddQuestionFragment extends DialogFragment
-{
+public class AddQuestionFragment extends DialogFragment {
     // this will be a string passed in if editing a question
     public static final String QUESTION = "QUESTION-STRING";
     // this will determine if this dialog is for a question or reply
@@ -50,28 +50,21 @@ public class AddQuestionFragment extends DialogFragment
     public static final String OWNER = "OWNER-ID";
 
     private EditText questionInput;
-    private String experimentId;
-    private String question;
-
     private AddQuestionFragment.OnFragmentInteractionListener listener;
 
-    public interface OnFragmentInteractionListener
-    {
+    public interface OnFragmentInteractionListener {
         void onOkPressedQuestion(String question, UUID Experiment);
         void onOkPressedReply(String reply, UUID questionId);
     }
 
     /**
      * This identifies the listener for the fragment when it attaches
-     * @param context
+     * @param context the android context
      */
     @Override
-    public void onAttach(Context context)
-    {
+    public void onAttach(@NotNull Context context) {
         super.onAttach(context);
-
-        if (context instanceof AddQuestionFragment.OnFragmentInteractionListener)
-        {
+        if (context instanceof AddQuestionFragment.OnFragmentInteractionListener) {
             listener = (AddQuestionFragment.OnFragmentInteractionListener) context;
         } else {
 
@@ -88,8 +81,7 @@ public class AddQuestionFragment extends DialogFragment
      * @return
      *   a fragment to edit an questions's information
      */
-    public static AddQuestionFragment newInstance(String question, Boolean type, UUID ownerId)
-    {
+    public static AddQuestionFragment newInstance(String question, Boolean type, UUID ownerId) {
         AddQuestionFragment questionFragment = new AddQuestionFragment();
         Bundle args = new Bundle();
         args.putString(QUESTION, question);
@@ -112,50 +104,37 @@ public class AddQuestionFragment extends DialogFragment
      */
     @NonNull
     @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstancesState)
-    {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_add_edit_question_diolog_op_up, null);
+    public Dialog onCreateDialog(@Nullable Bundle savedInstancesState) {
+        View view = LayoutInflater.from(requireActivity()).inflate(R.layout.fragment_add_edit_question_diolog_op_up, null);
         questionInput = view.findViewById(R.id.frag_add_edit_question_input_box_diolog);
         Bundle args = getArguments();
         AlertDialog.Builder build = new AlertDialog.Builder(getContext());
 
         // this will determine if it is asking for a question or reply
-        String dialogType;
-        // this is the experiment UUID that this question belongs to
-        UUID ownerId = (UUID) args.getSerializable(OWNER);
+        assert args != null;
+        final UUID ownerId = (UUID) args.getSerializable(OWNER);
 
-        if (args != null) {
-            dialogType = args.getString(TYPE);
-            questionInput.setText(args.getString(QUESTION));
-        } else {
-            // assume if no bundle args that it's asking for a question
-            dialogType = "Add Question";
-        }
+        String dialogType = args.getString(TYPE);
+        questionInput.setText(args.getString(QUESTION));
 
         // update the hint text of the question input depending on what the dialogType is
-        if (dialogType == "Add Question") {
+        if (args.getString(TYPE).equals("Add Question")) {
             questionInput.setHint("Question");
             return build.setView(view)
                     .setTitle(dialogType)
                     .setNegativeButton("Cancel", null)
-                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            String currentQuestion = questionInput.getText().toString();
-                            listener.onOkPressedQuestion(currentQuestion, ownerId);
-                        }
+                    .setPositiveButton("Ok", (dialog, which) -> {
+                        String currentQuestion = questionInput.getText().toString();
+                        listener.onOkPressedQuestion(currentQuestion, ownerId);
                     }).create();
         } else {
             questionInput.setHint("Reply");
             return build.setView(view)
                     .setTitle(dialogType)
                     .setNegativeButton("Cancel", null)
-                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            String currentReply = questionInput.getText().toString();
-                            listener.onOkPressedReply(currentReply, ownerId);
-                        }
+                    .setPositiveButton("Ok", (dialog, which) -> {
+                        String currentReply = questionInput.getText().toString();
+                        listener.onOkPressedReply(currentReply, ownerId);
                     }).create();
         }
     }

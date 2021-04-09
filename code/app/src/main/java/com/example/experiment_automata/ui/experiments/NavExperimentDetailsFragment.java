@@ -1,5 +1,6 @@
 package com.example.experiment_automata.ui.experiments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,7 +42,6 @@ import java.util.UUID;
  *
  *      1. None
  */
-
 public class NavExperimentDetailsFragment extends Fragment {
     public static final String CURRENT_EXPERIMENT_ID = "FRAGMENT_CURRENT_FRAGMENT-ID";
 
@@ -69,34 +69,16 @@ public class NavExperimentDetailsFragment extends Fragment {
     }
 
     /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param experimentStringId ID of the clicked experiment
-     * @return
-     *  A new instance of fragment FullExperimentView.
-     */
-
-    public static NavExperimentDetailsFragment newInstance(String experimentStringId) {
-        NavExperimentDetailsFragment fragment = new NavExperimentDetailsFragment();
-        Bundle args = new Bundle();
-        args.putString(CURRENT_EXPERIMENT_ID, experimentStringId);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-
-    /**
      *  Prebuilt that initializes the given parameters
-     *
-     * @param savedInstanceState
+     * @param savedInstanceState the saved instance
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             experimentStringId = getArguments().getString(CURRENT_EXPERIMENT_ID);
-            parentActivity = (NavigationActivity) getActivity();
+            parentActivity = (NavigationActivity) requireActivity();
+            assert parentActivity != null;
             parentActivity.setCurrentFragment(this);
             parentActivity.setCurrentScreen(Screen.ExperimentDetails);
             experiment = parentActivity.getExperimentManager()
@@ -107,10 +89,9 @@ public class NavExperimentDetailsFragment extends Fragment {
 
     /**
      *  Reads and sets up the view for the user to see the whole experiment
-     *
-     * @param inflater
-     * @param container
-     * @param savedInstanceState
+     * @param inflater the layout inflater
+     * @param container the container
+     * @param savedInstanceState the saved instance
      * @return
      *  root
      */
@@ -128,7 +109,7 @@ public class NavExperimentDetailsFragment extends Fragment {
         qrButton = root.findViewById(R.id.nav_fragment_experiment_detail_view_qr_button);
         mapButton = root.findViewById(R.id.nav_fragment_experiment_detail_view_map_button);
 
-        getActivity().findViewById(R.id.fab_button).setVisibility(View.GONE);
+        requireActivity().findViewById(R.id.fab_button).setVisibility(View.GONE);
 
         textViewQuartiles = root.findViewById(R.id.quartiles_value);
         textViewMean = root.findViewById(R.id.mean_value);
@@ -157,12 +138,12 @@ public class NavExperimentDetailsFragment extends Fragment {
                 Fragment editExperiment = new AddExperimentFragment();
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(AddExperimentFragment.ADD_EXPERIMENT_CURRENT_VALUE,
-                        (((NavigationActivity) getActivity())
+                        (((NavigationActivity) requireActivity())
                                 .getExperimentManager())
                                 .getAtUUIDDescription(UUID.fromString(experimentStringId)));
 
                 editExperiment.setArguments(bundle);
-                getActivity().getSupportFragmentManager().beginTransaction().add(editExperiment, "EDIT").commit();
+                requireActivity().getSupportFragmentManager().beginTransaction().add(editExperiment, "EDIT").commit();
             });
         } else {
             editImageButton.setVisibility(View.GONE);
@@ -174,12 +155,10 @@ public class NavExperimentDetailsFragment extends Fragment {
             toggleSubscribeButton();
         });
 
-        questionsButton.setOnClickListener(v -> {
-            launchQuestionView();
-        });
+        questionsButton.setOnClickListener(v -> launchQuestionView());
 
         qrButton.setOnClickListener(v -> {
-            Experiment<?> current = (((NavigationActivity)getActivity()).getExperimentManager())
+            Experiment<?> current = (((NavigationActivity) requireActivity()).getExperimentManager())
                     .getAtUUIDDescription(UUID.fromString(experimentStringId));
 
             Fragment viewQRFragment = new ViewQRFragment();
@@ -188,17 +167,17 @@ public class NavExperimentDetailsFragment extends Fragment {
             bundle.putString("DESCRIPTION", current.getDescription());
             bundle.putString("TYPE", QRType.Experiment.toString());
             viewQRFragment.setArguments(bundle);
-            getActivity().getSupportFragmentManager().beginTransaction().add(viewQRFragment,"QR").commit();
+            requireActivity().getSupportFragmentManager().beginTransaction().add(viewQRFragment,"QR").commit();
         });
 
         mapButton.setOnClickListener(v -> {
             Bundle locArgs = new Bundle();
             locArgs.putSerializable(MapDisplayFragment.CURRENT_EXPERIMENT,
-                    (((NavigationActivity) getActivity())
+                    (((NavigationActivity) requireActivity())
                     .getExperimentManager())
                     .getAtUUIDDescription(UUID.fromString(experimentStringId)));
 
-            NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
             navController.navigate(R.id.map_display_fragment, locArgs);
             parentActivity.setCurrentScreen(Screen.MAP);
             parentActivity.setCurrentFragment(this);
@@ -217,16 +196,17 @@ public class NavExperimentDetailsFragment extends Fragment {
      *
      * @param experimentStringId : The unique id that each experiment contains
      */
+    @SuppressLint("DefaultLocale")
     public void update(String experimentStringId) {
         Log.d("UPDATE", "Screen info updated");
-        Experiment<?> current = (((NavigationActivity) getActivity()).getExperimentManager())
+        Experiment<?> current = (((NavigationActivity) requireActivity()).getExperimentManager())
                 .getAtUUIDDescription(UUID.fromString(experimentStringId));
         descriptionView.setText(current.getDescription());
         typeView.setText(current.getType().toString());
         minTrials.setText(String.format("Minimum Trials: %d", current.getMinTrials()));
 
         // Disable FAB if not accepting new trials
-        FloatingActionButton fab = getActivity().findViewById(R.id.fab_button);
+        FloatingActionButton fab = requireActivity().findViewById(R.id.fab_button);
         if (!current.isActive()) {
             fab.setVisibility(View.GONE);
         } else {
@@ -330,14 +310,14 @@ public class NavExperimentDetailsFragment extends Fragment {
      * Set up and gets read to launch the questions display.
      */
     private void launchQuestionView() {
-        (((NavigationActivity)getActivity()).findViewById(R.id.fab_button)).setVisibility(View.VISIBLE);
-
-        NavigationActivity parentActivity = (NavigationActivity) getActivity();
+        requireActivity().findViewById(R.id.fab_button).setVisibility(View.VISIBLE);
+        NavigationActivity parentActivity = (NavigationActivity) requireActivity();
         Bundle questionBundle = new Bundle();
+        assert parentActivity != null;
         questionBundle.putSerializable(QuestionDisplay.QUESTION_EXPERIMENT,
                 parentActivity.getExperimentManager()
                     .getAtUUIDDescription(UUID.fromString(experimentStringId)));
-        NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+        NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
         navController.navigate(R.id.questionDisplay, questionBundle);
         parentActivity.setCurrentScreen(Screen.Questions);
         parentActivity.setCurrentFragment(this);

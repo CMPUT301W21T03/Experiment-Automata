@@ -31,7 +31,6 @@ import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.ui.experiments.NavExperimentDetailsFragment;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.util.Collection;
 import java.util.UUID;
 
 /**
@@ -45,7 +44,6 @@ public class ScanQRFragment extends Fragment {
     private User user;
     private Trial<?> trial;
     private Experiment experiment;
-    private NavController navController;
 
     public ScanQRFragment() {
         // Required empty public constructor
@@ -54,9 +52,9 @@ public class ScanQRFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        parentActivity = ((NavigationActivity) getActivity());
+        parentActivity = ((NavigationActivity) requireActivity());
         experimentManager = parentActivity.experimentManager;
-        Intent intent = new Intent(getActivity(), ScannerActivity.class);
+        Intent intent = new Intent(requireActivity(), ScannerActivity.class);
         startActivityForResult(intent, 1);
 
     }
@@ -69,9 +67,10 @@ public class ScanQRFragment extends Fragment {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {//when the ScannerActivity is finished
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        //when the ScannerActivity is finished
         super.onActivityResult(requestCode, resultCode, data);
-        navController = Navigation.findNavController(requireView());
+        NavController navController = Navigation.findNavController(requireView());
         if (data == null) {
             navController.navigateUp();
             return;
@@ -85,13 +84,12 @@ public class ScanQRFragment extends Fragment {
         }
         navController.navigateUp();
         Bundle args = new Bundle();
-        if(experiment == null){
+        if (experiment == null) {
             Snackbar.make(requireView(), "The Experiment represented by the scanned code is not published or is not accepting results", Snackbar.LENGTH_LONG).show();
             navController.navigateUp();
             return;
 
         }
-
         args.putString(NavExperimentDetailsFragment.CURRENT_EXPERIMENT_ID,
                 experiment.getExperimentId().toString());
         parentActivity.experimentManager.setCurrentExperiment(experiment);
@@ -99,26 +97,25 @@ public class ScanQRFragment extends Fragment {
     }
 
     private void handleQR(@NonNull String scannedContent) {
-        QRCode qrCode;
+        QRCode<?> qrCode;
         QRMaker qrMaker = new QRMaker();
         try {
-            Collection<UUID> subscriptions = user.getSubscriptions();
             qrCode = qrMaker.decodeQRString(scannedContent);
             //scanned valid QR
             experiment = experimentManager.getExperiment(qrCode.getExperimentID());
             if (experiment.isPublished() && experiment.isActive()){
                 switch (qrCode.getType()){
                     case BinomialTrial:
-                        trial = new BinomialTrial(user.getUserId(), (boolean) qrCode.getValue());
+                        trial = new BinomialTrial(user.getUserId(), (Boolean) qrCode.getValue());
                         break;
                     case CountTrial:
                         trial = new CountTrial(user.getUserId());
                         break;
                     case NaturalCountTrial:
-                        trial = new NaturalCountTrial(user.getUserId(), (int) qrCode.getValue());
+                        trial = new NaturalCountTrial(user.getUserId(), (Integer) qrCode.getValue());
                         break;
                     case MeasurementTrial:
-                        trial = new MeasurementTrial(user.getUserId(), (float) qrCode.getValue());
+                        trial = new MeasurementTrial(user.getUserId(), (Float) qrCode.getValue());
 
                         break;
                     case Experiment:
@@ -133,12 +130,9 @@ public class ScanQRFragment extends Fragment {
                             experiment.getType(), qrCode.getValue(), experiment.getDescription());
                     Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG).show();
                 }
-            } else {//scanned experiment is not published
-                return;
             }
         } catch (QRMalformattedException qrMalE){
             //malformatted QR
-            qrCode = null;
             Log.d("SCANNER","Scanned Malformatted QR");
             Snackbar.make(requireView(), "Scanned QR was not an Experiment-Automata QR Code", Snackbar.LENGTH_LONG).show();
         }
@@ -146,7 +140,7 @@ public class ScanQRFragment extends Fragment {
 
     private void handleBarcode(@NonNull String scannedContent) {
         Log.d("SCANNER","Barcode was scanned");
-        BarcodeReference barcodeReference = parentActivity.barcodeManager.getBarcode(scannedContent);
+        BarcodeReference<?> barcodeReference = parentActivity.barcodeManager.getBarcode(scannedContent);
         if (barcodeReference == null) {
             //barcode not associated
             Snackbar.make(requireView(), "Scanned barcode has not been associated with a valid Trial yet", Snackbar.LENGTH_LONG).show();
@@ -156,7 +150,7 @@ public class ScanQRFragment extends Fragment {
             UUID barcodeExperimentID = barcodeReference.getExperimentId();
             Location barcodeLocation = barcodeReference.getLocation();
             experiment =  experimentManager.getExperiment(barcodeExperimentID);
-            if(experiment.isPublished() && experiment.isActive()){
+            if (experiment.isPublished() && experiment.isActive()){
                 experiment =  experimentManager.getExperiment(barcodeExperimentID);
                 switch (barcodeReference.getType()){
                     case Binomial:
@@ -166,10 +160,10 @@ public class ScanQRFragment extends Fragment {
                         trial = new CountTrial(user.getUserId(), barcodeLocation);
                         break;
                     case NaturalCount:
-                        trial = new NaturalCountTrial(user.getUserId(), barcodeLocation, (int) barcodeReference.getResult());
+                        trial = new NaturalCountTrial(user.getUserId(), barcodeLocation, (Integer) barcodeReference.getResult());
                         break;
                     case Measurement:
-                        trial = new MeasurementTrial(user.getUserId(), barcodeLocation, (float) barcodeReference.getResult());
+                        trial = new MeasurementTrial(user.getUserId(), barcodeLocation, (Float) barcodeReference.getResult());
                         break;
                 }
                 parentActivity.addTrial(experiment, trial);

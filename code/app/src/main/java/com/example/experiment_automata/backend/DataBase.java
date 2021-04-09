@@ -1,5 +1,7 @@
 package com.example.experiment_automata.backend;
 
+import android.annotation.SuppressLint;
+
 import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
@@ -12,22 +14,21 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class DataBase {
     private static DataBase current;
+    @SuppressLint("StaticFieldLeak")
     private static FirebaseFirestore db;
     private boolean testMode;
 
     private DataBase(boolean testMode) {
         this.testMode = testMode;
         db = FirebaseFirestore.getInstance();
-        if(testMode)
-        {
+        if (testMode) {
             db.clearPersistence();
             db.disableNetwork();
         }
     }
 
     public static DataBase getInstanceTesting() {
-        if(current == null)
-        {
+        if (current == null) {
             current = new DataBase(true);
         }
         current.disableTest();
@@ -36,25 +37,22 @@ public class DataBase {
 
     public static DataBase getInstance() {
 
-        if(current == null) {
+        if (current == null) {
             current = new DataBase(false);
         }
 
         return current;
     }
 
-    public FirebaseFirestore getFireStore()
-    {
+    public FirebaseFirestore getFireStore() {
         return db;
     }
 
-    public void disableTest()
-    {
+    public void disableTest() {
         this.testMode = false;
     }
 
-    public boolean isTestMode()
-    {
+    public boolean isTestMode() {
         return this.testMode;
     }
 }

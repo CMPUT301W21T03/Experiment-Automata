@@ -17,6 +17,7 @@ public class BinomialBarcodeReference extends BarcodeReference<Boolean> {
     public BinomialBarcodeReference(String barcodeVal, UUID experimentId, ExperimentType type, boolean result){
         super(barcodeVal,experimentId,type,result,null);
     }
+
     public BinomialBarcodeReference(String barcodeVal, UUID experimentId, ExperimentType type, boolean result, Location location){
         super(barcodeVal,experimentId,type,result,location);
     }

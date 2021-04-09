@@ -11,8 +11,6 @@ import java.util.UUID;
  *      1. None
  */
 public class QRMaker {
-    public QRMaker() {}
-
     /**
      * Decodes a raw string that has been scanned from a custom QR code
      * @param rawContent
@@ -20,7 +18,7 @@ public class QRMaker {
      * @return
      * returns a QRCode
      */
-    public QRCode decodeQRString(String rawContent) throws QRMalformattedException {
+    public QRCode<?> decodeQRString(String rawContent) throws QRMalformattedException {
         if (!checkQRHeader(rawContent)){
             //not valid raise exception
             throw new QRMalformattedException("IncorrectHeader");
@@ -32,14 +30,14 @@ public class QRMaker {
         String typeSpecifier;
         typeSpecifier = rawContent.substring(40,41);
         String content = rawContent.substring(41);
-        QRCode qrCode;
+        QRCode<?> qrCode;
         switch (typeSpecifier){
             case QRCode.EXPERIMENT_ONLY_ID:
                 qrCode = new ExperimentQRCode(experimentUUID);
                 break;
             case QRCode.BINOMIAL_ID:
                 //bin
-                Boolean binVal = false;
+                boolean binVal = false;
                 switch (content){
                     case BinomialQRCode.BINOMIAL_TRUE:
                         binVal = true;
@@ -59,7 +57,8 @@ public class QRMaker {
             case QRCode.NATURALC_ID:
                 qrCode = new NaturalQRCode(experimentUUID, Integer.parseInt(content));
                 break;
-            default://incorrect type specifier
+            default:
+            //incorrect type specifier
                 qrCode = null;
         }
         return qrCode;
@@ -73,6 +72,6 @@ public class QRMaker {
      * returns a QRCode
      */
     public boolean checkQRHeader(String qrString){
-        return qrString.substring(0,4).equals(QRCode.AUTOMATA_QR_HEADER);
+        return qrString.startsWith(QRCode.AUTOMATA_QR_HEADER);
     }
 }

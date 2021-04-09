@@ -6,7 +6,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
-
 /**
  * Role/Pattern:
  *     The main trial type class of which the different trials are parts of.
@@ -16,10 +15,10 @@ import java.util.UUID;
  *      1. None
  */
 public abstract class Trial<T> implements Serializable {
-    private UUID userId;
-    private UUID trialId;
+    private final UUID userId;
+    private final UUID trialId;
     private Location location;
-    private Date date;
+    private final Date date;
     private boolean ignore;
     protected T result;
 
@@ -83,8 +82,7 @@ public abstract class Trial<T> implements Serializable {
      *
      * @param newLocation the new location we want to change to.
      */
-    public void setLocation(Location newLocation)
-    {
+    public void setLocation(Location newLocation) {
         this.location = newLocation;
     }
 
@@ -93,8 +91,7 @@ public abstract class Trial<T> implements Serializable {
      * @return
      *      the currently set location
      */
-    public Location getLocation()
-    {
+    public Location getLocation() {
         return location;
     }
 

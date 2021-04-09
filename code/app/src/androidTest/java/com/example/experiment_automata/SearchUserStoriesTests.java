@@ -33,17 +33,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.fail;
 
-public class SearchUserStoriesTests
-{
+public class SearchUserStoriesTests {
     private DataBase dataBase = DataBase.getInstanceTesting();
     private Solo solo;
     private NavigationActivity currentTestingActivity;
     private View addExperimentButton;
     private View descriptionEdit;
     private View countTrialsEdit;
-    private View location;
-    private View acceptNewResults;
-    private View slector;
+    private View selector;
 
 
 
@@ -107,13 +104,13 @@ public class SearchUserStoriesTests
         solo.enterText((EditText) countTrialsEdit, "3");
 
         //Selecting Binomial Experiment
-        slector = solo.getView(R.id.experiment_type_spinner);
-        solo.clickOnView(slector);
+        selector = solo.getView(R.id.experiment_type_spinner);
+        solo.clickOnView(selector);
         solo.clickOnText("Binomial");
 
         //Setting the boxes
-        location = solo.getView(R.id.experiment_require_location_switch);
-        acceptNewResults = solo.getView(R.id.experiment_accept_new_results_switch);
+        View location = solo.getView(R.id.experiment_require_location_switch);
+        View acceptNewResults = solo.getView(R.id.experiment_accept_new_results_switch);
         if (des != "One")
             solo.clickOnView(acceptNewResults);
         solo.clickOnText("Ok");
@@ -124,8 +121,7 @@ public class SearchUserStoriesTests
      * Searching using some data given
      */
     @Test
-    public void testSearchingUsingQuery()
-    {
+    public void testSearchingUsingQuery() {
         solo.clickOnActionBarHomeButton();
         solo.clickOnText("My Experiments");
         solo.sleep(2000);
@@ -161,8 +157,7 @@ public class SearchUserStoriesTests
      * Checking for active
      */
     @Test
-    public void testSearchDisplayingResultsActive()
-    {
+    public void testSearchDisplayingResultsActive() {
         solo.clickOnActionBarHomeButton();
         solo.clickOnText("My Experiments");
         solo.sleep(2000);
@@ -194,8 +189,7 @@ public class SearchUserStoriesTests
      * Checking for active
      */
     @Test
-    public void testSearchDisplayingResultsInactive()
-    {
+    public void testSearchDisplayingResultsInactive() {
         solo.clickOnActionBarHomeButton();
         solo.clickOnText("My Experiments");
         solo.sleep(2000);
@@ -219,8 +213,7 @@ public class SearchUserStoriesTests
         assertEquals("Not all fields of experiment found", true, checkOne && statusCheck);
     }
 
-    private void makeInactiveExperiment(String des)
-    {
+    private void makeInactiveExperiment(String des) {
         addExperimentButton = solo.getView(R.id.fab_button);
 
         //Click from the home screen the + button to make an experiment
@@ -241,11 +234,9 @@ public class SearchUserStoriesTests
         solo.enterText((EditText) countTrialsEdit, "3");
 
         //Selecting Binomial Experiment
-        slector = solo.getView(R.id.experiment_type_spinner);
-        solo.clickOnView(slector);
+        selector = solo.getView(R.id.experiment_type_spinner);
+        solo.clickOnView(selector);
         solo.clickOnText("Binomial");
         solo.clickOnText("Ok");
-
     }
-
 }

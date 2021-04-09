@@ -30,8 +30,6 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.LargeValueFormatter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import org.w3c.dom.Text;
-
 import java.util.UUID;
 
 /**
@@ -263,7 +261,7 @@ public class NavExperimentDetailsFragment extends Fragment {
             resultsPlot.getLegend().setEnabled(false);
             resultsPlot.getXAxis().setEnabled(false);
             histogram.getXAxis().setValueFormatter(new LargeValueFormatter());
-            resultsPlot.setTouchEnabled(false);
+            resultsPlot.setTouchEnabled(true);
             resultsPlot.getDescription().setEnabled(false);
             resultsPlot.invalidate();
 

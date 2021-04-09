@@ -9,12 +9,12 @@ import java.util.UUID;
  *     Holds the information needed to maintain and track a count trial
  */
 public class CountTrial extends Trial<Object> {
-    public CountTrial(UUID collector) {
-        super(collector, null);
+    public CountTrial(UUID collector, long timestamp) {
+        super(collector, timestamp, null);
     }
 
-    public CountTrial(UUID collector, Location location) {
-        super(collector, location, null);
+    public CountTrial(UUID collector, long timestamp, Location location) {
+        super(collector, timestamp, location, null);
     }
 
     /**

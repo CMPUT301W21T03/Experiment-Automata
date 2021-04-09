@@ -3,6 +3,10 @@ package com.example.experiment_automata.backend.trials;
 import android.location.Location;
 
 import java.io.Serializable;
+import java.security.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
@@ -10,29 +14,37 @@ import java.util.UUID;
  * Role/Pattern:
  *     The main trial type class of which the different trials are parts of.
  */
-public abstract class Trial<T> implements Serializable {
+public abstract class Trial<T> implements Serializable, Comparable<Trial<T>> {
     private final UUID userId;
     private final UUID trialId;
     private Location location;
-    private final Date date;
+    private final long timestamp;
     private boolean ignore;
     protected T result;
 
-    public Trial(UUID userId, T result) {
+    public Trial(UUID userId, long timestamp, T result) {
         this.userId = userId;
-        this.date = new Date();
         this.ignore = false;
         this.result = result;
         this.trialId = UUID.randomUUID();
+        if (timestamp == 0) {
+            this.timestamp = new Date().getTime();
+        } else {
+            this.timestamp = timestamp;
+        }
     }
 
-    public Trial(UUID userId, Location location, T result) {
+    public Trial(UUID userId, long timestamp,  Location location, T result) {
         this.userId = userId;
         this.location = location;
-        this.date = new Date();
         this.ignore = false;
         this.result = result;
         this.trialId = UUID.randomUUID();
+        if (timestamp == 0) {
+            this.timestamp = new Date().getTime();
+        } else {
+            this.timestamp = timestamp;
+        }
     }
 
 
@@ -57,7 +69,7 @@ public abstract class Trial<T> implements Serializable {
      * @return
      *  date of the trial
      */
-    public Date getDate() { return date; }
+    public long getTimestamp() { return timestamp; }
 
     /**
      * Set whether to ignore the trial result in statistic calculations.
@@ -114,5 +126,23 @@ public abstract class Trial<T> implements Serializable {
      */
     public void setResult(T result) {
         this.result = result;
+    }
+
+    /**
+     * Compares this object with the specified object for order.  Returns a
+     * negative integer, zero, or a positive integer as this object is less
+     * than, equal to, or greater than the specified object.
+     * @param o the object to be compared.
+     * @return a negative integer, zero, or a positive integer as this object
+     * is less than, equal to, or greater than the specified object.
+     * @throws NullPointerException if the specified object is null
+     * @throws ClassCastException   if the specified object's type prevents it
+     *                              from being compared to this object.
+     */
+    @Override
+    public int compareTo(Trial<T> o) {
+        Long selfTimestamp = this.timestamp;
+        Long otherTimestamp = o.getTimestamp();
+        return selfTimestamp.compareTo(otherTimestamp);
     }
 }

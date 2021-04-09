@@ -9,13 +9,13 @@ import java.util.UUID;
  *     Holds the information needed to maintain and track a measurement trial
  */
 public class MeasurementTrial extends Trial<Float> {
-    public MeasurementTrial(UUID collector, float result) {
-        super(collector, result);
+    public MeasurementTrial(UUID collector, long timestamp, float result) {
+        super(collector, timestamp, result);
         this.result = result;
     }
 
-    public MeasurementTrial(UUID collector, Location location, float result) {
-        super(collector, location, result);
+    public MeasurementTrial(UUID collector, long timestamp, Location location, float result) {
+        super(collector, timestamp, location, result);
         this.result = result;
     }
 

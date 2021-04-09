@@ -7,9 +7,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -309,7 +312,7 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
                 singleResult.put("latitude", trial.getLocation().getLatitude());
                 singleResult.put("longitude", trial.getLocation().getLongitude());
             }
-            singleResult.put("date", trial.getDate().toString());
+            singleResult.put("date", trial.getTimestamp());
             singleResult.put("ignore", trial.isIgnored());
             singleResult.put("result", trial.getResult());
             resultsData.put(trial.getTrialId().toString(),singleResult);
@@ -335,5 +338,9 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
      * Get the trials made about this experiment.
      * @return the trials
      */
-    public Collection<T> getTrials() { return results; }
+    public ArrayList<T> getTrials() {
+        ArrayList<T> trials = new ArrayList<>(this.results);
+        Collections.sort(trials);
+        return trials;
+    }
 }

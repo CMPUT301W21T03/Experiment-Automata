@@ -9,12 +9,12 @@ import java.util.UUID;
  *     Holds the information needed to maintain and track a binomial trial
  */
 public class BinomialTrial extends Trial<Boolean> {
-    public BinomialTrial(UUID collector, boolean result) {
-        super(collector, result);
+    public BinomialTrial(UUID collector, long timestamp, boolean result) {
+        super(collector, timestamp, result);
     }
 
-    public BinomialTrial(UUID collector, Location location, boolean result) {
-        super(collector, location, result);
+    public BinomialTrial(UUID collector, long timestamp, Location location, boolean result) {
+        super(collector, timestamp, location, result);
     }
 
     /**

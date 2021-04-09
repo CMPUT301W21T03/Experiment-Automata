@@ -9,15 +9,15 @@ import java.util.UUID;
  *     Holds the information needed to maintain and track a natural count trial
  */
 public class NaturalCountTrial extends Trial<Integer> {
-    public NaturalCountTrial(UUID collector, int result) throws IllegalArgumentException {
-        super(collector, result);
+    public NaturalCountTrial(UUID collector, long timestamp, int result) throws IllegalArgumentException {
+        super(collector, timestamp, result);
         if (result < 0) {
             throw new IllegalArgumentException();
         }
     }
 
-    public NaturalCountTrial(UUID collector, Location location, int result) throws IllegalArgumentException {
-        super(collector, location, result);
+    public NaturalCountTrial(UUID collector, long timestamp, Location location, int result) throws IllegalArgumentException {
+        super(collector, timestamp, location, result);
         if (result < 0) {
             throw new IllegalArgumentException();
         }

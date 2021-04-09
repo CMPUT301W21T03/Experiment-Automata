@@ -3,6 +3,7 @@ package com.example.experiment_automata.backend.trials;
 import android.location.Location;
 
 import java.io.Serializable;
+import java.security.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -17,38 +18,28 @@ public abstract class Trial<T> implements Serializable {
     private final UUID userId;
     private final UUID trialId;
     private Location location;
-    private Date date;
+    private long timestamp;
     private boolean ignore;
     protected T result;
 
-    public Trial(UUID userId, String dateString, T result) {
+    public Trial(UUID userId, long timestamp, T result) {
         this.userId = userId;
-        if (dateString != "none") {
-            try {
-                this.date = new SimpleDateFormat("dd-MMM-yyy HH:mm:ss").parse(dateString);
-            } catch (Exception e) {}
-        }
-        if (this.date == null) {
-            this.date = new Date();
-        }
         this.ignore = false;
         this.result = result;
         this.trialId = UUID.randomUUID();
+        if (timestamp == 0) {
+            this.timestamp = new Date().getTime();
+        }
     }
 
-    public Trial(UUID userId, String dateString,  Location location, T result) {
+    public Trial(UUID userId, long timestamp,  Location location, T result) {
         this.userId = userId;
         this.location = location;
         this.ignore = false;
         this.result = result;
         this.trialId = UUID.randomUUID();
-        if (dateString != "none") {
-            try {
-                this.date = new SimpleDateFormat("dd-MMM-yyy HH:mm:ss").parse(dateString);
-            } catch (Exception e) {}
-        }
-        if (this.date == null) {
-            this.date = new Date();
+        if (timestamp == 0) {
+            this.timestamp = new Date().getTime();
         }
     }
 
@@ -74,7 +65,7 @@ public abstract class Trial<T> implements Serializable {
      * @return
      *  date of the trial
      */
-    public Date getDate() { return date; }
+    public long getTimestamp() { return timestamp; }
 
     /**
      * Set whether to ignore the trial result in statistic calculations.

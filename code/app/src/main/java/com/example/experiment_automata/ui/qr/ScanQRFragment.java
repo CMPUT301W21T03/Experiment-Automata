@@ -105,16 +105,16 @@ public class ScanQRFragment extends Fragment {
             if (experiment.isPublished() && experiment.isActive()){
                 switch (qrCode.getType()){
                     case BinomialTrial:
-                        trial = new BinomialTrial(user.getUserId(), "none", (Boolean) qrCode.getValue());
+                        trial = new BinomialTrial(user.getUserId(), 0, (Boolean) qrCode.getValue());
                         break;
                     case CountTrial:
-                        trial = new CountTrial(user.getUserId(), "none");
+                        trial = new CountTrial(user.getUserId(), 0);
                         break;
                     case NaturalCountTrial:
-                        trial = new NaturalCountTrial(user.getUserId(), "none", (Integer) qrCode.getValue());
+                        trial = new NaturalCountTrial(user.getUserId(), 0, (Integer) qrCode.getValue());
                         break;
                     case MeasurementTrial:
-                        trial = new MeasurementTrial(user.getUserId(), "none", (Float) qrCode.getValue());
+                        trial = new MeasurementTrial(user.getUserId(), 0, (Float) qrCode.getValue());
                         break;
                 }
                 if (trial != null) {
@@ -148,16 +148,16 @@ public class ScanQRFragment extends Fragment {
                 experiment =  experimentManager.getExperiment(barcodeExperimentID);
                 switch (barcodeReference.getType()){
                     case Binomial:
-                        trial = new BinomialTrial(user.getUserId(), "none", barcodeLocation,(Boolean) barcodeReference.getResult());
+                        trial = new BinomialTrial(user.getUserId(), 0, barcodeLocation,(Boolean) barcodeReference.getResult());
                         break;
                     case Count:
-                        trial = new CountTrial(user.getUserId(), "none", barcodeLocation);
+                        trial = new CountTrial(user.getUserId(), 0, barcodeLocation);
                         break;
                     case NaturalCount:
-                        trial = new NaturalCountTrial(user.getUserId(), "none", barcodeLocation, (Integer) barcodeReference.getResult());
+                        trial = new NaturalCountTrial(user.getUserId(), 0, barcodeLocation, (Integer) barcodeReference.getResult());
                         break;
                     case Measurement:
-                        trial = new MeasurementTrial(user.getUserId(), "none", barcodeLocation, (Float) barcodeReference.getResult());
+                        trial = new MeasurementTrial(user.getUserId(), 0, barcodeLocation, (Float) barcodeReference.getResult());
                         break;
                 }
                 parentActivity.addTrial(experiment, trial);

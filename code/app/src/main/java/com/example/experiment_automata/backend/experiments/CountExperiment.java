@@ -76,8 +76,8 @@ public class CountExperiment extends Experiment<CountTrial> {
         long offset = 0;
         int i = 0;
         for (CountTrial trial : results ) {
-            if (i == 0) offset = trial.getDate().getTime();
-            data.add(new Entry(trial.getDate().getTime() - offset, ++i));
+            if (i == 0) offset = trial.getTimestamp();
+            data.add(new Entry(trial.getTimestamp() - offset, ++i));
         }
         return data;
     }

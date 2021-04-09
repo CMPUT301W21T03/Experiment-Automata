@@ -108,9 +108,9 @@ public class MeasurementExperiment extends Experiment<MeasurementTrial> {
             if (!trial.isIgnored()) {
                 if (first) {
                     first = false;
-                    offset = trial.getDate().getTime();
+                    offset = trial.getTimestamp();
                 }
-                data.add(new Entry(trial.getDate().getTime() - offset, trial.getResult()));
+                data.add(new Entry(trial.getTimestamp() - offset, trial.getResult()));
             }
         }
         return data;

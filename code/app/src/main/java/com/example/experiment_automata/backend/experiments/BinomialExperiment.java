@@ -95,9 +95,9 @@ public class BinomialExperiment extends Experiment<BinomialTrial> {
             if (!trial.isIgnored()) {
                 if (first) {
                     first = false;
-                    offset = trial.getDate().getTime();
+                    offset = trial.getTimestamp();
                 }
-                data.add(new Entry(trial.getDate().getTime() - offset, trial.getResult() ? 1 : 0));
+                data.add(new Entry(trial.getTimestamp(), - offset, trial.getResult() ? 1 : 0));
             }
         }
         return data;

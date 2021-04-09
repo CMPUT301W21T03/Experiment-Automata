@@ -70,7 +70,7 @@ public class AddBinomialTrialFragment extends Fragment {
         });
         MapView currentMapDisplay = root.findViewById(R.id.add_binomial_trial_map_view);
 
-        parentActivity.currentTrial = new BinomialTrial(parentActivity.loggedUser.getUserId(), "none", false);
+        parentActivity.currentTrial = new BinomialTrial(parentActivity.loggedUser.getUserId(), 0, false);
         MapUtility utility = new MapUtility(experiment, currentMapDisplay, getContext(), parentActivity, parentActivity.currentTrial);
         utility.setRevertBack(root.findViewById(R.id.add_binomial_trial_revert_loc_bttn));
         utility.run();

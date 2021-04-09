@@ -311,8 +311,7 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
                 singleResult.put("latitude", trial.getLocation().getLatitude());
                 singleResult.put("longitude", trial.getLocation().getLongitude());
             }
-            DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
-            singleResult.put("date", dateFormat.format(trial.getDate()));
+            singleResult.put("date", trial.getTimestamp());
             singleResult.put("ignore", trial.isIgnored());
             singleResult.put("result", trial.getResult());
             resultsData.put(trial.getTrialId().toString(),singleResult);

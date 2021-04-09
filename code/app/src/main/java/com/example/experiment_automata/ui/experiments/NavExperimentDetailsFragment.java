@@ -2,7 +2,6 @@ package com.example.experiment_automata.ui.experiments;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,7 +77,6 @@ public class NavExperimentDetailsFragment extends Fragment {
         if (getArguments() != null) {
             experimentStringId = getArguments().getString(CURRENT_EXPERIMENT_ID);
             parentActivity = (NavigationActivity) requireActivity();
-            assert parentActivity != null;
             parentActivity.setCurrentFragment(this);
             parentActivity.setCurrentScreen(Screen.ExperimentDetails);
             experiment = parentActivity.getExperimentManager()
@@ -314,7 +312,6 @@ public class NavExperimentDetailsFragment extends Fragment {
         requireActivity().findViewById(R.id.fab_button).setVisibility(View.VISIBLE);
         NavigationActivity parentActivity = (NavigationActivity) requireActivity();
         Bundle questionBundle = new Bundle();
-        assert parentActivity != null;
         questionBundle.putSerializable(QuestionDisplay.QUESTION_EXPERIMENT,
                 parentActivity.getExperimentManager()
                     .getAtUUIDDescription(UUID.fromString(experimentStringId)));

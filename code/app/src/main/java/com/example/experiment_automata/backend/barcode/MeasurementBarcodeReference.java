@@ -5,6 +5,7 @@ import android.location.Location;
 import com.example.experiment_automata.backend.experiments.ExperimentType;
 
 import java.util.UUID;
+
 /**
  * Role/Pattern:
  *      Reference to a barcode and Measurement Trial pair

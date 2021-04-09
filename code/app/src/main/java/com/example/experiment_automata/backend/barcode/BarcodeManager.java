@@ -1,18 +1,12 @@
 package com.example.experiment_automata.backend.barcode;
 
 import android.location.Location;
-import android.util.Log;
-
-import androidx.annotation.NonNull;
 
 import com.example.experiment_automata.backend.DataBase;
 import com.example.experiment_automata.backend.experiments.ExperimentType;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -93,38 +87,35 @@ public class BarcodeManager {
         DataBase database = DataBase.getInstance();
         FirebaseFirestore db = database.getFireStore();
         CollectionReference barcodeCollection = db.collection("barcodes");
-        barcodeCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()){
-                    for (QueryDocumentSnapshot document : task.getResult()){
-                        BarcodeReference<?> currentBarcodeRef;
-                        UUID experimentId = UUID.fromString((String)document.get("experiment-id"));
-                        String barcode = document.getId();
-                        ExperimentType type = ExperimentType.valueOf((String)document.get("type"));
+        barcodeCollection.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+                for (QueryDocumentSnapshot document : task.getResult()){
+                    BarcodeReference<?> currentBarcodeRef;
+                    UUID experimentId = UUID.fromString((String)document.get("experiment-id"));
+                    String barcode = document.getId();
+                    ExperimentType type = ExperimentType.valueOf((String)document.get("type"));
 
-                        switch(type){
-                            case Binomial:
-                                boolean boolVal = (boolean) document.get("result");
-                                currentBarcodeRef = new BinomialBarcodeReference(barcode,experimentId,ExperimentType.Binomial,boolVal,locationFromPairing(document));
-                                break;
-                            case Count:
-                                currentBarcodeRef = new CountBarcodeReference(barcode,experimentId,ExperimentType.Count,locationFromPairing(document));
-                                break;
-                            case Measurement:
-                                float measVal = (float) ((double) document.get("result"));
-                                currentBarcodeRef = new MeasurementBarcodeReference(barcode,experimentId,ExperimentType.Measurement,measVal,locationFromPairing(document));
-                                break;
-                            case NaturalCount:
-                                int natVal = (int) ((long) document.get("result"));
-                                currentBarcodeRef = new NaturalBarcodeReference(barcode,experimentId,ExperimentType.NaturalCount,natVal,locationFromPairing(document));
-                                break;
-                            default:
-                                //something went wrong when filling the database!
-                                currentBarcodeRef = null;
-                        }
-                        barcodes.put(barcode,currentBarcodeRef);
+                    switch(type){
+                        case Binomial:
+                            boolean boolVal = (boolean) document.get("result");
+                            currentBarcodeRef = new BinomialBarcodeReference(barcode,experimentId,ExperimentType.Binomial,boolVal,locationFromPairing(document));
+                            break;
+                        case Count:
+                            currentBarcodeRef = new CountBarcodeReference(barcode,experimentId,ExperimentType.Count,locationFromPairing(document));
+                            break;
+                        case Measurement:
+                            float measVal = (float) ((double) document.get("result"));
+                            currentBarcodeRef = new MeasurementBarcodeReference(barcode,experimentId,ExperimentType.Measurement,measVal,locationFromPairing(document));
+                            break;
+                        case NaturalCount:
+                            int natVal = (int) ((long) document.get("result"));
+                            currentBarcodeRef = new NaturalBarcodeReference(barcode,experimentId,ExperimentType.NaturalCount,natVal,locationFromPairing(document));
+                            break;
+                        default:
+                            //something went wrong when filling the database!
+                            currentBarcodeRef = null;
                     }
+                    barcodes.put(barcode,currentBarcodeRef);
                 }
             }
         });

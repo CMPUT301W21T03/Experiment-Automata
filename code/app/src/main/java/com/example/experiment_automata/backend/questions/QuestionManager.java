@@ -1,7 +1,5 @@
 package com.example.experiment_automata.backend.questions;
 
-import android.util.Log;
-
 import com.example.experiment_automata.backend.DataBase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;

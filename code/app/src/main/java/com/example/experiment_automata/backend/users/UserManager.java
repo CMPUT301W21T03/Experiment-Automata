@@ -1,7 +1,5 @@
 package com.example.experiment_automata.backend.users;
 
-import android.util.Log;
-
 import com.example.experiment_automata.backend.DataBase;
 import com.example.experiment_automata.backend.events.OnEventListener;
 import com.example.experiment_automata.backend.events.UpdateEvent;

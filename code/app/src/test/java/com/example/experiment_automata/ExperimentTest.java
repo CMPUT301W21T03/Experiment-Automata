@@ -165,6 +165,18 @@ public class ExperimentTest {
     }
 
     @Test
+    public void region() {
+        String region = "Canada";
+        Experiment<?> experiment = ExperimentMaker.makeExperiment(ExperimentType.Count,
+                description, 0, false, false, owner, region, false);
+        assert experiment != null;
+        assertEquals(region, experiment.getRegion());
+        region = "Return to monke";
+        experiment.setRegion(region);
+        assertEquals(region, experiment.getRegion());
+    }
+
+    @Test
     public void requireLocation() {
         Experiment<?> experiment = ExperimentMaker.makeExperiment(ExperimentType.Count,
                 "Experiment", 0, false, false, owner, region, false);

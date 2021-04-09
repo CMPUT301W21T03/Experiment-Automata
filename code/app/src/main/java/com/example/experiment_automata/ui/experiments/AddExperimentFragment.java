@@ -54,9 +54,9 @@ public class AddExperimentFragment extends DialogFragment {
      */
     public interface OnFragmentInteractionListener {
         void onOkPressed(Experiment<?> newExperiment);
-        void onOKPressedEdit(String experimentDescription, int experimentTrials,
-                             boolean experimentLocation, boolean experimentNewResults,
-                             Experiment<?> currentExperiment);
+        void onOKPressedEdit(String experimentDescription, String experimentRegion,
+                             int experimentTrials, boolean experimentLocation,
+                             boolean experimentNewResults, Experiment<?> currentExperiment);
     }
 
     /**
@@ -113,6 +113,7 @@ public class AddExperimentFragment extends DialogFragment {
             (view.findViewById(R.id.experiment_require_location_switch)).setVisibility(View.GONE);
 
             description.setText(currentExperiment.getDescription());
+            region.setText(currentExperiment.getRegion());
             requireLocation.setChecked(currentExperiment.isRequireLocation());
             acceptNewResults.setChecked(currentExperiment.isActive());
             minTrials.setText(currentExperiment.getMinTrials().toString());
@@ -121,6 +122,7 @@ public class AddExperimentFragment extends DialogFragment {
                     .setNegativeButton("Cancel", null)
                     .setPositiveButton("Ok", (dialog, which) -> {
                         String experimentDescription = description.getText().toString();
+                        String experimentRegion = region.getText().toString();
                         // method of reading input as integer found on Stack Overflow from CommonsWare, Feb 4 2011
                         //https://stackoverflow.com/questions/4903515/how-do-i-return-an-int-from-edittext-android
                         String experimentTrialsString = minTrials.getText().toString();
@@ -133,8 +135,8 @@ public class AddExperimentFragment extends DialogFragment {
                             experimentTrials = Integer.parseInt(experimentTrialsString);
                         }
                         // Assuming you can't change the type of an experiment
-                        listener.onOKPressedEdit(experimentDescription, experimentTrials,
-                                experimentLocation, experimentNewResults, currentExperiment);
+                        listener.onOKPressedEdit(experimentDescription, experimentRegion,
+                                experimentTrials, experimentLocation, experimentNewResults, currentExperiment);
                     }).create();
         } else {
             // build the dialog and give instructions for its dismissal

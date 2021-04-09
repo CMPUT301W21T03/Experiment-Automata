@@ -301,10 +301,11 @@ public class NavigationActivity extends AppCompatActivity implements
      *  The current experiment being modified
      */
     @Override
-    public void onOKPressedEdit(String experimentDescription, int experimentTrials,
-                                boolean experimentLocation, boolean experimentNewResults,
-                                Experiment<?> currentExperiment) {
+    public void onOKPressedEdit(String experimentDescription, String experimentRegion,
+                                int experimentTrials, boolean experimentLocation,
+                                boolean experimentNewResults, Experiment<?> currentExperiment) {
         currentExperiment.setDescription(experimentDescription);
+        currentExperiment.setRegion(experimentRegion);
         currentExperiment.setMinTrials(experimentTrials);
         currentExperiment.setRequireLocation(experimentLocation);
         currentExperiment.setActive(experimentNewResults);

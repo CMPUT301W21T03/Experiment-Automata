@@ -29,7 +29,7 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
     private boolean requireLocation;
     private final ExperimentType type;
     protected Collection<T> results;
-    private final String region;
+    private String region;
     private final Boolean enableFirestore;
 
     /**
@@ -174,6 +174,15 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
      */
     public void setDescription(String description) {
         this.description = description;
+        postExperimentToFirestore();
+    }
+
+    /**
+     * Set the region of the experiment
+     * @param region the region
+     */
+    public void setRegion(String region) {
+        this.region = region;
         postExperimentToFirestore();
     }
 

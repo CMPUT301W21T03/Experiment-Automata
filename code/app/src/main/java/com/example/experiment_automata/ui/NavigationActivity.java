@@ -305,6 +305,7 @@ public class NavigationActivity extends AppCompatActivity implements
                                 int experimentTrials, boolean experimentLocation,
                                 boolean experimentNewResults, Experiment<?> currentExperiment) {
         currentExperiment.setDescription(experimentDescription);
+        currentExperiment.setRegion(experimentRegion);
         currentExperiment.setMinTrials(experimentTrials);
         currentExperiment.setRequireLocation(experimentLocation);
         currentExperiment.setActive(experimentNewResults);

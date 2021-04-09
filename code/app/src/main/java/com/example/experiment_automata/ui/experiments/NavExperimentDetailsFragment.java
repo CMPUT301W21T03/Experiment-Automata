@@ -212,6 +212,13 @@ public class NavExperimentDetailsFragment extends Fragment {
 
         toggleSubscribeButton();
 
+        // trial results
+        for (Fragment fragment : getChildFragmentManager().getFragments()) {
+            if (fragment instanceof TrialsFragment) {
+                ((TrialsFragment) fragment).updateView();
+                break;
+            }
+        }
 
         if (current.getSize() >= 3) {
             float[] quartiles = current.getQuartiles();
@@ -264,14 +271,6 @@ public class NavExperimentDetailsFragment extends Fragment {
             resultsPlot.setTouchEnabled(true);
             resultsPlot.getDescription().setEnabled(false);
             resultsPlot.invalidate();
-
-            // trial results
-            for (Fragment fragment : getChildFragmentManager().getFragments()) {
-                if (fragment instanceof TrialsFragment) {
-                    ((TrialsFragment) fragment).updateView();
-                    break;
-                }
-            }
         } else {
             textViewMean.setText(R.string.no_trials);
             textViewMedian.setText(R.string.no_trials);

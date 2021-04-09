@@ -49,7 +49,7 @@ public class ExperimentTest {
                 acceptNewResults, owner, region, enableFirestoreSupport)
         );
         assertEquals((Integer) 0, experiment.getSize());
-        CountTrial trial = new CountTrial(owner, 0);
+        CountTrial trial = new CountTrial(owner, false, 0);
         experiment.recordTrial(trial);
         assertEquals((Integer) 1, experiment.getSize());
     }
@@ -91,10 +91,10 @@ public class ExperimentTest {
         CountExperiment experiment = (CountExperiment) ExperimentMaker.makeExperiment(ExperimentType.Count,
                 "Count Experiment", 0, false, true, owner, region, false);
         assert experiment != null;
-        experiment.recordTrial(new CountTrial(owner, 0));
+        experiment.recordTrial(new CountTrial(owner, false, 0));
         experiment.setActive(false);
         assertFalse(experiment.isActive());
-        assertThrows(IllegalStateException.class, () -> experiment.recordTrial(new CountTrial(owner, 0)));
+        assertThrows(IllegalStateException.class, () -> experiment.recordTrial(new CountTrial(owner, false, 0)));
     }
 
     @Test
@@ -102,10 +102,10 @@ public class ExperimentTest {
         NaturalCountExperiment experiment = (NaturalCountExperiment) ExperimentMaker.makeExperiment(ExperimentType.NaturalCount,
                 "Count Experiment", 0, false, true, owner, region, false);
         assert experiment != null;
-        experiment.recordTrial(new NaturalCountTrial(owner, 0, 1));
+        experiment.recordTrial(new NaturalCountTrial(owner, false, 0, 1));
         experiment.setActive(false);
         assertFalse(experiment.isActive());
-        assertThrows(IllegalStateException.class, () -> experiment.recordTrial(new NaturalCountTrial(owner, 0, 2)));
+        assertThrows(IllegalStateException.class, () -> experiment.recordTrial(new NaturalCountTrial(owner, false, 0, 2)));
     }
 
     @Test
@@ -113,10 +113,10 @@ public class ExperimentTest {
         BinomialExperiment experiment = (BinomialExperiment) ExperimentMaker.makeExperiment(ExperimentType.Binomial,
                 "Count Experiment", 0, false, true, owner, region, false);
         assert experiment != null;
-        experiment.recordTrial(new BinomialTrial(owner, 0, true));
+        experiment.recordTrial(new BinomialTrial(owner, false, 0, true));
         experiment.setActive(false);
         assertFalse(experiment.isActive());
-        assertThrows(IllegalStateException.class, () -> experiment.recordTrial(new BinomialTrial(owner, 0, false)));
+        assertThrows(IllegalStateException.class, () -> experiment.recordTrial(new BinomialTrial(owner, false, 0, false)));
     }
 
     @Test
@@ -124,10 +124,10 @@ public class ExperimentTest {
         MeasurementExperiment experiment = (MeasurementExperiment) ExperimentMaker.makeExperiment(ExperimentType.Measurement,
                 "Count Experiment", 0, false, true, owner, region, false);
         assert experiment != null;
-        experiment.recordTrial(new MeasurementTrial(owner, 0, 3));
+        experiment.recordTrial(new MeasurementTrial(owner, false, 0, 3));
         experiment.setActive(false);
         assertFalse(experiment.isActive());
-        assertThrows(IllegalStateException.class, () -> experiment.recordTrial(new MeasurementTrial(owner, 0, 42.0f)));
+        assertThrows(IllegalStateException.class, () -> experiment.recordTrial(new MeasurementTrial(owner, false, 0, 42.0f)));
     }
 
     @Test

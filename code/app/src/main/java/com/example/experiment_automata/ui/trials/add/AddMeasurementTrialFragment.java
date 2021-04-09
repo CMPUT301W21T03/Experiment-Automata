@@ -80,7 +80,7 @@ public class AddMeasurementTrialFragment extends Fragment {
         });
         MapView currentMapDisplay = root.findViewById(R.id.measurement_trial_experiment_map_view);
 
-        parentActivity.currentTrial = new MeasurementTrial(parentActivity.loggedUser.getUserId(), 0, 0);
+        parentActivity.currentTrial = new MeasurementTrial(parentActivity.loggedUser.getUserId(), false, 0, 0);
         MapUtility utility = new MapUtility(experiment, currentMapDisplay, getContext(), parentActivity, parentActivity.currentTrial);
         utility.setRevertBack(root.findViewById(R.id.add_measurment_trial_revert_loc_bttn));
         utility.run();

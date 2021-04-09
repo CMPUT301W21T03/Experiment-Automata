@@ -12,11 +12,6 @@
         android:minWidth="0dp"
         android:minHeight="0dp" />
 
-    <Space
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/trial_element_height"
-        android:layout_weight="0" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

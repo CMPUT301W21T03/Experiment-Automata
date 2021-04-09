@@ -12,7 +12,6 @@ import java.util.UUID;
 /**
  * Role/Pattern:
  *      Holds the information needed to maintain a measurement experiment
- *
  */
 public class MeasurementExperiment extends Experiment<MeasurementTrial> {
     /**

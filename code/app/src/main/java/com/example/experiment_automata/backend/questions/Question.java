@@ -14,9 +14,7 @@ import java.util.UUID;
 
 /**
  * Role/Pattern:
- *
  *       The goal of this class is to maintain and hold the question data.
- *
  */
 public class Question implements Serializable, Comparable<Question> {
     private String question;

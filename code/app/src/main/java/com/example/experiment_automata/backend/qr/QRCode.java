@@ -13,7 +13,6 @@ import java.util.UUID;
  * Role/Pattern:
  *     Class representing a QR code through it's image and content fields.
  *     format is oulined here: https://github.com/CMPUT301W21T03/Experiment-Automata/wiki/Custom-QR-Code-Content-Format
- *
  */
 public abstract class QRCode<T> {
     //Header for custom QR codes

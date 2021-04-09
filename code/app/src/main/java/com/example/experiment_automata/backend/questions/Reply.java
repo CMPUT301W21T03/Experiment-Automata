@@ -12,9 +12,7 @@ import java.util.UUID;
 
 /**
  * Role/Pattern:
- *
  *       The goal of this class is to maintain a questions replies
- *
  */
 public class Reply implements Serializable, Comparable<Reply> {
     private final String reply;

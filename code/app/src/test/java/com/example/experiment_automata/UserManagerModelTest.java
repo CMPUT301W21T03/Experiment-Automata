@@ -12,10 +12,10 @@ import java.util.UUID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+/**
+ * Role: Testing the UserManager class
+ */
 public class UserManagerModelTest {
-    /**
-     * Role: Testing the UserManager class
-     */
     UserManager userManager;
 
     @After

@@ -5,7 +5,6 @@ import java.util.UUID;
 /**
  * Role/Pattern:
  *     Class that decodes scanned QR codes and creates a QRCode object from the given qr codes content
- *
  */
 public class QRMaker {
     /**

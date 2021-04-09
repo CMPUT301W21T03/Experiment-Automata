@@ -7,9 +7,7 @@ import java.util.UUID;
 /**
  * Role/Pattern:
  *     Holds the information needed to maintain and track a measurement trial
- *
  */
-
 public class MeasurementTrial extends Trial<Float> {
     public MeasurementTrial(UUID collector, float result) {
         super(collector, result);

@@ -17,7 +17,6 @@ import java.util.UUID;
 /**
  * Role/Pattern:
  *       Base experiment class: the building blocks of all experiment types
- *
  */
 public abstract class Experiment<T extends Trial<?>> implements Serializable, StatSummary, Graphable, Comparable<Experiment<?>> {
     private String description;

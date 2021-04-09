@@ -8,7 +8,6 @@ import java.util.List;
 /**
  * Role/Pattern:
  *     provides contract for graphs
- *
  */
 public interface Graphable {
     /**

@@ -12,9 +12,7 @@ import com.example.experiment_automata.R;
 
 /**
  * Role/Pattern:
- *
  *       This class inflates the histogram fragment.
- *
  */
 public class HistogramFragment extends Fragment {
     @Override

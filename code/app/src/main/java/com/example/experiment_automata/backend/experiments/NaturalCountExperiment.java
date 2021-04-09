@@ -12,7 +12,6 @@ import java.util.UUID;
 /**
  * Role/Pattern:
  *     Holds the information needed to maintain a natural count experiment
- *
  */
 public class NaturalCountExperiment extends Experiment<NaturalCountTrial> {
     /**

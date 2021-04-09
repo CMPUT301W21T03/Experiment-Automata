@@ -32,9 +32,6 @@ import static org.junit.Assert.assertNotEquals;
  *  2. us.02.02.01
  *  3. us.02.03.01
  *
- * Known Issues:
- *  1. Not yet dealing with the owner/experimenter access values
- *
  */
 public class QuestionsUserStoriesTests {
     private Solo solo;

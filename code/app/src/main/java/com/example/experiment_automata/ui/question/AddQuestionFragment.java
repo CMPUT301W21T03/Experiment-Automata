@@ -20,17 +20,10 @@ import java.util.UUID;
 
 /**
  * Role/Pattern:
- *
  *       This class provides a dialog that will return the string inputted for a question
  *       If you want to use a question, pass true into the type parameter
  *       If you want to use a reply, pass false into the type parameter
  *       You should pass an empty string as the first parameter unless editing a question/reply
- *
- * Known Issue:
- *
- *      1. currently is only designed to create questions
- *      2. will need to add the ability to create replies
- *      3. not sure if we need the ability to edit questions/replies
  */
 
 // note for developing:

@@ -35,7 +35,6 @@ import java.util.ArrayList;
  *     asked about the experiment.
  *
  *  Citation:
- *
  *      1. Inspired by Abdul Ali Bangash, "Lab 3 Instructions - Custom List", 2021-02-04, Public Domain,
  *      https://eclass.srv.ualberta.ca/pluginfile.php/6713985/mod_resource/content/1/Lab%203%20instructions%20-%20CustomList.pdf
  *

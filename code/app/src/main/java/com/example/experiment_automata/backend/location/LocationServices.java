@@ -17,7 +17,6 @@ import androidx.annotation.NonNull;
  *          License:   CC BY-SA 3.0
  *          Full Source: https://stackoverflow.com/questions/1513485/how-do-i-get-the-current-gps-location-programmatically-in-android
  */
-
 public class LocationServices implements LocationListener {
     public Location currentLocation;
 

@@ -7,15 +7,9 @@ import com.github.mikephil.charting.data.Entry;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
 /**
  * Role/Pattern:
  *      Holds the information needed to maintain a count experiment
- *
- * Known Issue:
- *
- *      1. stat calculation implementation is not final awaiting input from customer on
- *         how count experiments should analyzed.
  */
 public class CountExperiment extends Experiment<CountTrial> {
     /**

@@ -355,12 +355,9 @@ public class NavigationActivity extends AppCompatActivity implements
     @Override
     public void onOkPressedQuestion(String question, UUID experimentId) {
         Question newQuestion = new Question(question, loggedUser.getUserId(), experimentId);
-        Log.d("question id", newQuestion.getExperimentId().toString());
         questionManager.addQuestion(experimentId, newQuestion);
 
         ((QuestionDisplay) currentFragment).updateQuestionsList();
-
-        Log.d("current screen", currentScreen + "");
     }
 
     /**
@@ -376,8 +373,6 @@ public class NavigationActivity extends AppCompatActivity implements
         questionManager.addReply(questionId, newReply);
 
         ((QuestionDisplay) currentFragment).updateQuestionsList();
-        Log.d("Reply is ", reply);
-        Log.d("current screen", currentScreen + "");
     }
 
     /**

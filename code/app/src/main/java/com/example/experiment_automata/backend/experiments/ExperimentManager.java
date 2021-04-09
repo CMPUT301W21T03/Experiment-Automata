@@ -258,13 +258,11 @@ public class ExperimentManager {
         getFromFirestoreFromQuery(experimentCollection.get());
         experimentCollection.addSnapshotListener((snapshot, error) -> {
             if (error != null) {
-                Log.w("FIRESTORE", error);
                 return;
             }
             if (snapshot != null && !snapshot.getMetadata().hasPendingWrites()) {
                 for (QueryDocumentSnapshot document : snapshot) {
                     updateFromDocumentSnapshot(document);
-                    Log.d("FIRESTORE", (String) document.get("description"));
                 }
                 updateEvent.callback();
             }
@@ -280,11 +278,7 @@ public class ExperimentManager {
             if (task.isSuccessful()){
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     updateFromDocumentSnapshot(document);
-                    Log.d("FIRESTORE", (String) document.get("description"));
                 }
-            } else {
-                //not able to query all from firestore
-                Log.d("FIRESTORE", "Unable to pull experiments from firestore");
             }
         });
     }
@@ -348,7 +342,6 @@ public class ExperimentManager {
                     }
                     break;
             }
-            Log.d("FIRESTORE", experiment.toString());
             experiment.recordTrial(trial, true);
         }
     }

@@ -85,7 +85,6 @@ public class AddBinomialTrialFragment extends Fragment {
             return;
         }
         String rawQRContent =  data.getStringExtra("QRCONTENTRAW");
-        Log.d("ACTIVITYRESULT","val " + data.getStringExtra("QRCONTENTRAW"));
         if (data.getBooleanExtra("IS_QR",true)) {
         //if is QR
             QRMaker qrMaker = new QRMaker();
@@ -94,17 +93,14 @@ public class AddBinomialTrialFragment extends Fragment {
                 qrCode = qrMaker.decodeQRString(rawQRContent);
                 if (qrCode.getType() == QRType.BinomialTrial) {
                     checkBox.setChecked(((BinomialQRCode) qrCode).getValue());
-                    Log.d("SCANNER", "Scanned QR Successfully!");
                     Snackbar.make(root, "Scanned QR Successfully!", Snackbar.LENGTH_LONG).show();
 
                 } else {
                     //send error tray message
-                    Log.d("SCANNER", "Scanned QR was of incorrect type " + qrCode.getType().toString());
                     Snackbar.make(root, "Scanned QR was of incorrect type", Snackbar.LENGTH_LONG).show();
                 }
             } catch (QRMalformattedException qrMalE) {
                 //malformatted QR
-                Log.d("SCANNER", "Scanned Malformatted QR");
                 Snackbar.make(root, "Scanned QR was not an Experiment-Automata QR Code", Snackbar.LENGTH_LONG).show();
             }
         } else {

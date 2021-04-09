@@ -66,9 +66,7 @@ public class ExperimentListAdapter extends ArrayAdapter<Experiment<?>> {
             for (int i = 0; i < experiments.size(); i++) {
                 UUID userId = experiment.get(i).getOwnerId();
                 String username = manager.getSpecificUser(userId).getInfo().getName();
-                Log.wtf("Update listener username", username);
                 if (owners.containsKey(i)) {
-                    Log.wtf("Owner View", Objects.requireNonNull(owners.get(i)).toString());
                     Objects.requireNonNull(owners.get(i)).setText(username);
                 }
             }

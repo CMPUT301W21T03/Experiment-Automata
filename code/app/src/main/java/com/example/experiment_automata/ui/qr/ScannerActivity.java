@@ -35,10 +35,7 @@ public class ScannerActivity extends AppCompatActivity {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
         if (result != null) {
-            if (result.getContents() == null) {
-                Log.d("SCANNER", "Canceled scan");
-            } else {
-                Log.d("SCANNER","Scanned: " + result.getContents() + " of type " + result.getContents().getClass().getName());
+            if (result.getContents() != null) {
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("QRCONTENTRAW", result.getContents());
                 resultIntent.putExtra("IS_QR", result.getFormatName().equals(IntentIntegrator.QR_CODE));

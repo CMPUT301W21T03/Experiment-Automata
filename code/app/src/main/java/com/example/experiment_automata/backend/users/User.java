@@ -120,9 +120,7 @@ public class User implements Serializable {
         DataBase dataBase = DataBase.getInstance();
         FirebaseFirestore db = dataBase.getFireStore();
         db.collection("users").document(this.userId.toString())
-                .set(userInfo)
-                .addOnSuccessListener(aVoid -> Log.d(TAG, "User info successfully updated!"))
-                .addOnFailureListener(e -> Log.w(TAG, "Error writing document", e));
+                .set(userInfo);
     }
 
     /**

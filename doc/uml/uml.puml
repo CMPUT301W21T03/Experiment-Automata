@@ -378,4 +378,6 @@ BarcodeReference o-- ExperimentType
 
 UserManager o-- "1" UpdateEvent 
 
+ExperimentMaker o-- "1" Experiment: Creates 
+
 @enduml

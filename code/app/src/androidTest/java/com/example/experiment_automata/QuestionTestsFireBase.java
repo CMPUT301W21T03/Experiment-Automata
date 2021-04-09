@@ -37,7 +37,7 @@ public class QuestionTestsFireBase {
     @Before
     public void setup() {
         dataBase.getFireStore().disableNetwork();
-        solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.requireActivity());
+        solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
         currentTestingActivity = (NavigationActivity) solo.getCurrentActivity();
 
         userId = UUID.randomUUID();

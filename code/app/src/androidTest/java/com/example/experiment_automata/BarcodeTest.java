@@ -37,7 +37,7 @@ public class BarcodeTest {
 
     @Before
     public void init(){
-        solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.requireActivity());
+        solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
         experimentId = UUID.randomUUID();
         FirebaseApp.initializeApp(InstrumentationRegistry.getInstrumentation().getTargetContext());
     }

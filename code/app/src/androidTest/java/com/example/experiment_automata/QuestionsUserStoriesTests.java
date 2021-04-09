@@ -228,20 +228,18 @@ public class QuestionsUserStoriesTests {
     public void testingQuestionLinksToProfile() {
         View replyButton = null;
         View questionButton = null;
-
+        makeExperiment("GUI Test Experiment");
         solo.clickOnText("GUI Test Experiment");
+        solo.sleep(1000);
         questionButton = solo.getView(R.id.nav_fragment_experiment_detail_view_qa_button);
         solo.clickOnView(questionButton);
+        solo.sleep(1000);
         solo.clickOnView(addExperimentButton);
+        solo.sleep(1000);
         View questionBox = solo.getView(R.id.frag_add_edit_question_input_box_diolog);
         solo.enterText((EditText)questionBox,"Test Question");
         solo.clickOnText("Ok");
-
-        replyButton = solo.getView(R.id.main_question_display_reply_button);
-        solo.clickOnView(replyButton);
-        questionBox = solo.getView(R.id.frag_add_edit_question_input_box_diolog);
-        solo.enterText((EditText)questionBox,"Test reply");
-        solo.clickOnText("Ok");
+        solo.sleep(1000);
 
         // check linking to profile
         View questionUsername = solo.getView(R.id.main_question_display_user);

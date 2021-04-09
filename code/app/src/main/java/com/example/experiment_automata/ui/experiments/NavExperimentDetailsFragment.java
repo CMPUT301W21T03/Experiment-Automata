@@ -2,7 +2,6 @@ package com.example.experiment_automata.ui.experiments;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.experiment_automata.R;
-import com.example.experiment_automata.backend.events.OnEventListener;
 import com.example.experiment_automata.backend.experiments.Experiment;
 import com.example.experiment_automata.backend.qr.QRType;
 import com.example.experiment_automata.ui.NavigationActivity;
@@ -216,7 +214,6 @@ public class NavExperimentDetailsFragment extends Fragment {
         }
 
         toggleSubscribeButton();
-
 
 
         if (current.getSize() >= 3) {

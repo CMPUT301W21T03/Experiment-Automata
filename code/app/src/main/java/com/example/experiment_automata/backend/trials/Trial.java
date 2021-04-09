@@ -29,6 +29,8 @@ public abstract class Trial<T> implements Serializable {
         this.trialId = UUID.randomUUID();
         if (timestamp == 0) {
             this.timestamp = new Date().getTime();
+        } else {
+            this.timestamp = timestamp;
         }
     }
 
@@ -40,6 +42,8 @@ public abstract class Trial<T> implements Serializable {
         this.trialId = UUID.randomUUID();
         if (timestamp == 0) {
             this.timestamp = new Date().getTime();
+        } else {
+            this.timestamp = timestamp;
         }
     }
 

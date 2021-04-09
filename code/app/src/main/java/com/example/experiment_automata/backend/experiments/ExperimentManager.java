@@ -307,16 +307,16 @@ public class ExperimentManager {
                     Boolean binResult = (Boolean) currentTrialMap.get("result");
                     assert binResult != null;
                     if (experiment.isRequireLocation()) {
-                        trial = new BinomialTrial(ownerId, Long.parseLong((String) currentTrialMap.get("date")), locationFromTrialHash(currentTrialMap), binResult);
+                        trial = new BinomialTrial(ownerId, (long) currentTrialMap.get("date"), locationFromTrialHash(currentTrialMap), binResult);
                     } else {
-                        trial = new BinomialTrial(ownerId, Long.parseLong((String) currentTrialMap.get("date")), binResult);
+                        trial = new BinomialTrial(ownerId, (long) currentTrialMap.get("date"), binResult);
                     }
                     break;
                 case Count:
                     if (experiment.isRequireLocation()) {
-                        trial = new CountTrial(ownerId, Long.parseLong((String) currentTrialMap.get("date")), locationFromTrialHash(currentTrialMap));
+                        trial = new CountTrial(ownerId, (long) currentTrialMap.get("date"), locationFromTrialHash(currentTrialMap));
                     } else {
-                        trial = new CountTrial(ownerId, Long.parseLong((String) currentTrialMap.get("date")));
+                        trial = new CountTrial(ownerId, (long) currentTrialMap.get("date"));
                     }
                     break;
                 case NaturalCount:
@@ -324,9 +324,9 @@ public class ExperimentManager {
                     assert longRes != null;
                     int natResult = longRes.intValue();
                     if (experiment.isRequireLocation()) {
-                        trial = new NaturalCountTrial(ownerId, Long.parseLong((String) currentTrialMap.get("date")), locationFromTrialHash(currentTrialMap), natResult);
+                        trial = new NaturalCountTrial(ownerId, (long) currentTrialMap.get("date"), locationFromTrialHash(currentTrialMap), natResult);
                     } else{
-                        trial = new NaturalCountTrial(ownerId, Long.parseLong((String) currentTrialMap.get("date")), natResult);
+                        trial = new NaturalCountTrial(ownerId, (long) currentTrialMap.get("date"), natResult);
                     }
                     break;
                 case Measurement:
@@ -334,9 +334,9 @@ public class ExperimentManager {
                     assert doubleRes != null;
                     float measResult = doubleRes.floatValue();
                     if (experiment.isRequireLocation()) {
-                        trial = new MeasurementTrial(ownerId, Long.parseLong((String) currentTrialMap.get("date")), locationFromTrialHash(currentTrialMap), measResult);
+                        trial = new MeasurementTrial(ownerId, (long) currentTrialMap.get("date"), locationFromTrialHash(currentTrialMap), measResult);
                     } else {
-                        trial = new MeasurementTrial(ownerId, Long.parseLong((String) currentTrialMap.get("date")), measResult);
+                        trial = new MeasurementTrial(ownerId, (long) currentTrialMap.get("date"), measResult);
                     }
                     break;
             }

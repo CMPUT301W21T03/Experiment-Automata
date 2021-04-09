@@ -95,25 +95,21 @@ public class AddMeasurementTrialFragment extends Fragment {
             return;
         }
         String rawQRContent =  data.getStringExtra("QRCONTENTRAW");
-        Log.d("ACTIVITYRESULT","val " + data.getStringExtra("QRCONTENTRAW"));
         if (data.getBooleanExtra("IS_QR",true)) {
             QRMaker qrMaker = new QRMaker();
             QRCode<?> qrCode;
             try {
                 qrCode =qrMaker.decodeQRString(rawQRContent);
-                if (qrCode.getType() == QRType.MeasurementTrial){
+                if (qrCode.getType() == QRType.MeasurementTrial) {
                     measurementValue.setText(String.valueOf(((MeasurementQRCode)qrCode).getValue()));
-                    Log.d("SCANNER","Scanned QR Successfully!");
                     Snackbar.make(root,"Scanned QR Successfully!",Snackbar.LENGTH_LONG).show();
 
                 } else {
                     //send error tray message
-                    Log.d("SCANNER","Scanned QR was of incorrect type " + qrCode.getType().toString());
                     Snackbar.make(root,"Scanned QR was of incorrect type",Snackbar.LENGTH_LONG).show();
                 }
             } catch (QRMalformattedException qrMalE){
                 //malformatted QR
-                Log.d("SCANNER","Scanned Malformatted QR");
                 Snackbar.make(root,"Scanned QR was not an Experiment-Automata QR Code",Snackbar.LENGTH_LONG).show();
             }
         } else {

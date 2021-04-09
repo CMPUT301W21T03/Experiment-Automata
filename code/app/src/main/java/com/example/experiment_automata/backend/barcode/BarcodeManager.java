@@ -125,9 +125,6 @@ public class BarcodeManager {
                         }
                         barcodes.put(barcode,currentBarcodeRef);
                     }
-                } else {
-                    //not able to query firestore
-                    Log.d("FIRESTORE","Unable to pull barcodes from firestore");
                 }
             }
         });

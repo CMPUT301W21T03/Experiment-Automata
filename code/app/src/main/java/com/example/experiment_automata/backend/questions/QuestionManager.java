@@ -72,7 +72,6 @@ public class QuestionManager {
                 returnQuestions.addAll(Objects.requireNonNull(questions.get(experimentId)));
 
             questions.put(experimentId, returnQuestions);
-            Log.d("question", "" + question.getQuestionId().toString());
             questionFromId.put(question.getQuestionId(), question);
         }
     }

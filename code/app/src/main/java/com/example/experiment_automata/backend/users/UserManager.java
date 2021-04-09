@@ -97,11 +97,9 @@ public class UserManager {
 
         userCollection.addSnapshotListener((value, error) -> {
             if (error != null) {
-                Log.w("UserManager -> Error", error);
                 return;
             }
             if (value != null) {
-                Log.wtf("RAN", "DONE");
                 sectorRead(value);
                 updateEvent.callback();
             }
@@ -112,7 +110,6 @@ public class UserManager {
         for (QueryDocumentSnapshot documentSnapshot : snapshot) {
             if (documentSnapshot != null) {
                 UUID userId = UUID.fromString(documentSnapshot.getId());
-                Log.d("BUILT", "" + userId);
 
                     // We don't have the user so we need to make them
 

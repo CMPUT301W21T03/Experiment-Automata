@@ -39,7 +39,6 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         assert getArguments() != null;
-        Log.d("HomeFragment", "Entering home fragment: " + getArguments().getString("mode"));
         NavigationActivity parentActivity = ((NavigationActivity) requireActivity());
 
         experimentManager = parentActivity.experimentManager;
@@ -81,7 +80,6 @@ public class HomeFragment extends Fragment {
         NavigationActivity parentActivity = ((NavigationActivity) requireActivity());
         experimentsArrayList.clear();
         assert getArguments() != null;
-        Log.d("MODE", getArguments().getString("mode"));
         switch (getArguments().getString("mode")) {
             case "owned":
                 experimentsArrayList.addAll(experimentManager

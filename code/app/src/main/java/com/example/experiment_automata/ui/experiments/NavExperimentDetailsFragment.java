@@ -199,7 +199,6 @@ public class NavExperimentDetailsFragment extends Fragment {
      */
     @SuppressLint("DefaultLocale")
     public void update(String experimentStringId) {
-        Log.d("UPDATE", "Screen info updated");
         Experiment<?> current = (((NavigationActivity) requireActivity()).getExperimentManager())
                 .getAtUUIDDescription(UUID.fromString(experimentStringId));
         descriptionView.setText(current.getDescription());

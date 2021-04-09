@@ -7,34 +7,41 @@ package users {
     ' We could do hasing, but it's probably easier for now (for the UML sake) to represent this as a collection of experiments
     class User {
         -userId: UUID
+        -TAG: String 
         -info: ContactInformation
-        -controller: SearchController
-        -ownedExperiments: Collection<Experiment>
-        -participatingExperiments: Collection<Experiment>
-        #updateFirestore()
-        #updateFromFirestore()
-        +addGeoLocation(exp: Experiment): Location
-        +seeGeoLocation(experiments: Collection<Experiment>): Map
+        -testMode: Boolean
+        -ownedExperiments: Collection<UUID>
+        -subscribedExperiments: Collection<UUID>
+        +updateFirestore()
+        +addExperiment(experimentID: UUID)
+        #updateExperimentFromFirestore()
+        #updateContactFromFirestore()
         +subscribeExperiment(experimentId: UUID)
+        +{static} getInstance(id: UUID, testMode: Boolean): User
     }
 
     class ContactInformation {
+        -{static} nameKey: String
+        -{static} emailKey: String
+        -{static} phoneKey: String
         -name: String
         -email: String
         -phone: String
         -editable: Boolean
-        -preferences: SharePreferences
+        -preferences: SharedPreferences
     }
 
     class UserManager{
         -{static} currentUsers: HashMap<UUID, User>
         -{static} userManager: UserManager
         -testMode: Boolean
+        -updateEvent: UpdateEvent
         +add(newUser: User)
         +getSize(): Integer
         +getSpecificUser(userID: UUID): User
         +getAllUsersFromFireStore()
         +sectorRead(snapshot: QuerySnapshot)
+        +{static} getInstance(testMode: Boolean): UserManager
     }
 
     UserManager "1" *-- "1" UserManager: Singleton
@@ -49,6 +56,7 @@ package questions {
         -reply: UUID
         -experimentId: UUID
         -questionId: UUID
+        #postQuestionToFirestore()
         +compareTo(o: Question): Integer
     }
 
@@ -57,7 +65,8 @@ package questions {
         - {static} questionFromID: HashMap<UUID, Question>
         - {static} replies: hasMap<UUID, Reply>
         - {static} questionManager: QuestionManager
-
+        - {static} repliesFromId: HashMap<UUID, Boolean> 
+        - {static} TEST_MODE: Boolean 
         + {static} getInstance(): QuestionManager
         + {static} resetInstance()
         + addQuestion(experimentID: UUID, question: Question)
@@ -65,8 +74,12 @@ package questions {
         + getQuestion(questionId: UUID): Question
         + getTotalQuestions(experimentId: UUID): Integer
         + getQuestionReply(questionID: UUID): ArrayList<Reply>
+        + getQuestionsFromFirestore()
+        + getRepliesFromFirestore()
         + getExperimentQuestions(experimentID: UUID): ArrayList<Question>
         + getAllQuestions(): Collection<ArrayList<Question>>
+        + {static} enableTestMode()
+        + {static} disableTestMode() 
     }
 
     ' assume that anyone who can reply to a question is a type of User
@@ -74,7 +87,10 @@ package questions {
         -reply: String
         -experimenter: UUID
         -replyID: UUID
+        -questionID: UUID 
+        + toString(): String 
         + compareTo(o: Reply): Integer
+        - postReplyToFirestore() 
     }
 }
 
@@ -110,19 +126,25 @@ package experiments {
         ' this is the userId of the owner
         -ownerId: UUID
         -type: ExperimentType
-        -questions: ArrayList<Question>
         #results: Collection<Trial>
+        -enableFirestore: Boolean 
+        -region: String
         +getSize(): Integer
         +makeNewUUID()
         +recordTrial(trial: Trial)
-        +recordTrial(trial: Trial, fromFirestore: Boolean)
         +postExperimentToFirestore()
+        +recordTrial(trial: Trial, fromFirestore: Boolean)
+        +buildResultsmap(): HashMap<String, Object> 
         +compareTo(o: Experiment): Integer
+        +getTrials(): ArrayList<T> 
     }
 
     class ExperimentManager {
+        - {static} experimentManager: ExperimentManager 
         - {static} experiments: HashMap<UUID, Experiment>
-        - currentExperiment: Experiment
+        + {static} enableFirestore: Boolean
+        - currentExperiment: Experiment<?>
+        - lastAdded: Experiment<?>
         - updateEvent: UpdateEvent
 
         + delete(id: UUID)
@@ -141,26 +163,26 @@ package experiments {
         + getExperiment(experimentID: UUID): Experiment
         - getFromFirestoreFromQuery(querySnapshotTask: Task<QuerySnapshot>)
         - updateFromDocumentSnapshot(document: DocumentSnapshot)
+        - buildTrials(experiment: Experiment<?>, trials: HashMap<String, Object>)
         - queryMatch(query: String, source: String): Boolean
         + {abstract} getRecordedTrials(): ArrayList<Trial>
     }
 
-    class CountExperiment<CountTrial> extends Experiment {}
+    class CountExperiment<CountTrial> extends Experiment {
+    }
 
     class NaturalCountExperiment<NaturalCountTrial> extends Experiment {
-        -getMedian(values: ArrayList<Integer>): Float
     }
 
     class BinomialExperiment<BinomialTrial> extends Experiment {
-        -getMedian(values: ArrayList<Integer>): Float
     }
 
     class MeasurementExperiment<MeasurementTrial> extends Experiment {
-        -getMedian(values: ArrayList<Integer>): Float
 
     }
 
     class ExperimentMaker {
+        This is a factory.
         -{static} makeExperiment(ExperimentType type, String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId): Experiment
         -{static} makeExperiment(ExperimentType type, String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId, Boolean published, UUID experimentId): Experiment
     }
@@ -206,54 +228,61 @@ package trials {
     ' each trial has a unique QRCode associated with it
     abstract class Trial<T> {
         ' just going to user User ID here
-        -collector: UUID
+        -userID: UUID
+        -trialID: UUID
         -location: Location
-        -date: Date
+        -timestamp: long
         -ignore: Boolean
         #result: T
+        +compareTo(o: Trial<T>): Integer 
     }
 
     class CountTrial<Object> extends Trial {
         ' essentially just a trial but it's own class since other types of trial aren't a count trial
+        +getType(): String 
     }
 
     ' no unsigned ints in java, not sure how to enforce natural numbers only
-    class NaturalCountTrial<Integer> extends Trial
+    class NaturalCountTrial<Integer> extends Trial{
+        +getType(): String 
+    }
 
     ' will likely specify true = pass, false = fail
-    class BinomialTrial<Boolean> extends Trial
+    class BinomialTrial<Boolean> extends Trial{
+        +getType(): String 
+    }
 
-    class MeasurementTrial<Float> extends Trial
+    class MeasurementTrial<Float> extends Trial{
+        +getType(): String 
+    }
 }
 
 package qr {
 
-    class ExperimentQRCode<T> extends QRCode {}
+    class ExperimentQRCode<Object> extends QRCode {}
 
-    class BinomialQRCode extends QRCode{
-        - result: Boolean
+    class BinomialQRCode<Boolean> extends QRCode{
     }
 
-    class CountQRCode extends QRCode{}
+    class CountQRCode<Object> extends QRCode{}
 
-    class MeasurementQRCode extends QRCode{
-        -value: float
+    class MeasurementQRCode<Float> extends QRCode{
     }
 
-    class NaturalQRCode extends QRCode{
-        -value: int
+    class NaturalQRCode<Integer> extends QRCode{
     }
 
     class QRMaker {
+        This is a factory.
         +decodeQRString(String rawContent): QRCode
         +checkQRHeader(String qrString): Boolean
     }
 
     abstract class QRCode {
-        - rawContentString: String
-        - experimentID: UUID
-        - type: QRType
-        - qrCodeImage: Bitmap
+        -experimentID: UUID
+        -type: QRType 
+        -qrCodeImage: Bitmap
+        -value: T
         + encodeStringToQR(encodedContent: String): Bitmap
     }
 
@@ -313,7 +342,7 @@ package barcode{
 package location {
     class LocationServices {
         +currentLocation: Location
-        +onLocationChanged() 
+        +onLocationChanged(location: Location)
     }
 }
 
@@ -346,5 +375,7 @@ Experiment -- QRCode
 BarcodeReference o-- Experiment
 
 BarcodeReference o-- ExperimentType
+
+UserManager o-- "1" UpdateEvent 
 
 @enduml

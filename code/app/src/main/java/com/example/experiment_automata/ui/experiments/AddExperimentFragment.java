@@ -122,7 +122,7 @@ public class AddExperimentFragment extends DialogFragment {
                     .setNegativeButton("Cancel", null)
                     .setPositiveButton("Ok", (dialog, which) -> {
                         String experimentDescription = description.getText().toString();
-                        String experimentRegion = description.getText().toString();
+                        String experimentRegion = region.getText().toString();
                         // method of reading input as integer found on Stack Overflow from CommonsWare, Feb 4 2011
                         //https://stackoverflow.com/questions/4903515/how-do-i-return-an-int-from-edittext-android
                         String experimentTrialsString = minTrials.getText().toString();

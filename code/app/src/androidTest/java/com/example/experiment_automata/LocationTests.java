@@ -72,7 +72,7 @@ public class LocationTests {
     public void setup() {
 
         dataBase = DataBase.getInstanceTesting();
-        solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
+        solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.requireActivity());
         currentTestingActivity = (NavigationActivity) solo.getCurrentActivity();
 
         maker = new ExperimentMaker();

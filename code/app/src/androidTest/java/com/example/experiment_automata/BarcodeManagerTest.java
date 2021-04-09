@@ -34,7 +34,7 @@ public class BarcodeManagerTest {
 
     @Before
     public void init(){
-        solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
+        solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.requireActivity());
         experimentId = UUID.randomUUID();
         FirebaseApp.initializeApp(InstrumentationRegistry.getInstrumentation().getTargetContext());
         barcodeManager = BarcodeManager.getInstance();

@@ -26,7 +26,7 @@ import java.util.UUID;
  *      1.
  */
 public class BarcodeManager {
-    private HashMap<String,BarcodeReference<?>> barcodes;
+    private final HashMap<String,BarcodeReference<?>> barcodes;
     private static BarcodeManager barcodeManager;
 
     public BarcodeManager(){
@@ -144,7 +144,7 @@ public class BarcodeManager {
      *  location represented by the entry in the database, returns null if no location
      */
     private Location locationFromPairing(QueryDocumentSnapshot document){
-        if (document.get("latitude") == null) {
+        if (document.get("latitude") == null || document.get("longitude") == null) {
             return null;
         }
         double latitude = (double) document.get("latitude");

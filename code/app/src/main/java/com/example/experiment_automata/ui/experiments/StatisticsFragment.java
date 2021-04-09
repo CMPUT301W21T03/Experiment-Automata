@@ -19,10 +19,6 @@ import com.example.experiment_automata.R;
  *      1. None
  */
 public class StatisticsFragment extends Fragment {
-    public StatisticsFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

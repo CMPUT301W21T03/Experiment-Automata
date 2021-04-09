@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-
 /**
  * Role/Pattern:
  *
@@ -22,12 +21,12 @@ import java.util.UUID;
  *
  *      1. None
  */
-public class Question implements Serializable, Comparable {
+public class Question implements Serializable, Comparable<Question> {
     private String question;
     private UUID user;
     private UUID reply;
-    private UUID experimentId;
-    private UUID questionId;
+    private final UUID experimentId;
+    private final UUID questionId;
 
     /**
      * Constructor used when creating experiment from dialog
@@ -97,20 +96,8 @@ public class Question implements Serializable, Comparable {
 
         try {
             db.collection("questions").document(questionIdString)
-                    .set(questionData)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-
-                        }
-                    });
-        } catch (Exception e) {}
+                    .set(questionData);
+        } catch (Exception ignored) {}
     }
 
     /**
@@ -196,9 +183,7 @@ public class Question implements Serializable, Comparable {
      *                              from being compared to this object.
      */
     @Override
-    public int compareTo(Object o) {
-        Question question = (Question) o;
-
-        return question.getQuestion().compareTo(this.question);
+    public int compareTo(Question o) {
+        return o.getQuestion().compareTo(this.question);
     }
 }

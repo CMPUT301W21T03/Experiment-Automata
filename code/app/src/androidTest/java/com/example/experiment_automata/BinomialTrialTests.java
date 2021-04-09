@@ -59,7 +59,7 @@ public class BinomialTrialTests {
     public void setup() {
 
 
-        solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
+        solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.requireActivity());
         currentTestingActivity = (NavigationActivity) solo.getCurrentActivity();
         //Finding the buttons we need to press
         addExperimentButton = currentTestingActivity.findViewById(R.id.fab_button);

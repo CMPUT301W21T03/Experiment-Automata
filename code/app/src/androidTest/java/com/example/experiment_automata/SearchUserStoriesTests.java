@@ -53,7 +53,7 @@ public class SearchUserStoriesTests {
 
     @Before
     public void setup() {
-        solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
+        solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.requireActivity());
         currentTestingActivity = (NavigationActivity) solo.getCurrentActivity();
         addExperimentButton = currentTestingActivity.findViewById(R.id.fab_button);
         /**

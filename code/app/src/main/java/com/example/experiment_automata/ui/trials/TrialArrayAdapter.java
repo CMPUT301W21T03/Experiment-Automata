@@ -40,13 +40,13 @@ import java.util.UUID;
  *
  *      1. None
  */
-public class TrialArrayAdapter extends ArrayAdapter<Trial> {
+public class TrialArrayAdapter extends ArrayAdapter<Trial<?>> {
     // Syntax inspired by Abdul Ali Bangash, "Lab 3 Instructions - Custom List",
     // 2021-02-04, Public Domain, https://eclass.srv.ualberta.ca/pluginfile.php/6713985/mod_resource/content/1/Lab%203%20instructions%20-%20CustomList.pdf
-    private ArrayList<Trial> trials;
-    private Context context;
-    private NavExperimentDetailsFragment parentFragment;
-    private UserManager userManager;
+    private final ArrayList<Trial<?>> trials;
+    private final Context context;
+    private final NavExperimentDetailsFragment parentFragment;
+    private final UserManager userManager;
 
     /**
      * Constructor takes in an array list of trials and a context to set the attributes properly
@@ -55,12 +55,12 @@ public class TrialArrayAdapter extends ArrayAdapter<Trial> {
      * @param trialList
      *  the list of the trials to display
      */
-    public TrialArrayAdapter(Context context, ArrayList<Trial> trialList, NavExperimentDetailsFragment parentFragment) {
+    public TrialArrayAdapter(Context context, ArrayList<Trial<?>> trialList, NavExperimentDetailsFragment parentFragment) {
         super(context, 0, trialList);
         this.trials = trialList;
         this.context = context;
         this.parentFragment = parentFragment;
-        this.userManager = UserManager.getInstance();
+        this.userManager = UserManager.getInstance(true);
     }
 
     /**
@@ -80,9 +80,9 @@ public class TrialArrayAdapter extends ArrayAdapter<Trial> {
             view = LayoutInflater.from(context).inflate(R.layout.trial_layout, parent, false);
         }
         // The experiment we're going to set the XML file with
-        Trial trial = trials.get(position);
+        Trial<?> trial = trials.get(position);
 
-        LinkView experimenterNameView = (LinkView) view.findViewById(R.id.trial_experimenter_name);
+        LinkView experimenterNameView = view.findViewById(R.id.trial_experimenter_name);
         UUID userId = trial.getUserId();
         User user = userManager.getSpecificUser(userId);
         experimenterNameView.setText(user.getInfo().getName());
@@ -107,15 +107,12 @@ public class TrialArrayAdapter extends ArrayAdapter<Trial> {
                     ((MeasurementTrial) trial).getResult()));
         }
 
-        CheckBox checkBox = (CheckBox) view.findViewById(R.id.trial_ignore_checkbox);
+        CheckBox checkBox = view.findViewById(R.id.trial_ignore_checkbox);
         checkBox.setChecked(!trial.isIgnored());
-        checkBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean ignore = !((CheckBox) v).isChecked();
-                trial.setIgnore(ignore);
-                parentFragment.updateScreen();
-            }
+        checkBox.setOnClickListener(v -> {
+            boolean ignore = !((CheckBox) v).isChecked();
+            trial.setIgnore(ignore);
+            parentFragment.updateScreen();
         });
 
         return view;

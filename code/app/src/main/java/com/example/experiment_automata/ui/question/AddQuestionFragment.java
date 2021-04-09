@@ -3,7 +3,6 @@ package com.example.experiment_automata.ui.question;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.experiment_automata.R;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
@@ -49,9 +50,6 @@ public class AddQuestionFragment extends DialogFragment {
     public static final String OWNER = "OWNER-ID";
 
     private EditText questionInput;
-    private String experimentId;
-    private String question;
-
     private AddQuestionFragment.OnFragmentInteractionListener listener;
 
     public interface OnFragmentInteractionListener {
@@ -61,12 +59,11 @@ public class AddQuestionFragment extends DialogFragment {
 
     /**
      * This identifies the listener for the fragment when it attaches
-     * @param context
+     * @param context the android context
      */
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NotNull Context context) {
         super.onAttach(context);
-
         if (context instanceof AddQuestionFragment.OnFragmentInteractionListener) {
             listener = (AddQuestionFragment.OnFragmentInteractionListener) context;
         } else {
@@ -108,48 +105,36 @@ public class AddQuestionFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstancesState) {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_add_edit_question_diolog_op_up, null);
+        View view = LayoutInflater.from(requireActivity()).inflate(R.layout.fragment_add_edit_question_diolog_op_up, null);
         questionInput = view.findViewById(R.id.frag_add_edit_question_input_box_diolog);
         Bundle args = getArguments();
         AlertDialog.Builder build = new AlertDialog.Builder(getContext());
 
         // this will determine if it is asking for a question or reply
-        String dialogType;
-        // this is the experiment UUID that this question belongs to
-        UUID ownerId = (UUID) args.getSerializable(OWNER);
+        assert args != null;
+        final UUID ownerId = (UUID) args.getSerializable(OWNER);
 
-        if (args != null) {
-            dialogType = args.getString(TYPE);
-            questionInput.setText(args.getString(QUESTION));
-        } else {
-            // assume if no bundle args that it's asking for a question
-            dialogType = "Add Question";
-        }
+        String dialogType = args.getString(TYPE);
+        questionInput.setText(args.getString(QUESTION));
 
         // update the hint text of the question input depending on what the dialogType is
-        if (dialogType == "Add Question") {
+        if (args.getBoolean(TYPE)) {
             questionInput.setHint("Question");
             return build.setView(view)
                     .setTitle(dialogType)
                     .setNegativeButton("Cancel", null)
-                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            String currentQuestion = questionInput.getText().toString();
-                            listener.onOkPressedQuestion(currentQuestion, ownerId);
-                        }
+                    .setPositiveButton("Ok", (dialog, which) -> {
+                        String currentQuestion = questionInput.getText().toString();
+                        listener.onOkPressedQuestion(currentQuestion, ownerId);
                     }).create();
         } else {
             questionInput.setHint("Reply");
             return build.setView(view)
                     .setTitle(dialogType)
                     .setNegativeButton("Cancel", null)
-                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            String currentReply = questionInput.getText().toString();
-                            listener.onOkPressedReply(currentReply, ownerId);
-                        }
+                    .setPositiveButton("Ok", (dialog, which) -> {
+                        String currentReply = questionInput.getText().toString();
+                        listener.onOkPressedReply(currentReply, ownerId);
                     }).create();
         }
     }

@@ -13,14 +13,11 @@ import com.example.experiment_automata.backend.users.User;
  *
  *      1. None
  */
-
-
 public class ProfileViewModel extends ViewModel {
-
     private User user;
-    private MutableLiveData<String> username;
-    private MutableLiveData<String> email;
-    private MutableLiveData<String> phone;
+    private final MutableLiveData<String> username;
+    private final MutableLiveData<String> email;
+    private final MutableLiveData<String> phone;
 
     public ProfileViewModel() {
         username = new MutableLiveData<>();

@@ -38,7 +38,7 @@ public class ContactInformation {
 
     /**
      * Creates new contact information for local user on device
-     * @param preferences
+     * @param preferences the preferences saved on device
      */
     public ContactInformation(SharedPreferences preferences) {
         this.name = preferences.getString(nameKey, "name");

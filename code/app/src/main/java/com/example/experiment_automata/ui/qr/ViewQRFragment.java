@@ -29,7 +29,6 @@ import com.example.experiment_automata.backend.qr.QRCode;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.UUID;
@@ -44,25 +43,21 @@ import java.util.UUID;
  *      1. Saves an image of the QR code anytime the share button is pressed, regardless if it's cancelled
  */
 public class ViewQRFragment extends DialogFragment {
-    private ImageView qrImageView;
-    private TextView qrValue;
-    private Button backButton;
-    private ImageButton shareButton;
-    private ImageButton saveButton;
     private Bitmap qrCodeImage;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_display_qr,container, true);
-        backButton = view.findViewById(R.id.qr_code_back_button);
-        shareButton = view.findViewById(R.id.qr_code_share);
-        saveButton = view.findViewById(R.id.qr_code_save);
-        qrImageView = view.findViewById(R.id.qr_code_imageView);
-        qrValue = view.findViewById(R.id.qr_value_textView);
-        QRCode qrCode;
+        Button backButton = view.findViewById(R.id.qr_code_back_button);
+        ImageButton shareButton = view.findViewById(R.id.qr_code_share);
+        ImageButton saveButton = view.findViewById(R.id.qr_code_save);
+        ImageView qrImageView = view.findViewById(R.id.qr_code_imageView);
+        TextView qrValue = view.findViewById(R.id.qr_value_textView);
+        QRCode<?> qrCode;
 
         Bundle bundle = getArguments();
+        assert bundle != null;
         String description = bundle.getString("DESCRIPTION");
         UUID experimentUUID = UUID.fromString(bundle.getString("UUID"));
         String typeString = bundle.getString("TYPE");
@@ -94,12 +89,7 @@ public class ViewQRFragment extends DialogFragment {
         qrCodeImage = qrCode.getQrCodeImage();
         qrImageView.setImageBitmap(qrCodeImage);
         qrValue.setText(description);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
+        backButton.setOnClickListener(v -> dismiss());
         shareButton.setOnClickListener(v -> shareImage());
         saveButton.setOnClickListener(v -> saveImage());
 
@@ -136,15 +126,14 @@ public class ViewQRFragment extends DialogFragment {
         startActivity(shareIntent);
     }
 
-    private String saveImage() {
+    private void saveImage() {
         ContentResolver cr = requireActivity().getContentResolver();
-        String url = MediaStore.Images.Media.insertImage(cr, qrCodeImage,
+        MediaStore.Images.Media.insertImage(cr, qrCodeImage,
                 UUID.randomUUID().toString(), "Experiment Automata QR code");
         final String saveMessage = "QR code saved!";
         View root = requireActivity().findViewById(R.id.nav_host_fragment);
         Snackbar notification = Snackbar.make(root, saveMessage, Snackbar.LENGTH_SHORT);
         notification.show();
-        return url;
     }
 }
 

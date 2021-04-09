@@ -2,16 +2,11 @@ package com.example.experiment_automata.backend.users;
 
 import android.util.Log;
 
-import androidx.annotation.Nullable;
-
 import com.example.experiment_automata.backend.DataBase;
 import com.example.experiment_automata.backend.events.OnEventListener;
 import com.example.experiment_automata.backend.events.UpdateEvent;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -25,37 +20,24 @@ import java.util.UUID;
 public class UserManager {
     private static HashMap<UUID, User> currentUsers;
     private static UserManager userManager;
-    private boolean testMode;
-    private UpdateEvent updateEvent;
+    private final boolean testMode;
+    private final UpdateEvent updateEvent;
 
-    private UserManager() {
+    private UserManager(boolean testMode) {
         updateEvent = new UpdateEvent();
         currentUsers = new HashMap<>();
+        this.testMode = testMode;
     }
 
     /**
      * gets the made instance of our hashmap
-     *
-     * @param testMode tells the class if it should
-     *                 be allowed to talk to the firebase system.
-     *
+     * @param testMode tells the class if it should be allowed to talk to the firebase system.
      * @return
      *  the current instance of the UserManager class
      */
     public static UserManager getInstance(boolean testMode) {
-        if (userManager == null && !testMode) {
-            userManager = new UserManager();
-            userManager.getAllUsersFromFireStore();
-        } else if (userManager == null && testMode) {
-            userManager = new UserManager();
-        }
-        return userManager;
-    }
-
-
-    public static UserManager getInstance() {
         if (userManager == null) {
-            userManager = new UserManager();
+            userManager = new UserManager(testMode);
             userManager.getAllUsersFromFireStore();
         }
         return userManager;
@@ -140,15 +122,17 @@ public class UserManager {
                     ArrayList<UUID> valsO = new ArrayList<>();
                     ArrayList<UUID>valsS = new ArrayList<>();
                     try {
+                        assert owned != null;
                         for(String o : owned) {
                             valsO.add(UUID.fromString(o));
                         }
+                        assert subscriptions != null;
                         for(String s : subscriptions) {
                             valsS.add(UUID.fromString(s));
                         }
                         newUser.setOwnedExperiments(valsO);
                         newUser.setSubscribedExperiments(valsS);
-                    } catch (Exception e) {}
+                    } catch (Exception ignored) {}
                     currentUsers.put(userId, newUser);
             }
         }

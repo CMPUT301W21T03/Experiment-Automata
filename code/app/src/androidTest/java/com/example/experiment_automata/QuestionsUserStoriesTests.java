@@ -56,7 +56,7 @@ public class QuestionsUserStoriesTests {
     public void setup() {
 
 
-        solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
+        solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.requireActivity());
         currentTestingActivity = (NavigationActivity) solo.getCurrentActivity();
 
         /**

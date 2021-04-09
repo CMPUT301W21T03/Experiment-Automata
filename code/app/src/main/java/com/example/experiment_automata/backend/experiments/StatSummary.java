@@ -14,27 +14,27 @@ public interface StatSummary {
      * @return
      *  the mean
      */
-    public float getMean();
+    float getMean();
 
     /**
      * Gets the median value of the trials.
      * @return
      *  the median
      */
-    public float getMedian();
+    float getMedian();
 
     /**
      * Gets the standard deviation of the trials.
      * @return
      *  the standard deviation
      */
-    public float getStdev();
+    float getStdev();
 
     /**
      * Gets the quartiles of the trials
      * @return
      *  the quartiles
      */
-    public float[] getQuartiles();
+    float[] getQuartiles();
 
 }

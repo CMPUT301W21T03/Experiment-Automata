@@ -39,7 +39,7 @@ public class UserTests {
 
     @Before
     public void setup() throws InterruptedException {
-        solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
+        solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.requireActivity());
         currentTestingActivity = (NavigationActivity) solo.getCurrentActivity();
         // Open navigation drawer
         solo.clickOnImageButton(0);

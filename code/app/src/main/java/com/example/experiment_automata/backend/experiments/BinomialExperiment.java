@@ -1,12 +1,10 @@
 package com.example.experiment_automata.backend.experiments;
 
 import com.example.experiment_automata.backend.trials.BinomialTrial;
-import com.example.experiment_automata.backend.trials.Trial;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -41,6 +39,7 @@ public class BinomialExperiment extends Experiment<BinomialTrial> {
                 ExperimentType.Binomial, enableFirestore);
         results = new ArrayList<>();
     }
+
     /**
      * Firestore constructor for Binomial Experiment
      * @param description
@@ -69,8 +68,7 @@ public class BinomialExperiment extends Experiment<BinomialTrial> {
     public List<BarEntry> generateHistogram() {
         // Get data range counts into bins
         final int amountOfBins = 2;
-        int[] bins = new int[amountOfBins];
-        for (int i = 0; i < amountOfBins; i++) { bins[i] = 0; }
+        int[] bins = new int[] {0, 0};
         for (BinomialTrial trial: results) {
             if (!trial.isIgnored()) {
                 boolean value = trial.getResult();
@@ -116,11 +114,10 @@ public class BinomialExperiment extends Experiment<BinomialTrial> {
         int totalTrials = 0;
         int successfulTrials = 0;
 
-        for (Trial trial: results) {
+        for (BinomialTrial trial: results) {
             if (!trial.isIgnored()) {
                 totalTrials = totalTrials + 1;
-                final BinomialTrial binomialTrial = (BinomialTrial) trial;
-                if (binomialTrial.getResult()) {
+                if (trial.getResult()) {
                     successfulTrials = successfulTrials + 1;
                 }
             }

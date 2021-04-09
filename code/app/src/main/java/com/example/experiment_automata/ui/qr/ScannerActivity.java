@@ -23,8 +23,6 @@ import com.journeyapps.barcodescanner.DecoratedBarcodeView;
  *      1.
  */
 public class ScannerActivity extends AppCompatActivity {
-    DecoratedBarcodeView barcodeView;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

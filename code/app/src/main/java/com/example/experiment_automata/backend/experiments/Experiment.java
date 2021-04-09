@@ -1,11 +1,7 @@
 package com.example.experiment_automata.backend.experiments;
 
-import androidx.annotation.NonNull;
-
 import com.example.experiment_automata.backend.DataBase;
 import com.example.experiment_automata.backend.trials.Trial;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.jetbrains.annotations.NotNull;
@@ -18,7 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-
 /**
  * Role/Pattern:
  *       Base experiment class: the building blocks of all experiment types
@@ -27,17 +22,17 @@ import java.util.UUID;
  *
  *      1. None
  */
-public abstract class Experiment<T extends Trial<?>> implements Serializable, StatSummary, Graphable, Comparable {
+public abstract class Experiment<T extends Trial<?>> implements Serializable, StatSummary, Graphable, Comparable<Experiment<?>> {
     private String description;
     private int minTrials;
     private UUID experimentId;
-    private UUID ownerId;
+    private final UUID ownerId;
     protected boolean active;
     private boolean published;
     private boolean requireLocation;
-    private ExperimentType type;
+    private final ExperimentType type;
     protected Collection<T> results;
-    private Boolean enableFirestore;
+    private final Boolean enableFirestore;
 
     /**
      * Experiment constructor to be used by ExperimentMaker when creating an experiment from the AddExperimentFragment
@@ -96,17 +91,6 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
     }
 
     /**
-     * This method will check if an experiment has the same id as another
-     * @param experiment
-     *   The experiment you want to compare with
-     * @return
-     *   A boolean based on whether the ids are the same
-     */
-    public boolean compare(Experiment<T> experiment) {
-        return experimentId.equals(experiment.experimentId);
-    }
-
-    /**
      * Post the current experiment to firestore if support is enabled
      */
     public void postExperimentToFirestore(){
@@ -129,19 +113,7 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
 
             if (!dataBase.isTestMode()) {
                 db.collection("experiments").document(experimentUUIDString)
-                        .set(experimentData)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-
-                            }
-                        });
+                        .set(experimentData);
             }
         }
     }
@@ -310,12 +282,12 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
      * Build hashmap for results
      */
     public HashMap<String,Object> buildResultsmap(){
-        HashMap<String,Object> resultsData = new HashMap<String, Object>();
+        HashMap<String,Object> resultsData = new HashMap<>();
         if (results == null) {
             return resultsData;
         }
         for(T trial : results) {
-            HashMap<String,Object> singleResult = new HashMap<String, Object>();
+            HashMap<String,Object> singleResult = new HashMap<>();
             singleResult.put("owner-id",trial.getUserId().toString());
             if (trial.getLocation() != null) {
                 singleResult.put("latitude", trial.getLocation().getLatitude());
@@ -339,9 +311,8 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
      * @throws ClassCastException   if the specified object's type prevents it
      *                              from being compared to this object.
      */
-    public int compareTo(Object o) {
-        Experiment<?> ec = (Experiment<?>) o;
-        return this.getDescription().toLowerCase().compareTo(ec.getDescription().toLowerCase());
+    public int compareTo(Experiment<?> o) {
+        return this.getDescription().toLowerCase().compareTo(o.getDescription().toLowerCase());
     }
 
     /**

@@ -5,11 +5,9 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.backend.experiments.Experiment;
@@ -29,12 +27,8 @@ import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link MapDisplayFragment#newInstance} factory method to
- * create an instance of this fragment.
  */
 public class MapDisplayFragment extends Fragment {
-
-
     public static final String CURRENT_EXPERIMENT ="MAP_POINT_VIEW_EXPERIMENT";
 
     private MapView currentMapDisplay;
@@ -44,28 +38,13 @@ public class MapDisplayFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param currentExperiment the current experiment
-     * @return A new instance of fragment map_display_fragment.
-     */
-    public static MapDisplayFragment newInstance(Experiment<?> currentExperiment) {
-        MapDisplayFragment fragment = new MapDisplayFragment();
-        Bundle args = new Bundle();
-        args.putSerializable(CURRENT_EXPERIMENT, currentExperiment);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((NavigationActivity) getActivity()).setCurrentScreen(Screen.MAP);
+        ((NavigationActivity) requireActivity()).setCurrentScreen(Screen.MAP);
 
         if (getArguments() != null) {
-            currentExperiment = (Experiment) getArguments().getSerializable(CURRENT_EXPERIMENT);
+            currentExperiment = (Experiment<?>) getArguments().getSerializable(CURRENT_EXPERIMENT);
         }
     }
 
@@ -79,13 +58,12 @@ public class MapDisplayFragment extends Fragment {
          * Date of Publication: Unknown
          * Full Link: https://github.com/osmdroid/osmdroid
          */
-
         Configuration.getInstance().load(getContext(), PreferenceManager.getDefaultSharedPreferences(getContext()));
         View root = inflater.inflate(R.layout.fragment_map_display_fragment, container, false);
         currentMapDisplay = root.findViewById(R.id.map_point_view_fragment_map_display);
-        FloatingActionButton fab = getActivity().findViewById(R.id.fab_button);
+        FloatingActionButton fab = requireActivity().findViewById(R.id.fab_button);
         fab.setVisibility(View.GONE);
-        ((NavigationActivity)(getActivity())).setCurrentScreen(Screen.MAP);
+        ((NavigationActivity)(requireActivity())).setCurrentScreen(Screen.MAP);
 
         if (currentExperiment.isRequireLocation())
             updateMap(root);
@@ -98,12 +76,12 @@ public class MapDisplayFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        ((NavigationActivity)getActivity()).setCurrentScreen(Screen.ExperimentDetails);
+        ((NavigationActivity)requireActivity()).setCurrentScreen(Screen.ExperimentDetails);
     }
 
     /**
      * sets up the map markers for display
-     * @param root
+     * @param root the root view of the map
      */
     private void updateMap(View root) {
         ((root.findViewById(R.id.map_point_view_experiment_loc_error_display))).setVisibility(View.GONE);
@@ -116,7 +94,7 @@ public class MapDisplayFragment extends Fragment {
 
         ArrayList<Trial<?>> experimentTrials = (ArrayList<Trial<?>>) currentExperiment.getRecordedTrials();
 
-        for(Trial<?> t: experimentTrials){
+        for (Trial<?> t : experimentTrials) {
             /** Code below inspired by Stack Overflow
              * Link: https://stackoverflow.com/questions/55705988/how-to-add-marker-in-osmdroid
              * Author: jignyasa tandel

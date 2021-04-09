@@ -1,7 +1,5 @@
 package com.example.experiment_automata.backend.experiments;
 
-import com.example.experiment_automata.backend.trials.Trial;
-
 import java.util.UUID;
 
 /**

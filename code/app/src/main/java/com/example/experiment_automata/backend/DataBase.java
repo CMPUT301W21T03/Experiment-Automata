@@ -1,5 +1,7 @@
 package com.example.experiment_automata.backend;
 
+import android.annotation.SuppressLint;
+
 import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
@@ -12,6 +14,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class DataBase {
     private static DataBase current;
+    @SuppressLint("StaticFieldLeak")
     private static FirebaseFirestore db;
     private boolean testMode;
 

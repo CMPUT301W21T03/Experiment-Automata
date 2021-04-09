@@ -9,11 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.example.experiment_automata.backend.experiments.BinomialExperiment;
-import com.example.experiment_automata.backend.experiments.CountExperiment;
 import com.example.experiment_automata.backend.experiments.Experiment;
-import com.example.experiment_automata.backend.experiments.MeasurementExperiment;
-import com.example.experiment_automata.backend.experiments.NaturalCountExperiment;
 import com.example.experiment_automata.ui.NavigationActivity;
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.backend.trials.Trial;
@@ -33,12 +29,8 @@ import java.util.ArrayList;
  *
  *      1. None
  */
-
 public class TrialsFragment extends Fragment {
-    private ArrayList<Trial> trialsArrayList;
-    private TrialArrayAdapter trialArrayAdapter;
-
-    public TrialsFragment() { }
+    private ArrayList<Trial<?>> trialsArrayList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,15 +42,15 @@ public class TrialsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_trials, container, false);
-        ListView trialList = (ListView) root.findViewById(R.id.trial_list);
+        ListView trialList = root.findViewById(R.id.trial_list);
         trialsArrayList = new ArrayList<>();
-        trialArrayAdapter = new TrialArrayAdapter(getActivity(), trialsArrayList, (NavExperimentDetailsFragment) getParentFragment());
+        TrialArrayAdapter trialArrayAdapter = new TrialArrayAdapter(requireActivity(), trialsArrayList, (NavExperimentDetailsFragment) getParentFragment());
         trialList.setAdapter(trialArrayAdapter);
         return root;
     }
 
     public void updateView() {
-        Experiment<?> experiment = ((NavigationActivity) getActivity()).experimentManager
+        Experiment<?> experiment = ((NavigationActivity) requireActivity()).experimentManager
                 .getCurrentExperiment();
         trialsArrayList.clear();
         trialsArrayList.addAll(experiment.getTrials());

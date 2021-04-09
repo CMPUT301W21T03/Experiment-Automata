@@ -15,7 +15,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.experiment_automata.R;
-import com.example.experiment_automata.backend.barcode.BarcodeManager;
 import com.example.experiment_automata.backend.experiments.MeasurementExperiment;
 import com.example.experiment_automata.backend.qr.MeasurementQRCode;
 import com.example.experiment_automata.backend.qr.QRCode;
@@ -31,23 +30,13 @@ import com.google.android.material.snackbar.Snackbar;
 
 import org.osmdroid.views.MapView;
 
-
 /**
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
  */
 public class AddMeasurementTrialFragment extends Fragment {
-
-    private ImageButton scanQRButton;
-    private ImageButton viewQRButton;
     private View root;
     private EditText measurementValue;
-    private MapView currentMapDisplay;
-    private MapUtility utility;
-
-    public AddMeasurementTrialFragment() {
-        // Required empty public constructor
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,47 +48,41 @@ public class AddMeasurementTrialFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         root = inflater.inflate(R.layout.fragment_add_measurement_trial, container, false);
-        TextView description = (TextView) root.findViewById(R.id.measurement_trial_experiment_description);
-        NavigationActivity parentActivity = ((NavigationActivity) getActivity());
+        TextView description = root.findViewById(R.id.measurement_trial_experiment_description);
+        NavigationActivity parentActivity = ((NavigationActivity) requireActivity());
         MeasurementExperiment experiment = (MeasurementExperiment) parentActivity.experimentManager.getCurrentExperiment();
         description.setText(experiment.getDescription());
         measurementValue = root.findViewById(R.id.add_measurement_value);
 
-        scanQRButton = root.findViewById(R.id.add_measurement_qr_button);
-        scanQRButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                if (measurementValue.getText().toString().isEmpty()) {
-                    Snackbar.make(root, "Cannot associate barcode with empty value", Snackbar.LENGTH_LONG).show();
-                } else {
-                    Intent intent = new Intent(getActivity(), ScannerActivity.class);
-                    startActivityForResult(intent, 1);
-                }
+        ImageButton scanQRButton = root.findViewById(R.id.add_measurement_qr_button);
+        scanQRButton.setOnClickListener(v -> {
+            if (measurementValue.getText().toString().isEmpty()) {
+                Snackbar.make(root, "Cannot associate barcode with empty value", Snackbar.LENGTH_LONG).show();
+            } else {
+                Intent intent = new Intent(requireActivity(), ScannerActivity.class);
+                startActivityForResult(intent, 1);
+            }
 
+        });
+        ImageButton viewQRButton = root.findViewById(R.id.add_measurement_qr_generate_button);
+        viewQRButton.setOnClickListener(v -> {
+            Fragment viewQRFragment = new ViewQRFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("UUID", experiment.getExperimentId().toString());
+            bundle.putString("DESCRIPTION",experiment.getDescription());
+            bundle.putString("TYPE", QRType.MeasurementTrial.toString());
+            try {
+                bundle.putFloat("MEASVAL", Float.parseFloat(measurementValue.getText().toString()));
+                viewQRFragment.setArguments(bundle);
+                requireActivity().getSupportFragmentManager().beginTransaction().add(viewQRFragment, "QR").commit();
+            } catch (NumberFormatException e) {
+                Snackbar.make(root, "Cannot create QR code with empty value", Snackbar.LENGTH_LONG).show();
             }
         });
-        viewQRButton = root.findViewById(R.id.add_measurement_qr_generate_button);
-        viewQRButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Fragment viewQRFragment = new ViewQRFragment();
-                Bundle bundle = new Bundle();
-                bundle.putString("UUID", experiment.getExperimentId().toString());
-                bundle.putString("DESCRIPTION",experiment.getDescription());
-                bundle.putString("TYPE", QRType.MeasurementTrial.toString());
-                try {
-                    bundle.putFloat("MEASVAL", Float.parseFloat(measurementValue.getText().toString()));
-                    viewQRFragment.setArguments(bundle);
-                    requireActivity().getSupportFragmentManager().beginTransaction().add(viewQRFragment, "QR").commit();
-                } catch (NumberFormatException e) {
-                    Snackbar.make(root, "Cannot create QR code with empty value", Snackbar.LENGTH_LONG).show();
-                }
-            }
-        });
-        currentMapDisplay = root.findViewById(R.id.measurement_trial_experiment_map_view);
+        MapView currentMapDisplay = root.findViewById(R.id.measurement_trial_experiment_map_view);
 
         parentActivity.currentTrial = new MeasurementTrial(parentActivity.loggedUser.getUserId(), 0);
-        utility = new MapUtility(experiment, currentMapDisplay, getContext(), parentActivity, parentActivity.currentTrial);
+        MapUtility utility = new MapUtility(experiment, currentMapDisplay, getContext(), parentActivity, parentActivity.currentTrial);
         utility.setRevertBack(root.findViewById(R.id.add_measurment_trial_revert_loc_bttn));
         utility.run();
         return root;
@@ -115,8 +98,8 @@ public class AddMeasurementTrialFragment extends Fragment {
         Log.d("ACTIVITYRESULT","val " + data.getStringExtra("QRCONTENTRAW"));
         if (data.getBooleanExtra("IS_QR",true)) {
             QRMaker qrMaker = new QRMaker();
-            QRCode qrCode;
-            try{
+            QRCode<?> qrCode;
+            try {
                 qrCode =qrMaker.decodeQRString(rawQRContent);
                 if (qrCode.getType() == QRType.MeasurementTrial){
                     measurementValue.setText(String.valueOf(((MeasurementQRCode)qrCode).getValue()));
@@ -128,17 +111,14 @@ public class AddMeasurementTrialFragment extends Fragment {
                     Log.d("SCANNER","Scanned QR was of incorrect type " + qrCode.getType().toString());
                     Snackbar.make(root,"Scanned QR was of incorrect type",Snackbar.LENGTH_LONG).show();
                 }
-            }
-            catch (QRMalformattedException qrMalE){
+            } catch (QRMalformattedException qrMalE){
                 //malformatted QR
-                qrCode = null;
                 Log.d("SCANNER","Scanned Malformatted QR");
                 Snackbar.make(root,"Scanned QR was not an Experiment-Automata QR Code",Snackbar.LENGTH_LONG).show();
             }
         } else {
-            NavigationActivity parentActivity = ((NavigationActivity) getActivity());
+            NavigationActivity parentActivity = ((NavigationActivity) requireActivity());
             Location location = parentActivity.currentTrial.getLocation();
-            BarcodeManager testBC = parentActivity.barcodeManager;
             MeasurementExperiment experiment = (MeasurementExperiment) parentActivity.experimentManager.getCurrentExperiment();
             try {
                 float trialValue = Float.parseFloat(measurementValue.getText().toString());

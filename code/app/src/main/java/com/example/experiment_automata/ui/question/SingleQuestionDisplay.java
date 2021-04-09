@@ -1,5 +1,6 @@
 package com.example.experiment_automata.ui.question;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -42,17 +43,16 @@ import java.util.ArrayList;
  *      1. Partly inspired by lab of 301 lab
  *
  */
-public class SingleQuestionDisplay extends ArrayAdapter {
-    private ArrayList<Question> currentExperimentQuestions;
-    private Context context;
+public class SingleQuestionDisplay extends ArrayAdapter<Question> {
+    private final ArrayList<Question> currentExperimentQuestions;
+    private final Context context;
     private ImageButton replyButton;
     private TextView questionView;
     private LinkView questionUser;
-    private NavigationActivity mainActivity;
+    private final NavigationActivity mainActivity;
     private Question currentQuestion;
-    private ListView replyListView;
     private ReplyArrayAdapter replyArrayAdapter;
-    private UserManager userManager;
+    private final UserManager userManager;
 
     /**
      * Constructor takes in an array list of questions and a context to set the attributes properly
@@ -63,12 +63,12 @@ public class SingleQuestionDisplay extends ArrayAdapter {
      * @param mainActivity
      *   MainActivity to access the questionManager
      */
-    public SingleQuestionDisplay(Context context, ArrayList currentExperimentQuestions, Activity mainActivity) {
+    public SingleQuestionDisplay(Context context, ArrayList<Question> currentExperimentQuestions, Activity mainActivity) {
         super(context, 0, currentExperimentQuestions);
         this.context = context;
         this.currentExperimentQuestions = currentExperimentQuestions;
         this.mainActivity = (NavigationActivity) mainActivity;
-        this.userManager = UserManager.getInstance();
+        this.userManager = UserManager.getInstance(true);
     }
 
     /**
@@ -89,31 +89,28 @@ public class SingleQuestionDisplay extends ArrayAdapter {
         currentQuestion = currentExperimentQuestions.get(position);
         if (root == null) {
             root = LayoutInflater.from(context).inflate(R.layout.main_question_display, parent, false);
-            update(root);
+            update();
         }
-        questionView = (TextView) root.findViewById(R.id.main_question_display_question_view);
+        questionView = root.findViewById(R.id.main_question_display_question_view);
         replyButton = root.findViewById(R.id.main_question_display_reply_button);
-        questionUser = (LinkView) root.findViewById(R.id.main_question_display_user);
-        replyListView = root.findViewById(R.id.main_question_display_list_view);
+        questionUser = root.findViewById(R.id.main_question_display_user);
+        ListView replyListView = root.findViewById(R.id.main_question_display_list_view);
 
         ArrayList<Reply> currentReplies = mainActivity.questionManager.getQuestionReply(currentQuestion.getQuestionId());
         replyArrayAdapter = new ReplyArrayAdapter(getContext(), currentReplies);
         replyListView.setAdapter(replyArrayAdapter);
 
-        if (currentExperimentQuestions != null) {
-            setView(root, position);
-        }
+        setView(position);
         return root;
     }
 
     /**
      * Sets up the display
-     * @param root
-     *   the view created for the fragment
      * @param pos
      *   which position within the array adapter
      */
-    private void setView(View root, int pos) {
+    @SuppressLint("SetTextI18n")
+    private void setView(int pos) {
         // try and find a reply for the current question
         replyButton.setOnClickListener(v -> dealingWithReply(pos));
         questionView.setText(currentQuestion.getQuestion());
@@ -129,16 +126,15 @@ public class SingleQuestionDisplay extends ArrayAdapter {
             questionUser.setText(user.getInfo().getName());
         else
             questionUser.setText("BAD-DATA");
-        update(root);
+        update();
     }
 
     /**
      * Updates the views as they are needed so as not clutter the main function and
      * to not violet DRY.
      *
-     * @param root the current view that was made 
      */
-    private void update(View root) {
+    private void update() {
         if (replyArrayAdapter != null) {
             replyArrayAdapter.notifyDataSetChanged();
         }

@@ -71,7 +71,7 @@ public class ExperimentUserStoriesTests {
 
     @Before
     public void setup() {
-        solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
+        solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.requireActivity());
         currentTestingActivity = (NavigationActivity) solo.getCurrentActivity();
 
         maker = new ExperimentMaker();

@@ -40,16 +40,13 @@ public class MapUtility {
     private static final double MAX_BOUND_SIZE_LAT = 85.05112877980658;
     private static final double MIN_BOUND_SIZE_LONG = -180.0;
     private static final double MAX_BOUND_SIZE_LONG = 180.0;
-
-
-    private Experiment<?> experiment;
-    private Trial<?> trial;
-    private MapView display;
-    private Context context;
-    private Marker marker;
-    private NavigationActivity parentActivity;
+    private final Experiment<?> experiment;
+    private final Trial<?> trial;
+    private final MapView display;
+    private final Context context;
+    private final Marker marker;
+    private final NavigationActivity parentActivity;
     private Button revertBack;
-
 
     public MapUtility(Experiment<?> experiment,
                       MapView display,
@@ -125,9 +122,7 @@ public class MapUtility {
                             parentActivity.setCurrentScreen(Screen.ExperimentDetails);
                             parentActivity.onBackPressed();
                         })
-                        .setNeutralButton("Okay", (dialog, which) -> {
-                            parentActivity.setCurrentScreen(Screen.Trial);
-                        });
+                        .setNeutralButton("Okay", (dialog, which) -> parentActivity.setCurrentScreen(Screen.Trial));
 
                 myDialog.setTitle("Warning");
 
@@ -141,16 +136,13 @@ public class MapUtility {
             parentActivity.setCurrentScreen(Screen.Trial);
 
             if (revertBack != null) {
-                revertBack.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                revertBack.setOnClickListener(v -> {
 
-                        // Maybe make into function -> Violating dry a bit :p
-                        marker.setPosition(oldLocation);
-                        trial.getLocation().setLongitude(oldLocation.getLongitude());
-                        trial.getLocation().setLatitude(oldLocation.getLatitude());
-                        display.invalidate();
-                    }
+                    // Maybe make into function -> Violating dry a bit :p
+                    marker.setPosition(oldLocation);
+                    trial.getLocation().setLongitude(oldLocation.getLongitude());
+                    trial.getLocation().setLatitude(oldLocation.getLatitude());
+                    display.invalidate();
                 });
             }
 
@@ -181,7 +173,7 @@ public class MapUtility {
                 @Override
                 public boolean longPressHelper(GeoPoint p) {
 
-                    Toast.makeText(context, "" + p, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, p.toString(), Toast.LENGTH_SHORT).show();
 
                     return false;
                 }

@@ -3,6 +3,7 @@ package com.example.experiment_automata.backend.qr;
 import com.google.zxing.WriterException;
 
 import java.util.UUID;
+
 /**
  * Role/Pattern:
  *     Class representing a QR Code containing  a reference to a Natural count Trial
@@ -23,12 +24,8 @@ public class NaturalQRCode extends QRCode<Integer>{
         //create QR image
         try {
             this.setQrCodeImage(encodeStringToQR(packedString));
-        }
-        catch (WriterException wException){
-            //return special bitmap maybe?
+        } catch (WriterException wException){
             wException.printStackTrace();
         }
-        this.setRawContentString(packedString);
     }
-
 }

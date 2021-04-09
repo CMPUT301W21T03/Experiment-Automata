@@ -17,6 +17,7 @@ public class CountBarcodeReference extends BarcodeReference<Object> {
     public CountBarcodeReference(String barcodeVal, UUID experimentId, ExperimentType type){
         super(barcodeVal,experimentId,type,null,null);
     }
+
     public CountBarcodeReference(String barcodeVal, UUID experimentId, ExperimentType type, Location location){
         super(barcodeVal,experimentId,type,null,location);
     }

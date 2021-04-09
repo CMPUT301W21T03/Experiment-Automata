@@ -18,12 +18,11 @@ import java.util.UUID;
  *      1.
  */
 public abstract class BarcodeReference<T> {
-    private String barcodeVal;
-    private UUID experimentId;
-    private ExperimentType type;
-    private Location location;
-    private T result;
-
+    private final String barcodeVal;
+    private final UUID experimentId;
+    private final ExperimentType type;
+    private final Location location;
+    private final T result;
 
     public BarcodeReference(String barcodeVal, UUID experimentId, ExperimentType type, T result, Location location)   {
         this.barcodeVal = barcodeVal;
@@ -31,14 +30,13 @@ public abstract class BarcodeReference<T> {
         this.type = type;
         this.result = result;
         this.location = location;
-
         postBarcodeToFirestore();
     }
+
     /**
      * Post the current BarcodeReference to firestore
      */
     public void postBarcodeToFirestore(){
-        BarcodeReference<T> barcode = this;
         DataBase database = DataBase.getInstance();
         FirebaseFirestore db = database.getFireStore();
         Map<String,Object> barcodeRefData = new HashMap<>();
@@ -46,7 +44,7 @@ public abstract class BarcodeReference<T> {
         barcodeRefData.put("experiment-id", experimentId.toString());
         barcodeRefData.put("type", type.toString());
         barcodeRefData.put("result", result);
-        if (location == null){
+        if (location == null) {
         //must write nulls to overwrite values
             barcodeRefData.put("longitude",null);
             barcodeRefData.put("latitude",null);

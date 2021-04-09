@@ -34,10 +34,10 @@ public class CountStatsTest {
                 ownerId,
                 "MURICA",
                 false);
-        successTrial = new CountTrial(id);
-        failureTrial = new CountTrial(id2);
-        ignoreSuccess = new CountTrial(id3);
-        ignoreFailure = new CountTrial(id4);
+        successTrial = new CountTrial(id, 0);
+        failureTrial = new CountTrial(id2, 0);
+        ignoreSuccess = new CountTrial(id3, 0);
+        ignoreFailure = new CountTrial(id4, 0);
     }
 
     @Test

@@ -98,9 +98,9 @@ public class CountStatsTest {
         countExperiment.recordTrial(successTrial);
 
         float[] quartiles = countExperiment.getQuartiles();
-        assertEquals(quartiles[0], 0);
+        assertEquals(quartiles[0], 1);
         assertEquals(quartiles[1], 1);
-        assertEquals(quartiles[2], 0);
+        assertEquals(quartiles[2], 1);
     }
 
     @Test
@@ -113,9 +113,9 @@ public class CountStatsTest {
         countExperiment.recordTrial(failureTrial);
 
         float[] quartiles = countExperiment.getQuartiles();
-        assertEquals(quartiles[0], 0);
+        assertEquals(quartiles[0], 1);
         assertEquals(quartiles[1], 1);
-        assertEquals(quartiles[2], 0);
+        assertEquals(quartiles[2], 1);
     }
 
     @Test
@@ -127,9 +127,9 @@ public class CountStatsTest {
         countExperiment.recordTrial(failureTrial);
 
         float[] quartiles = countExperiment.getQuartiles();
-        assertEquals(quartiles[0], 0);
+        assertEquals(quartiles[0], 1);
         assertEquals(quartiles[1], 1);
-        assertEquals(quartiles[2], 0);
+        assertEquals(quartiles[2], 1);
     }
 
     @Test
@@ -140,9 +140,9 @@ public class CountStatsTest {
         countExperiment.recordTrial(successTrial);
 
         float[] quartiles = countExperiment.getQuartiles();
-        assertEquals(quartiles[0], 0);
+        assertEquals(quartiles[0], 1);
         assertEquals(quartiles[1], 1);
-        assertEquals(quartiles[2], 0);
+        assertEquals(quartiles[2], 1);
     }
 
     @Test
@@ -197,8 +197,8 @@ public class CountStatsTest {
 
         float[] quartiles = countExperiment.getQuartiles();
 
-        assertEquals(quartiles[0], 0);
+        assertEquals(quartiles[0], 1);
         assertEquals(quartiles[1], 1);
-        assertEquals(quartiles[2], 0);
+        assertEquals(quartiles[2], 1);
     }
 }

@@ -9,6 +9,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+
 /**
  * Role/Pattern:
  *      Reference to a barcode and trial pair

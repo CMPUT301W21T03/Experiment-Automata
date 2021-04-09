@@ -3,7 +3,6 @@ package com.example.experiment_automata.ui.qr;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -116,9 +115,6 @@ public class ScanQRFragment extends Fragment {
                         break;
                     case MeasurementTrial:
                         trial = new MeasurementTrial(user.getUserId(), (Float) qrCode.getValue());
-
-                        break;
-                    case Experiment:
                         break;
                 }
                 if (trial != null) {
@@ -133,13 +129,11 @@ public class ScanQRFragment extends Fragment {
             }
         } catch (QRMalformattedException qrMalE){
             //malformatted QR
-            Log.d("SCANNER","Scanned Malformatted QR");
             Snackbar.make(requireView(), "Scanned QR was not an Experiment-Automata QR Code", Snackbar.LENGTH_LONG).show();
         }
     }
 
     private void handleBarcode(@NonNull String scannedContent) {
-        Log.d("SCANNER","Barcode was scanned");
         BarcodeReference<?> barcodeReference = parentActivity.barcodeManager.getBarcode(scannedContent);
         if (barcodeReference == null) {
             //barcode not associated

@@ -3,7 +3,6 @@ package com.example.experiment_automata.ui.qr;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.experiment_automata.R;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 
 /**
  * Role/Pattern:

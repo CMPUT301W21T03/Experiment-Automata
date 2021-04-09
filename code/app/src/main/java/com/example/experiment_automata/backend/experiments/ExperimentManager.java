@@ -1,7 +1,6 @@
 package com.example.experiment_automata.backend.experiments;
 
 import android.location.Location;
-import android.util.Log;
 
 import com.example.experiment_automata.backend.DataBase;
 import com.example.experiment_automata.backend.events.OnEventListener;

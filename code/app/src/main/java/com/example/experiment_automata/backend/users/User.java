@@ -1,7 +1,6 @@
 package com.example.experiment_automata.backend.users;
 
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import com.example.experiment_automata.backend.DataBase;
 import com.google.android.gms.tasks.Task;

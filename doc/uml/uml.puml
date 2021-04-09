@@ -28,13 +28,13 @@ package users {
 
     class UserManager{
         -{static} currentUsers: HashMap<UUID, User>
-        -{static} userManager: UserManager 
-        -testMode: Boolean 
+        -{static} userManager: UserManager
+        -testMode: Boolean
         +add(newUser: User)
-        +getSize(): Integer 
-        +getSpecificUser(userID: UUID): User 
+        +getSize(): Integer
+        +getSpecificUser(userID: UUID): User
         +getAllUsersFromFireStore()
-
+        +sectorRead(snapshot: QuerySnapshot)
     }
 
     UserManager "1" *-- "1" UserManager: Singleton
@@ -49,6 +49,7 @@ package questions {
         -reply: UUID
         -experimentId: UUID
         -questionId: UUID
+        +compareTo(o: Question): Integer
     }
 
     class QuestionManager {
@@ -57,6 +58,8 @@ package questions {
         - {static} replies: hasMap<UUID, Reply>
         - {static} questionManager: QuestionManager
 
+        + {static} getInstance(): QuestionManager
+        + {static} resetInstance()
         + addQuestion(experimentID: UUID, question: Question)
         + addReply(id: UUID, reply: Reply)
         + getQuestion(questionId: UUID): Question
@@ -71,6 +74,7 @@ package questions {
         -reply: String
         -experimenter: UUID
         -replyID: UUID
+        + compareTo(o: Reply): Integer
     }
 }
 
@@ -113,6 +117,7 @@ package experiments {
         +recordTrial(trial: Trial)
         +recordTrial(trial: Trial, fromFirestore: Boolean)
         +postExperimentToFirestore()
+        +compareTo(o: Experiment): Integer
     }
 
     class ExperimentManager {
@@ -123,7 +128,7 @@ package experiments {
         + delete(id: UUID)
         + add(id: UUID, experiment: Experiment)
         + getOwnedExperiments(ownerID: UUID): ArrayList<Experiment> 
-        + query(experimentID: UUID): Experiment 
+        + query(experimentID: UUID): Experiment
         + queryExperiments(query: String): ArrayList<Experiment> 
         + queryExperiments(experimentIds: Collection<UUID>): ArrayList<Experiment>
         + queryExperiments(query: String, experimentIds: Collection<UUID>): ArrayList<Experiment>
@@ -223,7 +228,7 @@ package trials {
 
 package qr {
 
-    class ExperimentQRCode extends QRCode {}
+    class ExperimentQRCode<T> extends QRCode {}
 
     class BinomialQRCode extends QRCode{
         - result: Boolean
@@ -262,38 +267,38 @@ package qr {
 
     class QRMalformattedException
 
-    QRType -- QRCode 
+    QRType -- QRCode
 
-    QRMaker "1" o-- "0..*" QRCode: decodeQRString 
+    QRMaker "1" o-- "0..*" QRCode: decodeQRString
 
-    QRMaker -- QRMalformattedException: Throws 
+    QRMaker -- QRMalformattedException: Throws
 }
 
 package barcode{
     class BarcodeManager{
         -barcodes: HashMap<String,BarcodeReference>
-        -barcodeManager: BarcodeManager 
+        -barcodeManager: BarcodeManager
         +addBarCode(barcodeVal: String, experimentId: UUID, result: Integer, location: Location)
         +addBarCode(barcodeVal: String, experimentId: UUID, result: Float, location: Location)
         +addBarCode(barcodeVal: String, experimentId: UUID, result: Boolean, location: Location)
         +addBarCode(barcodeVal: String, experimentId: UUID,  location: Location)
         +getAllFromFireStore()
-        +locationFromPairing(document: QueryDocumentSnapShot): Location 
-        +getBarcode(barcodeVal: String): BarcodeReference 
+        +locationFromPairing(document: QueryDocumentSnapShot): Location
+        +getBarcode(barcodeVal: String): BarcodeReference
     }
 
     BarcodeManager "1" *-- "1" BarcodeManager: Singleton
 
-    BarcodeManager o-- "0..*" BarcodeReference 
+    BarcodeManager o-- "0..*" BarcodeReference
 
 
-    abstract class BarcodeReference{
-        -barcodeVal: String 
+    abstract class BarcodeReference<T> {
+        -barcodeVal: String
         -experimentID: UUID
         -type: ExperimentType
-        -location: Location 
+        -location: Location
         -T: result 
-        +postBarcodeToFirestore()    
+        +postBarcodeToFirestore()
     }
 
     class BinomialBarcodeReference<Boolean> extends BarcodeReference
@@ -303,29 +308,26 @@ package barcode{
     class MeasurementBarcodeReference<Float> extends BarcodeReference
 
     class NaturalBarcodeReference<Integer> extends BarcodeReference
-
-
 }
 
-package location{
-
+package location {
     class LocationServices {
-        +currentLocation: Location 
+        +currentLocation: Location
         +onLocationChanged() 
     }
 }
 
-class DataBase{
-    -{static} current: DataBase 
-    -{static} db: FirebaseFirestore 
-    -testMode: Boolean 
+class DataBase {
+    -{static} current: DataBase
+    -{static} db: FirebaseFirestore
+    -testMode: Boolean
 
-    +{static} getInstanceTesting(): DataBase 
-    +{static} getInstance(): DataBase 
-    +getFireStore(): FirebaseFirestore 
+    +{static} getInstanceTesting(): DataBase
+    +{static} getInstance(): DataBase
+    +getFireStore(): FirebaseFirestore
 }
 
-DataBase "1" *-- "1": Singleton 
+DataBase "1" *-- "1" DataBase: Singleton
 
 User "1" *-- "1" ContactInformation
 
@@ -341,10 +343,8 @@ User -- Trial: Performs
 
 Experiment -- QRCode
 
-BarcodeReference o-- Experiment 
+BarcodeReference o-- Experiment
 
 BarcodeReference o-- ExperimentType
-
-
 
 @enduml

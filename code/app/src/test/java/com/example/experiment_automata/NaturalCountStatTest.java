@@ -24,7 +24,7 @@ public class NaturalCountStatTest {
     @Before
     public void setup() {
         natExperiment = new NaturalCountExperiment("This is a test", 5, false,
-                true, ownerId, false);
+                true, ownerId, "canada",false);
     }
 
     /**

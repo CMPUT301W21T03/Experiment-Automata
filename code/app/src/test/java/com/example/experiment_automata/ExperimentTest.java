@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ExperimentTest {
     private final static String description = "Test Experiment";
+    private final static String region = "San Jose";
     private final static Integer minTrials = Integer.MAX_VALUE;
     private final static Boolean requireLocation = Boolean.FALSE;
     private final static Boolean acceptNewResults = Boolean.TRUE;
@@ -35,16 +36,17 @@ public class ExperimentTest {
     public void testExperiment() {
         Experiment<CountTrial> experiment = (CountExperiment) ExperimentMaker.makeExperiment(
                 ExperimentType.Count, description, minTrials, requireLocation,
-                acceptNewResults, owner, enableFirestoreSupport);
+                acceptNewResults, owner, region, enableFirestoreSupport);
         assertNotNull(experiment);
         assertEquals(description, experiment.getDescription());
+        assertEquals(region, experiment.getRegion());
         assertEquals(minTrials, experiment.getMinTrials());
         assertEquals(requireLocation, experiment.isRequireLocation());
         assertEquals(acceptNewResults, experiment.isActive());
         assertEquals(owner, experiment.getOwnerId());
         assertNotEquals(experiment, ExperimentMaker.makeExperiment(
                 ExperimentType.Count, description, minTrials, requireLocation,
-                acceptNewResults, owner, enableFirestoreSupport)
+                acceptNewResults, owner, region, enableFirestoreSupport)
         );
         assertEquals((Integer) 0, experiment.getSize());
         CountTrial trial = new CountTrial(owner);
@@ -56,7 +58,7 @@ public class ExperimentTest {
     public void testCountExperiment() {
         CountExperiment experiment = (CountExperiment) ExperimentMaker.makeExperiment(
                 ExperimentType.Count, description, minTrials, requireLocation,
-                acceptNewResults, owner, enableFirestoreSupport);
+                acceptNewResults, owner, region, enableFirestoreSupport);
         assertNotNull(experiment);
     }
 
@@ -64,7 +66,7 @@ public class ExperimentTest {
     public void testNaturalCountExperiment() {
         NaturalCountExperiment experiment = (NaturalCountExperiment) ExperimentMaker.makeExperiment(
                 ExperimentType.NaturalCount, description, minTrials, requireLocation,
-                acceptNewResults, owner, enableFirestoreSupport);
+                acceptNewResults, owner, region, enableFirestoreSupport);
         assertNotNull(experiment);
     }
 
@@ -72,7 +74,7 @@ public class ExperimentTest {
     public void testBinomialExperiment() {
         BinomialExperiment experiment = (BinomialExperiment) ExperimentMaker.makeExperiment(
                 ExperimentType.Binomial, description, minTrials, requireLocation,
-                acceptNewResults, owner, enableFirestoreSupport);
+                acceptNewResults, owner, region, enableFirestoreSupport);
         assertNotNull(experiment);
     }
 
@@ -80,14 +82,14 @@ public class ExperimentTest {
     public void testMeasurementExperiment() {
         MeasurementExperiment experiment = (MeasurementExperiment) ExperimentMaker.makeExperiment(
                 ExperimentType.Measurement, description, minTrials, requireLocation,
-                acceptNewResults, owner, enableFirestoreSupport);
+                acceptNewResults, owner, region, enableFirestoreSupport);
         assertNotNull(experiment);
     }
 
     @Test
     public void countAdd() {
         CountExperiment experiment = (CountExperiment) ExperimentMaker.makeExperiment(ExperimentType.Count,
-                "Count Experiment", 0, false, true, owner, false);
+                "Count Experiment", 0, false, true, owner, region, false);
         assert experiment != null;
         experiment.recordTrial(new CountTrial(owner));
         experiment.setActive(false);
@@ -98,7 +100,7 @@ public class ExperimentTest {
     @Test
     public void naturalCountAdd() {
         NaturalCountExperiment experiment = (NaturalCountExperiment) ExperimentMaker.makeExperiment(ExperimentType.NaturalCount,
-                "Count Experiment", 0, false, true, owner, false);
+                "Count Experiment", 0, false, true, owner, region, false);
         assert experiment != null;
         experiment.recordTrial(new NaturalCountTrial(owner, 1));
         experiment.setActive(false);
@@ -109,7 +111,7 @@ public class ExperimentTest {
     @Test
     public void binomialAdd() {
         BinomialExperiment experiment = (BinomialExperiment) ExperimentMaker.makeExperiment(ExperimentType.Binomial,
-                "Count Experiment", 0, false, true, owner, false);
+                "Count Experiment", 0, false, true, owner, region, false);
         assert experiment != null;
         experiment.recordTrial(new BinomialTrial(owner, true));
         experiment.setActive(false);
@@ -120,7 +122,7 @@ public class ExperimentTest {
     @Test
     public void measurementAdd() {
         MeasurementExperiment experiment = (MeasurementExperiment) ExperimentMaker.makeExperiment(ExperimentType.Measurement,
-                "Count Experiment", 0, false, true, owner, false);
+                "Count Experiment", 0, false, true, owner, region, false);
         assert experiment != null;
         experiment.recordTrial(new MeasurementTrial(owner, 3));
         experiment.setActive(false);
@@ -132,7 +134,7 @@ public class ExperimentTest {
     public void minTrials() {
         int trials = 10;
         Experiment<?> experiment = ExperimentMaker.makeExperiment(ExperimentType.Count,
-                "Experiment", trials, false, false, owner, false);
+                "Experiment", trials, false, false, owner, region, false);
         assert experiment != null;
         assertEquals(trials, (int) experiment.getMinTrials());
         trials++;
@@ -143,7 +145,7 @@ public class ExperimentTest {
     @Test
     public void publishing() {
         Experiment<?> experiment = ExperimentMaker.makeExperiment(ExperimentType.Count,
-                "Experiment", 0, false, false, owner, false);
+                "Experiment", 0, false, false, owner, region, false);
         assert experiment != null;
         assertFalse(experiment.isPublished());
         experiment.setPublished(true);
@@ -154,7 +156,7 @@ public class ExperimentTest {
     public void description() {
         String description = "The cake is a lie";
         Experiment<?> experiment = ExperimentMaker.makeExperiment(ExperimentType.Count,
-                description, 0, false, false, owner, false);
+                description, 0, false, false, owner, region, false);
         assert experiment != null;
         assertEquals(description, experiment.getDescription());
         description = "Return to monke";
@@ -165,7 +167,7 @@ public class ExperimentTest {
     @Test
     public void requireLocation() {
         Experiment<?> experiment = ExperimentMaker.makeExperiment(ExperimentType.Count,
-                "Experiment", 0, false, false, owner, false);
+                "Experiment", 0, false, false, owner, region, false);
         assert experiment != null;
         assertFalse(experiment.isRequireLocation());
         experiment.setRequireLocation(true);

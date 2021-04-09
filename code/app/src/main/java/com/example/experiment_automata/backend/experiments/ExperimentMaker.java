@@ -8,9 +8,6 @@ import java.util.UUID;
  *      the works needed by other classes. This is of course using the factory pattern
  *      for the given experiments.
  *
- *  Known Issue:
- *
- *      1. None
  */
 public class ExperimentMaker {
     /**

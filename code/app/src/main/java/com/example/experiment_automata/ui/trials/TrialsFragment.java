@@ -25,9 +25,6 @@ import java.util.ArrayList;
  *       This fragment contains a list of trials which can be ignored or included
  *       in the stats computation.
  *
- * Known Issue:
- *
- *      1. None
  */
 public class TrialsFragment extends Fragment {
     private ArrayList<Trial<?>> trialsArrayList;

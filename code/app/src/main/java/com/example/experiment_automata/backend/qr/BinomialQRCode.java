@@ -7,9 +7,6 @@ import java.util.UUID;
  * Role/Pattern:
  *     Class representing a QR Code containing a reference to a Binomial Trial
  *
- *  Known Issue:
- *
- *      1. None
  */
 public class BinomialQRCode extends QRCode<Boolean>{
     static final String BINOMIAL_TRUE = "t";

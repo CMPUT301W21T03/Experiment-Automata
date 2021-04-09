@@ -8,9 +8,6 @@ import java.util.UUID;
  * Role/Pattern:
  *     Class representing a QR Code containing  a reference to a Natural count Trial
  *
- *  Known Issue:
- *
- *      1. None
  */
 public class NaturalQRCode extends QRCode<Integer>{
     public NaturalQRCode(UUID experimentID, int value) {

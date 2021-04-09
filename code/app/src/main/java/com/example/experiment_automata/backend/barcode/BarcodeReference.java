@@ -13,9 +13,6 @@ import java.util.UUID;
  * Role/Pattern:
  *      Reference to a barcode and trial pair
  *
- * Known Issue:
- *
- *      1.
  */
 public abstract class BarcodeReference<T> {
     private final String barcodeVal;

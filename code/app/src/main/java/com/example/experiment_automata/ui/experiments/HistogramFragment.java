@@ -15,9 +15,6 @@ import com.example.experiment_automata.R;
  *
  *       This class inflates the histogram fragment.
  *
- * Known Issue:
- *
- *      1. None
  */
 public class HistogramFragment extends Fragment {
     @Override

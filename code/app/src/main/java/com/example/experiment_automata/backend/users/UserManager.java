@@ -16,7 +16,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
+/**
+ * Role/Pattern:
+ *     Maintain a list of the current users, and reads from the database
+ *     Holds a backlog so we can do fast local queries
+ *
+ */
 public class UserManager {
     private static HashMap<UUID, User> currentUsers;
     private static UserManager userManager;

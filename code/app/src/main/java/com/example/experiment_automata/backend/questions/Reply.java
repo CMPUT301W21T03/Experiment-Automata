@@ -15,9 +15,6 @@ import java.util.UUID;
  *
  *       The goal of this class is to maintain a questions replies
  *
- * Known Issue:
- *
- *      1. None
  */
 public class Reply implements Serializable, Comparable<Reply> {
     private final String reply;

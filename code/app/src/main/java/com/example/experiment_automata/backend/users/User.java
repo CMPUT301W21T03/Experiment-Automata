@@ -21,9 +21,6 @@ import java.util.UUID;
  * Role/Pattern:
  *     This is the user. Contains the information that represents a user.
  *
- *  Known Issue:
- *
- *      1. None
  */
 public class User implements Serializable {
     private static final String TAG = "User";

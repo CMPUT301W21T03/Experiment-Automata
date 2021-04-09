@@ -38,9 +38,6 @@ import java.util.UUID;
  *      This class deals with the whole view of the experiment that the user has made.
  *      Giving the user the whole display and information needed to maintain experiments.
  *
- * Known Issue:
- *
- *      1. None
  */
 public class NavExperimentDetailsFragment extends Fragment {
     public static final String CURRENT_EXPERIMENT_ID = "FRAGMENT_CURRENT_FRAGMENT-ID";

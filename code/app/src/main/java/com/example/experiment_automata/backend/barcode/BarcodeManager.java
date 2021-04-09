@@ -21,9 +21,6 @@ import java.util.UUID;
  * Role/Pattern:
  *      Contains and manages Barcode and trial references
  *
- * Known Issue:
- *
- *      1.
  */
 public class BarcodeManager {
     private final HashMap<String,BarcodeReference<?>> barcodes;

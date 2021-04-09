@@ -18,9 +18,6 @@ import com.journeyapps.barcodescanner.DecoratedBarcodeView;
  *
  *       This class opens a camera viewport for ZXing scanner
  *
- * Known Issue:
- *
- *      1.
  */
 public class ScannerActivity extends AppCompatActivity {
     @Override

@@ -8,9 +8,6 @@ import java.util.UUID;
  * Role/Pattern:
  *     Class representing a QR Code containing only an Experiment Reference
  *
- *  Known Issue:
- *
- *      1. None
  */
 public class ExperimentQRCode extends QRCode<Object> {
     public ExperimentQRCode(UUID experimentID) {

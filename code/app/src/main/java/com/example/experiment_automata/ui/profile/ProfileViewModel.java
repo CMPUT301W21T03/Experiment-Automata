@@ -9,9 +9,6 @@ import com.example.experiment_automata.backend.users.User;
  * Role/Pattern:
  *     Test fragment that might be removed at some point in the future.
  *
- *  Known Issue:
- *
- *      1. None
  */
 public class ProfileViewModel extends ViewModel {
     private User user;

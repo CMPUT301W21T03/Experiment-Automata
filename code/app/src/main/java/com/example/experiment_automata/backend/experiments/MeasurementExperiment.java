@@ -104,7 +104,7 @@ public class MeasurementExperiment extends Experiment<MeasurementTrial> {
         List<Entry> data = new ArrayList<>();
         boolean first = true;
         long offset = 0;
-        for (MeasurementTrial trial : results ) {
+        for (MeasurementTrial trial : this.getTrials()) {
             if (!trial.isIgnored()) {
                 if (first) {
                     first = false;

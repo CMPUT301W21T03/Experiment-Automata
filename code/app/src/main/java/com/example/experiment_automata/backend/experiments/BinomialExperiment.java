@@ -91,7 +91,7 @@ public class BinomialExperiment extends Experiment<BinomialTrial> {
         List<Entry> data = new ArrayList<>();
         boolean first = true;
         long offset = 0;
-        for (BinomialTrial trial : results ) {
+        for (BinomialTrial trial : this.getTrials()) {
             if (!trial.isIgnored()) {
                 if (first) {
                     first = false;

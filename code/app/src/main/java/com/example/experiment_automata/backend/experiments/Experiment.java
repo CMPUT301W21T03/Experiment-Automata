@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -337,5 +338,9 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
      * Get the trials made about this experiment.
      * @return the trials
      */
-    public Collection<T> getTrials() { return results; }
+    public ArrayList<T> getTrials() {
+        ArrayList<T> trials = new ArrayList<>(this.results);
+        Collections.sort(trials);
+        return trials;
+    }
 }

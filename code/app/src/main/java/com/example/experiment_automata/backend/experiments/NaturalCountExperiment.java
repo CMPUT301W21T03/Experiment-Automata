@@ -103,7 +103,7 @@ public class NaturalCountExperiment extends Experiment<NaturalCountTrial> {
         List<Entry> data = new ArrayList<>();
         boolean first = true;
         long offset = 0;
-        for (NaturalCountTrial trial : results ) {
+        for (NaturalCountTrial trial : this.getTrials()) {
             if (!trial.isIgnored()) {
                 if (first) {
                     first = false;

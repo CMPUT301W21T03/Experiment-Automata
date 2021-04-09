@@ -30,8 +30,6 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.LargeValueFormatter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import org.w3c.dom.Text;
-
 import java.util.UUID;
 
 /**

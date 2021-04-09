@@ -14,11 +14,11 @@ import java.util.UUID;
  * Role/Pattern:
  *     The main trial type class of which the different trials are parts of.
  */
-public abstract class Trial<T> implements Serializable {
+public abstract class Trial<T> implements Serializable, Comparable<Trial<T>> {
     private final UUID userId;
     private final UUID trialId;
     private Location location;
-    private long timestamp;
+    private final long timestamp;
     private boolean ignore;
     protected T result;
 
@@ -126,5 +126,23 @@ public abstract class Trial<T> implements Serializable {
      */
     public void setResult(T result) {
         this.result = result;
+    }
+
+    /**
+     * Compares this object with the specified object for order.  Returns a
+     * negative integer, zero, or a positive integer as this object is less
+     * than, equal to, or greater than the specified object.
+     * @param o the object to be compared.
+     * @return a negative integer, zero, or a positive integer as this object
+     * is less than, equal to, or greater than the specified object.
+     * @throws NullPointerException if the specified object is null
+     * @throws ClassCastException   if the specified object's type prevents it
+     *                              from being compared to this object.
+     */
+    @Override
+    public int compareTo(Trial<T> o) {
+        Long selfTimestamp = this.timestamp;
+        Long otherTimestamp = o.getTimestamp();
+        return selfTimestamp.compareTo(otherTimestamp);
     }
 }

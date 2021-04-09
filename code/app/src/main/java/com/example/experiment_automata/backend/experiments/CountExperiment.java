@@ -119,7 +119,9 @@ public class CountExperiment extends Experiment<CountTrial> {
      */
     public float[] getQuartiles() {
         float[] quartiles = new float[3];
+        quartiles[0] = 1;
         quartiles[1] = getMedian();
+        quartiles[2] = 1;
         return quartiles;
     }
 }

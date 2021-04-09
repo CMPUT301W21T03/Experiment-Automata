@@ -32,9 +32,6 @@ import org.jetbrains.annotations.NotNull;
  *
  *       This class provides the framework needed to make and edit an experiment.
  *
- * Known Issue:
- *
- *      1. None 
  */
 // Basic layout of this fragment inspired by lab work in CMPUT 301
 // Abdul Ali Bangash, "Lab 3", 2021-02-04, Public Domain,

@@ -9,9 +9,6 @@ import java.util.List;
  * Role/Pattern:
  *     provides contract for graphs
  *
- *  Known Issue:
- *
- *      1. None
  */
 public interface Graphable {
     /**

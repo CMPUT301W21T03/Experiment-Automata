@@ -36,9 +36,6 @@ import java.util.UUID;
  *
  * This maintains the list for the android system to display the individual inflated views.
  *
- * Known Issue:
- *
- *      1. None
  */
 public class TrialArrayAdapter extends ArrayAdapter<Trial<?>> {
     // Syntax inspired by Abdul Ali Bangash, "Lab 3 Instructions - Custom List",

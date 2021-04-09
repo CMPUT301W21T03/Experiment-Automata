@@ -30,9 +30,6 @@ import java.util.UUID;
  * Role/Pattern:
  *     Provides the main view control for when the user first enters the home screen.
  *
- *  Known Issue:
- *
- *      1. None
  */
 public class HomeFragment extends Fragment {
     private ExperimentManager experimentManager;

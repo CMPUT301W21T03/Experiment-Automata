@@ -8,8 +8,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
  * Role:
  *  maintain a single instance of the firebase context
  *
- *  Issues:
- *      None:
  */
 
 public class DataBase {

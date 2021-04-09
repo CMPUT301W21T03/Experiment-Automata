@@ -31,9 +31,6 @@ import org.osmdroid.views.overlay.Marker;
  * Role/Pattern:
  *     Deals with map information when displaying and adding trial locations
  *
- *  Known Issue:
- *
- *      1. None
  */
 public class MapUtility {
     private static final double MIN_BOUND_SIZE_LAT = -85.05112877980658;

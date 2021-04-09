@@ -9,9 +9,6 @@ import java.util.UUID;
  * Role/Pattern:
  *      Reference to a barcode and Count Trial pair
  *
- * Known Issue:
- *
- *      1.
  */
 public class CountBarcodeReference extends BarcodeReference<Object> {
     public CountBarcodeReference(String barcodeVal, UUID experimentId, ExperimentType type){

@@ -6,9 +6,6 @@ import android.content.SharedPreferences;
  * Role/Pattern:
  *     The contact information of a user.
  *
- *  Known Issue:
- *
- *      1. None
  */
 public class ContactInformation {
     private static final String nameKey = "userName";

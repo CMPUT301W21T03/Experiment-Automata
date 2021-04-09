@@ -13,9 +13,6 @@ import java.util.UUID;
  * Role/Pattern:
  *      Holds the main data needed for a binomial experiment
  *
- * Known Issue:
- *
- *      1. None
  */
 public class BinomialExperiment extends Experiment<BinomialTrial> {
     /**

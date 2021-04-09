@@ -8,9 +8,6 @@ import java.util.UUID;
  * Role/Pattern:
  *     Class representing a QR Code containing a reference to a Count Trial
  *
- *  Known Issue:
- *
- *      1. None
  */
 public class CountQRCode extends QRCode<Object>{
     public CountQRCode(UUID experimentID) {

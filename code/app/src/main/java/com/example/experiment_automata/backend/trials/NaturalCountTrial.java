@@ -8,9 +8,6 @@ import java.util.UUID;
  * Role/Pattern:
  *     Holds the information needed to maintain and track a natural count trial
  *
- *  Known Issue:
- *
- *      1. None
  */
 public class NaturalCountTrial extends Trial<Integer> {
     public NaturalCountTrial(UUID collector, int result) throws IllegalArgumentException {

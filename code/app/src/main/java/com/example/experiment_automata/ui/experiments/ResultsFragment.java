@@ -15,9 +15,6 @@ import com.example.experiment_automata.R;
  *
  *       This fragment class inflates the results fragment view.
  *
- * Known Issue:
- *
- *      1. None
  */
 public class ResultsFragment extends Fragment {
     @Override

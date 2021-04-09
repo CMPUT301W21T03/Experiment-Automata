@@ -185,7 +185,7 @@ public class QuestionManager {
      */
     public void getQuestionsFromFirestore() {
 
-        DataBase dataBase = DataBase.getInstanceTesting();
+        DataBase dataBase = DataBase.getInstance();
         FirebaseFirestore db = dataBase.getFireStore();
         CollectionReference questionsCollection = db.collection("questions");
         questionsCollection.get().addOnCompleteListener(task -> {
@@ -210,7 +210,7 @@ public class QuestionManager {
      */
     private void getRepliesFromFirestore() {
         if (TEST_MODE) return;
-        DataBase dataBase = DataBase.getInstanceTesting();
+        DataBase dataBase = DataBase.getInstance();
         FirebaseFirestore db = dataBase.getFireStore();
         CollectionReference questionsCollection = db.collection("replies");
         questionsCollection.get().addOnCompleteListener(task -> {

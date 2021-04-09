@@ -65,7 +65,7 @@ public class Reply implements Serializable, Comparable<Reply> {
      */
 
     private void postReplyToFirestore() {
-        DataBase dataBase = DataBase.getInstanceTesting();
+        DataBase dataBase = DataBase.getInstance();
         FirebaseFirestore db = dataBase.getFireStore();
         Map<String,Object> questionData = new HashMap<>();
         String replyIdString = this.replyId.toString();

@@ -31,6 +31,8 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.LargeValueFormatter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.w3c.dom.Text;
+
 import java.util.UUID;
 
 /**
@@ -45,6 +47,7 @@ public class NavExperimentDetailsFragment extends Fragment {
     private String experimentStringId;
     private Experiment<?> experiment;
     private TextView descriptionView;
+    private TextView regionView;
     private TextView typeView;
     private TextView minTrials;
     private ImageButton editImageButton;
@@ -98,6 +101,7 @@ public class NavExperimentDetailsFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_nav_experiment_details, container, false);
 
         descriptionView = root.findViewById(R.id.nav_experiment_details_description);
+        regionView = root.findViewById(R.id.nav_experiment_details_region);
         typeView = root.findViewById(R.id.nav_experiment_details_experiment_type);
         minTrials = root.findViewById(R.id.nav_experiment_details_min_trials);
         editImageButton = root.findViewById(R.id.nav_fragment_experiment_detail_view_edit_button);
@@ -199,6 +203,7 @@ public class NavExperimentDetailsFragment extends Fragment {
         Experiment<?> current = (((NavigationActivity) requireActivity()).getExperimentManager())
                 .getAtUUIDDescription(UUID.fromString(experimentStringId));
         descriptionView.setText(current.getDescription());
+        regionView.setText(current.getRegion());
         typeView.setText(current.getType().toString());
         minTrials.setText(String.format("Minimum Trials: %d", current.getMinTrials()));
 

@@ -25,7 +25,7 @@ public class MeasurementStatTest {
     public void setup() {
         // Reset the binomial experiment
         mesExperiment = new MeasurementExperiment("This is a test", 5,
-                false, true, ownerId, false);
+                false, true, ownerId, "canada", false);
     }
 
     /**

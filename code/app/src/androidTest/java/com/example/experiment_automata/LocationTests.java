@@ -83,6 +83,7 @@ public class LocationTests {
                 true,
                 true,
                 testUUID,
+                "Edmonton",
                 true);
 
         /**
@@ -256,10 +257,6 @@ public class LocationTests {
 
         GeoPoint g = (GeoPoint) map.getMapCenter();
 
-        // TODO: Should we do some actual verification with what the geopoint g is?
         assertNotNull(g);
-
-
-
     }
 }

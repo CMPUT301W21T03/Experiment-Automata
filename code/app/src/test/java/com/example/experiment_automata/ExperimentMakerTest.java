@@ -19,13 +19,13 @@ public class ExperimentMakerTest {
     @Test
     public void makeErrorNullInput() {
         assertThrows(NullPointerException.class, () -> ExperimentMaker.makeExperiment(null, "funny guy eh!", 0,
-                false, false, UUID.randomUUID(), false));
+                false, false, UUID.randomUUID(), "", false));
     }
 
     @Test
     public void makeBinomialExperiment() {
         Experiment<?> x = ExperimentMaker.makeExperiment(ExperimentType.Binomial, "Should binomial",
-                0, false, false, UUID.randomUUID(), false);
+                0, false, false, UUID.randomUUID(), "", false);
         assert x != null;
         assertEquals(BinomialExperiment.class, x.getClass());
     }
@@ -33,7 +33,7 @@ public class ExperimentMakerTest {
     @Test
     public void makeCountExperiment() {
         Experiment<?> x = ExperimentMaker.makeExperiment(ExperimentType.Count, "Should count",
-                0, false, false, UUID.randomUUID(), false);
+                0, false, false, UUID.randomUUID(), "", false);
         assert x != null;
         assertEquals(CountExperiment.class, x.getClass());
     }
@@ -41,7 +41,7 @@ public class ExperimentMakerTest {
     @Test
     public void makeNaturalCountExperiment() {
         Experiment<?> x = ExperimentMaker.makeExperiment(ExperimentType.NaturalCount, "Should count",
-                0, false, false, UUID.randomUUID(), false);
+                0, false, false, UUID.randomUUID(), "", false);
         assert x != null;
         assertEquals(NaturalCountExperiment.class, x.getClass());
     }
@@ -49,7 +49,7 @@ public class ExperimentMakerTest {
     @Test
     public void makeMeasurementExperiment() {
         Experiment<?> x = ExperimentMaker.makeExperiment(ExperimentType.Measurement, "Should count",
-                0, false, false, UUID.randomUUID(), false);
+                0, false, false, UUID.randomUUID(), "", false);
         assert x != null;
         assertEquals(MeasurementExperiment.class, x.getClass());
     }

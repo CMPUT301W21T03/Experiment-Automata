@@ -365,6 +365,7 @@ public class ExperimentManager {
                 (boolean) Objects.requireNonNull(document.get("location-required")),
                 (boolean) Objects.requireNonNull(document.get("accepting-new-results")),
                 UUID.fromString((String) document.get("owner")),
+                (String) document.get("region"),
                 (boolean) Objects.requireNonNull(document.get("published")),
                 UUID.fromString(document.getId())
         );

@@ -31,9 +31,9 @@ public class BinomialExperiment extends Experiment<BinomialTrial> {
      *   whether to enable firestore or not
      */
     public BinomialExperiment(String description, int minTrials, boolean requireLocation,
-                              boolean acceptNewResults, UUID ownerId, boolean enableFirestore) {
+                              boolean acceptNewResults, UUID ownerId, String region, boolean enableFirestore) {
         super(description, minTrials, requireLocation, acceptNewResults, ownerId,
-                ExperimentType.Binomial, enableFirestore);
+                region, ExperimentType.Binomial, enableFirestore);
         results = new ArrayList<>();
     }
 
@@ -52,8 +52,10 @@ public class BinomialExperiment extends Experiment<BinomialTrial> {
      * @param experimentId
      * UUID representing the current experiment
      */
-    public BinomialExperiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId, Boolean published, UUID experimentId) {
-        super(description, minTrials, requireLocation, acceptNewResults, ownerId, ExperimentType.Binomial,published, experimentId);
+    public BinomialExperiment(String description, int minTrials, boolean requireLocation,
+                              boolean acceptNewResults, UUID ownerId, String region, Boolean published, UUID experimentId) {
+        super(description, minTrials, requireLocation, acceptNewResults, ownerId,
+                region, ExperimentType.Binomial,published, experimentId);
         results = new ArrayList<>();
     }
 

@@ -301,7 +301,6 @@ public class NavigationActivity extends AppCompatActivity implements
      *  The current experiment being modified
      */
     @Override
-    // todo: this functionality should be moved into something else in the future
     public void onOKPressedEdit(String experimentDescription, int experimentTrials,
                                 boolean experimentLocation, boolean experimentNewResults,
                                 Experiment<?> currentExperiment) {
@@ -423,7 +422,6 @@ public class NavigationActivity extends AppCompatActivity implements
     public void addLocationToTrial(Trial<?> currentTrial) {
         if (canMakeLocationTrials) {
 
-            //TODO: Place location warning dialog here -- Display only once?
             LocationManager locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
             LocationListener locationListener = new LocationServices();
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 1, locationListener);

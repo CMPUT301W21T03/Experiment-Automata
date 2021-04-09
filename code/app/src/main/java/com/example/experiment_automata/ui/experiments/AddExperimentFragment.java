@@ -40,6 +40,7 @@ public class AddExperimentFragment extends DialogFragment {
     public static final String ADD_EXPERIMENT_CURRENT_VALUE = "ADD-FRAGMENT-CURRENT-EXPERIMENT";
     // note: locale not currently added as I am not sure what input it has for Experiment
     private EditText description;
+    private EditText region;
     private EditText minTrials;
     private Spinner trialType;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
@@ -88,6 +89,7 @@ public class AddExperimentFragment extends DialogFragment {
 
         // link all of the variables with their objects in the UI
         description = view.findViewById(R.id.create_experiment_description_editText);
+        region = view.findViewById(R.id.create_experiment_region);
         minTrials = view.findViewById(R.id.experiment_min_trials_editText);
         trialType = view.findViewById(R.id.experiment_type_spinner);
         requireLocation = view.findViewById(R.id.experiment_require_location_switch);
@@ -124,7 +126,6 @@ public class AddExperimentFragment extends DialogFragment {
                         String experimentTrialsString = minTrials.getText().toString();
                         boolean experimentLocation = requireLocation.isChecked();
                         boolean experimentNewResults = acceptNewResults.isChecked();
-                        // todo: this logic should be relocated in the future
                         int experimentTrials;
                         if (experimentTrialsString.isEmpty()) {
                             experimentTrials = 0;
@@ -142,10 +143,10 @@ public class AddExperimentFragment extends DialogFragment {
                     .setNegativeButton("Cancel", null)
                     .setPositiveButton("Ok", (dialog, which) -> {
                         String experimentDescription = description.getText().toString();
+                        String experimentRegion = region.getText().toString();
                         // method of reading input as integer found on Stack Overflow from CommonsWare, Feb 4 2011
                         //https://stackoverflow.com/questions/4903515/how-do-i-return-an-int-from-edittext-android
                         String experimentTrialsString = minTrials.getText().toString();
-                        // todo: this should be reformatted like edit question where it passes back all the inputs and something else creates the question
                         int experimentTrials;
                         if (experimentTrialsString.isEmpty()) {
                             experimentTrials = 0;
@@ -156,10 +157,9 @@ public class AddExperimentFragment extends DialogFragment {
                         ExperimentType experimentType = ExperimentType.valueOf(trialType.getSelectedItem().toString());
                         boolean experimentLocation = requireLocation.isChecked();
                         boolean experimentNewResults = acceptNewResults.isChecked();
-                        // todo: determine if we need to do unit testing on this
                         User user = ((NavigationActivity) requireActivity()).loggedUser;
                         listener.onOkPressed(ExperimentMaker.makeExperiment(experimentType, experimentDescription,
-                                experimentTrials, experimentLocation, experimentNewResults, user.getUserId(), true));
+                                experimentTrials, experimentLocation, experimentNewResults, user.getUserId(), experimentRegion, true));
                         // debug statements since no unit testing, prints out all info used to create the experiment object
                         Log.d("NEW_EXPERIMENT", experimentDescription);
                         Log.d("EXPERIMENT_TYPE", experimentType.toString());

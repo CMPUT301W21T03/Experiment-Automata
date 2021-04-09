@@ -31,9 +31,9 @@ public class MeasurementExperiment extends Experiment<MeasurementTrial> {
      *   whether to enable firestore or not
      */
     public MeasurementExperiment(String description, int minTrials, boolean requireLocation,
-                                 boolean acceptNewResults, UUID ownerId, boolean enableFirestore) {
+                                 boolean acceptNewResults, UUID ownerId, String region, boolean enableFirestore) {
         super(description, minTrials, requireLocation, acceptNewResults, ownerId,
-                ExperimentType.Measurement, enableFirestore);
+                region, ExperimentType.Measurement, enableFirestore);
         results = new ArrayList<>();
     }
 
@@ -52,8 +52,10 @@ public class MeasurementExperiment extends Experiment<MeasurementTrial> {
      * @param experimentId
      * UUID representing the current experiment
      */
-    public MeasurementExperiment(String description, int minTrials, boolean requireLocation, boolean acceptNewResults, UUID ownerId, Boolean published, UUID experimentId) {
-        super(description, minTrials, requireLocation, acceptNewResults, ownerId, ExperimentType.Measurement, published, experimentId);
+    public MeasurementExperiment(String description, int minTrials, boolean requireLocation,
+                                 boolean acceptNewResults, UUID ownerId, String region, Boolean published, UUID experimentId) {
+        super(description, minTrials, requireLocation, acceptNewResults, ownerId,
+                region, ExperimentType.Measurement, published, experimentId);
         results = new ArrayList<>();
     }
 

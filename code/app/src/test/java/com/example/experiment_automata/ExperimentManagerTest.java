@@ -31,7 +31,7 @@ public class ExperimentManagerTest {
         userId = UUID.randomUUID();
         Experiment<?> e = ExperimentMaker.makeExperiment(ExperimentType.Binomial,
                 "Test Experiment First", 0, false,
-                true, userId, false);
+                true, userId, "", false);
         assert e != null;
         UUID id = e.getExperimentId();
         experimentReferences.add(id);
@@ -40,7 +40,7 @@ public class ExperimentManagerTest {
 
         e = ExperimentMaker.makeExperiment(ExperimentType.Binomial,
                 "Test Experiment Second", 0, true,
-                false, UUID.randomUUID(), false);
+                false, UUID.randomUUID(), "", false);
         assert e != null;
         id = e.getExperimentId();
         experimentReferences.add(e.getExperimentId());
@@ -168,7 +168,7 @@ public class ExperimentManagerTest {
             boolean location = (i % 3) == 0;
             UUID random = UUID.randomUUID();
             Experiment<?> ex = ExperimentMaker.makeExperiment(ExperimentType.Count, des, i,
-                    active, location, random, false);
+                    active, location, random, "canada", false);
             testValues.add(ex);
             experimentManager.add(random, ex);
         }

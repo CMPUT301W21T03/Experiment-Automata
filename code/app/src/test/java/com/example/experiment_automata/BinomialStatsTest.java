@@ -33,6 +33,7 @@ public class BinomialStatsTest {
                 false,
                 true,
                 ownerId,
+                "MURICA",
                 false);
         successTrial = new BinomialTrial(id, true);
         failureTrial = new BinomialTrial(id2, false);

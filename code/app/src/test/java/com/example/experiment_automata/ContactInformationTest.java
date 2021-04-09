@@ -7,7 +7,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-public class ContactInformationTests {
+public class ContactInformationTest {
 
     private final String name = "name";
     private final String email = "email";

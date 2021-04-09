@@ -14,6 +14,8 @@ import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.example.experiment_automata.backend.experiments.Experiment;
+import com.example.experiment_automata.backend.experiments.ExperimentManager;
 import com.example.experiment_automata.ui.LinkView;
 import com.example.experiment_automata.R;
 import com.example.experiment_automata.backend.trials.BinomialTrial;
@@ -72,6 +74,7 @@ public class TrialArrayAdapter extends ArrayAdapter<Trial<?>> {
         // Syntax below taken from Abdul Ali Bangash, "Lab 3 Instructions - Custom List",
         //  2021-02-04, Public Domain, https://eclass.srv.ualberta.ca/pluginfile.php/6713985/mod_resource/content/1/Lab%203%20instructions%20-%20CustomList.pdf
         View view = convertView;
+        NavigationActivity parentActivity = (NavigationActivity) context;
         if (view == null) {
             view = LayoutInflater.from(context).inflate(R.layout.trial_layout, parent, false);
         }
@@ -83,7 +86,6 @@ public class TrialArrayAdapter extends ArrayAdapter<Trial<?>> {
         User user = userManager.getSpecificUser(userId);
         experimenterNameView.setText(user.getInfo().getName());
         experimenterNameView.setOnClickListener(v -> {
-            NavigationActivity parentActivity = (NavigationActivity) context;
             Bundle args = new Bundle();
             args.putSerializable(ProfileFragment.userKey, user);
             NavController navController = Navigation.findNavController(parentActivity, R.id.nav_host_fragment);
@@ -103,13 +105,20 @@ public class TrialArrayAdapter extends ArrayAdapter<Trial<?>> {
                     ((MeasurementTrial) trial).getResult()));
         }
 
+        ExperimentManager experimentManager = ExperimentManager.getInstance();
+        Experiment<?> experiment = experimentManager.getCurrentExperiment();
         CheckBox checkBox = view.findViewById(R.id.trial_ignore_checkbox);
-        checkBox.setChecked(!trial.isIgnored());
-        checkBox.setOnClickListener(v -> {
-            boolean ignore = !((CheckBox) v).isChecked();
-            trial.setIgnore(ignore);
-            parentFragment.updateScreen();
-        });
+        if (parentActivity.loggedUser.getUserId().equals(experiment.getOwnerId())) {
+            checkBox.setVisibility(View.VISIBLE);
+            checkBox.setChecked(!trial.isIgnored());
+            checkBox.setOnClickListener(v -> {
+                boolean ignore = !((CheckBox) v).isChecked();
+                trial.setIgnore(ignore);
+                parentFragment.updateScreen();
+            });
+        } else {
+            checkBox.setVisibility(View.GONE);
+        }
 
         return view;
     }

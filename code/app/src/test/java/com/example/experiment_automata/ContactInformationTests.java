@@ -1,7 +1,5 @@
 package com.example.experiment_automata;
 
-import android.content.SharedPreferences;
-
 import com.example.experiment_automata.backend.users.ContactInformation;
 
 import org.junit.Test;
@@ -11,9 +9,9 @@ import static org.junit.Assert.assertNotEquals;
 
 public class ContactInformationTests {
 
-    private String name = "name";
-    private String email = "email";
-    private String phone = "phone";
+    private final String name = "name";
+    private final String email = "email";
+    private final String phone = "phone";
     /**
      * Testing contact information
      *
@@ -114,8 +112,4 @@ public class ContactInformationTests {
         assertNotEquals("Phone not set", change,
                 contactInformation.getPhone());
     }
-
-    /**
-     * Testing the not edit field is not feasible  
-     */
 }

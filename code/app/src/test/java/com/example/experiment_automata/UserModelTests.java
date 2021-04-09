@@ -33,9 +33,7 @@ public class UserModelTests {
     @Test
     public void testGetInstance() {
         User testUser = User.getInstance(UUID.randomUUID(), true);
-        assertEquals("User does not return a user instance",
-                true,
-                User.class.isInstance(testUser));
+        assertTrue("User does not return a user instance", testUser instanceof User);
     }
 
     @Test
@@ -150,9 +148,8 @@ public class UserModelTests {
             Field currentMode = User.class.getDeclaredField("testMode");
             currentMode.setAccessible(true);
             testUser.setTestMode(false);
-            assertEquals("Test mode not set",
-                    false,
-                    (boolean)currentMode.get(testUser));
+            assertNotNull(currentMode.get(testUser));
+            assertFalse("Test mode not set", (boolean) currentMode.get(testUser));
         } catch (Exception e) {
             fail("Exceptions thrown");
         }
@@ -188,6 +185,7 @@ public class UserModelTests {
     @Test
     public void testAddExperimentNotNull() {
         ArrayList<UUID> testList = new ArrayList<>();
+        assertNotNull(testList);
         testList.add(UUID.randomUUID());
         testUser.setOwnedExperiments(new ArrayList<>());
         int oldSize = testUser.getOwnedExperiments().size();

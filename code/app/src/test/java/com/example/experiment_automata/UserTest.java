@@ -13,37 +13,30 @@ import java.util.UUID;
 
 import static android.content.Context.MODE_PRIVATE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class UserTest {
-        private Activity testingActivity;
-        private SharedPreferences preferences;
-        private User testUser;
         private UUID testUserId;
-        private ContactInformation testUserInfo;
         private String testUserName;
         private String testUserEmail;
         private String testUserPhone;
-        private User returnUser;
         private UUID returnUserId;
-        private ContactInformation returnUserInfo;
         private String returnUserName;
         private String returnUserEmail;
         private String returnUserPhone;
 
         @Before
         public void setUp() {
-                testingActivity = new Activity();
-                preferences = testingActivity.getSharedPreferences("experiment_automata_user_testing", MODE_PRIVATE);
-                testUser = new User(preferences);
+                Activity testingActivity = new Activity();
+                SharedPreferences preferences = testingActivity.getSharedPreferences("experiment_automata_user_testing", MODE_PRIVATE);
+                User testUser = new User(preferences);
                 testUserId = testUser.getUserId();
-                testUserInfo = testUser.getInfo();
+                ContactInformation testUserInfo = testUser.getInfo();
                 testUserName = testUserInfo.getName();
                 testUserEmail = testUserInfo.getEmail();
                 testUserPhone = testUserInfo.getPhone();
-                returnUser = new User(preferences);
+                User returnUser = new User(preferences);
                 returnUserId = returnUser.getUserId();
-                returnUserInfo = returnUser.getInfo();
+                ContactInformation returnUserInfo = returnUser.getInfo();
                 returnUserName = returnUserInfo.getName();
                 returnUserEmail = returnUserInfo.getEmail();
                 returnUserPhone = returnUserInfo.getPhone();

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class ExperimentManagerTest {
@@ -125,7 +126,7 @@ public class ExperimentManagerTest {
         assertEquals(1, experimentManager.queryExperiments("Second", experimentReferences).size());
         assertEquals(1, experimentManager.queryExperiments("First", experimentReferences).size());
         assertEquals(2, experimentManager.queryExperiments("Test", experimentReferences).size());
-        assertEquals(0, experimentManager.queryExperiments("first", fakeIds).size());
+        assertThrows(AssertionError.class, () -> experimentManager.queryExperiments("first", fakeIds));
     }
 
     @Test
@@ -176,5 +177,4 @@ public class ExperimentManagerTest {
         assertEquals(experimentManager.getAllExperiments().size() - 2,
                 testValues.size());
     }
-
 }

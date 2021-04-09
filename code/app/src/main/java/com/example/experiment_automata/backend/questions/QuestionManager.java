@@ -33,7 +33,6 @@ public class QuestionManager {
     private static HashMap<UUID,Boolean> repliesFromId;
     private static boolean TEST_MODE = false;
 
-
     /**
      * Initializes the question manager.
      */
@@ -53,6 +52,9 @@ public class QuestionManager {
         return questionManager;
     }
 
+    public static void resetInstance() {
+        questionManager = null;
+    }
 
     /**
      * Adds the given question that the user class/caller gives to this class

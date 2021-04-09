@@ -12,7 +12,6 @@ import com.example.experiment_automata.backend.trials.CountTrial;
 import com.example.experiment_automata.backend.trials.MeasurementTrial;
 import com.example.experiment_automata.backend.trials.NaturalCountTrial;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
@@ -131,14 +130,14 @@ public class ExperimentTest {
 
     @Test
     public void minTrials() {
-        Integer trials = 10;
+        int trials = 10;
         Experiment<?> experiment = ExperimentMaker.makeExperiment(ExperimentType.Count,
                 "Experiment", trials, false, false, owner, false);
         assert experiment != null;
-        Assert.assertEquals(trials, experiment.getMinTrials());
+        assertEquals(trials, (int) experiment.getMinTrials());
         trials++;
         experiment.setMinTrials(trials);
-        Assert.assertEquals(trials, experiment.getMinTrials());
+        assertEquals(trials, (int) experiment.getMinTrials());
     }
 
     @Test
@@ -157,10 +156,10 @@ public class ExperimentTest {
         Experiment<?> experiment = ExperimentMaker.makeExperiment(ExperimentType.Count,
                 description, 0, false, false, owner, false);
         assert experiment != null;
-        Assert.assertEquals(description, experiment.getDescription());
+        assertEquals(description, experiment.getDescription());
         description = "Return to monke";
         experiment.setDescription(description);
-        Assert.assertEquals(description, experiment.getDescription());
+        assertEquals(description, experiment.getDescription());
     }
 
     @Test

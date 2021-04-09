@@ -14,12 +14,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.UUID;
 
 public class BinomialStatsTest {
-    private UUID ownerId = UUID.randomUUID();
+    private final UUID ownerId = UUID.randomUUID();
     private BinomialExperiment binomialExperiment;
-    private UUID id = UUID.randomUUID();
-    private UUID id2 = UUID.randomUUID();
-    private UUID id3 = UUID.randomUUID();
-    private UUID id4 = UUID.randomUUID();
+    private final UUID id = UUID.randomUUID();
+    private final UUID id2 = UUID.randomUUID();
+    private final UUID id3 = UUID.randomUUID();
+    private final UUID id4 = UUID.randomUUID();
     private BinomialTrial successTrial;
     private BinomialTrial failureTrial;
     private BinomialTrial ignoreSuccess;
@@ -136,7 +136,6 @@ public class BinomialStatsTest {
         binomialExperiment.recordTrial(failureTrial);
 
         assertTrue(marginOfError(binomialExperiment.getStdev(), 0.48989794855664f));
-
     }
 
     @Test
@@ -161,8 +160,6 @@ public class BinomialStatsTest {
         assertEquals(quartiles[0], 0, 0.01);
         assertEquals(quartiles[1], 1, 0.01);
         assertEquals(quartiles[2], 1, 0.01);
-
-
     }
 
     @Test
@@ -183,7 +180,6 @@ public class BinomialStatsTest {
         assertEquals(quartiles[0], 0, 0.01);
         assertEquals(quartiles[1], 0, 0.01);
         assertEquals(quartiles[2], 0.5, 0.01);
-
     }
 
     @Test
@@ -203,7 +199,6 @@ public class BinomialStatsTest {
         assertEquals(quartiles[0], 0, 0.01);
         assertEquals(quartiles[1], 0, 0.01);
         assertEquals(quartiles[2], 0.5, 0.01);
-
     }
 
     @Test

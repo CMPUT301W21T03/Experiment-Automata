@@ -1,13 +1,12 @@
 package com.example.experiment_automata;
 
-import com.example.experiment_automata.backend.questions.Question;
 import com.example.experiment_automata.backend.questions.Reply;
 
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -59,10 +58,10 @@ public class ReplyTest {
     public void testCompareTo() {
         Reply replyOne = new Reply(description, questionID, owner, replyID);
         Reply replyTwo = new Reply(description, questionID, owner, replyID);
-        assertTrue("Error, not equal", replyOne.compareTo(replyTwo) == 0);
+        assertEquals(0, replyOne.compareTo(replyTwo), "Error, not equal");
         Reply replyThree = new Reply("Z", questionID, owner, replyID);
-        assertTrue("Error, not positive", replyOne.compareTo(replyThree) > 0);
+        assertTrue(replyOne.compareTo(replyThree) > 0, "Error, not positive");
         Reply replyFour = new Reply("A", questionID, owner, replyID);
-        assertTrue("Error, not negative", replyOne.compareTo(replyFour) < 0);
+        assertTrue(replyOne.compareTo(replyFour) < 0, "Error, not negative");
     }
 }

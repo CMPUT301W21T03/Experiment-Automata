@@ -18,10 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ExperimentMakerTest {
     @Test
     public void makeErrorNullInput() {
-        assertThrows(NullPointerException.class, () -> {
-            ExperimentMaker.makeExperiment(null, "funny guy eh!", 0,
-                    false, false, UUID.randomUUID(), false);
-        });
+        assertThrows(NullPointerException.class, () -> ExperimentMaker.makeExperiment(null, "funny guy eh!", 0,
+                false, false, UUID.randomUUID(), false));
     }
 
     @Test

@@ -4,21 +4,18 @@ import com.example.experiment_automata.backend.users.User;
 import com.example.experiment_automata.backend.users.UserManager;
 
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.AfterEach;
 
 import java.lang.reflect.Field;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 
 public class UserManagerModelTests {
     /**
      * Role: Testing the UserManager class
      */
-
     UserManager userManager;
 
     @After
@@ -37,8 +34,7 @@ public class UserManagerModelTests {
     @Test
     public void testGetInstance() {
          userManager = UserManager.getInstance(true);
-        assertTrue("UserManager did not return an instance of itself",
-                UserManager.class.isInstance(userManager));
+        assertNotNull("UserManager did not return an instance of itself", userManager);
 
     }
 

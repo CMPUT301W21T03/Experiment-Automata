@@ -3,6 +3,9 @@ package com.example.experiment_automata.backend.trials;
 import android.location.Location;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
@@ -14,25 +17,39 @@ public abstract class Trial<T> implements Serializable {
     private final UUID userId;
     private final UUID trialId;
     private Location location;
-    private final Date date;
+    private Date date;
     private boolean ignore;
     protected T result;
 
-    public Trial(UUID userId, T result) {
+    public Trial(UUID userId, String dateString, T result) {
         this.userId = userId;
-        this.date = new Date();
+        if (dateString != "none") {
+            try {
+                this.date = new SimpleDateFormat("dd-MMM-yyy HH:mm:ss").parse(dateString);
+            } catch (Exception e) {}
+        }
+        if (this.date == null) {
+            this.date = new Date();
+        }
         this.ignore = false;
         this.result = result;
         this.trialId = UUID.randomUUID();
     }
 
-    public Trial(UUID userId, Location location, T result) {
+    public Trial(UUID userId, String dateString,  Location location, T result) {
         this.userId = userId;
         this.location = location;
-        this.date = new Date();
         this.ignore = false;
         this.result = result;
         this.trialId = UUID.randomUUID();
+        if (dateString != "none") {
+            try {
+                this.date = new SimpleDateFormat("dd-MMM-yyy HH:mm:ss").parse(dateString);
+            } catch (Exception e) {}
+        }
+        if (this.date == null) {
+            this.date = new Date();
+        }
     }
 
 

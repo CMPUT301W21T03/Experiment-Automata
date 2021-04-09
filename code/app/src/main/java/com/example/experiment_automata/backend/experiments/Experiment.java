@@ -7,6 +7,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -309,7 +311,8 @@ public abstract class Experiment<T extends Trial<?>> implements Serializable, St
                 singleResult.put("latitude", trial.getLocation().getLatitude());
                 singleResult.put("longitude", trial.getLocation().getLongitude());
             }
-            singleResult.put("date", trial.getDate().toString());
+            DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+            singleResult.put("date", dateFormat.format(trial.getDate()));
             singleResult.put("ignore", trial.isIgnored());
             singleResult.put("result", trial.getResult());
             resultsData.put(trial.getTrialId().toString(),singleResult);

@@ -263,7 +263,7 @@ public class NavExperimentDetailsFragment extends Fragment {
             resultsPlot.getLegend().setEnabled(false);
             resultsPlot.getXAxis().setEnabled(false);
             histogram.getXAxis().setValueFormatter(new LargeValueFormatter());
-            resultsPlot.setTouchEnabled(false);
+            resultsPlot.setTouchEnabled(true);
             resultsPlot.getDescription().setEnabled(false);
             resultsPlot.invalidate();
 

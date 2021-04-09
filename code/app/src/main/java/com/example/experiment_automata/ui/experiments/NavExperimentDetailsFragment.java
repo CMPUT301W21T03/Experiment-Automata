@@ -30,7 +30,6 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.LargeValueFormatter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import org.w3c.dom.Text;
 
 import java.util.UUID;
 
@@ -228,9 +227,9 @@ public class NavExperimentDetailsFragment extends Fragment {
 
             parentActivity.experimentManager.setUpdateListener(() -> {
                 if(resultsPlot != null)
-                    resultsPlot.invalidate();
+                    updateExperiment(current);
             });
-            updateExperiment(current);
+
 
         } else {
             textViewMean.setText(R.string.no_trials);

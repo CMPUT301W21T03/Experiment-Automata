@@ -74,7 +74,7 @@ public class NaturalCountExperiment extends Experiment<NaturalCountTrial> {
                 if (value < min) min = value;
             }
         }
-        int range = min + max;
+        int range = max - min;
         // Get data range counts into bins
         final int amountOfBins = 10;
         int[] bins = new int[amountOfBins];

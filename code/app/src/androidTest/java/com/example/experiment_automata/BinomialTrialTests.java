@@ -155,6 +155,9 @@ public class BinomialTrialTests {
     /**
      * Testing US 01.08.01 here we're ignoring a trial and making sure the
      * quartile sentence changes to meet that when the trial is ignored
+     *
+     * Known Issues:
+     * This test will sometimes fail due to the setup and teardown of the database in the test class
      */
     @Test
     public void testIntentIgnoringTrials() {

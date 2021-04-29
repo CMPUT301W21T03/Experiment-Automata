@@ -13,15 +13,16 @@ zxing-android-embedded - L:Apache License 2.0 - https://github.com/journeyapps/z
 
 # Details
 
-The goal of this application is to build results for custom experiments that can crowed sourced
+The goal of this application is to build results for custom experiments that can crowed sourced.
+For more in depth details check out our [wiki](https://github.com/CMPUT301W21T03/Experiment-Automata/wiki).
+
 
 ## Goals
 
 ### Adding an Experiment
 
-When the plus sign is pressed in places not lgically realted to trials this screen will apear. 
-
-![Add Experiment pop up Window](https://github.com/CMPUT301W21T03/Experiment-Automata/blob/main/doc/Storyboard/Screens/Add%20Experiment.png)
+When the plus sign is pressed in places not logically realted to trials this screen will apear. \
+<img src="https://github.com/CMPUT301W21T03/Experiment-Automata/blob/main/doc/Storyboard/Screens/Add%20Experiment.png" width="200"/>
 
 ### Opening an Experiment 
 
@@ -29,7 +30,9 @@ Taping on an experiment will get the experiment detials which will show everythi
 Ex: Location, Trial Data, Trial Histogram, Trial Graph Plot, The Used Trials....
 
 Locations:
-* Locations: Accesed by pressing the map button. ![Location Data](https://github.com/CMPUT301W21T03/Experiment-Automata/blob/main/doc/Storyboard/Screens/View%20Locations.png)
+* Locations: Accesed by pressing the map button. \
+<img src="https://github.com/CMPUT301W21T03/Experiment-Automata/blob/main/doc/Storyboard/Screens/View%20Locations.png" width="200"/>
+
 
 Trial Data:
 * Trial Histogram: First item you see when looking through visualization. 
@@ -39,8 +42,9 @@ Trial Data:
 ### Adding Trials (Adding Data to an Experiment)
 
 Pressing the plus button on the experiment details page will give you the pop up window to add an experiment of the trial for that experiment. 
-Depending on the lead experimenters prefrences the you may need to add a location. 
-![Experiment Binomial Trial](https://github.com/CMPUT301W21T03/Experiment-Automata/blob/main/doc/Storyboard/Screens/Add%20Binomial%20Trial%20Loc.png)
+Depending on the lead experimenters prefrences the you may need to add a location. \
+<img src="https://github.com/CMPUT301W21T03/Experiment-Automata/blob/main/doc/Storyboard/Screens/Add%20Binomial%20Trial%20Loc.png" width="200"/>
+
 
 ### Other features as displayed in our demo video
 https://youtu.be/I7fxqJsjcz0

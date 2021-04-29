@@ -27,7 +27,10 @@ When the plus sign is pressed in places not lgically realted to trials this scre
 
 Taping on an experiment will get the experiment detials which will show everything logically related to an experiment. 
 Ex: Location, Trial Data, Trial Histogram, Trial Graph Plot, The Used Trials....
-Locations: Accesed by pressing the map button. ![Location Data](https://github.com/CMPUT301W21T03/Experiment-Automata/blob/main/doc/Storyboard/Screens/View%20Locations.png)
+
+Locations:
+* Locations: Accesed by pressing the map button. ![Location Data](https://github.com/CMPUT301W21T03/Experiment-Automata/blob/main/doc/Storyboard/Screens/View%20Locations.png)
+
 Trial Data:
 * Trial Histogram: First item you see when looking through visualization. 
 * Trial Graph Plot: Second item you see when looking through data visualization.
@@ -39,5 +42,5 @@ Pressing the plus button on the experiment details page will give you the pop up
 Depending on the lead experimenters prefrences the you may need to add a location. 
 ![Experiment Binomial Trial](https://github.com/CMPUT301W21T03/Experiment-Automata/blob/main/doc/Storyboard/Screens/Add%20Binomial%20Trial%20Loc.png)
 
-Other features as displayed in our demo video
+### Other features as displayed in our demo video
 https://youtu.be/I7fxqJsjcz0
